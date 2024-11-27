@@ -182,6 +182,10 @@
       
   }
 
+  .back-product{
+    display: flex;
+    flex-direction: row;
+  }
   @media (max-width: 575.98px) { 
     .order-actions-price-status > p {
         flex-direction: column;

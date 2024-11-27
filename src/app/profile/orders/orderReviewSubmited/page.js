@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { PiClockClockwiseBold } from "react-icons/pi";
 import { AiFillShop } from "react-icons/ai";
 import "@/styles/OrderReviewSubmited.css";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import OrderItem from "@/Components/OrderItem";
 import { HiLocationMarker } from "react-icons/hi";
 import { useRouter } from "next/navigation";
@@ -103,6 +104,9 @@ const OrderReviewSubmited = () => {
 
     return (
         <div className="order-detail">
+             <h2 className='item-header' onClick={() => router.back()}>
+        <div className='back-product'><IoMdArrowRoundBack style={{ marginRight: "12px" }} /> Order detail
+        </div></h2>
             <div className="Orders_page_section">
                 <div className="order-tracking-container">
                     <div className="order_item-frame">

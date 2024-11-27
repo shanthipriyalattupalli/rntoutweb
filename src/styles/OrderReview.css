@@ -258,3 +258,8 @@ small {
   border: 1px;
   opacity: 0px;
 }
+
+.back-product{
+  display: flex;
+  flex-direction: row;
+}

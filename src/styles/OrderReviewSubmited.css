@@ -37,3 +37,7 @@
     text-decoration-skip-ink: none;
     color: #070707CC;
 }
+.back-product{
+    display: flex;
+    flex-direction: row;
+  }
