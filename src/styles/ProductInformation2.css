@@ -9,6 +9,11 @@
   flex-direction: row;
   
 }
+.item-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
 .product-info {
   display: flex;

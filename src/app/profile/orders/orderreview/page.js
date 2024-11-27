@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "@/styles/OrderTrackingWithNavigate.css";
 import OrderItem from "@/Components/OrderItem";
 import "@/styles/orderReview.css";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { RiCloseLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 
@@ -59,9 +60,13 @@ const OrderReview = () => {
 
     return (
         <div className="order-detail">
+            <h2 className='item-header' onClick={() => router.back()}>
+        <div className='back-product'><IoMdArrowRoundBack style={{ marginRight: "12px" }} /> Writing Review
+        </div>
             <a href="#" onClick={() => {router.push('/profile/orders/orderReviewSubmited')}} >
                 Submit
             </a>
+            </h2>
             <div className="Orders_page_section">
                 <div className="order-tracking-container">
                     <div className="order_item-frame">
