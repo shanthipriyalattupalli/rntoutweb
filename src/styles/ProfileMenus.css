@@ -1,0 +1,25 @@
+.menu-content {
+    max-width: 1200px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    /* border: solid 1px red; */
+    
+} 
+
+.app_wbgeubeqb {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+
+    /* height: 100vh; */
+    width: 100%;
+}
+.app_wbgeubeqb .content {
+    width: 100%;
+    min-height: 616px;
+    border: 1px solid #0707071A;
+    /* border-left: none; */
+    border-radius: 0px 16px 16px 0px;
+    overflow: hidden;
+}

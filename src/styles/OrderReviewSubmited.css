@@ -1,0 +1,39 @@
+.shipping_address_sec {
+    display: inline-flex;
+    min-height: 98px;
+    padding: 16px 0px 16px 0px;
+    gap: 16px;
+    opacity: 0px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 6px 0px #00000005;
+
+}
+.shipping_address_sec span svg{
+    color: #F48003;
+    font-size: larger;
+}
+.address_detail {
+    display: inline-flex;
+    flex-direction: column;
+    min-height: 66px;
+    gap: 4px;
+    opacity: 0px;
+}
+.address_detail > h6 {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: left;
+    text-decoration-skip-ink: none;
+    color: #070707;
+
+}
+.address_detail > p {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 19.5px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #070707CC;
+}

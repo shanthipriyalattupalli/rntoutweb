@@ -1,0 +1,100 @@
+.busi-ness-page{
+  border: 1px solid #0707071A;
+}
+.bi-main-div {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  min-height: 570px;
+  text-align: center;
+  background-color: #f9f9f9;
+  /* Light background color */
+}
+
+.bi-head {
+  font-size: 16px;
+  margin:0;
+  font-family: sans-serif;
+  font-weight: 600;
+  line-height: 20px;
+  text-align: left;
+  padding: 12px 16px 12px 16px;
+  gap: 16px;
+  background: #F0F5FF;
+  border-bottom: 1px solid #0707071A
+}
+
+.bi-1-div img {
+  max-width: 300px;
+  /* Adjust the image size */
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.bi-text-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.title-text {
+  color: var(--text-icon-primary, #070707);
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  /* Title/7 - 14px */
+  font-family: sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  /* 128.571% */
+}
+
+.description-text {
+  color: var(--text-icon-secondary, rgba(7, 7, 7, 0.80));
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  /* Text XS - 12px/Regular */
+  font-family: sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  /* 150% */
+}
+
+.description-text span {
+  color: var(--text-icon-secondary, rgba(7, 7, 7, 0.80));
+
+  /* Text XS - 12px/Medium */
+  /* font-family: Poppins; */
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.add-business-button {
+  padding: 10px 20px;
+  font-size: 1em;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  border-radius: 10px;
+  border: 1px solid var(--Primary-700, #FF2D55);
+  background: var(--Primary-700, #FF2D55);
+
+  /* Shadows/shadow-button */
+  box-shadow: 0px -1px 0.5px 1px var(--Overlays-Black-Alpha-8, rgba(0, 0, 0, 0.27)) inset, 0px 6px 4px -4px var(--Overlays-White-Alpha-8, rgba(255, 255, 255, 0.31)) inset, 0px 1px 0px 1px var(--Overlays-White-Alpha-10, rgba(255, 255, 255, 0.46)) inset;
+}
+
+.add-business-button:hover {
+  background-color: #e04e4e;
+  /* Darker red on hover */
+}

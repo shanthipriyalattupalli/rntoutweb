@@ -1,0 +1,192 @@
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+    height: 36px;
+    padding: 8px 0px;
+    gap: 6px;
+    opacity: 0px;
+    margin: 0;
+   
+}
+.order-header span {
+    height: 20px;
+    gap: 0px;
+    opacity: 0px;
+    /* font-family: Poppins; */
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #070707CC;
+
+}
+.order_item-frame {
+    display: flex;
+    flex-direction: column;
+    background: #0707070D;
+}
+.Orders_page_section .order-item {
+    min-height: 60px;
+    margin-bottom: 8px;
+    display: inline-flex;
+    flex-direction: column;
+    padding: 12px 16px;
+    gap: 12px;
+    border: 0px 0px 1px 0px;
+    opacity: 0px;
+    background-color: #fff;
+}
+.Orders_page_section .order-item:last-child {
+    /* margin-bottom: 0; */
+}
+.Orders_page_section .order-product {
+    min-height: 56px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0px;
+}
+.Orders_page_section .product-image {
+    width: 56px;
+    height: 56px;
+    gap: 0px;
+    border-radius: 10px;
+    border: 1px;
+    opacity: 0px;
+    border: 1px solid #0707071A;
+}
+.Orders_page_section .product-info {
+    min-height: 44px;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+    opacity: 0px;
+}
+.Orders_page_section .product-info > h4 {
+    min-height: 20px;
+    gap: 0px;
+    opacity: 0px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #070707;
+
+}
+.Orders_page_section .product-info > p {
+    height: 18px;
+    gap: 0px;
+    opacity: 0px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #070707;
+}
+.Orders_page_section .product-info > p span {
+    font-weight: 600;
+}
+.order-actions {
+    min-height: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0px;
+    position: relative;
+    border-top: 1px solid #07070726;
+    border-bottom: 1px solid #07070726;
+    border-right: 0;
+    border-left: 0;
+    border-style: dashed;
+    padding: 14px 0;
+
+}
+.order-actions a{
+    width: 286px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 16px 0px 0px 0px;
+    opacity: 0px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 19.5px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+.track-order {
+    color: #2F6FED;
+}
+.cancel-order {
+    color: #E02D3C;
+
+}
+.download-invoice {
+    color: #0B827C;
+
+}
+.order-actions-price-status {
+    display: flex;
+    justify-content: space-between;
+}
+.order-actions-price-status > p {
+    text-decoration: none;
+    color: #000;
+    display: inline-flex;
+    /* align-items: center; */
+    gap: 8px;
+}
+
+.order-actions-price-status .progress {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+  }
+  
+  .progress.completed {
+    color: #08875D;  /* Set to any color representing completed status */
+  }
+  
+  .progress.in-progress {
+    color: #F48003; /* Set to any color representing in-progress status */
+  }
+  .profiel_header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center ;
+        font-size: 16px;
+        margin:0;
+        font-family: sans-serif;
+        font-weight: 600;
+        line-height: 20px;
+        text-align: left;
+        padding: 12px 16px 12px 16px;
+        gap: 16px;
+        background: #F0F5FF;
+        border-bottom: 1px solid #0707071A;
+        height:20.6px;
+      
+  }
+
+  @media (max-width: 575.98px) { 
+    .order-actions-price-status > p {
+        flex-direction: column;
+    }
+    .sidebar {
+        display: none;
+    }
+   }

@@ -1,0 +1,137 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 31%;
+}
+
+.delivery-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+    
+}
+
+.delivery-context {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: auto;
+    height: 34px;
+    color: #070707;
+    text-align: center;
+    align-items: center;
+
+}
+.delivery-context span{
+    /* margin-bottom: 17px; */
+}
+
+.address-edit {
+    /* border: 1px solid red; */
+    padding-top: 1px;
+}
+
+.delivery-to {
+    color: #2F6FED;
+}
+
+.delivery-context span {
+    /* border: 1px solid red; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: 13px; */
+    height: 20px;
+    padding: 5px;
+    border-radius: 6px;
+    background: #0707071A;
+
+
+}
+
+
+.address-card {
+    display: flex;
+    flex-direction: column;
+    width: 370px;
+    height: 150px;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #0707071A;
+    /* border: 1px solid red; */
+}
+
+.address-context {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    /* height: 36px; */
+    /* border: 1px solid red; */
+}
+
+.address-context p {
+    /* border: 1px solid red; */
+    height: 20px;
+    /* margin-top: 20px; */
+}
+
+.address-button {
+    width: 100%;
+    padding: 12px;
+    background: #2F6FED;
+    border: 1px solid #2F6FED;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    
+}
+
+.form-select {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.form-select span {
+    border: 1px solid red;
+    width: 27%;
+    text-align: center;
+    padding: 8px;
+    gap: 8px;
+    border-radius: 12px;
+    border: 1px solid #0707071A;
+    cursor: pointer;
+
+}
+.form-select span:hover{
+    background: #6e77f5;
+}
+
+.address-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+   
+
+}
+
+.text-input {
+    width: 97%;
+    height: 40px;
+    padding: 8px;
+    padding-left: 10px;
+    border-radius: 12px;
+    border: 1px solid #0707071A;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}

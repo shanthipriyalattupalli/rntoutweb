@@ -1,0 +1,219 @@
+.seller-carousel-container {
+    position: relative;
+    max-width: 100%;
+    margin-top:10px;
+    overflow: hidden;
+    /* height: 392px; */
+    /* border: solid red; */
+}
+
+.seller-carousel-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.seller-carousel-image {
+    width: 100%;
+    height: 292px;
+    object-fit: cover;
+}
+
+.seller-carousel-prev-button,
+.seller-carousel-next-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 50%;
+    z-index: 10;
+    transition: background 0.3s ease;
+}
+
+.seller-carousel-prev-button:hover,
+.seller-carousel-next-button:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.seller-carousel-prev-button {
+    left: 15px;
+}
+
+.seller-carousel-next-button {
+    right: 15px;
+}
+
+.seller-carousel-indicators {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+.seller-carousel-indicator {
+    width: 10px;
+    height: 10px;
+    background: #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.seller-carousel-indicator.active {
+    background: #f5a623;
+}
+
+/* Profile Section Styles */
+.seller-profile-container {
+    font-family: Arial, sans-serif;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff;
+    width: 90%;
+    margin: 20px auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.seller-profile-header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.seller-company-info h1 {
+    font-size: 22px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.seller-verified {
+    color: #4caf50;
+    margin-left: 8px;
+    font-size: 18px;
+}
+
+.seller-company-info p {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.seller-contact-item {
+    display: inline-block;
+    margin-right: 10px;
+    color: #333;
+    font-size: 14px;
+}
+
+.seller-about-us {
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+    margin-top: 10px;
+    color: #333;
+}
+
+.seller-about-us h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.seller-about-us p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+}
+
+.seller-read-more {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.seller-read-more:hover {
+    text-decoration: underline;
+}
+
+.seller-business-name {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+.seller-store-reviews {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.seller-rating {
+    color: #f5a623;
+    font-weight: bold;
+}
+
+.seller-review-stats {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Tabs Styles */
+.seller-tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.seller-tab {
+    border: none;
+    background: none;
+    font-size: 16px;
+    color: #444;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.seller-tab.active {
+    border-bottom: 2px solid #f5a623;
+    font-weight: bold;
+    color: #f5a623;
+}
+
+.seller-tab:hover {
+    color: #f5a623;
+}
+
+/* Tab Content */
+.seller-tab-content {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #444;
+}
+
+.seller-tab-content ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.seller-tab-content ul li {
+    margin-bottom: 8px;
+}

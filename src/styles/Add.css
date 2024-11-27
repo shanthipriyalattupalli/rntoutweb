@@ -1,0 +1,125 @@
+.category-container {
+    text-align: center;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+}
+
+.category-container h1 {
+    /* font-family: Poppins; */
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 48px;
+    text-align: center;
+
+}
+
+.category-container p {
+    color: #777;
+    margin-bottom: 2rem;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.category-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, background-color 0.2s;
+    cursor: pointer;
+}
+
+.category-card:hover {
+    transform: scale(1.05);
+}
+
+.category-card.selected {
+    background-color: #6b5b95;
+    /* Custom color for selected state */
+    color: #fff;
+}
+
+.category-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+
+
+}
+
+.check-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    color: #fff;
+
+}
+
+.next-button {
+    margin-top: 1.5rem;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff3b3f;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.next-button:hover {
+    background-color: #ff6163;
+}
+
+/* Background colors for each category */
+.category-green {
+    background-color: #e6f4ea;
+}
+
+.category-lightgreen {
+    background-color: #e6f8f4;
+}
+
+.category-lavender {
+    background-color: #f0e6fa;
+}
+
+.category-pink {
+    background-color: #fae6eb;
+}
+
+.category-lightblue {
+    background-color: #e6f0fa;
+}
+
+.category-beige {
+    background-color: #faece6;
+}
+
+.category-blue {
+    background-color: #e6f0fc;
+}
+
+.category-lightpurple {
+    background-color: #fbe6fa;
+}
+
+.category-lightyellow {
+    background-color: #faf7e6;
+}
+
+.category-card p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+}

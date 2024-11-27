@@ -1,0 +1,129 @@
+/* Container for the product cards */
+.products-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 20px;
+}
+
+/* Styling for each product card */
+.product-card {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    /* width: 280px; */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Image container with badge icon */
+.product-image-container {
+    position: relative;
+    text-align: center;
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Badge icon styling */
+.badge-icon {
+    position: absolute;
+    top: 8px;
+    right: 0px;
+    background-color: #4285f4;
+    color: white;
+    padding: 6px;
+    border-radius: 50%;
+    font-size: 12px;
+}
+
+/* Product details section */
+
+
+.product-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 8px 0;
+    font-family: 'Mulish', sans-serif;
+}
+
+.product-price {
+    font-size: 16px;
+    color: #2F6FED;
+    margin: 3px 0;
+    font-family: 'Mulish', sans-serif;
+}
+
+.pro-span {
+    color: #070707A6;
+}
+
+.product-dates {
+    font-size: 14px;
+    color: #6c757d;
+    font-family: 'Mulish', sans-serif;
+}
+
+/* Stock availability */
+.pro-stock {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 3px;
+}
+
+.pro-date {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.product-stock {
+    font-size: 14px;
+    padding: 0;
+    color: #2F6FED;
+}
+
+.book {
+    width: 20px;
+    height: 20px;
+}
+
+/* Add to cart button */
+.pro-last {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid #FF2D55;
+    padding: 5px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 7px;
+    margin-bottom: 10px;
+}
+
+.add-to-cart-btn {
+    background-color: white;
+    border: none;
+    color: #070707;
+    font-weight: bold;
+    font-family: 'Mulish', sans-serif;
+}
+
+.vector {
+    width: 15px;
+    height: 15px;
+}
+
+.vector1 {
+    width: 16px;
+    height: 16px;
+    top: 20px;
+}

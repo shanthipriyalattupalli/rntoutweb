@@ -1,0 +1,554 @@
+.full-container-page {
+    padding: 15px;
+}
+
+.radio-button-group {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    border-bottom: 1px solid #0707071A;
+
+}
+
+.radio-option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+}
+
+.radio-option input[type="radio"] {
+    display: none;
+}
+
+.custom-radio {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio-option input[type="radio"]:checked+.custom-radio::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background-color: #007bff;
+    /* Customize this color as needed */
+    border-radius: 50%;
+}
+
+.radio-option:hover .custom-radio {
+    border-color: #007bff;
+    /* Customize this color as needed */
+}
+
+.container-para h1 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 48px;
+    text-align: center;
+    margin-top: 30px;
+
+
+}
+
+.container-para p {
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+
+}
+
+.product-form-container {
+    max-width: 90%;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+
+}
+
+.product-form-container h1 {
+    align-content: center;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 48px;
+    border: solid red;
+
+}
+
+.product-form {
+    font-family: Arial, sans-serif;
+    color: #333;
+   
+}
+
+.ba-in {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: left;
+    color: #ff7a00;
+    margin-top: 20px;
+    margin-bottom: 10px;
+   
+}
+
+.basic-details {
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+
+}
+
+.form-section1 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+
+
+}
+
+.form-section1 input {
+    width: 350px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+
+}
+
+.form-section2 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    margin-left: 20px;
+}
+
+.form-section2 select {
+    width: 220px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+
+}
+
+.form-section3 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+
+}
+
+.form-section3 input {
+    width: 220px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+
+}
+
+label {
+    /* display: block; */
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.file-upload {
+    margin-top: 10px;
+    width: 100%;
+    height: 190px;
+    gap: 6px;
+    opacity: 0px;
+}
+
+.file-upload-box {
+    border: 1px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    border-radius: 4px;
+    color: var(--textColor-default, #0B0B0B);
+    position: relative;
+    margin-top: 10px;
+}
+
+.upload-icon {
+    display: inline-block;
+    cursor: pointer;
+    margin-bottom: 10px;
+    color: #007bff;
+    font-size: 30px;
+
+}
+
+.file-upload-box span {
+    color: #007bff;
+    cursor: pointer;
+}
+
+.file-note {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #070707A6;
+
+}
+
+.form-section4 {
+    width: 100%;
+    margin-top: 50px;
+
+}
+
+.form-section4 h2 {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: left;
+    margin-top: 20px;
+
+}
+
+.pricing-section {
+    display: flex;
+    flex-direction: row;
+}
+
+.form-section5 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.pricing-section input {
+    width: 80%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.details-section h3 {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: left;
+    color: #ff7a00;
+
+}
+
+
+
+.product-form-page {
+    display: flex;
+    font-family: Arial, sans-serif;
+    /* border: 1px solid #0707071A; */
+    border-radius: 10px;
+    margin: 40px 80px;
+
+}
+
+.sidebar-menu {
+    width: 324px;
+    height: auto !important;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    border-radius: 16px 0px 0px 16px;
+    border-right: none;
+    /* border: 1px 0px 1px 1px; */
+}
+
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    background: #0707070D;
+    border-bottom: 1px solid #0707071A;
+
+
+}
+
+.category-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #6A00FF;
+    text-transform: uppercase;
+
+}
+
+.change-button {
+    font-size: 12px;
+    color: #007bff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.menu-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    /* border-bottom: 1px solid #0707071A; */
+
+}
+
+.menu-list :last-child {
+    border: none;
+}
+
+.menu-item {
+    font-size: 14px;
+    color: #070707CC;
+    padding: 12px;
+    /* border-radius: 4px; */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid #0707071A;
+}
+
+
+.menu-item.active,
+.menu-item:hover {
+    box-shadow: 2px 0px 0px 0px #FF0000 inset;
+    background: linear-gradient(90deg, #FFEBEB 0%, #FFF 100%);
+    font-weight: 500;
+    color: #FF0000;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #0707071A;
+}
+
+
+.details-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.product-details-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+
+}
+
+.title-input {
+    width: 98%;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+
+}
+
+.detail-row input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.delete-btn {
+    border: none;
+    background-color: transparent;
+}
+
+.delete-btn svg {
+    color: red;
+    border: none;
+    background: none;
+    cursor: pointer;
+    width: 23px;
+    height: 28px;
+}
+
+.add-row-btn1 {
+    color: #2F6FED;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    background-color: white !important;
+    border: none !important;
+    cursor: pointer;
+    /* margin-left: 850px; */
+    display: flex;
+
+
+}
+
+.delete-card-btn1 {
+    color: red;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    background-color: white !important;
+    border: none !important;
+    cursor: pointer;
+    display: flex;
+
+
+}
+
+.btn-add-del {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.add-section-btn {
+    display: flex;
+    width: 30%;
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 2px solid red;
+    color: red;
+    border-radius: 10px;
+    cursor: pointer;
+    align-items: center;
+    margin: auto;
+}
+
+.publish-button {
+    width: 30%;
+    font-size: 1rem;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.publish-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff3b3f;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    border: solid red;
+}
+
+.date-picker-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: Arial, sans-serif;
+    margin-top: 20px;
+}
+
+.date-picker-label {
+    color: #333;
+
+}
+
+.date-picker-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.date-picker-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #333;
+    padding: 8px 0;
+
+}
+
+.date-picker-input::placeholder {
+    color: #999;
+}
+
+.calendar-icon {
+    font-size: 18px;
+    color: #333;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.calendar-icon:hover {
+    color: #555;
+}
+
+/* Style for react-datepicker */
+.react-datepicker {
+    font-family: Arial, sans-serif;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+.react-datepicker__header {
+    background-color: #f7f7f7;
+    border-bottom: none;
+}
+
+.react-datepicker__current-month {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+    font-size: 14px;
+    color: #333;
+}
+
+.react-datepicker__day:hover {
+    background-color: #f0f0f0;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.react-datepicker__day--today {
+    font-weight: bold;
+    color: #007bff;
+}

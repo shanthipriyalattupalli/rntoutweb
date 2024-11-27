@@ -1,0 +1,189 @@
+.cart-page {
+    display: flex;
+    justify-content: space-between;
+    padding: 32px;
+    background-color: #f3f4f6;
+    min-height: 100vh;
+}
+
+/* Cart Items Section */
+.cart-items-section {
+    width: 66.67%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cart-title {
+    padding: 50px 0px 0px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    
+}
+
+.cart-count {
+    width: 28px;
+    height: 20px;
+    padding: 1px 6px 1px 6px;
+    gap: 6px;
+    border-radius: 99px;
+    opacity: 0px;
+    font-size: 12px;
+    background: #F0F5FF;
+    color: #3b82f6;
+  
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    /* padding: 16px 0; */
+    
+}
+
+.cart-item :first-child {
+    
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.item-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.item-details {
+    margin-left: 16px;
+    flex: 1;
+    /* border: 1px solid red; */
+}
+
+.item-name {
+    overflow: hidden;
+    max-width: 600px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: 500;
+    font-size: 1.125rem;
+}
+
+.item-price {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    gap: 8px;
+}
+
+.quantity-btn {
+    padding: 4px 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+}
+
+.quantity {
+    font-weight: 500;
+}
+
+.duration-select {
+    padding: 4px 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+}
+
+.stock-info {
+    color: #ef4444;
+    font-size: 0.875rem;
+    
+}
+
+.product-right {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* border: solid red; */
+   
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    /* border: 1px solid red; */
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-top: -30px;
+    
+}
+
+/* Summary Section */
+.summary-section {
+    width: 40%;
+    /* background-color: #ffffff; */
+    padding: 0px 24px 24px 24px;
+    border-radius: 8px;
+    /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
+    margin-left: 24px;
+}
+
+.summary-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: #FFFFFF;
+    border: 1px solid #0707071A;
+    box-shadow: 0px 1px 2px 0px #0000000D;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.summary-address {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.address-content {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    cursor: pointer;
+    
+}
+
+.amount {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+.pay-btn {
+    width: 100%;
+    background-color: #ef4444;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 12px 0;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.insurance-amount {
+    color: #2F6FED;
+
+    font-weight: 600;
+}

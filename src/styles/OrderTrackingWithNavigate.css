@@ -1,0 +1,217 @@
+.order-tracking-container {
+    /* margin: 20px 0; */
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.order-tracking-container>h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.tracking-steps {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.tracking-step {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex: 1;
+}
+
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    border: 5px solid #d1d1d1;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 99;
+    background-color: #fff;
+}
+.step-indicator.active {
+    border: 5px solid #2F6FED;
+}
+.step-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #d1d1d1;
+}
+
+.step-circle.filled {
+    background: #2F6FED;
+    /* Active color */
+}
+
+.step-info {
+    gap: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.step-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #888;
+}
+.step-label.active,
+.step-date.active {
+    color: #000;
+    font-weight: 600;
+}
+.step-date {
+    font-size: 12px;
+    color: #888;
+}
+
+.step-divider {
+    position: relative;
+    left: -9%;
+    height: 4px;
+    flex: 1;
+    border: 3px solid #d1d1d1;
+    border-style: dashed;
+}
+.step-divider.active {
+    border: 3px solid #2F6FED;
+    width: 50%;
+    border-style: dashed;
+    transition: all 0.3s ease-in-out;
+}
+
+.rent-cost-breakup {
+    /* margin: 20px; */
+    padding: 16px 0px;
+    background: #fff;
+    /* border: 1px solid #e0e0e0; */
+    border-radius: 8px;
+    font-family: 'Arial', sans-serif;
+}
+
+.section-title {
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* payment status */
+.payment-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e0e0e0;
+    gap: 16px;
+}
+
+.payment-info {
+    display: flex;
+    align-items: center;
+    /* flex-direction: column; */
+    padding: 16px 0;
+}
+
+.payment-info .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+}
+
+.payment-info .icon img {
+    width: 100%;
+    height: 100%;
+}
+.payment-info .icon svg {
+    width: 100%;
+    height: 100%;
+    color: #FF2D55;
+}
+.payment-details_completed {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 6px;
+}
+.payment-info .payment-details h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+}
+.payment-info .payment-details {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.payment-info .payment-details p {
+    font-size: 14px;
+    color: #666;
+    margin: 4px 0 0;
+}
+.payment-info.order_closer,
+.payment-info.enterprice
+ {
+    text-decoration: none;
+}
+.payment-info.enterprice .icon svg {
+    color: #7527B0;
+}
+.payment-info.enterprice  a{
+    color: #2F6FED;
+}
+.payment-date {
+    font-size: 14px;
+    color: #333;
+}
+.order_trackinf_section {
+    padding: 16px 0px;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    /* Two columns: labels and values */
+    row-gap: 8px;
+    /* Space between rows */
+    column-gap: 16px;
+    /* Space between columns */
+}
+
+.label {
+    color: #555;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.value {
+    color: #000;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: right;
+}
+
+.value.discount {
+    color: #2aa198;
+    /* Green for discounts */
+}
+
+.grand-total {
+    font-weight: bold;
+    font-size: 16px;
+}
