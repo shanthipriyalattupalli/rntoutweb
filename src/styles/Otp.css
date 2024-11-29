@@ -1,0 +1,139 @@
+.otp-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f9;
+  }
+  .login-logo{
+    width: 190px;
+    height: 48px;
+  }
+  .login-first{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+  }
+  .subtitle {
+    font-size: 20px;
+    color:#070707 ;
+    margin-bottom: 20px;
+  }
+  .otp-card{
+        text-align: center;
+        background: #FFFFFF;
+        padding: 24px;
+        border-radius: 16px;
+        box-shadow: 0px 1px 2px 0px #0000000F;
+        box-shadow: 0px 1px 3px 0px #0000001A;
+        border: 1px solid #0707071A;   
+  }
+  .or-text {
+    margin: 15px 0;
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .otp-heading {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .button {
+    width: 100%;
+    padding: 7px 16PX;
+    background: #FF2D55;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  .button1{
+    width: 100%;
+    padding: 7px 16PX;
+    color: #070707;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 1px solid #07070726;
+    background-color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0px 1px 2px 0px #0000000D;
+    
+  }
+  .otp-subtext {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  .otp-number {
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .otp-change {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .otp-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .otp-input {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  
+  .otp-input:focus {
+    border-color: #ff4081;
+  }
+  
+  .otp-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: #ff4081;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .otp-button:hover {
+    background: #e2366e;
+  }
+  
+  .otp-resend {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .otp-resend-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  

@@ -32,8 +32,11 @@ function Sidebar() {
   const pathname = usePathname();
 
 
-  const handleNavigation = (route) => {
-    router.push(route);
+  const handleNavigation = (eachbar) => {
+    if (eachbar.title == 'Log Out'){
+      localStorage.removeItem('name')
+    }
+    router.push(eachbar.route);
   };
   return (
     <div className="sidemenubar">
@@ -46,7 +49,7 @@ function Sidebar() {
           <button
           key={eachBar.id}
           className={`bar ${pathname === eachBar.route ? "active" : ""}`} // Add "active" class if the route matches
-          onClick={() => handleNavigation(eachBar.route)} // Use handleNavigation function
+          onClick={() => handleNavigation(eachBar)} // Use handleNavigation function
         >
           <span>{eachBar.icon}</span>
           <p className="sidebar_title_text1">{eachBar.title}</p>
