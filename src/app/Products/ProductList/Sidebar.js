@@ -62,6 +62,8 @@ const Sidebar = () => {
     setIsFilterOpen((prevState) => !prevState);
   };
 
+  
+
   return (
     <div className="bg-white border-r border-gray-300">
         <div className='border-b-2'>
