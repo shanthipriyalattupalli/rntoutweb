@@ -6,28 +6,28 @@ import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 import Image from 'next/image';
 import classNames from 'classnames';
-const  itIconImg = '/Assets/Icons/Monitor-Smartphone.png';
+// const  itIconImg = '/Assets/Icons/Monitor-Smartphone.png';
 const  furnitureIconImg = '/Assets/Icons/Sofa.png';
-const  medicalIconImg = '/Assets/Icons/Stethoscope.png';
-const vacationIconImg = '/Assets/Icons/Suitcase-Tag.png';
-const vehiclesIconImg = '/Assets/Icons/Bus.png';
-const partyIconImg = '/Assets/Icons/Confetti.png';
-const sportsIconImg = '/Assets/Icons/Dumbbell.png';
-const houseIconImg = '/Assets/Icons/Chef-Hatt.png';
+// const  medicalIconImg = '/Assets/Icons/Stethoscope.png';
+// const vacationIconImg = '/Assets/Icons/Suitcase-Tag.png';
+// const vehiclesIconImg = '/Assets/Icons/Bus.png';
+// const partyIconImg = '/Assets/Icons/Confetti.png';
+// const sportsIconImg = '/Assets/Icons/Dumbbell.png';
+// const houseIconImg = '/Assets/Icons/Chef-Hatt.png';
 
-const CategoryList = ({ products = [] }) => {
+const CategoryList = ({ products = [],categories }) => {
   const router = useRouter();
 
-  const categories = useMemo(() => [
-    { name: 'IT Infrastructures', image: itIconImg, bgColor: 'rgba(0, 138, 0, 0.05)'},
-    { name: 'Furniture', image: furnitureIconImg, bgColor: 'rgba(0, 171, 169, 0.05)' },
-    { name: 'Medical Equipment', image: medicalIconImg, bgColor: 'rgba(27, 161, 226, 0.05)' },
-    { name: 'Vacation Equipment', image: vacationIconImg, bgColor: 'rgba(0, 80, 239, 0.05)' },
-    { name: 'Vehicles', image: vehiclesIconImg, bgColor: 'rgba(106, 0, 255, 0.05)' },
-    { name: 'Party Material', image: partyIconImg, bgColor: 'rgba(170, 0, 255, 0.05)' },
-    { name: 'Sports & Gym', image: sportsIconImg, bgColor: 'rgba(216, 0, 115, 0.05)' },
-    { name: 'Household & Kitchen', image: houseIconImg, bgColor: 'rgba(162, 0, 137, 0.05)' },
-  ], []);
+  // const categories = useMemo(() => [
+  //   { name: 'IT Infrastructures', image: itIconImg, bgColor: 'rgba(0, 138, 0, 0.05)'},
+  //   { name: 'Furniture', image: furnitureIconImg, bgColor: 'rgba(0, 171, 169, 0.05)' },
+  //   { name: 'Medical Equipment', image: medicalIconImg, bgColor: 'rgba(27, 161, 226, 0.05)' },
+  //   { name: 'Vacation Equipment', image: vacationIconImg, bgColor: 'rgba(0, 80, 239, 0.05)' },
+  //   { name: 'Vehicles', image: vehiclesIconImg, bgColor: 'rgba(106, 0, 255, 0.05)' },
+  //   { name: 'Party Material', image: partyIconImg, bgColor: 'rgba(170, 0, 255, 0.05)' },
+  //   { name: 'Sports & Gym', image: sportsIconImg, bgColor: 'rgba(216, 0, 115, 0.05)' },
+  //   { name: 'Household & Kitchen', image: houseIconImg, bgColor: 'rgba(162, 0, 137, 0.05)' },
+  // ], []);
 
   const handleCategoryClick = useCallback((categoryName) => {
     router.push(`/category/${categoryName}`);
@@ -73,12 +73,13 @@ const CategoryList = ({ products = [] }) => {
         {categories.length > 8 ? (
           <Slider {...settings}>
             {categories.map((category, index) => (
-              <div key={index}>
+       
+              <div key={category._id}>
                 <div
                   className={classNames(
                     'text-sm font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer'
                   )}
-                  onClick={() => handleCategoryClick(category.name)}
+                  onClick={() => handleCategoryClick(category.categoryName)}
                   style={{
                     backgroundColor: category.bgColor,
                     color: category.textColor,
@@ -89,13 +90,13 @@ const CategoryList = ({ products = [] }) => {
                   }}
                 >
                   <Image
-                    src={category.image}
-                    alt={category.name}
+                    src={furnitureIconImg}
+                    alt={category.categoryName}
                     width={48}
                     height={48}
                     className="w-12 h-12"
                   />
-                  <span className="text-center pt-2">{category.name}</span>
+                  <span className="text-center pt-2">{category.categoryName}</span>
                 </div>
               </div>
             ))}
@@ -104,11 +105,11 @@ const CategoryList = ({ products = [] }) => {
           <div className="flex flex-wrap justify-center gap-3">
             {categories.map((category, index) => (
               <div
-                key={index}
+                key={category._id}
                 className={classNames(
                   'text-xs font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer'
                 )}
-                onClick={() => handleCategoryClick(category.name)}
+                onClick={() => handleCategoryClick(category.categoryName)}
                 style={{
                   backgroundColor: category.bgColor,
                   color: category.textColor,
@@ -118,12 +119,12 @@ const CategoryList = ({ products = [] }) => {
               >
                 <Image
                   src={category.image}
-                  alt={category.name}
+                  alt={category.categoryName}
                   width={48}
                   height={48}
                   className="w-12 h-12"
                 />
-                <span className="text-center pt-2">{category.name}</span>
+                <span className="text-center pt-2">{category.categoryName}</span>
               </div>
             ))}
           </div>
