@@ -17,21 +17,10 @@ const  furnitureIconImg = '/Assets/Icons/Sofa.png';
 
 const CategoryList = ({ products = [],categories }) => {
   const router = useRouter();
-
-  // const categories = useMemo(() => [
-  //   { name: 'IT Infrastructures', image: itIconImg, bgColor: 'rgba(0, 138, 0, 0.05)'},
-  //   { name: 'Furniture', image: furnitureIconImg, bgColor: 'rgba(0, 171, 169, 0.05)' },
-  //   { name: 'Medical Equipment', image: medicalIconImg, bgColor: 'rgba(27, 161, 226, 0.05)' },
-  //   { name: 'Vacation Equipment', image: vacationIconImg, bgColor: 'rgba(0, 80, 239, 0.05)' },
-  //   { name: 'Vehicles', image: vehiclesIconImg, bgColor: 'rgba(106, 0, 255, 0.05)' },
-  //   { name: 'Party Material', image: partyIconImg, bgColor: 'rgba(170, 0, 255, 0.05)' },
-  //   { name: 'Sports & Gym', image: sportsIconImg, bgColor: 'rgba(216, 0, 115, 0.05)' },
-  //   { name: 'Household & Kitchen', image: houseIconImg, bgColor: 'rgba(162, 0, 137, 0.05)' },
-  // ], []);
-
-  const handleCategoryClick = useCallback((categoryName) => {
-    router.push(`/category/${categoryName}`);
-  }, [router]);
+  const handleCategoryClick = (categoryId) => {
+    console.log(categoryId,"categoryclick")
+    router.push(`/Product-list/${categoryId}`);
+  }
 
   const settings = {
     dots: false,
@@ -79,7 +68,7 @@ const CategoryList = ({ products = [],categories }) => {
                   className={classNames(
                     'text-sm font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer'
                   )}
-                  onClick={() => handleCategoryClick(category.categoryName)}
+                  onClick={() => handleCategoryClick(category._id)}
                   style={{
                     backgroundColor: category.bgColor,
                     color: category.textColor,
@@ -109,7 +98,7 @@ const CategoryList = ({ products = [],categories }) => {
                 className={classNames(
                   'text-xs font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer'
                 )}
-                onClick={() => handleCategoryClick(category.categoryName)}
+                onClick={() => handleCategoryClick(category._id)}
                 style={{
                   backgroundColor: category.bgColor,
                   color: category.textColor,

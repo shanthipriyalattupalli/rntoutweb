@@ -47,9 +47,9 @@ const CategorySection = ({ onCategorySelect, categories}) => {
       <div className="bg-white-100 py-4">
         <div className="container mx-auto flex flex-wrap justify-center gap-1">
           {categories.map((category) => (
-            <Link key={category._id} href={category.categoryName}>
+            <Link key={category._id} href={`/Product-list/${category._id}`}>
               <button
-                onClick={() => handleCategoryClick(category.categoryName)}
+                onClick={() => handleCategoryClick(category._id)}
                 className={`flex items-center py-1 text-sm px-1 rounded-lg transition duration-300 ${
                   selectedCategory === category.name
                     ? 'bg-blue-200 text-blue-700' // Selected background
