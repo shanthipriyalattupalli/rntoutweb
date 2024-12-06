@@ -44,7 +44,6 @@
 
 .category-card.selected {
     background-color: #6b5b95;
-    /* Custom color for selected state */
     color: #fff;
 }
 
