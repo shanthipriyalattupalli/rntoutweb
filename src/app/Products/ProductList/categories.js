@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState,useEffect } from 'react';
+import { useRouter } from "next/navigation";
 const axios = require('axios');
 const InfrastructureIcon = '/Assets/Icons/braces_line.png';
 const FurnitureIcon = '/Assets/Icons/sofa_line.png';
@@ -12,15 +13,16 @@ const SportIcon = '/Assets/Icons/football_line.png';
 const KitchenIcon = '/Assets/Icons/fork_spoon_line.png';
 
 const Submenu = ({categories}) => {
+  const router = useRouter();
   const [activeMenu, setActiveMenu] = useState(null);
   const BASE_URL=process.env.NEXT_PUBLIC_APP_BASE_URL
 
 
-  const handleMenuClick = (menuId) => {
-    setActiveMenu(activeMenu === menuId ? null : menuId);
+  const handleMenuClick = (categoryId) => {
+    setActiveMenu(activeMenu === categoryId ? null : categoryId);
 
     // Navigate to the ProductListPage with the categoryId
-    router.push(`/products/${menuId}`);
+    router.push(`/Product-list/${categoryId}`);
   };
 
 

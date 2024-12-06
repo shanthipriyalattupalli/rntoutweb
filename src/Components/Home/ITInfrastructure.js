@@ -2,6 +2,8 @@
 
 
 import React, { useState, useEffect, lazy, Suspense } from "react";
+import Link from "next/link";
+
 const pro1 = "/Assets/laptop-1.jpg";
 const pro2 = "/Assets/laptop-2.jpg";
 const pro3 = "/Assets/laptop-3.jpg";
@@ -11,57 +13,16 @@ const pro5 = "/Assets/laptop-5.jpg";
 // Lazy loading ProductItem component
 const ProductItems = lazy(() => import("../Home/ProductItems"));
 
-const ITInfrastructure = ({ }) => { // Defaulting to an empty array
+const ITInfrastructure = ({products,categoryId}) => { // Defaulting to an empty array
+  console.log(products,"nko98ytfchgvb nmo-9897tyfcg ")
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
-  const products=[
-    {
-        id: 1,
-        imgSrc: pro1,
-        name: "Windows i3/8gb 4th/6th Gen - Powered by Soldrit",
-        price: "₹500",
-        dateRange: "26 Sep - 28 Sep",
-        availability: "26 Sep - 28 Sep",
-        stock: 14,
-      },
-      {
-        id: 2,
-        imgSrc: pro2,
-        name: "Windows i3/8gb 4th/6th Gen - Powered by Soldrit",
-        price: "₹500",
-        dateRange: "26 Sep - 28 Sep",
-        availability: "26 Sep - 28 Sep",
-        stock: 14,
-      },
-      {
-        id: 3,
-        imgSrc: pro3,
-        name: "Windows i3/8gb 4th/6th Gen - Powered by Soldrit",
-        price: "₹500",
-        dateRange: "26 Sep - 28 Sep",
-        availability: "26 Sep - 28 Sep",
-        stock: 14,
-      },
-      {
-        id: 4,
-        imgSrc: pro4,
-        name: "Windows i3/8gb 4th/6th Gen - Powered by Soldrit",
-        price: "₹500",
-        dateRange: "26 Sep - 28 Sep",
-        availability: "26 Sep - 28 Sep",
-        stock: 14,
-      },
-      {
-        id: 5,
-        imgSrc: pro5,
-        name: "Windows i3/8gb 4th/6th Gen - Powered by Soldrit",
-        price: "₹500",
-        dateRange: "26 Sep - 28 Sep",
-        availability: "26 Sep - 28 Sep",
-        stock: 14,
-      }
-  ]
-  // Check if there are products and set the slide logic accordingly
+
+  useEffect(()=>{
+    console.log(products,"nko98ytfchgvb nmo-9897tyfcg ");
+  })
+
+
   const nextSlide = () => {
     if (products.length > 0 && currentSlide < products.length - 1) {
       setCurrentSlide(currentSlide + 1);
@@ -109,7 +70,7 @@ const ITInfrastructure = ({ }) => { // Defaulting to an empty array
             </span>
           </h1>
           <a
-            href="#"
+            href={`/Product-list/${categoryId}`}
             className="text-blue-500 hover:text-blue-700 text-sm font-medium"
           >
             View all{" "}
@@ -154,8 +115,10 @@ const ITInfrastructure = ({ }) => { // Defaulting to an empty array
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
           {products.map((product) => (
-            <Suspense key={product.id} fallback={<div>Loading...</div>}>
+            <Suspense key={product._id} fallback={<div>Loading...</div>}>
+              <Link href={`/Products/${product.title}`} key={product._id}>
               <ProductItems product={product} />
+              </Link>
             </Suspense>
           ))}
         </div>

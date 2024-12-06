@@ -26,70 +26,59 @@ const geistMono = localFont({
 // };
 
 export default function RootLayout({ children }) {
-  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL
-  const [categories, setCategories] = useState([])
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+  const [categories, setCategories] = useState([]);
   const [categoryId, setCategoryId] = useState("");
-  const [subcategories, setSubcategories] = useState([])
-
-
-
+  const [subcategories, setSubcategories] = useState([]); // Ensure this starts as an array
 
   const fetchSubcategories = async () => {
-    console.log(categoryId,"categoryid")
-    try {
-      const response = await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`)
-      console.log(response.data, "subcategories")
-      setSubcategories(response.data)
-      // console.log(response.data.categoryId, "categoryid")
-    } catch (error) {
-      console.error('Error fetching subcategories:', error);
-
+    if (categoryId) {
+      try {
+        const response = await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`);
+        console.log(response.data, "subcategories");
+        // Check if the response is an array before setting it
+        if (Array.isArray(response.data)) {
+          setSubcategories(response.data);
+        } else {
+          setSubcategories([]); // Fallback to empty array if the data is not an array
+        }
+      } catch (error) {
+        console.error('Error fetching subcategories:', error);
+        setSubcategories([]); // Set to empty array on error
+      }
     }
-  }
+  };
 
-
-
-  const fetchcategories = async () => {
+  const fetchCategories = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/categories`)
+      const response = await axios.get(`${BASE_URL}/categories`);
       console.log(response.data, "categories");
-      setCategories(response.data)
-        (response.data.map((category) => {
-          console.log(category._id, "categorydivhdjvbcaj")
-          setCategoryId(category._id);
-          return category._id;
-        }));
+      setCategories(response.data);
+      if (response.data.length > 0) {
+        setCategoryId(response.data[0]._id); // Set the first category as default
+      }
     } catch (error) {
       console.error('Error fetching categories:', error);
-
     }
-  }
-
-
+  };
 
   useEffect(() => {
-    fetchcategories();
+    fetchCategories();
   }, []);
-
-
 
   useEffect(() => {
     fetchSubcategories();
   }, [categoryId]);
 
-
-
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Header />
-        <Navigation categories={categories} subcategories={subcategories} categoryId={categoryId}/>
+        <Navigation categories={categories} subcategories={subcategories} categoryId={categoryId} />
         {children}
         <Newsletter />
-
       </body>
     </html>
   );
 }
+

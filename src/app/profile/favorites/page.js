@@ -9,44 +9,44 @@ const hp33 = "/Assets/hp33.png";
 const hp34 = "/Assets/hp34.png";
 const vector = "/Assets/Vector.png";
 
-export default function Profile() {
-    const products = [
-        {
-            image: pro1,
-            title: 'Windows i3/8GB 4th/6th Gen - Powered by Soldrit',
-            price: '₹500',
-            dates: '26 Sep - 28 Sep',
-            stock: 4,
-        },
-        {
-            image: pro2,
-            title: 'Apple Macbook Air 13" 2017 - Powered by Soldrit',
-            price: '₹500',
-            dates: '26 Sep - 28 Sep',
-            stock: 2,
-        },
-        {
-            image: pro3,
-            title: '40 Core Server On Rental, Hard-Disk: 2 Tb Ssd, Area Of Network',
-            price: '₹800',
-            dates: '26 Sep - 28 Sep',
-            stock: 4,
-        },
-        {
-            image: pro4,
-            title: '40 Core Server On Rental, Hard-Disk: 2 Tb Ssd, Area Of Network',
-            price: '₹800',
-            dates: '26 Sep - 28 Sep',
-            stock: 4,
-        },
-        {
-            image: pro5,
-            title: '40 Core Server On Rental, Hard-Disk: 2 Tb Ssd, Area Of Network',
-            price: '₹800',
-            dates: '26 Sep - 28 Sep',
-            stock: 4,
-        },
-    ];
+export default function Profile({products}) {
+    // const products = [
+    //     {
+    //         image: pro1,
+    //         title: 'Windows i3/8GB 4th/6th Gen - Powered by Soldrit',
+    //         price: '₹500',
+    //         dates: '26 Sep - 28 Sep',
+    //         stock: 4,
+    //     },
+    //     {
+    //         image: pro2,
+    //         title: 'Apple Macbook Air 13" 2017 - Powered by Soldrit',
+    //         price: '₹500',
+    //         dates: '26 Sep - 28 Sep',
+    //         stock: 2,
+    //     },
+    //     {
+    //         image: pro3,
+    //         title: '40 Core Server On Rental, Hard-Disk: 2 Tb Ssd, Area Of Network',
+    //         price: '₹800',
+    //         dates: '26 Sep - 28 Sep',
+    //         stock: 4,
+    //     },
+    //     {
+    //         image: pro4,
+    //         title: '40 Core Server On Rental, Hard-Disk: 2 Tb Ssd, Area Of Network',
+    //         price: '₹800',
+    //         dates: '26 Sep - 28 Sep',
+    //         stock: 4,
+    //     },
+    //     {
+    //         image: pro5,
+    //         title: '40 Core Server On Rental, Hard-Disk: 2 Tb Ssd, Area Of Network',
+    //         price: '₹800',
+    //         dates: '26 Sep - 28 Sep',
+    //         stock: 4,
+    //     },
+    // ];
 
     return (
         <>
