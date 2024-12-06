@@ -1,36 +1,100 @@
-import React, { useState } from 'react';
-import '@/styles/Login.css';
-const Rntout =  "/Assets/Rntout_Logo.png";
+import React, { useState } from "react";
+import "@/styles/Login.css";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; 
+const Rntout = "/Assets/Rntout_Logo.png";
 import { useRouter } from "next/navigation";
+
 const Login = () => {
     const [isPhoneSelected, setIsPhoneSelected] = useState(true);
     const [isForgetPassword, setIsForgetPassword] = useState(false);
+    const [mobileNumber, setMobileNumber] = useState(""); // For phone login
+    const [email, setEmail] = useState(""); // For email login
+    const [password, setPassword] = useState(""); // For email login
+    const [isLoading, setIsLoading] = useState(false); // Loading state
+    const [errorMessage, setErrorMessage] = useState(""); // Error messages
     const router = useRouter();
 
-    
-    const handlenavigation = () => {
-        localStorage.setItem('name','vishnu')
-        router.push("/");
-      }
+    // Handle OTP API integration
+    const handleSendOtp = async () => {
+        if (!mobileNumber || !/^\+?[0-9]{10,13}$/.test(mobileNumber)) {
+            toast.error("Please enter a valid mobile number.");
+            return;
+        }
+        setIsLoading(true);
+
+        try {
+            const response = await axios.post("http://localhost:6001/api/users/send-otp", {
+                phoneNumber: mobileNumber,
+            });
+            console.log(response)
+
+            setIsLoading(false);
+
+            if (response.status === 200) {
+                toast.success(response.data.message || "OTP sent successfully!");
+                router.push("/Otp");
+            } else {
+                toast.error(response.data.error || "Failed to send OTP. Try again.");
+            }
+        } catch (error) {
+            setIsLoading(false);
+            toast.error("Something went wrong. Please try again later.");
+        }
+    };
+
+    // Handle Email and Password Login
+    const handleEmailLogin = async () => {
+        if (!email || !password) {
+            toast.error("Please enter both email and password.");
+            return;
+        }
+        setIsLoading(true);
+
+        try {
+            const response = await axios.post("http://localhost:6001/api/users/login", {
+                email,
+                password,
+            });
+
+            setIsLoading(false);
+
+            if (response.status === 200) {
+                toast.success(response.data.message || "Login successful!");
+                localStorage.setItem("name", "vishnu");
+                router.push("/"); 
+            } else {
+                toast.error(response.data.error || "Login failed. Please try again.");
+            }
+        } catch (error) {
+            setIsLoading(false);
+            toast.error(
+                error.response?.data?.error || "Something went wrong. Please try again later."
+            );
+        }
+    };
+
     return (
         <div className="login-container">
+            <ToastContainer position="top-right" autoClose={3000} />
             <div className="login-first">
                 <img src={Rntout} alt="RentOut Logo" className="login-logo" />
                 <h2 className="subtitle">Sign in to RntOut</h2>
             </div>
 
             <div className="login-card">
-                {/* Conditional Rendering: Forgot Password Flow */}
                 {isForgetPassword ? (
                     <div>
                         <h3 className="forgot-password-heading">Password Assistance</h3>
                         <p className="forgot-password-text mt-0">
-                            Enter the email address or mobile phone number<br />associated with your RntOut account.
+                            Enter the email address or mobile phone number
+                            <br />
+                            associated with your RntOut account.
                         </p>
-                        <p className="login-p1 m-0">Email or mobile phone number</p>
                         <input
                             type="email"
-                            placeholder="Enter Email or phone number"
+                            placeholder="Enter Email or Phone Number"
                             className="input"
                         />
                         <button className="button">Continue</button>
@@ -43,23 +107,21 @@ const Login = () => {
                     </div>
                 ) : (
                     <div>
-                        {/* Tab Selection for Phone or Email */}
                         <div className="tab-container">
                             <button
-                                className={`tab ${isPhoneSelected ? 'active' : 'inactive'}`}
+                                className={`tab ${isPhoneSelected ? "active" : "inactive"}`}
                                 onClick={() => setIsPhoneSelected(true)}
                             >
                                 Phone
                             </button>
                             <button
-                                className={`tab ${!isPhoneSelected ? 'active' : 'inactive'}`}
+                                className={`tab ${!isPhoneSelected ? "active" : "inactive"}`}
                                 onClick={() => setIsPhoneSelected(false)}
                             >
                                 Email
                             </button>
                         </div>
 
-                        {/* Phone Login Form */}
                         {isPhoneSelected && (
                             <div>
                                 <p className="login-p1 m-0">Mobile Number</p>
@@ -67,12 +129,19 @@ const Login = () => {
                                     type="tel"
                                     placeholder="+91 1234567890"
                                     className="input"
+                                    value={mobileNumber}
+                                    onChange={(e) => setMobileNumber(e.target.value)}
                                 />
-                                <button className="button" onClick={() => router.push("/Otp")} >Get OTP</button>
+                                <button
+                                    className="button"
+                                    onClick={handleSendOtp}
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? "Sending..." : "Get OTP"}
+                                </button>
                             </div>
                         )}
 
-                        {/* Email Login Form */}
                         {!isPhoneSelected && (
                             <div>
                                 <p className="login-p1 m-0">Email Address</p>
@@ -80,28 +149,27 @@ const Login = () => {
                                     type="email"
                                     placeholder="Enter Email Address"
                                     className="input"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
-                                <div className="login-para">
-                                    <p className="login-p1 m-0">Password</p>
-                                    <p
-                                        className="login-p2 m-0"
-                                        onClick={() => setIsForgetPassword(true)}
-                                    >
-                                        Forgot Password
-                                    </p>
-                                </div>
+                                <p className="login-p1 m-0">Password</p>
                                 <input
                                     type="password"
                                     placeholder="Enter Password"
                                     className="input"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
-                                 <button className="button" onClick={handlenavigation}>Login</button>
+                                <button
+                                    className="button"
+                                    onClick={handleEmailLogin}
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? "Logging in..." : "Login"}
+                                </button>
                             </div>
                         )}
-
                         <p className="or-text">or</p>
-
-                        {/* Google Sign-In Button */}
                         <button className="google-button">
                             <img
                                 src="https://img.icons8.com/color/48/000000/google-logo.png"
@@ -110,10 +178,11 @@ const Login = () => {
                             />
                             Google
                         </button>
-
-                        {/* Footer */}
                         <p className="footer-text mb-0">
-                            Don't have any account? <span className="link" onClick={() => router.push("/Signup")} >Create account</span>
+                            Don't have any account?{" "}
+                            <span className="link" onClick={() => router.push("/Signup")}>
+                                Create account
+                            </span>
                         </p>
                     </div>
                 )}

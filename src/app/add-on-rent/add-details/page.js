@@ -91,16 +91,30 @@ const MainContent = () => {
     };
 
 
+    const[previewImages, setPreviewImages] = useState([]); // To store the preview images
+    const fileInputRef = useRef();
 
+    // Handle file selection
+    const handleFileChange = (event) => {
+        const files = event.target.files;
+        const previews = [];
 
+        Array.from(files).forEach((file) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                previews.push(reader.result);
+                if (previews.length === files.length) {
+                    setPreviewImages(previews); // Update preview images after reading all files
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    };
 
-    const fileInputRef = useRef(null);
-
-    // Function to open the file browser when the icon is clicked
+    // Handle click to open the file dialog
     const handleIconClick = () => {
         fileInputRef.current.click();
     };
-
 
 
 
@@ -173,7 +187,7 @@ const MainContent = () => {
                 </div>
 
                 <div className="form-section file-upload">
-                    <h2 className='ba-in'>Product Image</h2>
+                    <h2 className="ba-in">Product Image</h2>
                     <div className="file-upload-box">
                         <input
                             type="file"
@@ -181,12 +195,25 @@ const MainContent = () => {
                             multiple
                             accept=".jpeg, .png, .jpg"
                             style={{ display: 'none' }}
+                            onChange={handleFileChange} // Add onChange handler
                         />
                         <div className="upload-icon" onClick={handleIconClick}>
                             <FaUpload />
                         </div>
-                        <p>Drag your file(s) or <span onClick={handleIconClick}>browse</span></p>
+                        <p>
+                            Drag your file(s) or <span onClick={handleIconClick}>browse</span>
+                        </p>
                         <p className="file-note">Image format will be a JPEG, PNG, JPG</p>
+                       
+                    </div>
+
+                    {/* Render Preview Images */}
+                    <div className="image-preview-container">
+                        {previewImages.map((src, index) => (
+                            <div key={index} className="image-preview-box">
+                                <img src={src} alt={`Preview ${index + 1}`} className="preview-image" />
+                            </div>
+                        ))}
                     </div>
                 </div>
 
@@ -207,7 +234,7 @@ const MainContent = () => {
 
 
                 <div className='form-section4'>
-                    <h2  className='ba-in'>PRICING INFO</h2>
+                    <h2 className='ba-in'>PRICING INFO</h2>
                     <div className="pricing-section">
                         {["perDay", "perWeek", "perMonth", "perQuarter", "perSixMonths"].map((timeframe) => (
                             <div key={timeframe} className="form-section5">

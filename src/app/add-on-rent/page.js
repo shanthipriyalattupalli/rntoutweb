@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "@/styles/Add.css";
-import { FaDesktop, FaCouch, FaCar, FaDumbbell, FaStethoscope, FaHome, FaUmbrellaBeach, FaBirthdayCake, FaEllipsisH } from 'react-icons/fa';
-import { MdCheckCircle } from 'react-icons/md';
+import { FaDesktop, FaCouch, FaCar, FaDumbbell, FaStethoscope, FaHome, FaUmbrellaBeach, FaBirthdayCake, FaEllipsisH } from "react-icons/fa";
+import { MdCheckCircle } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
 const CategoryGrid = () => {
@@ -15,16 +15,28 @@ const CategoryGrid = () => {
     { id: 6, icon: <FaHome />, label: "Household & Kitchen", color: "category-beige" },
     { id: 7, icon: <FaUmbrellaBeach />, label: "Vacation Equipment", color: "category-blue" },
     { id: 8, icon: <FaBirthdayCake />, label: "Party Material", color: "category-lightpurple" },
-    { id: 9, icon: <FaEllipsisH />, label: "Other", color: "category-lightyellow" }
+    { id: 9, icon: <FaEllipsisH />, label: "Other", color: "category-lightyellow" },
   ];
 
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategoryLabel, setSelectedCategoryLabel] = useState(""); // State to store the selected category label
+  const [error, setError] = useState(""); // State to handle errors
+  const router = useRouter();
 
-  const handleCardClick = (id) => {
+  const handleCardClick = (id,label) => {
     setSelectedCategory(id);
+    setSelectedCategoryLabel(label)
+    setError(""); // Clear error if a category is selected
   };
 
-  const router = useRouter();
+  const handleNextClick = () => {
+    if (selectedCategoryLabel) {
+      // Navigate to the next page with the selected category ID
+      router.push(`/add-on-rent/add-details?${selectedCategoryLabel}`);
+    } else {
+      setError("Please select a category before proceeding.");
+    }
+  };
 
   return (
     <div className="category-container">
@@ -34,8 +46,8 @@ const CategoryGrid = () => {
         {categories.map((category) => (
           <div
             key={category.id}
-            className={`category-card ${category.color} ${selectedCategory === category.id ? 'selected' : ''}`}
-            onClick={() => handleCardClick(category.id)}
+            className={`category-card ${category.color} ${selectedCategory === category.id ? "selected" : ""}`}
+            onClick={() => handleCardClick(category.id,category.label)}
           >
             <div className="category-icon">{category.icon}</div>
             <p>{category.label}</p>
@@ -43,7 +55,10 @@ const CategoryGrid = () => {
           </div>
         ))}
       </div>
-      <button className="next-button" onClick={() => router.push("/add-on-rent/add-details")}>Next</button>
+      {error && <p className="error-message">{error}</p>} {/* Display error message */}
+      <button className="next-button" onClick={handleNextClick}>
+        Next
+      </button>
     </div>
   );
 };
