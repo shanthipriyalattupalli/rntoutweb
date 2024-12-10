@@ -13,7 +13,7 @@ const pro5 = "/Assets/laptop-5.jpg";
 // Lazy loading ProductItems component
 const ProductItems = lazy(() => import("./ProductItems"));
 
-const Furniture = ({products }) => { // Defaulting to an empty array
+const Furniture = ({products,categoryId }) => { // Defaulting to an empty array
   console.log(products,"furniture")
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
@@ -64,7 +64,7 @@ const Furniture = ({products }) => { // Defaulting to an empty array
             </span>
           </h1>
           <a
-            href="/Products"
+               href={`/Product-list/${categoryId}`}
             className="text-blue-500 hover:text-blue-700 text-sm font-medium"
           >
             View all{" "}
@@ -107,13 +107,10 @@ const Furniture = ({products }) => { // Defaulting to an empty array
         )}
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
           {products.map((product) => (
             <Suspense key={product.id} fallback={<div>Loading...</div>}>
-            <Link href={`/Products/${product.title}`} key={product._id}>
               <ProductItems product={product} />
-            </Link>
-
             </Suspense>
           ))}
         </div>

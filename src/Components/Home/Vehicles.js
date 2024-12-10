@@ -12,57 +12,10 @@ const pro5 = "/Assets/laptop-5.jpg";
 // Lazy loading ProductItems component
 const ProductItems = lazy(() => import("./ProductItems"));
 
-const Vehicles = ({ products}) => { // Defaulting to an empty array
+const Vehicles = ({ products,categoryId }) => { // Defaulting to an empty array
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
-  // const products=[
-  //   {
-  //       id: 1,
-  //       imgSrc: pro1,
-  //       name: "Windows i3/8gb 4th/6th Gen - Powered by Soldrit",
-  //       price: "₹500",
-  //       dateRange: "26 Sep - 28 Sep",
-  //       availability: "26 Sep - 28 Sep",
-  //       stock: 14,
-  //     },
-  //     {
-  //       id: 2,
-  //       imgSrc: pro2,
-  //       name: "Windows i3/8gb 4th/6th Gen - Powered by Soldrit",
-  //       price: "₹500",
-  //       dateRange: "26 Sep - 28 Sep",
-  //       availability: "26 Sep - 28 Sep",
-  //       stock: 14,
-  //     },
-  //     {
-  //       id: 3,
-  //       imgSrc: pro3,
-  //       name: "Windows i3/8gb 4th/6th Gen - Powered by Soldrit",
-  //       price: "₹500",
-  //       dateRange: "26 Sep - 28 Sep",
-  //       availability: "26 Sep - 28 Sep",
-  //       stock: 14,
-  //     },
-  //     {
-  //       id: 4,
-  //       imgSrc: pro4,
-  //       name: "Windows i3/8gb 4th/6th Gen - Powered by Soldrit",
-  //       price: "₹500",
-  //       dateRange: "26 Sep - 28 Sep",
-  //       availability: "26 Sep - 28 Sep",
-  //       stock: 14,
-  //     },
-  //     {
-  //       id: 5,
-  //       imgSrc: pro5,
-  //       name: "Windows i3/8gb 4th/6th Gen - Powered by Soldrit",
-  //       price: "₹500",
-  //       dateRange: "26 Sep - 28 Sep",
-  //       availability: "26 Sep - 28 Sep",
-  //       stock: 14,
-  //     }
-  // ]
-  // Check if there are products and set the slide logic accordingly
+
   const nextSlide = () => {
     if (products.length > 0 && currentSlide < products.length - 1) {
       setCurrentSlide(currentSlide + 1);
@@ -102,13 +55,14 @@ const Vehicles = ({ products}) => { // Defaulting to an empty array
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold text-gray-800">
-          Vehicles{" "}
+            Vehicles{" "}
             <span className="text-blue-300 p-1 px-2 bg-slate-100 text-xs ml-2 rounded-lg">
               {products.length} Products
             </span>
           </h1>
           <a
-            href="/Products"
+            href={`/Product-list/${categoryId}`}
+
             className="text-blue-500 hover:text-blue-700 text-sm font-medium"
           >
             View all{" "}
@@ -151,12 +105,10 @@ const Vehicles = ({ products}) => { // Defaulting to an empty array
         )}
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
           {products.map((product) => (
             <Suspense key={product.id} fallback={<div>Loading...</div>}>
-            <Link href={`/Products/${product.title}`} key={product._id}>
-              <ProductItems product={product} />
-            </Link>
+                <ProductItems product={product} />
             </Suspense>
           ))}
         </div>

@@ -45,7 +45,7 @@ const CityExplorer = () => {
       <h1 className="text-3xl pt-12 font-bold text-gray-800 text-center mb-6">Explore RntOut in Popular Indian Cities</h1>
       <p className="text-gray-600 text-center mb-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {cities.map(city => (
           <CityCard
             key={city.id}

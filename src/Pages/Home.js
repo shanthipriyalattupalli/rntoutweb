@@ -63,7 +63,7 @@ const Home = ({ categories }) => {
       <Banner />
       <CategoryList categories={categories} />
       <ProductGrid categories={categories} />
-      <Products products={getProductsByCategory(IT_INFRASTRUCTURE_ID)} />
+      <Products products={getProductsByCategory(IT_INFRASTRUCTURE_ID)} categoryId={IT_INFRASTRUCTURE_ID} />
       <CuratedCollections />
       {/* Pass filtered products to each component */}
       <ITInfrastructure products={getProductsByCategory(IT_INFRASTRUCTURE_ID)} categoryId={IT_INFRASTRUCTURE_ID} />

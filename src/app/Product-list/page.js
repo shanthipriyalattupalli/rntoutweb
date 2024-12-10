@@ -6,6 +6,8 @@ const axios = require('axios');
 import Categories from '../Products/ProductList/categories';
 import Sidebar from '../Products/ProductList/Sidebar';
 import Products from '@/Components/Home/Products';
+import CategoryProducts from '@/Components/Home/CategoryProducts';
+
 import { useRouter, useSearchParams } from 'next/navigation';
 
 const ProductLists = () => {
@@ -71,7 +73,7 @@ const ProductLists = () => {
         <Categories categories={categories} />
         <div className="flex border border-slate-200 bg-white">
           <Sidebar />
-          <Products products={getProductsByCategory(categoryId)} />
+          <CategoryProducts products={getProductsByCategory(categoryId)} />
         </div>
       </div>
     </main>

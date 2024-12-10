@@ -1,24 +1,76 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Star, Minus, Plus, Truck, ArrowUpDown, Settings, Smartphone, ChevronDown } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
 const productimg = '/Assets/pi-1.png';
 const AvailIcon = '/Assets/Icons/ava-stock.png';
 const AvailtyIcon = '/Assets/Icons/availability.png';
 
 const ProductPage = () => {
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [quantity, setQuantity] = useState(1);
   const [selectedDuration, setSelectedDuration] = useState('Per Day');
   const [selectedImage, setSelectedImage] = useState(0);
   const [expandedFaq, setExpandedFaq] = useState(null);
+  const [product, setProduct] = useState([]);
+  const [rentalPrice, setRentalPrice] = useState({});
+  const [rentalAvailability,setRentalAvailability]=useState({});
+  const [otherDetail, setOtherDetails] = useState({});
+  const [images, setImages] = useState([])
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const productId = searchParams.get('id');
+  console.log(productId,"productIdurdfcvbjhhgc")
+
+  const fetchProductById=async()=>{
+    try {
+      const response = await axios.get(`${BASE_URL}/variants/${productId}`);
+
+      const data = response.data;
+      console.log(data.rentalPrice.daily,"fetch product by id");
+      setProduct(data);  
+      setRentalPrice(data.rentalPrice);
+      setRentalAvailability(data.rentalAvailability);
+      setOtherDetails(data.itemDetails)
+      setImages(data.images)
+    } catch (error) {
+
+      console.error("Error fetching product:", error);
+      
+    }
+  }
+  useEffect(() => {
+    fetchProductById();
+  }, [productId]);
+
+  let daily =rentalPrice.daily
+let weekly=rentalPrice.weekly
+let monthly=rentalPrice.monthly
+let threeMonths=rentalPrice.threeMonths
+let sixMonths=rentalPrice.sixMonths
+let oneYear=rentalPrice.oneYear
 
   const durations = [
-    { label: 'Per Day', price: '₹500' },
-    { label: 'Per Week', price: '₹2,500' },
-    { label: 'Per Month', price: '₹7,500' },
-    { label: 'Per Quarter', price: '₹20,000' },
-    { label: 'Per 6 Months', price: 'Not Avail.' }
+    { label: 'Per Day', price: daily},
+    { label: 'Per Week', price: weekly},
+    { label: 'Per Month', price:monthly},
+    { label: 'Per Quarter', price: threeMonths },
+    { label: 'Per 6 Months', price: sixMonths },
+    { label: 'Per year', price: oneYear }
   ];
+
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.toLocaleString("en-US", { month: "short" }); // Get short month name
+    const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year
+    return `${day} ${month} ‘${year}`;
+  };
+  const formattedStartDate = formatDate(rentalAvailability.startDate);
+  const formattedEndDate = formatDate(rentalAvailability.endDate);
 
   const services = [
     { icon: <Truck className="w-6 h-6" />, label: 'Finest-Quality' },
@@ -29,26 +81,33 @@ const ProductPage = () => {
 
   const productImages = [productimg, productimg, productimg, productimg, productimg, productimg];
 
-  const productDetails = [
-    { label: 'Brand', value: 'DROGO' },
-    { label: 'Colour', value: 'Throne Dark Blue' },
-    { label: 'Material', value: 'Fabric' },
-    { label: 'Product Dimensions', value: '70D x 70W x 125H Centimeters' },
-    { label: 'Size', value: 'Single Seat' },
-    { label: 'Back Style', value: 'Wing Back' },
-    { label: 'Special Feature', value: 'Adjustable Lumbar, Adjustable Height, Ergonomic, Cushion Arm Rest, Fabric' },
-    { label: 'Product Care Instructions', value: 'Wipe Clean' },
-    { label: 'Net Quantity', value: '1.00 count' },
-    { label: 'Seat Material Type', value: 'Seat Material Type' }
-  ];
+  // const productDetails = [
+  //   { label: 'Brand', value: 'DROGO' },
+  //   { label: 'Colour', value: 'Throne Dark Blue' },
+  //   { label: 'Material', value: 'Fabric' },
+  //   { label: 'Product Dimensions', value: '70D x 70W x 125H Centimeters' },
+  //   { label: 'Size', value: 'Single Seat' },
+  //   { label: 'Back Style', value: 'Wing Back' },
+  //   { label: 'Special Feature', value: 'Adjustable Lumbar, Adjustable Height, Ergonomic, Cushion Arm Rest, Fabric' },
+  //   { label: 'Product Care Instructions', value: 'Wipe Clean' },
+  //   { label: 'Net Quantity', value: '1.00 count' },
+  //   { label: 'Seat Material Type', value: 'Seat Material Type' }
+  // ];
 
-  const otherDetails = [
-    { label: 'Item Weight', value: '18 Kilograms' },
-    { label: 'Maximum Weight Recommendation', value: '136 Kilograms' },
-    { label: 'Frame Material', value: 'Metal' },
-    { label: 'Style', value: 'Casual' }
-  ];
-
+  // const otherDetails = [
+  //   { label: 'Item Weight', value: '18 Kilograms' },
+  //   { label: 'Maximum Weight Recommendation', value: '136 Kilograms' },
+  //   { label: 'Frame Material', value: 'Metal' },
+  //   { label: 'Style', value: 'Casual' }
+  // ];
+  const otherDetails = Object.entries(otherDetail).map(([key, value]) => ({
+    label: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize the key
+    value,
+  }));
+  const productDetails = Object.entries(otherDetail).map(([key, value]) => ({
+    label: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize the key
+    value,
+  }));
   const faqItems = [
     { 
       question: 'Can I return before 2 months?',
@@ -66,34 +125,37 @@ const ProductPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-6">
         {/* Product Images */}
         <div className="space-y-4">
-          <div className="relative">
-            <span className="absolute top-4 left-4 bg-blue-500 text-white px-3 py-1 rounded-md text-sm">
-              NEW ARRIVALS
-            </span>
-            <img 
-              src={productImages[selectedImage]}
-              alt="DROGO Gaming Chair"
-              className="w-full rounded-lg shadow-lg"
+      {/* Main Image */}
+      <div className="relative">
+        <span className="absolute top-4 left-4 bg-blue-500 text-white px-3 py-1 rounded-md text-sm">
+          NEW ARRIVALS
+        </span>
+        <img
+          src={images[selectedImage]} // Dynamically bind the selected image
+          alt={`Product Image ${selectedImage + 1}`}
+          className="w-full rounded-lg shadow-lg"
+        />
+      </div>
+
+      {/* Thumbnails */}
+      <div className="grid grid-cols-6 gap-2">
+        {images.map((image, index) => (
+          <button
+            key={index}
+            className={`border-2 rounded-lg overflow-hidden ${
+              selectedImage === index ? "border-red-500" : "border-gray-200"
+            }`}
+            onClick={() => setSelectedImage(index)} // Update the selected image
+          >
+            <img
+              src={image}
+              alt={`Thumbnail ${index + 1}`}
+              className="w-full h-full object-cover"
             />
-          </div>
-          <div className="grid grid-cols-6 gap-2">
-            {productImages.map((image, index) => (
-              <button
-                key={index}
-                className={`border-2 rounded-lg overflow-hidden ${
-                  selectedImage === index ? 'border-red-500' : 'border-gray-200'
-                }`}
-                onClick={() => setSelectedImage(index)}
-              >
-                <img
-                  src={image}
-                  alt={`Thumbnail ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </button>
-            ))}
-          </div>
-        </div>
+          </button>
+        ))}
+      </div>
+    </div>
 
         {/* Product Details */}
         <div className="space-y-6">
@@ -102,7 +164,7 @@ const ProductPage = () => {
               Home/ Furniture/ DROGO Throne Ergonomic Gaming Chair
             </nav>
             <h1 className="text-2xl font-bold">
-              DROGO Throne Ergonomic Gaming Chair with Foot Rest, Armrest & Adjustable Seat (Blue)
+{product.title}
             </h1>
             
             {/* Ratings */}
@@ -130,7 +192,7 @@ const ProductPage = () => {
                   key={duration.label}
                   className={`p-3 rounded-lg border text-center ${
                     selectedDuration === duration.label
-                      ? 'border-red-500 bg-red-50'
+                      ? 'border-[#F48003] bg-[#FFF5EB]'
                       : 'border-gray-200'
                   }`}
                   onClick={() => setSelectedDuration(duration.label)}
@@ -143,8 +205,29 @@ const ProductPage = () => {
           </div>
 
           {/* Quantity */}
+   
+
+          {/* Availability */}
+
+          <div className="flex items-center space-x-4 text-sm">
+            <div className="flex items-center text-blue-600 bg-[#2F6FED1A] rounded-full p-1.5 text-xs font-normal">
+              <img src={AvailIcon} alt="Available" className="mr-2 w-4 h-4" />
+              Available Stock: {product.stockQuantity}
+            </div>
+            <div className="text-orange-500 bg-blue-100 rounded-md p-1 text-xs   font-[400] text-xs">
+              <img src={AvailtyIcon} alt="Availability" className="mr-2 w-4 h-4 inline" />
+              Availability: {formattedStartDate} -{formattedEndDate}
+            </div>
+          </div>
           <div className="flex items-center space-x-4">
-            <div className="flex items-center border border-red-500 rounded-full bg-red-50">
+          <div className="flex items-center border border-red-500 text-white font-[600] rounded-lg bg-[#FF2D55]">
+              <button
+                className="p-2 w-64"
+              >
+               Add to cart
+              </button>
+            </div>
+            {/* <div className="flex items-center border border-red-500 rounded-full bg-red-50">
               <button
                 className="p-2"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -158,29 +241,18 @@ const ProductPage = () => {
               >
                 <Plus className="w-4 h-4" />
               </button>
-            </div>
+            </div> */}
           </div>
-
-          {/* Availability */}
-          <div className="flex items-center space-x-4 text-sm">
-            <div className="flex items-center text-blue-600 bg-gray-100 rounded-md p-1 text-xs">
-              <img src={AvailIcon} alt="Available" className="mr-2 w-4 h-4" />
-              Available Stock: 1
-            </div>
-            <div className="text-orange-500 bg-blue-100 rounded-md p-1 text-xs">
-              <img src={AvailtyIcon} alt="Availability" className="mr-2 w-4 h-4 inline" />
-              Availability: 26 Sep '24 - 31 Jun '25
-            </div>
-          </div>
+   
 
           {/* Delivery Info */}
-          <div className="flex items-center justify-between bg-white p-3 border border-slate-200 rounded-lg">
-            <div className="flex items-center">
-              <Truck className="w-5 h-5 mr-2" />
-              <span className="text-xs">27 Sep - 29 Sep to 500008</span>
-            </div>
-            <div className="flex items-center text-blue-600 text-xs">
-              <span className="mr-2">✓</span>
+          <div className="flex items-center justify-around bg-white p-3 border border-slate-200 rounded-xl">
+            <div className="flex items-center text-center  justify-center">
+              <Truck className="w-5 h-5 mr-2"/>
+              <span className=" text-sm text-[#070707CC] font-[600]">27 Sep - 29 Sep to 500008</span>
+            </div><span>|</span>
+            <div className="flex items-center text-blue-600 text-[#070707CC] font-[600] text-sm">
+              <span className="mr-2 ">✓</span>
               As good as new
             </div>
           </div>
@@ -207,12 +279,14 @@ const ProductPage = () => {
         {/* Left Side - Product Details and Other Details */}
         <div className="space-y-6">
           {/* Product Details */}
-          <div>
-            <h2 className="text-lg font-semibold mb-3">Product Details</h2>
-            <table className="w-full text-sm border rounded-lg bg-white ">
+          <div className=''>
+           
+            <table className="flex flex-col w-full text-sm border bg-white rounded-3xl p-4">
+            <h2 className="text-lg font-semibold mb-3 text-[#2F6FED]">Product Details</h2>
               <tbody>
                 {productDetails.map((detail, index) => (
                   <tr key={index} className="">
+                    
                     <td className="p-2 font-semibold">{detail.label}</td>
                     <td className="p-2 text-gray-600">{detail.value}</td>
                   </tr>
@@ -223,8 +297,9 @@ const ProductPage = () => {
 
           {/* Other Details */}
           <div>
-            <h2 className="text-lg font-semibold mb-3">Other Details</h2>
-            <table className="w-full border bg-white rounded-lg border-slate-200 text-sm">
+      
+            <table className="flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4">
+            <h2 className="text-lg font-semibold mb-3 text-[#2F6FED]">Other Details</h2>
               <tbody>
                 {otherDetails.map((detail, index) => (
                   <tr key={index} className="">

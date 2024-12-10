@@ -14,7 +14,7 @@ const customStyles = `
 }
 `;
 
-const ProductItem = ({ product }) => {
+const productList = ({ product }) => {
   const [isView,setIsview]=useState(true);
   const {
     availability,
@@ -67,7 +67,7 @@ const ProductItem = ({ product }) => {
       </Link>
 
   {/* View Details */}
-  <div className="absolute top-[280px] left-20 flex items-center justify-center">
+  <div className="absolute top-[310px] left-20 flex items-center justify-center">
 {isView? <span className="bg-white text-black w-54 text-center rounded-full border-2 p-1" onClick={handleclick}>
   view all packages
     </span>:<span className="bg-white text-black w-54 text-center rounded-full border-2 p-1" onClick={handleBack}>
@@ -147,4 +147,4 @@ const ProductItem = ({ product }) => {
   );
 };
 
-export default ProductItem;
+export default productList;

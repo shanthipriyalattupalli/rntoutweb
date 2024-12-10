@@ -21,8 +21,6 @@ const ITInfrastructure = ({products,categoryId}) => { // Defaulting to an empty 
   useEffect(()=>{
     console.log(products,"nko98ytfchgvb nmo-9897tyfcg ");
   })
-
-
   const nextSlide = () => {
     if (products.length > 0 && currentSlide < products.length - 1) {
       setCurrentSlide(currentSlide + 1);
@@ -113,12 +111,10 @@ const ITInfrastructure = ({products,categoryId}) => { // Defaulting to an empty 
         )}
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
           {products.map((product) => (
             <Suspense key={product._id} fallback={<div>Loading...</div>}>
-              <Link href={`/Products/${product.title}`} key={product._id}>
               <ProductItems product={product} />
-              </Link>
             </Suspense>
           ))}
         </div>

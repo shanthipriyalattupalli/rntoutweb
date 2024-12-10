@@ -6,6 +6,7 @@ const axios = require('axios');
 import Categories from './ProductList/categories';
 import Sidebar from './ProductList/Sidebar';
 import Products from '@/Components/Home/Products';
+import CategoryProducts from '@/Components/Home/CategoryProducts';
 
 const ProductListPage = () => {
   const BASE_URL=process.env.NEXT_PUBLIC_APP_BASE_URL
@@ -17,7 +18,7 @@ const ProductListPage = () => {
   // Fetch all product variants
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/variants/product-variants`);
+      const response = await axios.get(`${BASE_URL}/variants/product-variants?categoryId=67483b5c3b62da6a9bed56fd`);
       console.log(response,"fetchproductstfgvhb")
       setProducts(response.data);
     } catch (error) {
@@ -84,7 +85,7 @@ const ProductListPage = () => {
         <Categories categories={categories} />
         <div className="flex border border-slate-200 bg-white">
           <Sidebar />
-          <Products products={getProductsByCategory(IT_INFRASTRUCTURE_ID)} />
+          <CategoryProducts products={getProductsByCategory(IT_INFRASTRUCTURE_ID)} />
         </div>
       </div>
     </main>

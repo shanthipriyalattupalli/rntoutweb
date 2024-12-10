@@ -1,7 +1,7 @@
 // app/layout.js
 'use client'
 import React from 'react';
-import MenuItems from '@/components/submenuadd';
+import MenuItems from '@/Components/submenuadd';
 import '@/styles/Adddetail.css';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,14 +14,12 @@ const Layout = ({ children }) => (
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
     <div className="product-form-page">
-   
         <MenuItems />
-        {children}
-        
+        {children}        
     </div>
     <button onClick={handlePublish} className="publish-button">
     Publish Product
-    <ToastContainer />
+    <ToastContainer/>
 </button>
     </>
 );

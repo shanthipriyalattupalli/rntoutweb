@@ -1,10 +1,14 @@
 
 "use client";
 
-import React, { useState } from 'react';
-import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
+import React, { useState,useEffect } from 'react';
+import { ArrowDownNarrowWide, ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
+import Image from 'next/image';
+import { useParams } from 'next/navigation';
+const downArrow ='/Assets/down_line.png'
 
-const Sidebar = () => {
+const Sidebar = ({subCategories}) => {
+  const [activeIndex, setActiveIndex] = useState(null);
   const [priceRange, setPriceRange] = useState([800, 1000]);
   const [discount, setDiscount] = useState(null);
   const [deliveryBy, setDeliveryBy] = useState('Today');
@@ -18,6 +22,12 @@ const Sidebar = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const handlePriceRangeChange = (event) => {
+  const BASE_URL=process.env.NEXT_PUBLIC_APP_BASE_URL
+  
+  const params = useParams();
+  const categoryId = params.categoryId; // Extract categoryId directly from params
+  console.log("categoryId from params:", categoryId);
+
     const [min, max] = event.target.value.split(',').map(Number);
     setPriceRange([min, max]);
   };
@@ -62,10 +72,16 @@ const Sidebar = () => {
     setIsFilterOpen((prevState) => !prevState);
   };
 
-  
+
+  const handleClick = (subcategoryId,categoryId) => {
+    console.log(categoryId,"categoryID.............")
+    console.log(subcategoryId,"subcategoryIds...........")
+    setActiveIndex(subcategoryId === activeIndex ? null : subcategoryId); // Toggle the active index
+    router.push(`/Product-list/${categoryId}/${subcategoryId}`);
+  };
 
   return (
-    <div className="bg-white border-r border-gray-300">
+    <div className="w-80 bg-white border-r border-gray-300">
         <div className='border-b-2'>
       <div className="mb-6 px-6 pt-4">
         <div
@@ -81,33 +97,22 @@ const Sidebar = () => {
         </div>
         {isSubCategoriesOpen && (
           <ul className="space-y-1">
-            <li>
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                Computers
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                Servers
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                Screens
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                Peripherals
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                Networking Equipment
-              </a>
-            </li>
-          </ul>
-        )}
+      {subCategories.map((subcategory) => (
+        <li key={subcategory._id}>
+          <a
+            href={`/Product-list/${subcategory.categoryId._id}/${subcategory._id}`}
+            onClick={() => handleClick(subcategory._id)}
+            className={`flex justify-between text-gray-700 border rounded-lg  hover:text-gray-900 border-[Neutral/200] cursor-pointer p-2 ${
+              activeIndex === subcategory._id ? 'bg-[#F0F5FF] text-Black border-[#2F6FED]' : ''
+            }`}
+          >
+            {subcategory.subCategoryName}
+            <ChevronDownIcon className="w-5 h-5 text-gray-600" />
+          </a>
+        </li>
+      ))}
+    </ul>
+)}
       </div>
       </div>
       <div className="space-y-6">
