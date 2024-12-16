@@ -4,6 +4,7 @@ import React, { Suspense } from "react";
 import { useRouter,usePathname } from "next/navigation"
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { ToastContainer } from "react-toastify";
 
 const pro1 = "/Assets/laptop-1.jpg";
 const pro2 = "/Assets/laptop-2.jpg";
@@ -16,6 +17,7 @@ const ProductItems = dynamic(() => import("../Home/ProductItems"), {
   suspense: true,
 });
 
+
 const Products = ({products,categoryId}) => {
   console.log(products,"products by categoryId")
 
@@ -25,6 +27,7 @@ const Products = ({products,categoryId}) => {
 
   return (
     <div className="container mx-auto p-2">
+      <ToastContainer/>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-3">
         <Suspense fallback={<div>Loading...</div>}>
           {products.map((product) => (

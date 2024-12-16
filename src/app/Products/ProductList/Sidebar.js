@@ -3,11 +3,13 @@
 
 import React, { useState,useEffect } from 'react';
 import { ArrowDownNarrowWide, ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
+import { useRouter, useParams } from "next/navigation";
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+// import { useParams } from 'next/navigation';
 const downArrow ='/Assets/down_line.png'
 
-const Sidebar = ({subCategories}) => {
+const Sidebar = ({subCategories,subcategoryId}) => {
+  console.log(subCategories,"subcategories in sidebar menu")
   const [activeIndex, setActiveIndex] = useState(null);
   const [priceRange, setPriceRange] = useState([800, 1000]);
   const [discount, setDiscount] = useState(null);
@@ -20,14 +22,13 @@ const Sidebar = ({subCategories}) => {
   const [isDeliveryByOpen, setIsDeliveryByOpen] = useState(false);
   const [isDurationOpen, setIsDurationOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-
-  const handlePriceRangeChange = (event) => {
   const BASE_URL=process.env.NEXT_PUBLIC_APP_BASE_URL
-  
   const params = useParams();
   const categoryId = params.categoryId; // Extract categoryId directly from params
   console.log("categoryId from params:", categoryId);
+  const router = useRouter();
 
+  const handlePriceRangeChange = (event) => {
     const [min, max] = event.target.value.split(',').map(Number);
     setPriceRange([min, max]);
   };
@@ -76,12 +77,21 @@ const Sidebar = ({subCategories}) => {
   const handleClick = (subcategoryId,categoryId) => {
     console.log(categoryId,"categoryID.............")
     console.log(subcategoryId,"subcategoryIds...........")
-    setActiveIndex(subcategoryId === activeIndex ? null : subcategoryId); // Toggle the active index
+   // Toggle the active index
     router.push(`/Product-list/${categoryId}/${subcategoryId}`);
+    setActiveIndex(subcategoryId);
   };
 
+
+  // useEffect(() => {
+  //   if (subCategories.length > 0) {
+  //     setActiveIndex(subCategories[0]);
+     
+  //   }
+  // }, [subCategories]);
+
   return (
-    <div className="w-80 bg-white border-r border-gray-300">
+    <div className="w-80 h-auto bg-white border-r border-gray-300">
         <div className='border-b-2'>
       <div className="mb-6 px-6 pt-4">
         <div
@@ -99,16 +109,16 @@ const Sidebar = ({subCategories}) => {
           <ul className="space-y-1">
       {subCategories.map((subcategory) => (
         <li key={subcategory._id}>
-          <a
-            href={`/Product-list/${subcategory.categoryId._id}/${subcategory._id}`}
-            onClick={() => handleClick(subcategory._id)}
+          <div
+          
+            onClick={() => handleClick(subcategory._id, subcategory.categoryId._id)}
             className={`flex justify-between text-gray-700 border rounded-lg  hover:text-gray-900 border-[Neutral/200] cursor-pointer p-2 ${
-              activeIndex === subcategory._id ? 'bg-[#F0F5FF] text-Black border-[#2F6FED]' : ''
+              activeIndex === subcategory._id ? 'bg-[#F0F5FF] text-Black border-[#2F6FED]' : 'bg-[#0707070D] text-Black border-[#0707071A]'
             }`}
           >
             {subcategory.subCategoryName}
             <ChevronDownIcon className="w-5 h-5 text-gray-600" />
-          </a>
+          </div>
         </li>
       ))}
     </ul>

@@ -48,6 +48,8 @@ const MainContent = () => {
         setProductDetails((prevDetails) => prevDetails.filter((section) => section.id !== sectionId));
     };
 
+    
+
     const handleInputChange = (sectionId, detailId, field, value) => {
         setProductDetails((prevDetails) =>
             prevDetails.map((section) =>

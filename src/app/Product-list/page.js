@@ -47,8 +47,8 @@ const ProductLists = () => {
     try {
      
       const response= await axios.get(`${BASE_URL}/categories`)
-      console.log(response.data,"categories");
-      setCategories(response.data)
+      console.log(response.data.categories,"categories");
+      setCategories(response.data.categories)
       (response.data.map((category)=>{
         console.log(category._id,"categorydivhdjvbcaj")
         // setCategoryId(category._id);

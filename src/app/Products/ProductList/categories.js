@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 const Submenu = ({ categories }) => {
+  let category =categories
+  console.log(categories,"category in submenu...............................")
   const router = useRouter();
   const params = useParams(); // Get the categoryId from the route params
   const [activeMenu, setActiveMenu] = useState(null);

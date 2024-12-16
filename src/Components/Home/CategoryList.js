@@ -1,26 +1,24 @@
 'use client'; // For client-side rendering in Next.js App Router
 
-import React, { useMemo, useCallback } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 import Image from 'next/image';
 import classNames from 'classnames';
-// const  itIconImg = '/Assets/Icons/Monitor-Smartphone.png';
-const  furnitureIconImg = '/Assets/Icons/Sofa.png';
-// const  medicalIconImg = '/Assets/Icons/Stethoscope.png';
-// const vacationIconImg = '/Assets/Icons/Suitcase-Tag.png';
-// const vehiclesIconImg = '/Assets/Icons/Bus.png';
-// const partyIconImg = '/Assets/Icons/Confetti.png';
-// const sportsIconImg = '/Assets/Icons/Dumbbell.png';
-// const houseIconImg = '/Assets/Icons/Chef-Hatt.png';
 
-const CategoryList = ({ products = [],categories }) => {
+const bgColors = [
+  '#008A000D', '#00ABA90D', '#1BA1E20D', '#0050EF0D',
+  '#6A00FF0D', '#AA00FF0D', '#D800730D', '#A200250D',
+];
+
+const CategoryList = ({ products = [], categories }) => {
   const router = useRouter();
+
   const handleCategoryClick = (categoryId) => {
-    console.log(categoryId,"categoryclick")
+    console.log(categoryId, "categoryclick");
     router.push(`/Product-list/${categoryId}`);
-  }
+  };
 
   const settings = {
     dots: false,
@@ -62,24 +60,22 @@ const CategoryList = ({ products = [],categories }) => {
         {categories.length > 8 ? (
           <Slider {...settings}>
             {categories.map((category, index) => (
-       
               <div key={category._id}>
                 <div
                   className={classNames(
-                    'text-sm font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer'
+                    'text-sm font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer p-2'
                   )}
                   onClick={() => handleCategoryClick(category._id)}
                   style={{
-                    backgroundColor: category.bgColor,
-                    color: category.textColor,
+                    backgroundColor: bgColors[index % bgColors.length],
+                    borderRadius: '20px',
                     width: '148px',
                     height: '100px',
                     margin: '0 auto',
-                    pointerEvents: 'auto',
                   }}
                 >
                   <Image
-                    src={furnitureIconImg}
+                    src={category.image}
                     alt={category.categoryName}
                     width={48}
                     height={48}
@@ -96,12 +92,12 @@ const CategoryList = ({ products = [],categories }) => {
               <div
                 key={category._id}
                 className={classNames(
-                  'text-xs font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer'
+                  'text-xs font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer p-2'
                 )}
                 onClick={() => handleCategoryClick(category._id)}
                 style={{
-                  backgroundColor: category.bgColor,
-                  color: category.textColor,
+                  backgroundColor: bgColors[index % bgColors.length],
+                  borderRadius: '20px',
                   width: '148px',
                   height: '100px',
                 }}
@@ -125,6 +121,15 @@ const CategoryList = ({ products = [],categories }) => {
 
 CategoryList.propTypes = {
   products: PropTypes.array.isRequired,
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      categoryName: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+      bgColor: PropTypes.string,
+      textColor: PropTypes.string,
+    })
+  ).isRequired,
 };
 
 export default CategoryList;

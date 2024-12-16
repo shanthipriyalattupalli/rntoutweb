@@ -14,6 +14,8 @@ const Login = () => {
     const [password, setPassword] = useState(""); // For email login
     const [isLoading, setIsLoading] = useState(false); // Loading state
     const [errorMessage, setErrorMessage] = useState(""); // Error messages
+    const [userData,setUserData]=useState(""); // User data
+    const [loginError, setLoginError] = useState(""); //
     const router = useRouter();
 
     // Handle OTP API integration
@@ -29,12 +31,17 @@ const Login = () => {
                 phoneNumber: mobileNumber,
             });
             console.log(response)
-
             setIsLoading(false);
 
             if (response.status === 200) {
                 toast.success(response.data.message || "OTP sent successfully!");
-                router.push("/Otp");
+                //router.push("/Otp?mobileNumber=" + mobileNumber);
+                console.log(mobileNumber,"mobilenum in login page")
+                router.push({
+                    pathname: '/Otp',
+                    query: { mobileNumber: mobileNumber },
+                  });
+                
             } else {
                 toast.error(response.data.error || "Failed to send OTP. Try again.");
             }
@@ -50,31 +57,51 @@ const Login = () => {
             toast.error("Please enter both email and password.");
             return;
         }
+    
         setIsLoading(true);
-
+    
         try {
             const response = await axios.post("http://localhost:6001/api/users/login", {
                 email,
                 password,
             });
-
+            console.log(response.data)
+    
             setIsLoading(false);
-
+    
             if (response.status === 200) {
-                toast.success(response.data.message || "Login successful!");
-                localStorage.setItem("name", "vishnu");
-                router.push("/"); 
+                const { user, message } = response.data;
+    
+                toast.success(message || "Login successful!");
+    
+                localStorage.setItem("userId", user.id);
+                localStorage.setItem("userName", user.name);
+                localStorage.setItem("userEmail", user.email);
+                localStorage.setItem("userToken", response.data.token);
+    
+                console.log(user, "User details logged.");
+    
+                router.push("/"); // Redirect to home page
             } else {
                 toast.error(response.data.error || "Login failed. Please try again.");
             }
         } catch (error) {
+            console.error(error.response?.data?.message || error.message, "Error");
+    
+            if (error.response?.data?.message) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("An unexpected error occurred. Please try again.");
+            }
+    
+            const detailsMessage = error.response?.data?.message?.details?.[0]?.message;
+            if (detailsMessage) {
+                toast.error(detailsMessage);
+            }
+    
             setIsLoading(false);
-            toast.error(
-                error.response?.data?.error || "Something went wrong. Please try again later."
-            );
         }
     };
-
     return (
         <div className="login-container">
             <ToastContainer position="top-right" autoClose={3000} />

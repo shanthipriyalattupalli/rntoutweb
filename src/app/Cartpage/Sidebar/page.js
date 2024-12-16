@@ -50,14 +50,14 @@ const Sidebar = ({ isOpen, onClose, products }) => {
                                 checked={selectedProducts[index]}
                                 onChange={() => handleProductSelect(index)}
                             />
-                            <img src={product.image} alt="Product" className="product-image" />
+                            <img src={product.variant_id.images[0]} alt="Product" className="product-image" />
                             <div className="product-info">
-                                <h4 className="product-name">{product.name}</h4>
-                                <p className="product-price">{product.price} /month</p>
+                                <h4 className="product-name">{product.variant_id.title}</h4>
+                                <p className="product-price">{product.variant_id.rentalPrice.monthly} /month</p>
                             </div>
                         </div>
                     ))}
-                    <button className="confirm-button">Confirm</button>
+                    <button className="confirm-button" onClick={onClose}>Confirm</button>
                 </div>
             </div>
         </div>

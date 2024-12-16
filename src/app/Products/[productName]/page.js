@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Star, Minus, Plus, Truck, ArrowUpDown, Settings, Smartphone, ChevronDown } from 'lucide-react';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; 
 import { useRouter, useSearchParams } from 'next/navigation';
 const productimg = '/Assets/pi-1.png';
 const AvailIcon = '/Assets/Icons/ava-stock.png';
@@ -11,7 +13,7 @@ const AvailtyIcon = '/Assets/Icons/availability.png';
 const ProductPage = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [quantity, setQuantity] = useState(1);
-  const [selectedDuration, setSelectedDuration] = useState('Per Day');
+  const [selectedDuration, setSelectedDuration] = useState('monthly');
   const [selectedImage, setSelectedImage] = useState(0);
   const [expandedFaq, setExpandedFaq] = useState(null);
   const [product, setProduct] = useState([]);
@@ -22,6 +24,8 @@ const ProductPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const productId = searchParams.get('id');
+  const userId=localStorage.getItem('userId');
+  const token = localStorage.getItem('userToken');
   console.log(productId,"productIdurdfcvbjhhgc")
 
   const fetchProductById=async()=>{
@@ -52,7 +56,7 @@ let threeMonths=rentalPrice.threeMonths
 let sixMonths=rentalPrice.sixMonths
 let oneYear=rentalPrice.oneYear
 
-  const durations = [
+  const rentalPrices  = [
     { label: 'Per Day', price: daily},
     { label: 'Per Week', price: weekly},
     { label: 'Per Month', price:monthly},
@@ -61,6 +65,12 @@ let oneYear=rentalPrice.oneYear
     { label: 'Per year', price: oneYear }
   ];
 
+  const durations = Object.entries(rentalPrice).map(([key, value]) => ({
+    name:key,
+    label: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize the label
+    price: `$${parseFloat(value).toFixed(2)}`, // Convert to number and format price
+  }));
+  
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -81,25 +91,7 @@ let oneYear=rentalPrice.oneYear
 
   const productImages = [productimg, productimg, productimg, productimg, productimg, productimg];
 
-  // const productDetails = [
-  //   { label: 'Brand', value: 'DROGO' },
-  //   { label: 'Colour', value: 'Throne Dark Blue' },
-  //   { label: 'Material', value: 'Fabric' },
-  //   { label: 'Product Dimensions', value: '70D x 70W x 125H Centimeters' },
-  //   { label: 'Size', value: 'Single Seat' },
-  //   { label: 'Back Style', value: 'Wing Back' },
-  //   { label: 'Special Feature', value: 'Adjustable Lumbar, Adjustable Height, Ergonomic, Cushion Arm Rest, Fabric' },
-  //   { label: 'Product Care Instructions', value: 'Wipe Clean' },
-  //   { label: 'Net Quantity', value: '1.00 count' },
-  //   { label: 'Seat Material Type', value: 'Seat Material Type' }
-  // ];
 
-  // const otherDetails = [
-  //   { label: 'Item Weight', value: '18 Kilograms' },
-  //   { label: 'Maximum Weight Recommendation', value: '136 Kilograms' },
-  //   { label: 'Frame Material', value: 'Metal' },
-  //   { label: 'Style', value: 'Casual' }
-  // ];
   const otherDetails = Object.entries(otherDetail).map(([key, value]) => ({
     label: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize the key
     value,
@@ -119,8 +111,45 @@ let oneYear=rentalPrice.oneYear
     }
   ];
 
+  const handleAddToCart = async (productId) => {
+    console.log(productId,"variant id")
+    try {
+      const payload = {
+        user_id: userId,
+        variant_id: productId,
+        quantity: 1,
+        rentalPeriod:selectedDuration
+      };
+      const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+        },
+      });
+  console.log(response.data);
+  toast.success(response.data.message);
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+      toast.error(
+        error.response?.data?.message || "Something went wrong. Please try again."
+      );
+    }
+
+  };
+
+    
+  const handleAddCart = () => {
+    console.log(product._id,"productidijnfmjm")
+    if (userId) {
+      handleAddToCart(product._id);
+    } else {
+      toast.error("You must be logged in to add items to cart.");
+    }
+  }
+
+  console.log(selectedDuration,"selectedDuration")
   return (
     <div className="max-w-7xl mx-auto px-4">
+          <ToastContainer />
       {/* Top Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-6">
         {/* Product Images */}
@@ -187,20 +216,21 @@ let oneYear=rentalPrice.oneYear
           <div>
             <h3 className="font-medium mb-3 text-sm">SELECT DURATION</h3>
             <div className="grid grid-cols-5 gap-3 bg-white">
-              {durations.map((duration) => (
-                <button
-                  key={duration.label}
-                  className={`p-3 rounded-lg border text-center ${
-                    selectedDuration === duration.label
-                      ? 'border-[#F48003] bg-[#FFF5EB]'
-                      : 'border-gray-200'
-                  }`}
-                  onClick={() => setSelectedDuration(duration.label)}
-                >
-                  <div className="text-xs">{duration.label}</div>
-                  <div className="font-bold">{duration.price}</div>
-                </button>
-              ))}
+            {durations.map((duration) => (
+  <button
+    key={duration.label}
+    className={`p-3 rounded-lg border text-center ${
+      selectedDuration === duration.name
+        ? 'border-[#F48003] bg-[#FFF5EB]'
+        : 'border-gray-200'
+    }`}
+    onClick={() => setSelectedDuration(duration.name)}
+  >
+    <div className="text-xs">{duration.label}</div>
+    <div className="font-bold">{duration.price}</div>
+  </button>
+))}
+
             </div>
           </div>
 
@@ -223,6 +253,7 @@ let oneYear=rentalPrice.oneYear
           <div className="flex items-center border border-red-500 text-white font-[600] rounded-lg bg-[#FF2D55]">
               <button
                 className="p-2 w-64"
+                onClick={() => handleAddCart()}
               >
                Add to cart
               </button>
@@ -296,8 +327,7 @@ let oneYear=rentalPrice.oneYear
           </div>
 
           {/* Other Details */}
-          <div>
-      
+          <div>     
             <table className="flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4">
             <h2 className="text-lg font-semibold mb-3 text-[#2F6FED]">Other Details</h2>
               <tbody>

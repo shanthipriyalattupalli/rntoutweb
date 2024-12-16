@@ -8,6 +8,8 @@ import Header from "@/Components/Layout/Header";
 import Newsletter from "@/Components/Layout/Newsletter";
 import Navigation from "@/Components/Layout/Navigation";
 import HomeComponent from '../Pages/Home'
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -52,8 +54,8 @@ export default function RootLayout({ children }) {
   const fetchCategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/categories`);
-      console.log(response.data, "categories");
-      setCategories(response.data);
+      console.log(response.data.categories, "categories");
+      setCategories(response.data.categories);
       if (response.data.length > 0) {
         setCategoryId(response.data[0]._id); // Set the first category as default
       }

@@ -9,7 +9,7 @@ const Photo = "/Assets/Photo.png"
 
 function Header() {
 
-  const name = localStorage.getItem('name');
+  const name = localStorage.getItem('userName');
   console.log(name);
   
   const [location, setLocation] = useState('HYD - 500008');

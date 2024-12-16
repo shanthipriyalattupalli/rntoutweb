@@ -3,17 +3,22 @@
 import React, { useState,useEffect } from "react";
 import "@/styles/Otp.css";
 import axios from "axios"; // Import axios for API requests
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Rntout = "/Assets/Rntout_Logo.png";
 
 const Otp = () => {
     const [otp, setOtp] = useState(["", "", "", ""]);
+    
+   
     const [errorMessage, setErrorMessage] = useState(""); // For error feedback
     const [isLoading, setIsLoading] = useState(false); // For loading state
-    const phoneNumber = "+91 12345 67890";
-    const router = useRouter();
+const [phoneNumber,setPhoneNumber] = useState("")
+const router = useRouter();
+const {mobileNumber}=router.query
+
+console.log(mobileNumber,"mobile num in otp")
 
     // Handle OTP input changes
 // Handle OTP input changes
@@ -62,17 +67,22 @@ useEffect(() => {
         try {
             const response = await axios.post("http://localhost:6001/api/users/verify-otp", {
                 otp: String(otpCode),
-                phoneNumber: "7645345645",
+                phoneNumber: mobileNumber,
                
             });
-
+console.log(response.data,"data in otp")
             setIsLoading(false);
-
+let user=response.data.user
+console.log(user.id,"user")
             if (response.status === 200) {
                 // OTP verified successfully
                 toast.success(response.data.message || "OTP verified successfully!");
-                // toast(response.data.message || "OTP verified successfully!");
-                localStorage.setItem("name", "vishnu");
+localStorage.setItem("userToken",response.data.token)
+localStorage.setItem("userId",user.id)
+                localStorage.setItem("userName",user.name)
+                localStorage.setItem("userEmail",user.email)
+                localStorage.setItem("role",user.role)
+
                 router.push("/"); // Navigate to the home page
             } else {
                 // Handle server-side errors

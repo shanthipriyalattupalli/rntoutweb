@@ -1,8 +1,26 @@
 // components/MenuItems.js
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
 import '@/styles/Adddetail.css';
 
 const MenuItems = () => {
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+    const categoryId =localStorage.getItem('selectedcategoryId')
+    const [subcategories,setSubcategories]=useState([])
+
+    const fetchSubCategories=async()=>{
+        try {
+            const response= await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`)
+            console.log(response.data,"subcategories by category");
+            setSubcategories(response.data);
+            
+        } catch (error) {
+            console.error('Error fetching subcategories:', error);   
+        }
+    }
+    useEffect(()=>{
+        fetchSubCategories();
+    }, [categoryId])
     // Array containing all menu items
     const menuItems = [
         "Camping Gear", "Outdoor Gear", "Beach Equipment", "Sports Equipment", 
@@ -32,13 +50,13 @@ const MenuItems = () => {
                 <button className="change-button">Change</button>
             </div>
             <ul className="menu-list">
-                {menuItems.map((item, index) => (
+                {subcategories.map((item) => (
                     <li
-                        key={index}
-                        className={`menu-item ${activeItem === item ? 'active' : ''}`}
-                        onClick={() => handleItemClick(item)}
+                        key={item._id}
+                        className={`menu-item ${activeItem === item._id ? 'active' : ''}`}
+                        onClick={() => handleItemClick(item._id)}
                     >
-                        {item}
+                        {item.subCategoryName}
                     </li>
                 ))}
             </ul>

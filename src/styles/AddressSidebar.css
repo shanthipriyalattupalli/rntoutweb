@@ -12,6 +12,28 @@
     
     
 }
+.form-select {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .form-select-item {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .form-select-item:hover {
+    background-color: #f0f0f0 !important;
+  }
+  
+  .form-select-item.selected {
+    background-color: #F0F5FF;
+    color: black;
+    border-color: #2F6FED;
+  }
 
 .delivery-context {
     display: flex;

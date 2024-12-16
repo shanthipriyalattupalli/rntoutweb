@@ -13,8 +13,8 @@ export default function Home() {
   const fetchcategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/categories`);
-      console.log(response.data, "categories");
-      setCategories(response.data);
+      console.log(response.data.categories, "categories");
+      setCategories(response.data.categories);
       if (response.data.length > 0) {
         setCategoryId(response.data[0]._id); // Set categoryId to the first category
       }

@@ -34,7 +34,10 @@ function Sidebar() {
 
   const handleNavigation = (eachbar) => {
     if (eachbar.title == 'Log Out'){
-      localStorage.removeItem('name')
+      localStorage.removeItem('userEmail')
+      localStorage.removeItem('userId')
+      localStorage.removeItem('userName')
+      localStorage.removeItem('userToken')
     }
     router.push(eachbar.route);
   };

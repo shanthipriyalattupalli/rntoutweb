@@ -18,6 +18,7 @@ const ProductList = dynamic(() => import("./productList"), {
 });
 
 const CategoryProducts = ({products}) => {
+  const router = useRouter();
   console.log(products,"products by categoryId")
 
   const handleProducts = () => {

@@ -290,10 +290,11 @@ label {
 }
 
 .sidebar-menu {
+    position: static;
     width: 324px;
     height: auto !important;
     background-color: #fff;
-    border: 1px solid #e0e0e0;
+    /* border: 1px solid #e0e0e0; */
     font-family: Arial, sans-serif;
     overflow: hidden;
     border-radius: 16px 0px 0px 16px;
@@ -349,6 +350,15 @@ label {
     cursor: pointer;
     transition: background-color 0.3s;
     border-bottom: 1px solid #0707071A;
+    border-left: 1px solid #0707071A;
+}
+.menu-item:last-child{
+    border-bottom: 1px solid #0707071A;
+    border-left: 1px solid #0707071A;
+    border-radius: 0px 0px 0px  20px;
+
+
+
 }
 
 

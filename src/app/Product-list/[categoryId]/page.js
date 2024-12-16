@@ -6,6 +6,7 @@ import Categories from "../../Products/ProductList/categories";
 import Sidebar from "../../Products/ProductList/Sidebar";
 import Products from "@/Components/Home/Products";
 import { useParams } from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation';
 import CategoryProducts from '@/Components/Home/CategoryProducts';
 
 
@@ -14,16 +15,20 @@ const ProductList = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [subCategories,setSubcategories] = useState([]);
-  
   const params = useParams();
+  const subcategoryId=params.subcategoryId
+  console.log("subcategoryId from params:", subcategoryId);
   const categoryId = params.categoryId; // Extract categoryId directly from params
   console.log("categoryId from params:", categoryId);
 
   const fetchProducts = async () => {
+    console.log("fetchProdreggrt.....ucts",categoryId)
     if (!categoryId) return;
     try {
       const response = await axios.get(
-        `${BASE_URL}/variants/product-variants?categoryId=${categoryId}`
+        `${BASE_URL}/variants/product-variants`,{
+          params: { categoryId }
+        }
       );
       console.log(response, "Product fetch response");
       setProducts(response?.data);
@@ -39,8 +44,8 @@ const ProductList = () => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/categories`);
-      console.log(response?.data, "Categories fetched");
-      setCategories(response?.data);
+      console.log(response?.data.categories, "Categories fetched");
+      setCategories(response?.data.categories);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }

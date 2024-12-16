@@ -22,10 +22,13 @@ import Blogs from "../Components/Home/Blogs";
 import Testimonials from "../Components/Home/Testimonials";
 import MobileApp from "../Components/Home/MobileApp";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
 
 const Home = ({ categories }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [products, setProducts] = useState([]);
+  const categoryId=localStorage.getItem('categoryId')
+  
 
   // Fetch all product variants
   const fetchProducts = async () => {
@@ -49,6 +52,13 @@ const Home = ({ categories }) => {
   };
 
 
+  const getToptrendingProducts = () => {
+    console.log("Getting products by category",products.filter((product) => product.categoryId._id === categoryId))
+    console.log("caategoryid",categoryId)
+    return products.filter((product) => product.categoryId._id === categoryId);
+  };
+
+
   const IT_INFRASTRUCTURE_ID = "67483b5c3b62da6a9bed56fd";
   const FURNITURE_ID = "67483b8c3b62da6a9bed5700";
   const MEDICAL_EQUIPMENT_ID = "67483b9b3b62da6a9bed5703";
@@ -58,12 +68,15 @@ const Home = ({ categories }) => {
   const SPORTS_GYM_ID = "67483be13b62da6a9bed570f";
   const HOUSEHOLD_KITCHEN_ID = "67483bed3b62da6a9bed5712";
 
+
+
+  
   return (
     <main className="bg-slate-50 tmp-bg">
       <Banner />
       <CategoryList categories={categories} />
       <ProductGrid categories={categories} />
-      <Products products={getProductsByCategory(IT_INFRASTRUCTURE_ID)} categoryId={IT_INFRASTRUCTURE_ID} />
+      <Products products={getToptrendingProducts(categoryId)} categoryId={categoryId}/>
       <CuratedCollections />
       {/* Pass filtered products to each component */}
       <ITInfrastructure products={getProductsByCategory(IT_INFRASTRUCTURE_ID)} categoryId={IT_INFRASTRUCTURE_ID} />
