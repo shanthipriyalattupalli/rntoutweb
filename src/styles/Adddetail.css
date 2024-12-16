@@ -73,7 +73,7 @@
     max-width: 90%;
     margin: auto;
     padding: 20px;
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
 
 }
 
@@ -87,7 +87,7 @@
 }
 
 .product-form {
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
     color: #333;
 
 }
@@ -282,7 +282,7 @@ label {
 
 .product-form-page {
     display: flex;
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
     /* border: 1px solid #0707071A; */
     border-radius: 10px;
     margin: 40px 80px;
@@ -294,7 +294,7 @@ label {
     height: auto !important;
     background-color: #fff;
     border: 1px solid #e0e0e0;
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
     overflow: hidden;
     border-radius: 16px 0px 0px 16px;
     border-right: none;
@@ -493,7 +493,7 @@ label {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
     margin-top: 20px;
 }
 
@@ -540,7 +540,7 @@ label {
 
 /* Style for react-datepicker */
 .react-datepicker {
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 

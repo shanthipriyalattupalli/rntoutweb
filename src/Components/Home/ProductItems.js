@@ -6,9 +6,14 @@ const AvailabilIcon = '/Assets/Icons/ava-stock.png';
 const cartIcon = '/Assets/Icons/add-to-cart.png';
 
 const customStyles = `
+.product-title{font-size:14px; font-weight:400; line-height:normal}
+.cart-btn{font-size:13px; font-weight:500; }
+
 .group:hover .group-hover\:invert {
   filter: invert(1) brightness(1) contrast(1); /* More intense white effect */
 }
+  .cart-price{color:#FF2D55;}
+  .cart-btn:hover .group-hover{filter: brightness(0) invert(1); !important}
 `;
 
 const ProductItem = ({ product }) => {
@@ -20,7 +25,7 @@ const ProductItem = ({ product }) => {
 
       <div className="bg-white rounded-lg border border-slate-200 p-4">
         <Image src={imgSrc} alt={name} className="w-full h-40 object-cover mb-4 rounded-lg" width={500} height={300} />
-        <h2 className="text-lg font-medium text-gray-800">{name}</h2>
+        <h2 className="product-title text-gray-800">{name}</h2>
         <p className="cart-price text-bold text-lg mt-2">
           {price}<span className="text-gray-600 text-sm">/day</span>
         </p>
@@ -36,14 +41,14 @@ const ProductItem = ({ product }) => {
           <Image src={AvailabilIcon} alt="Check icon" className="w-4 h-4 text-blue-500" width={500} height={300} />
           <span className="text-blue-500 text-xs"> Available Stock: {stock}</span>
         </div>
-        <button className="border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-2 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group">
+        <button className="cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group">
           <Image
             src={cartIcon}
             alt="Cart icon"
             className="w-4 h-4 group-hover:invert"
             width={500} height={300}
           />
-          <span>Add to cart</span>
+          <span className='text-sm'>Add to cart</span>
         </button>
       </div>
     </>

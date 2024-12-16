@@ -161,7 +161,7 @@ const Products = () => {
 
   return (
     <div className="container mx-auto p-2">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
         {/* Lazy load product items */}
         <Suspense fallback={<div>Loading...</div>}>
           {products.map((product) => (
