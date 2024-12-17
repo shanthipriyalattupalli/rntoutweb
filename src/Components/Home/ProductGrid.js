@@ -5,12 +5,13 @@ import Image from "next/image";
 
 const CategorySection = ({ categories }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
-
   useEffect(() => {
-    // Check localStorage for selected categoryId or default to the first category
     const storedCategoryId = localStorage.getItem("categoryId");
     const defaultCategoryId = storedCategoryId || (categories[0] && categories[0]._id);
     setSelectedCategory(defaultCategoryId);
+    if (defaultCategoryId) {
+      console.log(`Fetching products for categoryId: ${defaultCategoryId}`);
+    }
   }, [categories]);
 
   const handleCategoryClick = (categoryId) => {

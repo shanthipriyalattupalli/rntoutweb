@@ -117,9 +117,11 @@ useEffect(() => {
     <main className="min-h-screen">
       <div className="container mx-auto">
         <Categories categories={categories} />
-        <div className="flex border border-slate-200 bg-white">
+        <div className="flex">
+       
           <Sidebar subCategories={subCategories} subcategoryId={subcategoryId} />
-          <div className="flex flex-col gap-2 p-4">
+  
+          <div className="flex flex-col gap-2 p-4  border border-slate-200 bg-white rounded-lg">
           <div className="w-auto flex border rounded-lg">
     {product.map((product) => (
       <p key={product._id} className={`w-auto items-center flex justify-between p-2 text-center rounded-lg ${

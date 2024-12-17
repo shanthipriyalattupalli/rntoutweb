@@ -83,7 +83,7 @@ const ProductListPage = () => {
     <main className="min-h-screen"> 
       <div className="container mx-auto"> 
         <Categories categories={categories} />
-        <div className="flex border border-slate-200 bg-white">
+        <div className="flex">
           <Sidebar />
           <CategoryProducts products={getProductsByCategory(IT_INFRASTRUCTURE_ID)} />
         </div>

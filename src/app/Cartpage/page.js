@@ -113,13 +113,17 @@ const CartPage = () => {
         fetchCartDetails();
     }, [userId]);
 
-    const handleRemove = async (variantId) => {
-    console.log(variantId,"removeid")
+    const handleRemove = async (cartId) => {
+
+
+    console.log(cartId,"removeid")
         try {
-            console.log(variantId,"variantId remove")
-            const response = await axios.delete(`${BASE_URL}/cart/remove/${userId}/${variantId}`);
-            toast.success(response.data || "Removed successfully");
+            console.log(cartId,"variantId remove")
+            const response = await axios.delete(`${BASE_URL}/cart/remove/${cartId}`);
+            console.log(response.data,"deleted")
             fetchCartDetails();
+            toast.success(response.data.message|| "Removed successfully");
+            
         } catch (error) {
             toast.error(error.message);
             console.error('Error removing item from cart:', error);
@@ -155,6 +159,7 @@ const CartPage = () => {
                     My Cart <span className="cart-count">{cartItems.length}</span>
                 </h2>
                 {cartItems.map((item, index) => (
+                    
                     <div key={index} className="cart-item cursor-pointer">
                         <Link href={{ pathname: `/Products/${item.variant_id.title}`, query: { id: item.variant_id._id } }} key={item._id}>
                             <img
@@ -178,7 +183,7 @@ const CartPage = () => {
                             </div>
                             <div className='product-right'>
                                 <button className="delete-btn">
-                                    <img src={deleteicon} onClick={()=>{handleRemove(item.variant_id._id)}} className='flex justify-center ml-20'/>
+                                    <img src={deleteicon} onClick={()=>{handleRemove(item._id)}} className='flex justify-center ml-20'/>
                                     <div className='flex gap-2'>
                                         <img src={cube}/>
                                         <p className="stock-info">{item.variant_id.stockQuantity} stock avail.</p>

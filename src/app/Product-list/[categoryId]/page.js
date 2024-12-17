@@ -79,9 +79,11 @@ const ProductList = () => {
     <main className="min-h-screen">
       <div className="container mx-auto">
         <Categories categories={categories} />
-        <div className="flex border border-slate-200 bg-white">
+        <div className="flex">
           <Sidebar subCategories={subCategories} />
+          <div className="flex flex-col gap-2 p-4 w-full  h-[auto] border border-slate-200 bg-white rounded-lg">
           <CategoryProducts products={getProductsByCategory(categoryId)} />
+          </div>
         </div>
       </div>
     </main>

@@ -91,8 +91,8 @@ const Sidebar = ({subCategories,subcategoryId}) => {
   // }, [subCategories]);
 
   return (
-    <div className="w-80 h-auto bg-white border-r border-gray-300">
-        <div className='border-b-2'>
+    <div className="w-80">
+        <div className='border-l-2 border-t-2 border-r-2 border-b-2'>
       <div className="mb-6 px-6 pt-4">
         <div
           className="flex items-center justify-between cursor-pointer"
@@ -125,7 +125,7 @@ const Sidebar = ({subCategories,subcategoryId}) => {
 )}
       </div>
       </div>
-      <div className="space-y-6">
+      <div className="space-y-6 border-l-2 border-r-2">
       <div className='border-b-2 pt-3'>
         <div className='px-6 pb-4'>
           <div
