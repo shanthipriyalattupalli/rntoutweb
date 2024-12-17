@@ -42,7 +42,9 @@ const ProductItem = ({ product }) => {
     _id,
   } = product;
 
-  const formattedDate = new Date(rentalAvailability.startDate).toLocaleDateString('en-US', {
+
+  console.log(rentalPrice,"rental price")
+  const formattedDate = new Date(rentalAvailability?.startDate).toLocaleDateString('en-US', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
@@ -101,11 +103,23 @@ const ProductItem = ({ product }) => {
       <style>{customStyles}</style>
 
       <div className="bg-white rounded-lg border border-slate-200 p-4">
-        <Image src={imgSrc} alt={name} className="w-full h-40 object-cover mb-4 rounded-lg" width={500} height={300} />
+      <Link href={{pathname:`/Products/${title}`,   query: { id: _id }}} key={_id}>
+  <Image
+    src={images[0]}
+    alt={title}
+    className="w-full h-40 object-cover mb-4 rounded-lg" 
+    width={500}
+    height={300}
+  />
+      </Link>
         <h2 className="product-title text-gray-800">{name}</h2>
         <p className="cart-price text-bold text-lg mt-2">
           {price}
-          <span className="text-gray-600 text-sm"> {rentalPrice.daily}/day</span>
+          <span className="text-gray-600 text-sm text-[#FF2D55] font-medium text-sm">
+          ₹{rentalPrice[0]?.price ? `${rentalPrice[0].price}` : "N/A"}<span className='text-[#070707A6] font-sm'>/day</span>
+</span>
+
+
         </p>
         <div className="flex items-center mt-2">
           <Image
@@ -125,7 +139,7 @@ const ProductItem = ({ product }) => {
             width={16}
             height={16}
           />
-          <span className="text-gray-500 text-xs">Availability: {formattedDate}</span>
+       { rentalAvailability &&  <span className="text-gray-500 text-xs">Availability: {formattedDate}</span>}
         </div>
         <div className="flex items-center mt-2">
           <Image
@@ -137,7 +151,8 @@ const ProductItem = ({ product }) => {
           />
           <span className="text-blue-500 text-xs"> Available Stock: {stockQuantity}</span>
         </div>
-        <button className="cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group">
+        <button className="cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+          onClick={() => handleAddCart()}>
           <Image
             src={cartIcon}
             alt="Cart icon"
@@ -146,6 +161,7 @@ const ProductItem = ({ product }) => {
           />
           <span className='text-sm'>Add to cart</span>
         </button>
+      </div>
       </div>
     </>
   );

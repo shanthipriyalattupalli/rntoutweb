@@ -17,9 +17,10 @@ const ProductPage = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [expandedFaq, setExpandedFaq] = useState(null);
   const [product, setProduct] = useState([]);
-  const [rentalPrice, setRentalPrice] = useState({});
+  const [rentalPrice, setRentalPrice] = useState([]);
   const [rentalAvailability,setRentalAvailability]=useState({});
   const [otherDetail, setOtherDetails] = useState({});
+  const [owner,setOwner]=useState({});
   const [images, setImages] = useState([])
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -33,12 +34,13 @@ const ProductPage = () => {
       const response = await axios.get(`${BASE_URL}/variants/${productId}`);
 
       const data = response.data;
-      console.log(data.rentalPrice.daily,"fetch product by id");
+      console.log(data,"fetch product by id");
       setProduct(data);  
       setRentalPrice(data.rentalPrice);
       setRentalAvailability(data.rentalAvailability);
       setOtherDetails(data.itemDetails)
       setImages(data.images)
+      setOwner(data.owner)
     } catch (error) {
 
       console.error("Error fetching product:", error);
@@ -146,6 +148,14 @@ let oneYear=rentalPrice.oneYear
     }
   }
 
+
+  const handleSellerclick = () => {
+    if (owner && owner._id) {
+      router.push(`/SellerProfile?id=${owner._id}`);
+    } else {
+      toast.error("Seller information is missing.");
+    }
+  };
   console.log(selectedDuration,"selectedDuration")
   return (
     <div className="max-w-7xl mx-auto px-4">
@@ -197,13 +207,13 @@ let oneYear=rentalPrice.oneYear
             </h1>
             
             {/* Ratings */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 cursor-pointer" >
               <img 
                 src="/api/placeholder/24/24"
                 alt="Seller"
                 className="w-6 h-6 rounded-full"
               />
-              <span className="text-xs">Mohil Prajapati</span>
+              <span className="text-xs" onClick={handleSellerclick} key={owner._id}>{owner.name}</span>
               <div className="flex items-center">
                 <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                 <span className="ml-1 text-xs">4.6</span>
@@ -216,18 +226,18 @@ let oneYear=rentalPrice.oneYear
           <div>
             <h3 className="font-medium mb-3 text-sm">SELECT DURATION</h3>
             <div className="grid grid-cols-5 gap-3 bg-white">
-            {durations.map((duration) => (
+            {rentalPrice.map((price) => (
   <button
-    key={duration.label}
+    key={price._id}
     className={`p-3 rounded-lg border text-center ${
-      selectedDuration === duration.name
+      selectedDuration === price.period
         ? 'border-[#F48003] bg-[#FFF5EB]'
         : 'border-gray-200'
     }`}
-    onClick={() => setSelectedDuration(duration.name)}
+    onClick={() => setSelectedDuration(price.period)}
   >
-    <div className="text-xs">{duration.label}</div>
-    <div className="font-bold">{duration.price}</div>
+    <div className="text-xs">{price.period}</div>
+    <div className="font-bold">₹{price.price}</div>
   </button>
 ))}
 

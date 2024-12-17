@@ -1,6 +1,9 @@
 'use client';
 
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import axios from "axios";
 import "@/styles/SellerProfile.css";
 import { useRouter } from "next/navigation";
 import Aboutus from "@/Pages/Aboutus";
@@ -8,6 +11,10 @@ import Fqa from "@/Pages/Fqa";
 import Products from "@/app/Products/page";
 
 const SellerCarouselProfile = () => {
+
+
+    const searchParams = useSearchParams();
+    const sellerId = searchParams.get("id");
     const slides = [
         {
             id: 1,
