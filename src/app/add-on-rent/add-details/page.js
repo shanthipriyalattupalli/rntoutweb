@@ -1,6 +1,7 @@
 // components/MainContent.js
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
+import axios from 'axios'
 import '@/styles/Adddetail.css'
 import { FaUpload, FaRegCalendarAlt } from 'react-icons/fa';
 import { FiPlus, FiTrash } from 'react-icons/fi';
@@ -10,6 +11,16 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const MainContent = () => {
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+  const userId=localStorage.getItem('userId');
+  const categoryId=localStorage.getItem('selectedcategoryId')
+  const subCategoryId=localStorage.getItem('selectedSubCategoryId')
+  console.log(subCategoryId,"ghbnm,lpoiuyghvb nmkiuyghvb")
+const [products,setProducts]=useState([]);
+const [productName, setProductName] = useState('');
+const [productQuality, setProductQuality] = useState('');
+const [availableStock, setAvailableStock] = useState('');
+const [selectedOption, setSelectedOption] = useState('');
     const [productDetails, setProductDetails] = useState([
         { id: Date.now(), title: '', details: [{ id: Date.now() + 1, key: '', value: '' }] },
     ]);
@@ -48,22 +59,22 @@ const MainContent = () => {
         setProductDetails((prevDetails) => prevDetails.filter((section) => section.id !== sectionId));
     };
 
-    
+    console.log(selectedOption,"selectedoption");
 
-    const handleInputChange = (sectionId, detailId, field, value) => {
-        setProductDetails((prevDetails) =>
-            prevDetails.map((section) =>
-                section.id === sectionId
-                    ? {
-                        ...section,
-                        details: section.details.map((detail) =>
-                            detail.id === detailId ? { ...detail, [field]: value } : detail
-                        ),
-                    }
-                    : section
-            )
-        );
-    };
+    // const handleInputChange = (sectionId, detailId, field, value) => {
+    //     setProductDetails((prevDetails) =>
+    //         prevDetails.map((section) =>
+    //             section.id === sectionId
+    //                 ? {
+    //                     ...section,
+    //                     details: section.details.map((detail) =>
+    //                         detail.id === detailId ? { ...detail, [field]: value } : detail
+    //                     ),
+    //                 }
+    //                 : section
+    //         )
+    //     );
+    // };
 
     const handleTitleChange = (sectionId, value) => {
         setProductDetails((prevDetails) =>
@@ -74,9 +85,7 @@ const MainContent = () => {
     };
 
 
-    const [productName, setProductName] = useState('');
-    const [productQuality, setProductQuality] = useState('');
-    const [availableStock, setAvailableStock] = useState('');
+
     const [prices, setPrices] = useState({
         perDay: 0,
         perWeek: 0,
@@ -86,17 +95,35 @@ const MainContent = () => {
     });
 
     const handlePriceChange = (e) => {
-        setPrices({
-            ...prices,
-            [e.target.name]: e.target.value,
-        });
-    };
+        const { name, value } = e.target;
+    
+        // Map timeframe to the rentalPrice index
+        const mapping = {
+          perDay: "daily",
+          perWeek: "weekly",
+          perMonth: "monthly",
+          perQuarter: "quarterly",
+          perSixMonths: "semiannual",
+        };
+    
+        const mappedPeriod = mapping[name];
+    
+        // Update state with the correct index
+        setFormData((prevData) => ({
+          ...prevData,
+          rentalPrice: prevData.rentalPrice.map((item) =>
+            item.period === mappedPeriod ? { ...item, price: parseFloat(value) || 0 } : item
+          ),
+        }));
+    
+        console.log(formData.rentalPrice);
+      };
 
 
     const[previewImages, setPreviewImages] = useState([]); // To store the preview images
     const fileInputRef = useRef();
 
-    // Handle file selection
+
     const handleFileChange = (event) => {
         const files = event.target.files;
         const previews = [];
@@ -113,43 +140,129 @@ const MainContent = () => {
         });
     };
 
-    // Handle click to open the file dialog
+
     const handleIconClick = () => {
         fileInputRef.current.click();
     };
-
-
-
-    const [selectedOption, setSelectedOption] = useState('Hiking Backpacks with Hydration System');
-    const options = [
-        'Hiking Backpacks with Hydration System',
-        'Portable Camping Chairs and Tables',
-        'Coolers and Portable Fridges'
-    ];
-
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                if (categoryId && subCategoryId) {
+                    const response = await axios.get(`${BASE_URL}/products/categoryProducts/?categoryId=${categoryId}&subCategoryId=${subCategoryId}`);
+                    console.log(response.data, "Fetched Products by subCategoryId");
+                    setProducts(response.data); // Update the products state
+                }
+            } catch (error) {
+                console.error("Error fetching products by subCategoryId:", error);
+            }
+        };
+    
+        fetchProducts(); 
+    }, [categoryId, subCategoryId]); 
     const handleOptionChange = (option) => {
         setSelectedOption(option);
-    };
+        setFormData({
+          ...formData,
+          productId: option,
+        });
+      };
+
+
+
+
+    const initialFormData = {
+        owner: userId,
+        title: "",
+        description: "",
+        images: [
+          "",
+          ""
+        ],
+        categoryId: categoryId,
+        subCategoryId: subCategoryId,
+        productId: selectedOption,
+        available: true,
+        rentalPrice: [
+          { period: "daily", price: 0 },
+          { period: "weekly", price: 0 },
+          { period: "monthly", price: 0 },
+          { period: "quarterly", price: 0 },
+          { period: "semiannual", price: 0 },
+          { period: "annual", price: 0 }
+        ],
+        rentalAvailability: {
+          startDate: null,
+          endDate: null
+        },
+        seoTags: ["", "", "", ""],
+        isForSale: true,
+        salePrice: 0,
+        stockQuantity: 0,
+        location: {
+          city: "",
+          state: "",
+          country: ""
+        },
+        pickupAvailable: true,
+        itemDetails: {
+          material: "",
+          capacity: "",
+          weight: ""
+        }
+      };
+      
+
+      const [formData, setFormData] = useState(initialFormData);
+
+
+      const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      };
+      const handleDateChange = (date) => {
+        setFormData((prevData) => ({
+          ...prevData,
+          rentalAvailability: {
+            ...prevData.rentalAvailability,
+            startDate: date, // Update only the startDate
+          },
+        }));
+      };
+      
+    
+
+    console.log({ categoryId, subCategoryId },"ouytrtdfgcvb");
+
+    console.log(formData,"formData");
+
     const [selectedDate, setSelectedDate] = useState(null);
 
     return (
         <div className="main-content">
             <ToastContainer />
             <div className="radio-button-group">
-                {options.map((option, index) => (
-                    <label key={index} className="radio-option">
-                        <input
-                            type="radio"
-                            name="productCategory"
-                            value={option}
-                            checked={selectedOption === option}
-                            onChange={() => handleOptionChange(option)}
-                        />
-                        <span className="custom-radio"></span>
-                        {option}
-                    </label>
-                ))}
-            </div>
+    {products.length > 0 ? (
+          products.map((option) => (
+            <label key={option._id} className="radio-option">
+              <input
+                type="radio"
+                name="productId"
+                value={option._id}
+                checked={selectedOption === option._id}
+                onChange={() => handleOptionChange(option._id)}
+              />
+              <span className="custom-radio"></span>
+              {option.productName}
+            </label>
+          ))
+    ) : (
+        <p>No products found for the selected subcategory.</p>
+    )}
+</div>
+
             <div className="product-form">
                 <h2 className='ba-in'>BASICS INFO</h2>
                 <div className='basic-details'>
@@ -157,8 +270,9 @@ const MainContent = () => {
                         <label>Product Name</label>
                         <input
                             type="text"
-                            value={productName}
-                            onChange={(e) => setProductName(e.target.value)}
+                            name="title"
+                            value={formData.title}
+                            onChange={handleInputChange}
                             placeholder="Enter name"
                         />
                     </div>
@@ -166,8 +280,10 @@ const MainContent = () => {
                     <div className="form-section2">
                         <label>Product Quality</label>
                         <select
-                            value={productQuality}
-                            onChange={(e) => setProductQuality(e.target.value)}
+                        name='description'
+                            value={formData.description}
+                            onChange={handleInputChange}
+                   
                         >
                             <option value="">Select product quality</option>
                             <option value="New">New</option>
@@ -181,8 +297,9 @@ const MainContent = () => {
                         <label>Available Stock</label>
                         <input
                             type="number"
-                            value={availableStock}
-                            onChange={(e) => setAvailableStock(e.target.value)}
+                            name='stockQuantity'
+                            value={formData.stockQuantity}
+                            onChange={handleInputChange}
                             placeholder="Enter number"
                         />
                     </div>
@@ -223,8 +340,10 @@ const MainContent = () => {
                     <label className='ba-in'>Product Availability</label>
                     <div className="date-picker-wrapper">
                         <DatePicker
-                            selected={selectedDate}
-                            onChange={(date) => setSelectedDate(date)}
+                            selected={(formData.rentalAvailability.startDate)}
+                            name='startDate'
+                            value={formData.rentalAvailability.startDate}
+                            onChange={(date) => handleDateChange(date)}
                             placeholderText="Select date"
                             className="date-picker-input"
                             dateFormat="MMMM d, yyyy"
@@ -238,18 +357,17 @@ const MainContent = () => {
                 <div className='form-section4'>
                     <h2 className='ba-in'>PRICING INFO</h2>
                     <div className="pricing-section">
-                        {["perDay", "perWeek", "perMonth", "perQuarter", "perSixMonths"].map((timeframe) => (
-                            <div key={timeframe} className="form-section5">
-                                <label>{timeframe.replace("per", "Per ").replace(/([A-Z])/g, ' $1')}</label>
-                                <input
-                                    type="number"
-                                    name={timeframe}
-                                    // value={prices[timeframe]}
-                                    onChange={handlePriceChange}
-                                    placeholder="₹ 0.00"
-                                />
-                            </div>
-                        ))}
+                    {["perDay", "perWeek", "perMonth", "perQuarter", "perSixMonths","perYear"].map((timeframe) => (
+        <div key={timeframe} className="form-section5">
+          <label>{timeframe.replace("per", "Per ").replace(/([A-Z])/g, ' $1')}</label>
+          <input
+            type="number"
+            name={timeframe}
+            onChange={handlePriceChange}
+            placeholder="₹ 0.00"
+          />
+        </div>
+      ))}
                     </div>
                 </div>
             </div>

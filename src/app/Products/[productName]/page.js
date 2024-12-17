@@ -213,7 +213,7 @@ let oneYear=rentalPrice.oneYear
                 alt="Seller"
                 className="w-6 h-6 rounded-full"
               />
-              <span className="text-xs" onClick={handleSellerclick} key={owner._id}>{owner.name}</span>
+             {owner && <span className="text-xs" onClick={handleSellerclick} key={owner._id}>{owner.name}</span>}
               <div className="flex items-center">
                 <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                 <span className="ml-1 text-xs">4.6</span>

@@ -51,6 +51,7 @@ const CategoryGrid = () => {
     setSelectedCategory(id);
     setSelectedCategoryLabel(label);
     setError(""); // Clear error if a category is selected
+    localStorage.setItem("selectedcategoryId", id);
   };
 
   const fetchCategories = async () => {
@@ -58,6 +59,14 @@ const CategoryGrid = () => {
       const response = await axios.get(`${BASE_URL}/categories`);
       console.log(response?.data.categories, "Categories fetched");
       setCategories(response?.data.categories);
+
+      // Automatically select the first category
+      if (response?.data.categories.length > 0) {
+        const firstCategory = response.data.categories[0];
+        setSelectedCategory(firstCategory._id);
+        setSelectedCategoryLabel(firstCategory.categoryName);
+        localStorage.setItem("selectedcategoryId", firstCategory._id);
+      }
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -69,8 +78,7 @@ const CategoryGrid = () => {
 
   const handleNextClick = () => {
     if (selectedCategoryLabel && selectedCategory) {
-      console.log(selectedCategory,"selected category")
-      localStorage.setItem("selectedcategoryId", selectedCategory)
+      console.log(selectedCategory, "selected category");
       // Navigate to the next page with the selected category ID
       router.push(`/add-on-rent/add-details?${selectedCategoryLabel}`);
     } else {
@@ -94,7 +102,7 @@ const CategoryGrid = () => {
             onClick={() => handleCardClick(category._id, category.categoryName)}
           >
             <img src={category.image} className="category-icon" alt={category.categoryName} />
-            <p style={{color: getTextColor(selectedCategory === category._id)}}>{category.categoryName}</p>
+            <p style={{ color: getTextColor(selectedCategory === category._id) }}>{category.categoryName}</p>
             {selectedCategory === category._id && <MdCheckCircle className="check-icon" />}
           </div>
         ))}

@@ -1,6 +1,7 @@
 'use client';
 import React, { useState,useEffect} from 'react';
 import Link from 'next/link';
+import axios from 'axios';
 const InfrastructureIcon = '/Assets/Icons/braces_line.png';
 const FurnitureIcon = '/Assets/Icons/sofa_line.png';
 const MedicalIcon = '/Assets/Icons/first_aid_kit_line.png';
@@ -24,7 +25,7 @@ const DropdownItem = ({ label, children }) => {
             onMouseLeave={() => setIsOpen(false)}
         >
             <button className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 py-2">
-                <img src={icon} alt={label} className="h-5 w-5" /> {/* Replace SVG with PNG image */}
+                {/* <img src={icon} alt={label} className="h-5 w-5" /> Replace SVG with PNG image */}
                 <span className="nav-font">{label}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
