@@ -74,11 +74,15 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Header />
-        <Navigation categories={categories} subcategories={subcategories} categoryId={categoryId} />
-        {children}
-        <Newsletter />
+      <body
+        className={` antialiased`}
+        // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+       <Header/>
+       <Navigation/>
+       {children}
+      <Newsletter/>
+
       </body>
     </html>
   );

@@ -12,9 +12,14 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; 
 
 const customStyles = `
+.product-title{font-size:14px; font-weight:400; line-height:normal}
+.cart-btn{font-size:13px; font-weight:500; }
+
 .group:hover .group-hover\:invert {
   filter: invert(1) brightness(1) contrast(1); /* More intense white effect */
 }
+  .cart-price{color:#FF2D55;}
+  .cart-btn:hover .group-hover{filter: brightness(0) invert(1); !important}
 `;
 
 const ProductItem = ({ product }) => {
@@ -95,30 +100,9 @@ const ProductItem = ({ product }) => {
     <ToastContainer />
       <style>{customStyles}</style>
 
-      <div className="bg-white rounded-lg border border-slate-200" key={_id}>
-      <div className="relative border rounded-lg">
-  {/* Image */}
-  <Link href={{pathname:`/Products/${title}`,   query: { id: _id }}} key={_id}>
-  <Image
-    src={images[0]}
-    alt={title}
-    className="h-45 object-cover rounded-lg"
-    width={500}
-    height={300}
-  />
-      </Link>
-
-  {/* View Details */}
-  <div className="absolute top-[280px] left-20 flex items-center justify-center">
-{isView? <span className="bg-white text-black w-54 text-center rounded-full border-2 p-1" onClick={handleclick}>
-  view all packages
-    </span>:<span className="bg-white text-black w-54 text-center rounded-full border-2 p-1" onClick={handleBack}>
- Back to details
-    </span>}
-  </div>
-</div>
-{isView?<div className='p-4'>
-        <h2 className="text-lg mt-6 font-medium text-gray-800">{title}</h2>
+      <div className="bg-white rounded-lg border border-slate-200 p-4">
+        <Image src={imgSrc} alt={name} className="w-full h-40 object-cover mb-4 rounded-lg" width={500} height={300} />
+        <h2 className="product-title text-gray-800">{name}</h2>
         <p className="cart-price text-bold text-lg mt-2">
           {price}
           <span className="text-gray-600 text-sm"> {rentalPrice.daily}/day</span>
@@ -153,41 +137,15 @@ const ProductItem = ({ product }) => {
           />
           <span className="text-blue-500 text-xs"> Available Stock: {stockQuantity}</span>
         </div>
-        <button 
-  className="border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-2 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-  onClick={() => handleAddCart()} // Ensure the function is called on click
->
-  <Image
-    src={cartIcon}
-    alt="Cart icon"
-    className="w-4 h-4 group-hover:invert"
-    width={16}
-    height={16}
-  />
-  <span>Add to cart</span>
-</button>
-        </div>:<div>
-
-        <div className="w-full">
-  <div className="grid grid-cols-2 text-center">
-    {Details.map((detail, index) => (
-      <div key={index} className="border p-4">
-        <span className="block text-blue-500 font-bold">{detail.label}</span>
-        <span className="block text-black text-lg font-semibold">
-          ₹{detail.price ? detail.price.toLocaleString() : "Not Available"}
-        </span>
-      </div>
-    ))}
-  </div>
-  {/* Additional rows like "6 Months" */}
-  <div className="mt-4">
-    <div className="text-blue-500 font-bold text-center">6 Months</div>
-    <div className="text-center text-gray-600 text-lg">Not Available</div>
-  </div>
-</div>
-
-</div>}
-      </div>
+        <button className="cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group">
+          <Image
+            src={cartIcon}
+            alt="Cart icon"
+            className="w-4 h-4 group-hover:invert"
+            width={500} height={300}
+          />
+          <span className='text-sm'>Add to cart</span>
+        </button>
       </div>
     </>
   );

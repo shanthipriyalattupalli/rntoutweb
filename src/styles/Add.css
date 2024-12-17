@@ -1,11 +1,11 @@
 .category-container {
     text-align: center;
     padding: 2rem;
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
 }
 
 .category-container h1 {
-    /* font-family: Poppins; */
+    font-family: 'Poppins';
     font-size: 32px;
     font-weight: 700;
     line-height: 48px;

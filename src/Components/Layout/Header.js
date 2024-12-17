@@ -98,7 +98,10 @@ function Header() {
           </button>
         </div>
 
-        <button className="flex items-center justify-center gap-2 px-6 py-2 rounded-full text-white text-lg font-medium shadow-lg bg-gradient-to-r from-pink-400 via-red-400 to-blue-400 hover:scale-105 hover:shadow-xl transition-transform ml-10" onClick={() => { router.push('/add-on-rent') }}>
+        <button className="flex items-center justify-center gap-2 px-6 py-2 rounded-full text-white text-lg font-medium shadow-lg 
+  bg-gradient-to-r from-red-500 via-rose-500 to-red-700 
+  hover:scale-105 hover:shadow-xl hover:from-red-600 hover:via-rose-600 hover:to-red-800 
+  transition-transform duration-300 ml-10" onClick={() => { router.push('/add-on-rent') }}>
           <span className="text-xl font-bold ">+</span> Rent
         </button>
 
@@ -106,7 +109,7 @@ function Header() {
         <nav className="navbar">
       {!name ? (
         <button
-          className="ml-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
+          className="ml-5 bg-[#FF2D55] hover:bg-[#e6264c] text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300"
           onClick={() => router.push("/Login")}
         >
           Sign In / Sign Up

@@ -1,7 +1,7 @@
 .rent-dashboard {
   /* max-width: 884px; */
   /* margin: auto; */
-  font-family: Arial, sans-serif;
+  /* font-family: Arial, sans-serif; */
   padding: 10px;
 }
 .back-product{
@@ -190,7 +190,7 @@
 /* Container styling */
 .product-details-container {
   padding: 20px;
-  font-family: Arial, sans-serif;
+  /* font-family: Arial, sans-serif; */
 }
 
 /* Product Information Section */
@@ -230,7 +230,7 @@
   font-size: 12px;
   font-weight: bold;
   font-weight: 700;
-  font-family: 'Mulish', sans-serif;
+  /* font-family: 'Mulish', sans-serif; */
 }
 
 .pro-p3 {
@@ -248,7 +248,7 @@
 .view-product-details {
   color: #007bff;
   text-decoration: none;
-  font-family: 'Mulish', sans-serif;
+  /* font-family: 'Mulish', sans-serif; */
 }
 
 /* Earning and Ratings Section */
@@ -281,7 +281,7 @@
 .total-earning {
   color: #28a745;
   font-size: 20px;
-  font-family: 'Mulish', sans-serif;
+  /* font-family: 'Mulish', sans-serif; */
   margin-top: 20px;
 }
 
@@ -311,7 +311,7 @@
   padding: 2px;
   border: 0.5px solid #0707071A;
   cursor: pointer;
-  font-family: 'Mulish', sans-serif;
+  /* font-family: 'Mulish', sans-serif; */
   width: 50%;
   font-weight: 14px;
 
@@ -377,7 +377,7 @@
   /* max-width: 800px; */
   margin: 0 auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
+  /* font-family: Arial, sans-serif; */
   background-color: #f9f9f9;
   border-radius: 8px;
   /* box-sizing: border-box; */
