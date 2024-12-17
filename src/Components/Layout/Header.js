@@ -98,11 +98,11 @@ function Header() {
           </button>
         </div>
 
-        <button className="flex items-center justify-center gap-2 px-6 py-2 rounded-full text-white text-lg font-medium shadow-lg 
+        <button className="flex items-center justify-center gap-2 px-6 py-1 rounded-full text-white text-base font-medium shadow-lg 
   bg-gradient-to-r from-red-500 via-rose-500 to-red-700 
   hover:scale-105 hover:shadow-xl hover:from-red-600 hover:via-rose-600 hover:to-red-800 
   transition-transform duration-300 ml-10" onClick={() => { router.push('/add-on-rent') }}>
-          <span className="text-xl font-bold ">+</span> Rent
+          <span className="text-base font-bold ">+</span> Rent
         </button>
 
 

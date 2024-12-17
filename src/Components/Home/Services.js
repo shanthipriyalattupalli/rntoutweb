@@ -14,8 +14,8 @@ const ServiceCard = memo(({ iconSrc, alt, title, description, bgColor }) => (
     <div className={`flex items-center justify-center mb-4 p-3 rounded-full ${bgColor}`}>
       <img src={iconSrc} className="p-2 bg-red-100 rounded-full" alt={alt} /> 
     </div>
-    <h3 className="text-lg font-medium text-gray-800 text-center mb-2">{title}</h3>
-    <p className="text-gray-600 text-sm text-center">{description}</p>
+    <h3 className="text-sm font-medium text-gray-800 text-center mb-2">{title}</h3>
+    <p className="text-gray-600 text-xs text-center">{description}</p>
   </div>
 ));
 
@@ -45,9 +45,9 @@ const OurBestServices = () => {
             key={link.id}
             href={link.href}
             onClick={() => setSelected(link.id)}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ease-in-out
-              ${selected === link.id ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'}
-              hover:bg-red-500 hover:text-white`}
+            className={`px-4 w-full py-2 rounded-lg font-medium transition-colors duration-200 ease-in-out w-48 text-center
+                ${selected === link.id ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'}
+                hover:bg-red-500 hover:text-white`}
           >
             {link.label}
           </a>
