@@ -11,7 +11,7 @@ const SportIcon = '/Assets/Icons/football_line.png';
 const KitchenIcon = '/Assets/Icons/fork_spoon_line.png';
 
 const customStyles = `
-.nav-font{font-size:13px;}
+.nav-font{font-size:14px; !important}
 `;
 
 const DropdownItem = ({ label, children }) => {
@@ -23,7 +23,7 @@ const DropdownItem = ({ label, children }) => {
             onMouseEnter={() => setIsOpen(true)}
             onMouseLeave={() => setIsOpen(false)}
         >
-            <button className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 py-2 px-1">
+            <button className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 py-2">
                 <img src={icon} alt={label} className="h-5 w-5" /> {/* Replace SVG with PNG image */}
                 <span className="nav-font">{label}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
