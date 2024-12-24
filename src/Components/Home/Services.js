@@ -12,7 +12,7 @@ const ser6 = '/Assets/Icons/ser-6.png';
 const ServiceCard = memo(({ iconSrc, alt, title, description, bgColor }) => (
   <div className="bg-white rounded-lg border border-slate-200 p-6">
     <div className={`flex items-center justify-center mb-4 p-3 rounded-full ${bgColor}`}>
-      <img src={iconSrc} className="p-2 bg-red-100 rounded-full" alt={alt} /> 
+      <img src={iconSrc} className="p-2 bg-blue-100 rounded-full" alt={alt} /> 
     </div>
     <h3 className="text-sm font-medium text-gray-800 text-center mb-2">{title}</h3>
     <p className="text-gray-600 text-xs text-center">{description}</p>

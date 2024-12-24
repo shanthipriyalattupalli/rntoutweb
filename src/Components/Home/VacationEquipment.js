@@ -55,7 +55,7 @@ const VacationEquipment = ({ products,categoryId}) => { // Defaulting to an empt
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold text-gray-800">
             VacationEquipment{" "}
-            <span className="text-blue-300 p-1 px-2 bg-slate-100 text-xs ml-2 rounded-lg">
+            <span className="text-white font-normal p-1 px-2 bg-teal-700 text-xs ml-2 rounded-lg">
               {products.length} Products
             </span>
           </h1>
