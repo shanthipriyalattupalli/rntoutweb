@@ -9,6 +9,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+const upload ='/Assets/upload.png'
 
 const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -17,13 +18,14 @@ const MainContent = () => {
   const subCategoryId=localStorage.getItem('selectedSubCategoryId')
   console.log(subCategoryId,"ghbnm,lpoiuyghvb nmkiuyghvb")
 const [products,setProducts]=useState([]);
+const token = localStorage.getItem('userToken');
 const [productName, setProductName] = useState('');
 const [productQuality, setProductQuality] = useState('');
 const [availableStock, setAvailableStock] = useState('');
 const [selectedOption, setSelectedOption] = useState('');
-    const [productDetails, setProductDetails] = useState([
-        { id: Date.now(), title: '', details: [{ id: Date.now() + 1, key: '', value: '' }] },
-    ]);
+const [productDetails, setProductDetails] = useState([
+    { id: Date.now(), title: '', details: [{ id: Date.now() + 1, key: '', value: '' }] },
+  ]);
 
     const handleAddSection = () => {
         setProductDetails([
@@ -176,6 +178,9 @@ const [selectedOption, setSelectedOption] = useState('');
         description: "",
         images: [
           "",
+          "",
+          "",
+          "",
           ""
         ],
         categoryId: categoryId,
@@ -205,16 +210,15 @@ const [selectedOption, setSelectedOption] = useState('');
         },
         pickupAvailable: true,
         itemDetails: {
-          material: "",
-          capacity: "",
-          weight: ""
-        }
+      
+        }  
       };
       
 
       const [formData, setFormData] = useState(initialFormData);
 
 
+      
       const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -231,9 +235,89 @@ const [selectedOption, setSelectedOption] = useState('');
           },
         }));
       };
-      
-    
+   
+      const handleChange = (sectionId, detailId, fieldType, value) => {
+        setProductDetails((prevDetails) =>
+          prevDetails.map((section) => {
+            if (section.id === sectionId) {
+              const updatedDetails = section.details.map((detail) =>
+                detail.id === detailId ? { ...detail, [fieldType]: value } : detail
+              );
+              return { ...section, details: updatedDetails };
+            }
+            return section;
+          })
+        );
+      };
 
+      useEffect(() => {
+        mapDetailsToFormData();
+      }, [productDetails]); 
+      const mapDetailsToFormData = () => {
+        const mappedDetails = productDetails.flatMap((section) =>
+          section.details.map((detail) => ({
+            key: detail.key,
+            value: detail.value,
+          }))
+        );
+      
+        console.log("Mapped itemDetails: ", mappedDetails);
+        setFormData((prev) => ({
+          ...prev,
+          itemDetails: mappedDetails,
+        }));
+      };
+      
+
+      const handlePublishProduct=async()=>{
+        try {
+          const payload={
+            owner: userId,
+            title: formData.title,
+            description: formData.description,
+            images: formData.images,
+            categoryId: formData.categoryId,
+            subCategoryId: formData.subCategoryId,
+            productId: formData.productId,
+            available: formData.available,
+            rentalPrice: formData.rentalPrice,
+            rentalAvailability: {
+              startDate: formData.rentalAvailability.startDate,
+              endDate: formData.rentalAvailability.endDate,
+            },
+            seoTags: formData.seoTags,
+            isForSale: formData.isForSale,
+            salePrice: formData.salePrice,
+            stockQuantity: formData.stockQuantity,
+            location: {
+              city: formData.location.city,
+              state: formData.location.state,
+              country: formData.location.country,
+            },
+            pickupAvailable: formData.pickupAvailable,
+            itemDetails: formData.itemDetails,
+
+          }
+          console.log(payload,"payload")
+          const response=await axios.post(`${BASE_URL}/variants`,payload,{
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          })
+          console.log(response,"created product");
+          toast.success("Product created successfully")
+        } catch (error) {
+          toast.error(error.response.data.message)
+          console.error("Error publishing product:", error);
+          
+        }
+      }
+ 
+    
+  console.log(productDetails,"productDetails");
+  console.log(formData.itemDetails,"formdata itemDetails");
+  
     console.log({ categoryId, subCategoryId },"ouytrtdfgcvb");
 
     console.log(formData,"formData");
@@ -267,7 +351,7 @@ const [selectedOption, setSelectedOption] = useState('');
                 <h2 className='ba-in'>BASICS INFO</h2>
                 <div className='basic-details'>
                     <div className="form-section1">
-                        <label>Product Name</label>
+                        <label>Product Name <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span></label>
                         <input
                             type="text"
                             name="title"
@@ -278,7 +362,7 @@ const [selectedOption, setSelectedOption] = useState('');
                     </div>
 
                     <div className="form-section2">
-                        <label>Product Quality</label>
+                        <label>Product Quality <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span></label>
                         <select
                         name='description'
                             value={formData.description}
@@ -294,7 +378,7 @@ const [selectedOption, setSelectedOption] = useState('');
                     </div>
 
                     <div className="form-section3">
-                        <label>Available Stock</label>
+                        <label>Available Stock <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span></label>
                         <input
                             type="number"
                             name='stockQuantity'
@@ -306,7 +390,7 @@ const [selectedOption, setSelectedOption] = useState('');
                 </div>
 
                 <div className="form-section file-upload">
-                    <h2 className="ba-in">Product Image</h2>
+                    <h2 className="ba-in">Product Image <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span></h2>
                     <div className="file-upload-box">
                         <input
                             type="file"
@@ -317,7 +401,7 @@ const [selectedOption, setSelectedOption] = useState('');
                             onChange={handleFileChange} // Add onChange handler
                         />
                         <div className="upload-icon" onClick={handleIconClick}>
-                            <FaUpload />
+                      <img src={upload}/>
                         </div>
                         <p>
                             Drag your file(s) or <span onClick={handleIconClick}>browse</span>
@@ -337,7 +421,7 @@ const [selectedOption, setSelectedOption] = useState('');
                 </div>
 
                 <div className="date-picker-container">
-                    <label className='ba-in'>Product Availability</label>
+                    <label className='ba-in'>Product Availability <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span></label>
                     <div className="date-picker-wrapper">
                         <DatePicker
                             selected={(formData.rentalAvailability.startDate)}
@@ -355,7 +439,7 @@ const [selectedOption, setSelectedOption] = useState('');
 
 
                 <div className='form-section4'>
-                    <h2 className='ba-in'>PRICING INFO</h2>
+                    <h2 className='ba-in'>PRICING INFO <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span></h2>
                     <div className="pricing-section">
                     {["perDay", "perWeek", "perMonth", "perQuarter", "perSixMonths","perYear"].map((timeframe) => (
         <div key={timeframe} className="form-section5">
@@ -372,56 +456,53 @@ const [selectedOption, setSelectedOption] = useState('');
                 </div>
             </div>
             <div className="details-section">
-                <h2 className='ba-in'>Product Details</h2>
+                <h2 className='ba-in'>Product Details <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span></h2>
                 {productDetails.map((section) => (
-                    <div key={section.id} className="product-details-card">
-                        Title
-                        <input
-                            type="text"
-                            className="title-input"
-                            placeholder="Enter title name"
-                            value={section.title}
-                            onChange={(e) => handleTitleChange(section.id, e.target.value)}
-                        />
+  <div key={section.id} className="product-details-card">
+    Title
+    {section.details.map((detail) => (
+      <div key={detail.id} className="detail-row">
+        <input
+          type="text"
+          placeholder="Enter title"
+          value={detail.key}
+          onChange={(e) => handleChange(section.id, detail.id, 'key', e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Enter description"
+          value={detail.value}
+          onChange={(e) => handleChange(section.id, detail.id, 'value', e.target.value)}
+        />
+        <button
+          onClick={() => handleDeleteDetail(section.id, detail.id)}
+          className="delete-btn"
+        >
+          <FiTrash />
+        </button>
+      </div>
+    ))}
+    <div className="btn-add-del">
+      <button onClick={() => handleAddDetail(section.id)} className="add-row-btn1">
+        <FiPlus /> Add Row
+      </button>
+      <button onClick={() => handleDeleteSection(section.id)} className="delete-card-btn1">
+        <FiTrash /> Delete Card
+      </button>
+    </div>
+  </div>
+))}
 
-                        {section.details.map((detail) => (
-                            <div key={detail.id} className="detail-row">
-                                <input
-                                    type="text"
-                                    placeholder="Enter title"
-                                    value={detail.key}
-                                    onChange={(e) => handleInputChange(section.id, detail.id, 'key', e.target.value)}
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Enter description"
-                                    value={detail.value}
-                                    onChange={(e) => handleInputChange(section.id, detail.id, 'value', e.target.value)}
-                                />
-                                <button
-                                    onClick={() => handleDeleteDetail(section.id, detail.id)}
-                                    className="delete-btn"
-                                >
-                                    <FiTrash />
-                                </button>
-                            </div>
-                        ))}
-                        <div className='btn-add-del'>
-                            <button onClick={() => handleAddDetail(section.id)} className="add-row-btn1">
-                                <FiPlus /> Add Row
-                            </button>
-                            <button onClick={() => handleDeleteSection(section.id)} className="delete-card-btn1">
-                                <FiTrash /> Delete Card
-                            </button>
-                        </div>
-                    </div>
-                ))}
 
                 <button onClick={handleAddSection} className="add-section-btn">
                     <FiPlus />   Add New Product Description
                 </button>
 
             </div>
+                <button onClick={handlePublishProduct} className="publish-button">
+                Publish Product
+        
+            </button>
 
         </div>
     );

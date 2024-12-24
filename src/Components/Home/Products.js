@@ -40,7 +40,7 @@ const Products = ({products,categoryId}) => {
       <div className="container mx-auto py-16">
         <div className="flex justify-center">
           <Link href={`/Product-list/${categoryId}`}>
-            <button className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-full shadow-md focus:outline-none" onClick={handleProducts}>
+            <button className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-[16px] shadow-md focus:outline-none" onClick={handleProducts}>
               View all products
             </button>
           </Link>

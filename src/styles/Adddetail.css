@@ -481,7 +481,7 @@ label {
     font-size: 1rem;
     margin: auto;
     margin-top: 20px;
-    border-radius: 10px;
+    border-radius: 20px;
     margin-bottom: 20px;
 }
 
@@ -490,13 +490,18 @@ label {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: #ff3b3f;
+    background-color: #FF2D55;
     color: white;
-    padding: 10px;
+    padding: 5px 3px 5px 3px;
     border: none;
-    border-radius: 5px;
+    border-radius: 12px;
     cursor: pointer;
-    border: solid red;
+    border: 1px solid red;
+    box-shadow: 0px 1px 0px 1px var(--OverlaysWhiteAlpha10) inset;
+    box-shadow: 0px 6px 4px -4px var(--OverlaysWhiteAlpha8) inset !important;
+    box-shadow: 0px -1px 0.5px 1px var(--OverlaysBlackAlpha8) inset;
+    
+
 }
 
 .date-picker-container {

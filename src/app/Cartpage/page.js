@@ -30,6 +30,47 @@ const CartPage = () => {
     const [quantities, setQuantities] = useState({});
     const [displayRazorpay, setDisplayRazorpay] = useState(false);
     const token = localStorage.getItem('userToken');
+    const [selectedPrice, setSelectedPrice] = useState('');
+    const [selectedPeriod, setSelectedPeriod] = useState('');
+    const [selectedOptions, setSelectedOptions] = useState({});
+  
+    const handleSelectChange = async (variantId, selectedPeriod) => {
+        const selectedRental = cartItems.find(
+          (item) => item.variant_id._id === variantId
+        )?.variant_id?.rentalPrice.find(
+          (rental) => rental.period === selectedPeriod
+        );
+      
+        if (!selectedRental) {
+          toast.error("Selected rental period is invalid");
+          return;
+        }
+      
+        try {
+            console.log(quantities[variantId],"qauntityselerdcewdc")
+          // Send the selected period and quantity to `handleAddToCart`
+          await handleAddToCart(variantId, quantities[variantId] , selectedRental.period);
+          fetchCartDetails();
+        } catch (error) {
+          console.error("Error updating rental period:", error);
+          toast.error("Failed to update rental period.");
+        }
+      };
+      
+    
+console.log(quantities,"quantituessd")
+    // useEffect(() => {
+    //     const initialOptions = {};
+    //     cartItems.forEach((item) => {
+    //         if (item.variant_id?.rentalPrice?.length > 0) {
+    //             initialOptions[item.variant_id._id] = {
+    //                 period: item.variant_id.rentalPrice[0].period,
+    //                 price:item.variant_id.rentalPrice[0].price // Default to the first period
+    //             };
+    //         }
+    //     });
+    //     setSelectedOptions(initialOptions);
+    // }, [cartItems]);
 
     const handleSidebarToggle = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -39,8 +80,9 @@ const CartPage = () => {
         setIsAddressSidebarOpen(!isAddressSidebarOpen);
     };
 
-    const increaseQuantity = async (variantId, currentQuantity) => {
-        const newQuantity = (currentQuantity || 1) + 1;
+    const increaseQuantity = async (variantId) => {
+        const newQuantity = + 1;
+        console.log(newQuantity,"quantity")
         try {
             await handleAddToCart(variantId, newQuantity); 
             setQuantities((prevQuantities) => ({
@@ -48,14 +90,15 @@ const CartPage = () => {
                 [variantId]: newQuantity,
             }));
             toast.success("Updated successfully");
+            fetchCartDetails()
         } catch (error) {
             console.error("Error increasing quantity:", error);
             toast.error("Failed to update quantity. Please try again.");
         }
     };
 
-    const decreaseQuantity = async (variantId, currentQuantity) => {
-        const newQuantity = Math.max((currentQuantity || 1) - 1, 1); 
+    const decreaseQuantity = async (variantId) => {
+        const newQuantity =  - 1; 
         try {
             await handleAddToCart(variantId, newQuantity); 
             setQuantities((prevQuantities) => ({
@@ -63,34 +106,39 @@ const CartPage = () => {
                 [variantId]: newQuantity,
             }));
             toast.success("Updated successfully");
+            fetchCartDetails()
         } catch (error) {
             console.error("Error decreasing quantity:", error);
             toast.error("Failed to update quantity. Please try again.");
         }
     };
 
-    const handleAddToCart = async (variantId, quantity) => {
-        try {
-            const payload = {
-                user_id: userId,
-                variant_id: variantId,
-                quantity, 
-                rentalPeriod: "monthly", 
-            };
-            const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
-                headers: {
-                    Authorization: `Bearer ${token}`, 
-                },
-            });
-            toast.success(response.data.message || "Quantity updated successfully.");
-        } catch (error) {
-            console.error("Error adding product to cart:", error);
-            toast.error(
-                error.response?.data?.message || "Something went wrong. Please try again."
-            );
-            throw error; 
-        }
-    };
+
+console.log(selectedOptions,"selectedperiod")
+const handleAddToCart = async (variantId, quantity, rentalPeriod) => {
+    try {
+        const payload = {
+            user_id: userId,
+            variant_id: variantId,
+            quantity, 
+            rentalPeriod, 
+        };
+        console.log(payload, "payload in cart");
+        const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        toast.success(response.data.message || "Rental period updated successfully.");
+    } catch (error) {
+        console.error("Error adding product to cart:", error);
+        toast.error(
+            error.response?.data?.message || "Something went wrong. Please try again."
+        );
+        throw error; 
+    }
+};
+
 
     const fetchCartDetails = async () => {
     console.log("out fetching cart")
@@ -146,6 +194,8 @@ const CartPage = () => {
         }
     };
 
+
+
     const apiKey = 'rzp_test_4rrCmYtqWUOUvT';
 
     // Calculate total price
@@ -170,15 +220,29 @@ const CartPage = () => {
                         </Link>               
                         <div className="item-details">
                             <h3 className="item-name">{item.variant_id.title}</h3>
-                            <p className="item-price">{item.variant_id.rentalPrice.monthly}/{item.rentalPeriod}</p>
+                            <p className="item-price">
+                                ₹{item.unitPrice}/
+                                {item.rentalPeriod}
+                            </p>
                             <div className="quantity-controls">
                                 <button className="quantity-btn" onClick={() => decreaseQuantity(item.variant_id._id, item.quantity)}>-</button>
                                 <span className="quantity">{item.quantity || 1}</span>
                                 <button className="quantity-btn" onClick={() => increaseQuantity(item.variant_id._id, item.quantity)}>+</button>
-                                <select className="duration-select">
-                                    <option>Month</option>
-                                    <option>Year</option>
+                      
+                                <select
+                                    className="duration-select"
+                                    value={selectedOptions[item.variant_id._id]?.period || ""}
+                                    onChange={(e) =>
+                                        handleSelectChange(item.variant_id._id, e.target.value)
+                                    }
+                                >
+                                    {item.variant_id.rentalPrice.map((rentalPrice) => (
+                                        <option key={rentalPrice._id} value={rentalPrice.period}>
+                                            {rentalPrice.period}
+                                        </option>
+                                    ))}
                                 </select>
+                       
                                 <p>Total: {item.lineTotal}</p>
                             </div>
                             <div className='product-right'>

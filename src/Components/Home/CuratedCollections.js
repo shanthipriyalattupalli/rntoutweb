@@ -1,6 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, memo } from 'react';
+const curated1 ='/Assets/curated1.svg'
+const curated2 ='/Assets/curated2.svg'
+const curated3 ='/Assets/curated3.svg'
+
 
 // Lazy-loaded image component for better performance
 const LazyImage = memo(({ src, alt }) => {
@@ -14,31 +18,31 @@ const CuratedCollections = () => {
   const collections = [
     {
       id: 1,
-      image: "https://via.placeholder.com/600x400/007bff/FFFFFF?text=Furniture+1",
+      image: curated1,
       title: "Furniture",
       description: "130+ Properties",
     },
     {
       id: 2,
-      image: "https://via.placeholder.com/600x400/dc3545/FFFFFF?text=Appliances",
+      image: curated2,
       title: "Appliances",
       description: "230+ Properties",
     },
     {
       id: 3,
-      image: "https://via.placeholder.com/600x400/ffc107/000000?text=Workspace",
+      image: curated3,
       title: "Workspace",
       description: "220+ Properties",
     },
     {
       id: 4,
-      image: "https://via.placeholder.com/600x400/28a745/FFFFFF?text=Outdoor+Living",
+      image: curated2,
       title: "Outdoor Living",
       description: "50+ Properties",
     },
     {
       id: 5,
-      image: "https://via.placeholder.com/600x400/17a2b8/FFFFFF?text=Home+Office",
+      image: curated1,
       title: "Home Office",
       description: "180+ Properties",
     },
@@ -75,23 +79,23 @@ const CuratedCollections = () => {
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">Curated Rental Collections</h1>
-      <p className="text-gray-600 text-center mb-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <p className="text-gray-600 text-center mb-8">Your Gateway to Premium Rental Experiences.</p>
 
       <div className="relative">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
           {/* Map over the current 3 images to display */}
           {wrapAroundCollections.map((collection) => (
             <div key={collection.id} className="relative">
               <LazyImage src={collection.image} alt={collection.title} />
-              <div className="absolute inset-0 bg-black opacity-50 rounded-lg"></div>
+              <div className="absolute bg-black opacity-50 rounded-lg"></div>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-6 py-8">
                 <div className="bg-blue-500 text-white px-3 py-1 rounded-md text-sm font-medium mb-4">
                   For Tenants with Company Lease
                 </div>
                 <div className="text-lg font-medium mb-2">{collection.description}</div>
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                {/* <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                </svg>
+                </svg> */}
               </div>
             </div>
           ))}

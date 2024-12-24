@@ -1,3 +1,5 @@
+"use client"
+
 import Sidebar from "@/Components/sidebar";
 import "@/styles/ProfileMenus.css";
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import '../styles/Home.css'
 import Banner from "../Components/Home/Banner";
 import CategoryList from "../Components/Home/CategoryList";
 import ProductGrid from "../Components/Home/ProductGrid";

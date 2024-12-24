@@ -10,8 +10,7 @@ const Photo = "/Assets/Photo.png"
 function Header() {
 
   const name = localStorage.getItem('userName');
-  console.log(name);
-  
+ 
   const [location, setLocation] = useState('HYD - 500008');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
@@ -35,8 +34,8 @@ function Header() {
   };
 
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // To manage login state
-  const [userName, setUserName] = useState(""); // To store the user's name after login
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [userName, setUserName] = useState(""); 
   
 
 
@@ -98,12 +97,11 @@ function Header() {
           </button>
         </div>
 
-        <button className="flex items-center justify-center gap-2 px-6 py-1 rounded-full text-white text-base font-medium shadow-lg 
-  bg-gradient-to-r from-red-500 via-rose-500 to-red-700 
-  hover:scale-105 hover:shadow-xl hover:from-red-600 hover:via-rose-600 hover:to-red-800 
+{name ?<button className="flex items-center justify-center gap-2 px-6 py-2 rounded-full text-white text-base font-medium shadow-lg 
+bg-[linear-gradient(90deg,_#FEAC5E_0%,_#C779D0_50%,_#4BC0C8_100%)] hover:scale-105 hover:shadow-xl hover:from-red-600 hover:via-rose-600 hover:to-red-800 
   transition-transform duration-300 ml-10" onClick={() => { router.push('/add-on-rent') }}>
-          <span className="text-base font-bold ">+</span> Rent
-        </button>
+          <span className="text-base">+</span> Rent
+        </button>:null}
 
 
         <nav className="navbar">

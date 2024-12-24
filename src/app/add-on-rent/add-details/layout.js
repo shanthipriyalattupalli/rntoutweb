@@ -17,10 +17,10 @@ const Layout = ({ children }) => (
         <MenuItems />
         {children}        
     </div>
-    <button onClick={handlePublish} className="publish-button">
+    {/* <button onClick={handlePublish} className="publish-button">
     Publish Product
     <ToastContainer/>
-</button>
+</button> */}
     </>
 );
 

@@ -86,7 +86,7 @@ const Furniture = ({products,categoryId }) => { // Defaulting to an empty array
         </div>
 
         {/* Carousel */}
-        {products.length > 5 && (
+        {/* {products.length > 5 && (
           <div className="carousel flex items-center justify-center space-x-4">
             <button
               onClick={prevSlide}
@@ -104,11 +104,11 @@ const Furniture = ({products,categoryId }) => { // Defaulting to an empty array
               Next
             </button>
           </div>
-        )}
+        )} */}
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
-          {products.map((product) => (
+          {products.slice(0, 4).map((product) => (
             <Suspense key={product.id} fallback={<div>Loading...</div>}>
               <ProductItems product={product} />
             </Suspense>

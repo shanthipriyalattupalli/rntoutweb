@@ -1,3 +1,5 @@
+
+"use client"
 import "@/styles/Favorites.css";
 import Image from 'next/image'; // Import Image component
 const pro1 = '/Assets/laptop-1.jpg';

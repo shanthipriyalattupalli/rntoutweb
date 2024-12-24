@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from "react";
 import "@/styles/Signup.css";
 import { ToastContainer, toast } from "react-toastify";

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import ScrollToTop from './ScrollToTop'
 import axios from 'axios';
 import HomeComponent from '../Pages/Home';
 
@@ -47,6 +48,7 @@ export default function Home() {
   return (
     <div>
       <HomeComponent categories={categories} subcategories={subcategories} />
+      <ScrollToTop />
     </div>
   );
 }

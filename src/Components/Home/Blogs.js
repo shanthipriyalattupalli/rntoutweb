@@ -119,14 +119,20 @@ const fetchBlogs=async()=>{
               <div key={index} className="bg-white rounded-lg shadow-md border border-slate-200 rounded-lg overflow-hidden">
                 <img src={blog.images} alt={blog.title} className="w-full" />
                 <div className="p-4">
-                  <h3 className="text-sm font-medium text-gray-800 mb-2">{blog.title}</h3>
-                  <p className="text-gray-600 text-xs mb-4">{blog.description}</p>
-                  <a href={blog.link} className="text-blue-500 hover:text-blue-700 text-sm font-medium">
-                    Read More{' '}
-                    <svg className="w-4 h-4 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                  </a>
+                  <h3 className="text-lg font-medium text-gray-800 mb-2">{blog.title}</h3>
+                  <p
+              className={`text-gray-600 text-sm mb-4 ${
+                expanded[index] ? '' : 'line-clamp-3'
+              }`}
+            >
+              {blog.description}
+            </p>
+            <button
+              onClick={() => toggleDescription(index)}
+              className="text-blue-500 hover:text-blue-700 text-sm font-medium"
+            >
+              {expanded[index] ? 'Show Less' : 'Read More'}
+            </button>
                 </div>
               </div>
             ))}

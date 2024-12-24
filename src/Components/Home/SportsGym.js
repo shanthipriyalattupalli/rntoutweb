@@ -104,7 +104,7 @@ const SportsGym = ({products,categoryId}) => { // Defaulting to an empty array
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
-          {products.map((product) => (
+          {products.slice(0, 4).map((product) => (
             <Suspense key={product._id} fallback={<div>Loading...</div>}>
               <ProductItems product={product} />
             </Suspense>
