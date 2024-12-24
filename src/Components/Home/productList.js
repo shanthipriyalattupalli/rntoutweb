@@ -203,7 +203,7 @@ const productList = ({ product }) => {
             <div>
               <div className='w-full'>
                 <div className='grid grid-cols-2 text-center'>
-                  {Details.map((detail, index) => (
+                  {Details?.map((detail, index) => (
                     <div key={index} className='border p-4'>
                       <span className='block text-blue-500 font-bold'>
                         {detail.label}

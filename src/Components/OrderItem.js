@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import { CiStar } from "react-icons/ci";
@@ -10,32 +10,32 @@ const OrderItem = ({ hideHeader, orderData }) => {
   }
 
   return (
-    <div className="order-item">
+    <div className='order-item'>
       <div
-        className="order-header"
+        className='order-header'
         style={{ display: hideHeader ? "none" : "flex" }}
       >
         <span>ID: #{orderData.id}</span>
         <span>Date: {orderData.date}</span>
       </div>
-      <div class="order-product">
+      <div class='order-product'>
         <img
           src={
             orderData.image ||
             "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"
           } // Default image fallback
           alt={orderData.name || "Product Image"}
-          className="product-image"
+          className='product-image'
         />
-        <div className="product-info">
+        <div className='product-info'>
           <h4>{orderData.name || "Product Name"}</h4>
-          <div className="product_info_detail_name">
+          <div className='product_info_detail_name'>
             <p>
               <span>₹{orderData.price || "0"}</span> /month | Rented for:{" "}
               <span>{orderData.rentedDuration || "N/A"}</span>
             </p>
             {orderData.status === "completed" && (
-              <a href="#" className="review_cta">
+              <a href='#' className='review_cta'>
                 <span>
                   <CiStar />
                 </span>
@@ -45,11 +45,13 @@ const OrderItem = ({ hideHeader, orderData }) => {
           </div>
           {/* Conditionally render feedback if available */}
           {orderData.review && orderData.review.feedback && (
-            <div className="review-section-feedback">
-              <h3><span>{5}</span> {orderData.review.title}</h3>
+            <div className='review-section-feedback'>
+              <h3>
+                <span>{5}</span> {orderData.review.title}
+              </h3>
               <p>{orderData.review.feedback}</p>
-              <div className="review-images">
-                {orderData.review.images.map((image, index) => (
+              <div className='review-images'>
+                {orderData?.review?.images?.map((image, index) => (
                   <img
                     key={index}
                     src={image}

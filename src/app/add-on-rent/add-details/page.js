@@ -263,7 +263,7 @@ const MainContent = () => {
   }, [productDetails]);
   const mapDetailsToFormData = () => {
     const mappedDetails = productDetails.flatMap((section) =>
-      section.details.map((detail) => ({
+      section.details?.map((detail) => ({
         key: detail.key,
         value: detail.value,
       }))
@@ -332,8 +332,8 @@ const MainContent = () => {
     <div className='main-content'>
       <ToastContainer />
       <div className='radio-button-group'>
-        {products.length > 0 ? (
-          products.map((option) => (
+        {products?.length > 0 ? (
+          products?.map((option) => (
             <label key={option._id} className='radio-option'>
               <input
                 type='radio'
@@ -491,10 +491,10 @@ const MainContent = () => {
           Product Details{" "}
           <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
         </h2>
-        {productDetails.map((section) => (
+        {productDetails?.map((section) => (
           <div key={section.id} className='product-details-card'>
             Title
-            {section.details.map((detail) => (
+            {section.details?.map((detail) => (
               <div key={detail.id} className='detail-row'>
                 <input
                   type='text'

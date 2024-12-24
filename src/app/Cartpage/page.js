@@ -212,7 +212,7 @@ const CartPage = () => {
         <h2 className='cart-title'>
           My Cart <span className='cart-count'>{cartItems.length}</span>
         </h2>
-        {cartItems.map((item, index) => (
+        {cartItems?.map((item, index) => (
           <div key={index} className='cart-item cursor-pointer'>
             <Link
               href={{
@@ -258,7 +258,7 @@ const CartPage = () => {
                     handleSelectChange(item.variant_id._id, e.target.value)
                   }
                 >
-                  {item.variant_id.rentalPrice.map((rentalPrice) => (
+                  {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
                     <option key={rentalPrice._id} value={rentalPrice.period}>
                       {rentalPrice.period}
                     </option>

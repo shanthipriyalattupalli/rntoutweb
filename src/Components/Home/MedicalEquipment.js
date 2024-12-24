@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import Link from "next/link";
@@ -11,7 +11,8 @@ const pro5 = "/Assets/laptop-5.jpg";
 // Lazy loading ProductItems component
 const ProductItems = lazy(() => import("../Home/ProductItems"));
 
-const MedicalEquipment = ({products,categoryId }) => { // Defaulting to an empty array
+const MedicalEquipment = ({ products, categoryId }) => {
+  // Defaulting to an empty array
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
 
@@ -42,8 +43,8 @@ const MedicalEquipment = ({products,categoryId }) => { // Defaulting to an empty
 
   if (!products || products.length === 0) {
     return (
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold text-gray-800">Medical Equipment</h1>
+      <div className='container mx-auto p-4'>
+        <h1 className='text-2xl font-bold text-gray-800'>Medical Equipment</h1>
         <p>No products available in the Medical Equipment category.</p>
       </div>
     );
@@ -51,31 +52,31 @@ const MedicalEquipment = ({products,categoryId }) => { // Defaulting to an empty
 
   return (
     <div>
-      <div className="container mx-auto p-4">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold text-gray-800">
+      <div className='container mx-auto p-4'>
+        <div className='flex justify-between items-center mb-4'>
+          <h1 className='text-2xl font-bold text-gray-800'>
             MedicalEquipment{" "}
-            <span className="text-white font-normal p-1 px-2 bg-teal-700 text-xs ml-2 rounded-lg">
+            <span className='text-white font-normal p-1 px-2 bg-teal-700 text-xs ml-2 rounded-lg'>
               {products.length} Products
             </span>
           </h1>
           <a
-        href={`/Product-list/${categoryId}`}
-            className="text-blue-500 hover:text-blue-700 text-sm font-medium"
+            href={`/Product-list/${categoryId}`}
+            className='text-blue-500 hover:text-blue-700 text-sm font-medium'
           >
             View all{" "}
             <svg
-              className="w-4 h-4 inline-block ml-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+              className='w-4 h-4 inline-block ml-1'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 5l7 7-7 7"
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M9 5l7 7-7 7'
               ></path>
             </svg>
           </a>
@@ -83,10 +84,10 @@ const MedicalEquipment = ({products,categoryId }) => { // Defaulting to an empty
 
         {/* Carousel */}
         {products.length > 5 && (
-          <div className="carousel flex items-center justify-center space-x-4">
+          <div className='carousel flex items-center justify-center space-x-4'>
             <button
               onClick={prevSlide}
-              className="text-white bg-blue-500 p-2 rounded-full"
+              className='text-white bg-blue-500 p-2 rounded-full'
             >
               Prev
             </button>
@@ -95,7 +96,7 @@ const MedicalEquipment = ({products,categoryId }) => { // Defaulting to an empty
             </Suspense>
             <button
               onClick={nextSlide}
-              className="text-white bg-blue-500 p-2 rounded-full"
+              className='text-white bg-blue-500 p-2 rounded-full'
             >
               Next
             </button>
@@ -103,8 +104,8 @@ const MedicalEquipment = ({products,categoryId }) => { // Defaulting to an empty
         )}
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
-          {products.slice(0, 4).map((product) => (
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6'>
+          {products?.slice(0, 4)?.map((product) => (
             <Suspense key={product.id} fallback={<div>Loading...</div>}>
               <ProductItems product={product} />
             </Suspense>

@@ -135,7 +135,7 @@ const Blog = () => {
         <div className='relative'>
           {/* Carousel Content */}
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-            {currentBlogs.map((blog, index) => (
+            {currentBlogs?.map((blog, index) => (
               <div
                 key={index}
                 className='bg-white rounded-lg shadow-md border border-slate-200 rounded-lg overflow-hidden'
@@ -179,7 +179,7 @@ const Blog = () => {
 
           {/* Carousel Dots */}
           <div className='absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2'>
-            {blogs.map(
+            {blogs?.map(
               (_, index) =>
                 index % 4 === 0 && (
                   <button

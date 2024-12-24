@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import ScrollToTop from './ScrollToTop'
-import axios from 'axios';
-import HomeComponent from '../Pages/Home';
+import React, { useState, useEffect } from "react";
+import ScrollToTop from "./ScrollToTop";
+import axios from "axios";
+import HomeComponent from "../Pages/Home";
 
 export default function Home() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -16,11 +16,11 @@ export default function Home() {
       const response = await axios.get(`${BASE_URL}/categories`);
       console.log(response.data.categories, "categories");
       setCategories(response.data.categories);
-      if (response.data.length > 0) {
+      if (response?.data?.length > 0) {
         setCategoryId(response.data[0]._id); // Set categoryId to the first category
       }
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   };
 
@@ -30,12 +30,13 @@ export default function Home() {
 
   const fetchSubcategories = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`);
+      const response = await axios.get(
+        `${BASE_URL}/subcategories/categories/${categoryId}`
+      );
       console.log(response.data, "subcategories");
       setSubcategories(response.data);
     } catch (error) {
-      
-      console.error('Error fetching subcategories:', error);
+      console.error("Error fetching subcategories:", error);
     }
   };
 

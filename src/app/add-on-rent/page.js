@@ -39,7 +39,9 @@ const CategoryGrid = () => {
 
   // Function to get background color for a category
   const getCategoryColor = (index, isSelected) => {
-    return isSelected ? "#6A00FF" : categoryColors[index % categoryColors.length];
+    return isSelected
+      ? "#6A00FF"
+      : categoryColors[index % categoryColors.length];
   };
 
   // Function to get text color for a category
@@ -87,28 +89,44 @@ const CategoryGrid = () => {
   };
 
   return (
-    <div className="category-container">
+    <div className='category-container'>
       <h1>🔥 Got something cool? Rent it out! 😎</h1>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <div className="category-grid">
-        {categories.map((category, index) => (
+      <div className='category-grid'>
+        {categories?.map((category, index) => (
           <div
             key={category._id}
-            className={`category-card ${selectedCategory === category._id ? "selected" : ""}`}
+            className={`category-card ${
+              selectedCategory === category._id ? "selected" : ""
+            }`}
             style={{
-              backgroundColor: getCategoryColor(index, selectedCategory === category._id),
+              backgroundColor: getCategoryColor(
+                index,
+                selectedCategory === category._id
+              ),
               color: getTextColor(selectedCategory === category._id), // Apply text color dynamically
             }}
             onClick={() => handleCardClick(category._id, category.categoryName)}
           >
-            <img src={category.image} className="category-icon" alt={category.categoryName} />
-            <p style={{ color: getTextColor(selectedCategory === category._id) }}>{category.categoryName}</p>
-            {selectedCategory === category._id && <MdCheckCircle className="check-icon" />}
+            <img
+              src={category.image}
+              className='category-icon'
+              alt={category.categoryName}
+            />
+            <p
+              style={{ color: getTextColor(selectedCategory === category._id) }}
+            >
+              {category.categoryName}
+            </p>
+            {selectedCategory === category._id && (
+              <MdCheckCircle className='check-icon' />
+            )}
           </div>
         ))}
       </div>
-      {error && <p className="error-message">{error}</p>} {/* Display error message */}
-      <button className="next-button" onClick={handleNextClick}>
+      {error && <p className='error-message'>{error}</p>}{" "}
+      {/* Display error message */}
+      <button className='next-button' onClick={handleNextClick}>
         Next
       </button>
     </div>

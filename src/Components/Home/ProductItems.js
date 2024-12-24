@@ -233,7 +233,7 @@ const ProductItem = ({ product }) => {
             <div>
               <div className='w-full'>
                 <div className='grid grid-cols-2 text-center'>
-                  {rentalPrice.slice(0, -2).map((detail) => (
+                  {rentalPrice.slice(0, -2)?.map((detail) => (
                     <div key={rentalPrice._id} className='border p-2.5'>
                       <span className='block text-blue-500 font-[500] text-[12px]'>
                         {detail.period}

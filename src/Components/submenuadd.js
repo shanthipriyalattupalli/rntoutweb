@@ -22,7 +22,7 @@ const MenuItems = () => {
       setSubcategories(response.data);
 
       // Automatically select the first subcategory on page load
-      if (response.data.length > 0) {
+      if (response?.data.length > 0) {
         const firstSubcategory = response.data[0];
         setActiveItem(firstSubcategory._id);
         localStorage.setItem("selectedSubCategoryId", firstSubcategory._id);
@@ -50,7 +50,7 @@ const MenuItems = () => {
         <button className='change-button'>Change</button>
       </div>
       <ul className='menu-list'>
-        {subcategories.map((item) => (
+        {subcategories?.map((item) => (
           <li
             key={item._id}
             className={`menu-item ${activeItem === item._id ? "active" : ""}`}

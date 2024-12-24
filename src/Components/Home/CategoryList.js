@@ -1,15 +1,21 @@
-'use client'; // For client-side rendering in Next.js App Router
+"use client"; // For client-side rendering in Next.js App Router
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import PropTypes from 'prop-types';
-import Slider from 'react-slick';
-import Image from 'next/image';
-import classNames from 'classnames';
+import React from "react";
+import { useRouter } from "next/navigation";
+import PropTypes from "prop-types";
+import Slider from "react-slick";
+import Image from "next/image";
+import classNames from "classnames";
 
 const bgColors = [
-  '#008A000D', '#00ABA90D', '#1BA1E20D', '#0050EF0D',
-  '#6A00FF0D', '#AA00FF0D', '#D800730D', '#A200250D',
+  "#008A000D",
+  "#00ABA90D",
+  "#1BA1E20D",
+  "#0050EF0D",
+  "#6A00FF0D",
+  "#AA00FF0D",
+  "#D800730D",
+  "#A200250D",
 ];
 
 const CategoryList = ({ products = [], categories }) => {
@@ -55,23 +61,23 @@ const CategoryList = ({ products = [], categories }) => {
   };
 
   return (
-    <div className="bg-white py-4">
-      <div className="container mx-auto">
-        {categories.length > 8 ? (
+    <div className='bg-white py-4'>
+      <div className='container mx-auto'>
+        {categories?.length > 8 ? (
           <Slider {...settings}>
-            {categories.map((category, index) => (
+            {categories?.map((category, index) => (
               <div key={category._id}>
                 <div
                   className={classNames(
-                    'text-sm font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer p-2'
+                    "text-sm font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer p-2"
                   )}
                   onClick={() => handleCategoryClick(category._id)}
                   style={{
                     backgroundColor: bgColors[index % bgColors.length],
-                    borderRadius: '20px',
-                    width: '148px',
-                    height: '100px',
-                    margin: '0 auto',
+                    borderRadius: "20px",
+                    width: "148px",
+                    height: "100px",
+                    margin: "0 auto",
                   }}
                 >
                   <Image
@@ -79,27 +85,29 @@ const CategoryList = ({ products = [], categories }) => {
                     alt={category.categoryName}
                     width={48}
                     height={48}
-                    className="w-12 h-12"
+                    className='w-12 h-12'
                   />
-                  <span className="text-center pt-2">{category.categoryName}</span>
+                  <span className='text-center pt-2'>
+                    {category.categoryName}
+                  </span>
                 </div>
               </div>
             ))}
           </Slider>
         ) : (
-          <div className="flex flex-wrap justify-center gap-3">
-            {categories.map((category, index) => (
+          <div className='flex flex-wrap justify-center gap-3'>
+            {categories?.map((category, index) => (
               <div
                 key={category._id}
                 className={classNames(
-                  'text-xs font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer p-2'
+                  "text-xs font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer p-2"
                 )}
                 onClick={() => handleCategoryClick(category._id)}
                 style={{
                   backgroundColor: bgColors[index % bgColors.length],
-                  borderRadius: '20px',
-                  width: '148px',
-                  height: '100px',
+                  borderRadius: "20px",
+                  width: "148px",
+                  height: "100px",
                 }}
               >
                 <Image
@@ -107,9 +115,11 @@ const CategoryList = ({ products = [], categories }) => {
                   alt={category.categoryName}
                   width={48}
                   height={48}
-                  className="w-12 h-12"
+                  className='w-12 h-12'
                 />
-                <span className="text-center pt-2">{category.categoryName}</span>
+                <span className='text-center pt-2'>
+                  {category.categoryName}
+                </span>
               </div>
             ))}
           </div>

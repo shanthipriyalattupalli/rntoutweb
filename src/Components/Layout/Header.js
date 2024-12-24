@@ -99,9 +99,9 @@ function Header() {
                   "HYD - 500028",
                   "HYD - 500032",
                   "HYD - 500084",
-                ].map((loc) => (
+                ].map((index, loc) => (
                   <a
-                    key={loc}
+                    key={index}
                     href='#'
                     className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
                     role='menuitem'

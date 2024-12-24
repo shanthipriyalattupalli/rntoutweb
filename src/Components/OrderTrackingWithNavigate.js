@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "@/styles/OrderTrackingWithNavigate.css";
@@ -6,7 +6,7 @@ import OrderItem from "@/Components/OrderItem";
 import { PiClockClockwiseBold } from "react-icons/pi";
 import { AiFillShop } from "react-icons/ai";
 const payment_icon = "/Assets/payment_icon.png";
-const HistoryImage = "/Assets/HistoryImage.png"
+const HistoryImage = "/Assets/HistoryImage.png";
 
 const trackingSteps = [
   {
@@ -94,41 +94,41 @@ const OrderTrackingWithNavigate = () => {
     return calculateTotalCosts() + calculateGST();
   };
 
-
   const router = useRouter();
   return (
-    <div className="order-tracking-container">
-      <div className="order_item-frame">
-        {orderData.map((e, index) => (
+    <div className='order-tracking-container'>
+      <div className='order_item-frame'>
+        {orderData?.map((e, index) => (
           <OrderItem key={e.id || index} hideHeader={true} orderData={e} />
         ))}
       </div>
 
-      <div className="order_trackinf_section">
+      <div className='order_trackinf_section'>
         <h3>Order Tracking</h3>
-        <div className="tracking-steps">
-          {trackingSteps.map((step, index) => (
+        <div className='tracking-steps'>
+          {trackingSteps?.map((step, index) => (
             <div
               key={index}
-              className="tracking-step"
+              className='tracking-step'
               onClick={() => handleStepClick(step.path)}
               style={{ cursor: step.isActive ? "pointer" : "default" }} // Only allow navigation for active steps
             >
-              <div className="tracking_steps_main">
+              <div className='tracking_steps_main'>
                 {/* Step Information */}
-                <div className="step-info">
+                <div className='step-info'>
                   <p className={`step-label ${step.isActive ? "active" : ""}`}>
                     {step.label}
                   </p>
                   {/* Step Indicator */}
                   <div
-                    className={`step-indicator ${step.isActive ? "active" : ""
-                      }`}
+                    className={`step-indicator ${
+                      step.isActive ? "active" : ""
+                    }`}
                   >
                     {step.isActive ? (
-                      <span className="step-circle filled"></span>
+                      <span className='step-circle filled'></span>
                     ) : (
-                      <span className="step-circle"></span>
+                      <span className='step-circle'></span>
                     )}
                   </div>
                   <p className={`step-date ${step.isActive ? "active" : ""}`}>
@@ -139,71 +139,81 @@ const OrderTrackingWithNavigate = () => {
               {/* Step Divider */}
               {index < trackingSteps.length - 1 && (
                 <div
-                  className={`step-divider ${trackingSteps[index + 1].isActive ? "active" : ""
-                    }`}
+                  className={`step-divider ${
+                    trackingSteps[index + 1].isActive ? "active" : ""
+                  }`}
                 ></div>
               )}
             </div>
           ))}
         </div>
         {/* payment status */}
-        <div class="payment-section">
-          <div class="payment-info">
-            <span class="icon">
+        <div class='payment-section'>
+          <div class='payment-info'>
+            <span class='icon'>
               {/* <MdDone /> */}
-              <img src={payment_icon} alt="Icon" />
+              <img src={payment_icon} alt='Icon' />
             </span>
-            <div class="payment-details">
-              <div className="payment-details_completed">
+            <div class='payment-details'>
+              <div className='payment-details_completed'>
                 <h4>Payment completed</h4>
                 <p>25 Sep 2024, 12:10 PM</p>
               </div>
             </div>
           </div>
-          <div class="payment-date">25 Sep 2024, 12:10 PM</div>
+          <div class='payment-date'>25 Sep 2024, 12:10 PM</div>
         </div>
-        <div class="rent-cost-breakup">
-          <h3 class="section-title">Rent Cost Breakup</h3>
-          <div class="grid-container">
-            <div class="label">Total Rent</div>
-            <div class="value">₹ {rentData.totalRent}/mo</div>
+        <div class='rent-cost-breakup'>
+          <h3 class='section-title'>Rent Cost Breakup</h3>
+          <div class='grid-container'>
+            <div class='label'>Total Rent</div>
+            <div class='value'>₹ {rentData.totalRent}/mo</div>
 
-            <div class="label">Discounts</div>
-            <div class="value discount">- {rentData.discounts}/mo</div>
+            <div class='label'>Discounts</div>
+            <div class='value discount'>- {rentData.discounts}/mo</div>
 
-            <div class="label">Other</div>
-            <div class="value">₹ {rentData.otherCharges}/mo</div>
+            <div class='label'>Other</div>
+            <div class='value'>₹ {rentData.otherCharges}/mo</div>
 
-            <div class="label">Total Costs</div>
-            <div class="value">₹ {calculateTotalCosts()}</div>
+            <div class='label'>Total Costs</div>
+            <div class='value'>₹ {calculateTotalCosts()}</div>
 
-            <div class="label">GST</div>
-            <div class="value">
+            <div class='label'>GST</div>
+            <div class='value'>
               ₹ {calculateGST().toFixed(2)} ({rentData.gstRate}%)
             </div>
 
-            <div class="label grand-total">Rent Grand Total</div>
-            <div class="value grand-total">
+            <div class='label grand-total'>Rent Grand Total</div>
+            <div class='value grand-total'>
               ₹ {calculateGrandTotal().toFixed(2)}
             </div>
           </div>
         </div>
-        <div class="payment-info enterprice">
-          <span class="icon">
+        <div class='payment-info enterprice'>
+          <span class='icon'>
             {/* <MdDone /> */}
             <AiFillShop />
           </span>
-          <div class="payment-details">
+          <div class='payment-details'>
             <h4>RntOut Enterprise</h4>
-            <p><a href="#"   onClick={() => {router.push('/profile/orders/orderreview')}} >Click here to write seller feedback</a></p>
+            <p>
+              <a
+                href='#'
+                onClick={() => {
+                  router.push("/profile/orders/orderreview");
+                }}
+              >
+                Click here to write seller feedback
+              </a>
+            </p>
           </div>
         </div>
-        <div class="payment-info order_closer">
-          <span class="icon">
+        <div class='payment-info order_closer'>
+          <span class='icon'>
             {/* <MdDone /> */}
             <PiClockClockwiseBold />
           </span>
-          <div class="payment-details">
+          <div class='payment-details'>
             <h4>Order Closure</h4>
             <p>{95} Days Remaining</p>
           </div>

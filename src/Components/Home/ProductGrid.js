@@ -35,7 +35,7 @@ const CategorySection = ({ categories }) => {
 
       <div className='bg-white-100 py-4'>
         <div className='container mx-auto flex flex-wrap justify-center gap-1'>
-          {categories.map((category) => (
+          {categories?.map((category) => (
             <button
               key={category._id}
               onClick={() => handleCategoryClick(category._id)}

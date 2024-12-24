@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 const Submenu = ({ categories }) => {
-  let category =categories
-  console.log(categories,"category in submenu...............................")
+  let category = categories;
+  console.log(categories, "category in submenu...............................");
   const router = useRouter();
   const params = useParams(); // Get the categoryId from the route params
   const [activeMenu, setActiveMenu] = useState(null);
@@ -22,9 +22,9 @@ const Submenu = ({ categories }) => {
   };
 
   return (
-    <div className="container mx-auto flex mt-4 pt-4">
-      <nav className="flex flex-row gap-4 overflow-x-auto">
-        {categories.map((category) => (
+    <div className='container mx-auto flex mt-4 pt-4'>
+      <nav className='flex flex-row gap-4 overflow-x-auto'>
+        {categories?.map((category) => (
           <button
             key={category._id}
             onClick={() => handleMenuClick(category._id)}
@@ -34,7 +34,7 @@ const Submenu = ({ categories }) => {
                 : "bg-slate-200"
             } hover:bg-white transition-colors duration-300`}
           >
-            <span className="text-sm font-xs">{category.categoryName}</span>
+            <span className='text-sm font-xs'>{category.categoryName}</span>
           </button>
         ))}
       </nav>

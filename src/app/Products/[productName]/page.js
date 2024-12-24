@@ -32,8 +32,11 @@ const ProductPage = () => {
   const [owner, setOwner] = useState({});
   const [images, setImages] = useState([]);
   const router = useRouter();
-  const searchParams = useSearchParams();
+  /* const searchParams = useSearchParams();
   const productId = searchParams.get("id");
+   */
+  const params = useParams();
+  const productId = params.id;
   let userId;
   let token;
 
@@ -367,7 +370,7 @@ const ProductPage = () => {
                 Other Details
               </h2>
               <tbody>
-                {otherDetails.map((detail, index) => (
+                {otherDetails?.map((detail, index) => (
                   <tr key={index} className=''>
                     <td className='p-2 font-semibold'>{detail.label}</td>
                     <td className='p-2 text-gray-600'>{detail.value}</td>
@@ -382,7 +385,7 @@ const ProductPage = () => {
         <div>
           <h2 className='text-lg font-semibold mb-3'>FAQ ABOUT THIS PRODUCT</h2>
           <div className='border bg-white rounded-lg border-slate-200'>
-            {faqItems.map((faq, index) => (
+            {faqItems?.map((faq, index) => (
               <div key={index} className='border-b'>
                 <button
                   className='flex items-center justify-between w-full p-2'

@@ -1,6 +1,5 @@
 "use client";
 
-
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import Link from "next/link";
 
@@ -13,14 +12,15 @@ const pro5 = "/Assets/laptop-5.jpg";
 // Lazy loading ProductItem component
 const ProductItems = lazy(() => import("../Home/ProductItems"));
 
-const ITInfrastructure = ({products,categoryId}) => { // Defaulting to an empty array
-  console.log(products,"nko98ytfchgvb nmo-9897tyfcg ")
+const ITInfrastructure = ({ products, categoryId }) => {
+  // Defaulting to an empty array
+  console.log(products, "nko98ytfchgvb nmo-9897tyfcg ");
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
 
-  useEffect(()=>{
-    console.log(products,"nko98ytfchgvb nmo-9897tyfcg ");
-  })
+  useEffect(() => {
+    console.log(products, "nko98ytfchgvb nmo-9897tyfcg ");
+  });
   const nextSlide = () => {
     if (products.length > 0 && currentSlide < products.length - 1) {
       setCurrentSlide(currentSlide + 1);
@@ -46,44 +46,44 @@ const ITInfrastructure = ({products,categoryId}) => { // Defaulting to an empty 
     }
   }, [currentSlide, isAutoplay, products.length]);
 
-//   if (!products || products.length === 0) {
-//     return (
-//       <div className="container mx-auto p-4">
-//         <h1 className="text-2xl font-bold text-gray-800">
-//           IT Infrastructure
-//         </h1>
-//         <p>No products available in the IT Infrastructure category.</p>
-//       </div>
-//     ); // Show heading and message if there are no products
-//   }
+  //   if (!products || products.length === 0) {
+  //     return (
+  //       <div className="container mx-auto p-4">
+  //         <h1 className="text-2xl font-bold text-gray-800">
+  //           IT Infrastructure
+  //         </h1>
+  //         <p>No products available in the IT Infrastructure category.</p>
+  //       </div>
+  //     ); // Show heading and message if there are no products
+  //   }
 
   return (
     <div>
-      <div className="container mx-auto p-4">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold text-gray-800">
+      <div className='container mx-auto p-4'>
+        <div className='flex justify-between items-center mb-4'>
+          <h1 className='text-2xl font-bold text-gray-800'>
             IT Infrastructure{" "}
-            <span className="text-white font-normal p-1 px-2 bg-teal-700 text-xs ml-2 rounded-lg">
+            <span className='text-white font-normal p-1 px-2 bg-teal-700 text-xs ml-2 rounded-lg'>
               {products.length} Products
             </span>
           </h1>
           <a
             href={`/Product-list/${categoryId}`}
-            className="text-blue-500 hover:text-blue-700 text-sm font-medium"
+            className='text-blue-500 hover:text-blue-700 text-sm font-medium'
           >
             View all{" "}
             <svg
-              className="w-4 h-4 inline-block ml-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+              className='w-4 h-4 inline-block ml-1'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 5l7 7-7 7"
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M9 5l7 7-7 7'
               ></path>
             </svg>
           </a>
@@ -91,10 +91,10 @@ const ITInfrastructure = ({products,categoryId}) => { // Defaulting to an empty 
 
         {/* Carousel */}
         {products.length > 5 && (
-          <div className="carousel flex items-center justify-center space-x-4">
+          <div className='carousel flex items-center justify-center space-x-4'>
             <button
               onClick={prevSlide}
-              className="text-white bg-blue-500 p-2 rounded-full"
+              className='text-white bg-blue-500 p-2 rounded-full'
             >
               Prev
             </button>
@@ -103,7 +103,7 @@ const ITInfrastructure = ({products,categoryId}) => { // Defaulting to an empty 
             </Suspense>
             <button
               onClick={nextSlide}
-              className="text-white bg-blue-500 p-2 rounded-full"
+              className='text-white bg-blue-500 p-2 rounded-full'
             >
               Next
             </button>
@@ -111,17 +111,17 @@ const ITInfrastructure = ({products,categoryId}) => { // Defaulting to an empty 
         )}
 
         {/* Product Grid */}
-        <div className="product-scroll-wrapper">
-        <div className="product-scroll-container">
-          {products.map((product) => (
-            <Suspense key={product._id} fallback={<div>Loading...</div>}>
-              <ProductItems product={product} />
-            </Suspense>
-          ))}
-        </div>
+        <div className='product-scroll-wrapper'>
+          <div className='product-scroll-container'>
+            {products?.map((product) => (
+              <Suspense key={product._id} fallback={<div>Loading...</div>}>
+                <ProductItems product={product} />
+              </Suspense>
+            ))}
+          </div>
         </div>
 
-{/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
           {products.slice(0, 4).map((product) => (
             <Suspense key={product._id} fallback={<div>Loading...</div>}>
               <ProductItems product={product} />

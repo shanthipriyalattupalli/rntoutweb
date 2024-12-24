@@ -1,15 +1,14 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/Components/Layout/Header";
 import Newsletter from "@/Components/Layout/Newsletter";
 import Navigation from "@/Components/Layout/Navigation";
-import HomeComponent from '../Pages/Home'
-import { ToastContainer, toast } from 'react-toastify';
-
+import HomeComponent from "../Pages/Home";
+import { ToastContainer, toast } from "react-toastify";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,7 +35,9 @@ export default function RootLayout({ children }) {
   const fetchSubcategories = async () => {
     if (categoryId) {
       try {
-        const response = await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`);
+        const response = await axios.get(
+          `${BASE_URL}/subcategories/categories/${categoryId}`
+        );
         console.log(response.data, "subcategories");
         // Check if the response is an array before setting it
         if (Array.isArray(response.data)) {
@@ -45,7 +46,7 @@ export default function RootLayout({ children }) {
           setSubcategories([]); // Fallback to empty array if the data is not an array
         }
       } catch (error) {
-        console.error('Error fetching subcategories:', error);
+        console.error("Error fetching subcategories:", error);
         setSubcategories([]); // Set to empty array on error
       }
     }
@@ -56,11 +57,11 @@ export default function RootLayout({ children }) {
       const response = await axios.get(`${BASE_URL}/categories`);
       console.log(response.data.categories, "categories");
       setCategories(response.data.categories);
-      if (response.data.length > 0) {
+      if (response?.data?.length > 0) {
         setCategoryId(response.data[0]._id); // Set the first category as default
       }
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   };
 
@@ -73,18 +74,16 @@ export default function RootLayout({ children }) {
   }, [categoryId]);
 
   return (
-    <html lang="en">
+    <html lang='en'>
       <body
         className={` antialiased`}
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-       <Header/>
-       <Navigation/>
-       {children}
-      <Newsletter/>
-
+        <Header />
+        <Navigation />
+        {children}
+        <Newsletter />
       </body>
     </html>
   );
 }
-

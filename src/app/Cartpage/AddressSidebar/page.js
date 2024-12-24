@@ -200,7 +200,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
                 &times;
               </button>
             </div>
-            {Address.map((address, index) => (
+            {Address?.map((address, index) => (
               <div
                 key={index}
                 className='container address-card'
