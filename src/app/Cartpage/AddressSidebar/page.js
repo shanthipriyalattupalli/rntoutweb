@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "@/styles/AddressSidebar.css";
 
@@ -8,10 +8,12 @@ const edit = "/Assets/editicon.svg";
 
 const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  const token =localStorage.getItem('userToken');
+  let token;
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selected, setSelected] = useState(null);
-
+  useEffect(() => {
+    token = localStorage.getItem("userToken");
+  }, []);
   const initialFormData = {
     type: "",
     street: "",
@@ -21,7 +23,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
-  console.log(formData,"initial form");
+  console.log(formData, "initial form");
 
   if (!isOpen) return null;
 
@@ -85,19 +87,19 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
   ];
 
   return (
-    <div className="sidebar-overlay" onClick={onClose}>
-      <div className="sidebar" onClick={(e) => e.stopPropagation()}>
+    <div className='sidebar-overlay' onClick={onClose}>
+      <div className='sidebar' onClick={(e) => e.stopPropagation()}>
         {isAddAddress ? (
           <div>
-            <div className="sidebar-header">
+            <div className='sidebar-header'>
               <h2>Add New Address</h2>
-              <button onClick={onClose} className="close-button">
+              <button onClick={onClose} className='close-button'>
                 &times;
               </button>
             </div>
-            <div className="address-form">
-              <div className="form-select">
-                {["Home", "Office", "Hotel","Others"].map((item) => (
+            <div className='address-form'>
+              <div className='form-select'>
+                {["Home", "Office", "Hotel", "Others"].map((item) => (
                   <span
                     key={item}
                     className={`form-select-item ${
@@ -134,10 +136,10 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
                 onChange={handleInputChange}
               /> */}
               <input
-                type="text"
-                placeholder="Area / Sector / Locality"
-                className="text-input"
-                name="street"
+                type='text'
+                placeholder='Area / Sector / Locality'
+                className='text-input'
+                name='street'
                 value={formData.street}
                 onChange={handleInputChange}
               />
@@ -149,7 +151,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
                 value={formData.landmark}
                 onChange={handleInputChange}
               /> */}
-              <div className="flex gap-2">
+              <div className='flex gap-2'>
                 {/* <input
                   type="text"
                   placeholder="Country"
@@ -159,64 +161,64 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
                   onChange={handleInputChange}
                 /> */}
                 <input
-                  type="text"
-                  placeholder="State"
-                  className="text-input"
-                  name="state"
+                  type='text'
+                  placeholder='State'
+                  className='text-input'
+                  name='state'
                   value={formData.state}
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="flex gap-2">
+              <div className='flex gap-2'>
                 <input
-                  type="text"
-                  placeholder="City"
-                  className="text-input"
-                  name="city"
+                  type='text'
+                  placeholder='City'
+                  className='text-input'
+                  name='city'
                   value={formData.city}
                   onChange={handleInputChange}
                 />
                 <input
-                  type="text"
-                  placeholder="Postcode"
-                  className="text-input"
-                  name="zip"
+                  type='text'
+                  placeholder='Postcode'
+                  className='text-input'
+                  name='zip'
                   value={formData.zip}
                   onChange={handleInputChange}
                 />
               </div>
-              <button className="address-button"  onClick={handleSaveAddress}>
+              <button className='address-button' onClick={handleSaveAddress}>
                 Save Address
               </button>
             </div>
           </div>
         ) : (
           <div>
-            <div className="sidebar-header">
+            <div className='sidebar-header'>
               <h2>RntOut Insurance</h2>
-              <button onClick={onClose} className="close-button">
+              <button onClick={onClose} className='close-button'>
                 &times;
               </button>
             </div>
             {Address.map((address, index) => (
               <div
                 key={index}
-                className="container address-card"
+                className='container address-card'
                 onClick={() => {
                   onAddressSelect(address);
                   onClose();
                 }}
               >
-                <div className="delivery-content">
-                  <div className="delivery-context">
-                    <h5 className="delivery-to">DELIVERS TO</h5>
+                <div className='delivery-content'>
+                  <div className='delivery-context'>
+                    <h5 className='delivery-to'>DELIVERS TO</h5>
                     <span>Home</span>
                   </div>
-                  <div className="address-edit">
-                    <img src={edit} alt="edit" />
+                  <div className='address-edit'>
+                    <img src={edit} alt='edit' />
                   </div>
                 </div>
-                <div className="address-context">
+                <div className='address-context'>
                   <h4>{address.name}</h4>
                   <p>|</p>
                   <p>{address.mobile}</p>
@@ -226,7 +228,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
                 </div>
               </div>
             ))}
-            <button className="address-button" onClick={handleAddAddress}>
+            <button className='address-button' onClick={handleAddAddress}>
               Add New Address
             </button>
           </div>

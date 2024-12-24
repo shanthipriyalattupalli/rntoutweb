@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -6,14 +6,18 @@ import "@/styles/Adddetail.css";
 
 const MenuItems = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  const categoryId = localStorage.getItem("selectedcategoryId");
+  let categoryId;
   const [subcategories, setSubcategories] = useState([]);
   const [activeItem, setActiveItem] = useState(null); // State to track the active subcategory
-
+  useEffect(() => {
+    localStorage.getItem("selectedcategoryId");
+  }, []);
   // Fetch subcategories by categoryId
   const fetchSubCategories = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`);
+      const response = await axios.get(
+        `${BASE_URL}/subcategories/categories/${categoryId}`
+      );
       console.log(response.data, "subcategories by category");
       setSubcategories(response.data);
 
@@ -35,17 +39,17 @@ const MenuItems = () => {
   // Handle click event to set the active subcategory
   const handleItemClick = (itemId) => {
     setActiveItem(itemId);
-    console.log(itemId,"clicking subcatgoryid")
+    console.log(itemId, "clicking subcatgoryid");
     localStorage.setItem("selectedSubCategoryId", itemId); // Update localStorage
   };
 
   return (
-    <div className="sidebar-menu">
-      <div className="menu-header">
-        <span className="category-title">VACATION EQUIPMENTS</span>
-        <button className="change-button">Change</button>
+    <div className='sidebar-menu'>
+      <div className='menu-header'>
+        <span className='category-title'>VACATION EQUIPMENTS</span>
+        <button className='change-button'>Change</button>
       </div>
-      <ul className="menu-list">
+      <ul className='menu-list'>
         {subcategories.map((item) => (
           <li
             key={item._id}

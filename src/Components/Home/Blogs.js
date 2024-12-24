@@ -1,15 +1,18 @@
 "use client";
-import React, { useState,useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Blog = () => {
   // Managing the active slide index (for 4 items at a time)
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  const token =localStorage.getItem('userToken')
-  const [blogs,setBlogs]=useState([])
+  let token;
+  const [blogs, setBlogs] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [expanded, setExpanded] = useState({}); // Track expanded state for each blog
 
+  useEffect(() => {
+    token = localStorage.getItem("userToken");
+  }, []);
   const toggleDescription = (index) => {
     setExpanded((prev) => ({
       ...prev,
@@ -71,20 +74,19 @@ const Blog = () => {
   const goToSlide = (index) => {
     setCurrentSlide(index);
   };
-const fetchBlogs=async()=>{
-  try {
-    const response=await axios.get(`${BASE_URL}/blogs`,{
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      }
-    })
-    console.log(response.data.blogs,"blogs")
-    setBlogs(response.data.blogs)
-  } catch (error) {
-    console.error('Error fetching blogs:', error);
-    
-  }
-}
+  const fetchBlogs = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/blogs`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data.blogs, "blogs");
+      setBlogs(response.data.blogs);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    }
+  };
 
   useEffect(() => {
     fetchBlogs();
@@ -92,47 +94,70 @@ const fetchBlogs=async()=>{
   // Calculate the current 4 items to display (looping continuously)
   const currentBlogs = [
     ...blogs.slice(currentSlide),
-    ...blogs.slice(0, currentSlide + 4 - blogs.length) // ensures continuous loop
+    ...blogs.slice(0, currentSlide + 4 - blogs.length), // ensures continuous loop
   ].slice(0, 4); // Get only the first 4 items for display
 
-  console.log(currentBlogs,"Blogs")
+  console.log(currentBlogs, "Blogs");
   return (
-    <div className="mt-8">
-      <div className="container mx-auto">
+    <div className='mt-8'>
+      <div className='container mx-auto'>
         {/* Header Section */}
-        <div className="flex justify-between items-center mt-20 mb-4">
-          <h1 className="text-3xl font-bold text-gray-800">Our Exclusive Blogs</h1>
-          <a href="#" className="text-blue-500 hover:text-blue-700 text-sm font-medium">
-            View all blogs{' '}
-            <svg className="w-4 h-4 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+        <div className='flex justify-between items-center mt-20 mb-4'>
+          <h1 className='text-3xl font-bold text-gray-800'>
+            Our Exclusive Blogs
+          </h1>
+          <a
+            href='#'
+            className='text-blue-500 hover:text-blue-700 text-sm font-medium'
+          >
+            View all blogs{" "}
+            <svg
+              className='w-4 h-4 inline-block ml-1'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M9 5l7 7-7 7'
+              ></path>
             </svg>
           </a>
         </div>
-        <p className="text-gray-600 text-left mb-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p className='text-gray-600 text-left mb-8'>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        </p>
 
         {/* Carousel Section */}
-        <div className="relative">
+        <div className='relative'>
           {/* Carousel Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
             {currentBlogs.map((blog, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md border border-slate-200 rounded-lg overflow-hidden">
-                <img src={blog.images} alt={blog.title} className="w-full" />
-                <div className="p-4">
-                  <h3 className="text-lg font-medium text-gray-800 mb-2">{blog.title}</h3>
+              <div
+                key={index}
+                className='bg-white rounded-lg shadow-md border border-slate-200 rounded-lg overflow-hidden'
+              >
+                <img src={blog.images} alt={blog.title} className='w-full' />
+                <div className='p-4'>
+                  <h3 className='text-lg font-medium text-gray-800 mb-2'>
+                    {blog.title}
+                  </h3>
                   <p
-              className={`text-gray-600 text-sm mb-4 ${
-                expanded[index] ? '' : 'line-clamp-3'
-              }`}
-            >
-              {blog.description}
-            </p>
-            <button
-              onClick={() => toggleDescription(index)}
-              className="text-blue-500 hover:text-blue-700 text-sm font-medium"
-            >
-              {expanded[index] ? 'Show Less' : 'Read More'}
-            </button>
+                    className={`text-gray-600 text-sm mb-4 ${
+                      expanded[index] ? "" : "line-clamp-3"
+                    }`}
+                  >
+                    {blog.description}
+                  </p>
+                  <button
+                    onClick={() => toggleDescription(index)}
+                    className='text-blue-500 hover:text-blue-700 text-sm font-medium'
+                  >
+                    {expanded[index] ? "Show Less" : "Read More"}
+                  </button>
                 </div>
               </div>
             ))}
@@ -141,28 +166,31 @@ const fetchBlogs=async()=>{
           {/* Carousel Navigation Buttons */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
+            className='absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full'
           >
             &#8592;
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
+            className='absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full'
           >
             &#8594;
           </button>
 
           {/* Carousel Dots */}
-          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {blogs.map((_, index) => (
-              index % 4 === 0 && (
-                <button
-                  key={index}
-                  onClick={() => goToSlide(index)}
-                  className={`w-3 h-3 rounded-full ${currentSlide === index ? 'bg-red-800' : 'bg-red-100'}`}
-                ></button>
-              )
-            ))}
+          <div className='absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2'>
+            {blogs.map(
+              (_, index) =>
+                index % 4 === 0 && (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`w-3 h-3 rounded-full ${
+                      currentSlide === index ? "bg-red-800" : "bg-red-100"
+                    }`}
+                  ></button>
+                )
+            )}
           </div>
         </div>
       </div>

@@ -1,16 +1,14 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Image from "next/image";
 
-
-"use client"
-import React, { useState } from 'react';
-import axios from 'axios';
-import Image from 'next/image';
-
-const DeliveryIcon = '/Assets/Icons/delivery.png';
-const AvailabilityIcon = '/Assets/Icons/availability.png';
-const AvailabilIcon = '/Assets/Icons/ava-stock.png';
-const cartIcon = '/Assets/Icons/add-to-cart.png';
-const cartIconHov = '/Assets/Icons/add-to-cart-white.png';
-const stars='/Assets/stars.svg'
+const DeliveryIcon = "/Assets/Icons/delivery.png";
+const AvailabilityIcon = "/Assets/Icons/availability.png";
+const AvailabilIcon = "/Assets/Icons/ava-stock.png";
+const cartIcon = "/Assets/Icons/add-to-cart.png";
+const cartIconHov = "/Assets/Icons/add-to-cart-white.png";
+const stars = "/Assets/stars.svg";
 import Link from "next/link";
 // import DeliveryIcon from '/public/Assets/Icons/delivery.png';
 // import AvailabilityIcon from '/public/Assets/Icons/availability.png';
@@ -29,8 +27,13 @@ const ProductItem = ({ product }) => {
 
   // const { imgSrc, name, price, dateRange, availability, stock } = product;
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  const userId = localStorage.getItem('userId');
-  const token = localStorage.getItem('userToken');
+  let userId;
+  let token;
+
+  useEffect(() => {
+    userId = localStorage.getItem("userId");
+    token = localStorage.getItem("userToken");
+  }, []);
 
   const [isView, setIsview] = useState(true);
   const {
@@ -47,12 +50,13 @@ const ProductItem = ({ product }) => {
     _id,
   } = product;
 
-
-  console.log(rentalPrice, "rental price")
-  const formattedDate = new Date(rentalAvailability?.startDate).toLocaleDateString('en-US', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
+  console.log(rentalPrice, "rental price");
+  const formattedDate = new Date(
+    rentalAvailability?.startDate
+  ).toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
   });
 
   const Details = [
@@ -60,23 +64,23 @@ const ProductItem = ({ product }) => {
     { label: "Week", price: rentalPrice.weekly },
     { label: "Month", price: rentalPrice.monthly },
     { label: "Quarter", price: rentalPrice.threeMonths },
-  ]
+  ];
 
   const handleclick = () => {
     setIsview(!isView);
-  }
+  };
   const handleBack = () => {
     setIsview(true);
-  }
+  };
 
   const handleAddToCart = async (productId) => {
-    console.log(productId, "variant id")
+    console.log(productId, "variant id");
     try {
       const payload = {
         user_id: userId,
         variant_id: productId,
         quantity: 1,
-        rentalPeriod: "monthly"
+        rentalPeriod: "monthly",
       };
       const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
         headers: {
@@ -88,7 +92,8 @@ const ProductItem = ({ product }) => {
     } catch (error) {
       console.error("Error adding product to cart:", error);
       toast.error(
-        error.response?.data?.message || "Something went wrong. Please try again."
+        error.response?.data?.message ||
+          "Something went wrong. Please try again."
       );
     }
   };
@@ -99,7 +104,7 @@ const ProductItem = ({ product }) => {
     } else {
       toast.error("You must be logged in to add items to cart.");
     }
-  }
+  };
 
   return (
     <>
@@ -107,118 +112,153 @@ const ProductItem = ({ product }) => {
         <ToastContainer />
         <style>{customStyles}</style>
 
-        <div className="w-[300px] bg-white rounded-lg border border-slate-200">
-          <div className="relative rounded-lg">
+        <div className='w-[300px] bg-white rounded-lg border border-slate-200'>
+          <div className='relative rounded-lg'>
             <div className='border-b-2 border-bottom-color: rgb(209 213 219 / var(--tw-border-opacity, 1))'>
-            <Link href={{ pathname: `/Products/${title}`, query: { id: _id } }} key={_id}>
-              <Image
-                src={images[0]}
-                alt={title}
-                className="w-full h-44 object-cover rounded-lg"
-                width={500}
-                height={300}
-              />
-            </Link>
-            <p className='absolute flex top-[14px] right-4 bg-amber-500 px-2 rounded-full text-[white]'>
-              <img src={stars}/>
-              4.5
+              <Link
+                href={{ pathname: `/Products/${title}`, query: { id: _id } }}
+                key={_id}
+              >
+                <Image
+                  src={images[0]}
+                  alt={title}
+                  className='w-full h-44 object-cover rounded-lg'
+                  width={500}
+                  height={300}
+                />
+              </Link>
+              <p className='absolute flex top-[14px] right-4 bg-amber-500 px-2 rounded-full text-[white]'>
+                <img src={stars} />
+                4.5
               </p>
             </div>
-            <div className="absolute top-[159px] left-1/4 flex items-center justify-center">
-              {isView ? <span className="bg-white text-black w-54 text-center rounded-full border-2 p-1" onClick={handleclick}>
-                view all packages
-              </span> : <span className="bg-white text-black w-54 text-center rounded-full border-2 p-1" onClick={handleBack}>
-                Back to details
-              </span>}
+            <div className='absolute top-[159px] left-1/4 flex items-center justify-center'>
+              {isView ? (
+                <span
+                  className='bg-white text-black w-54 text-center rounded-full border-2 p-1'
+                  onClick={handleclick}
+                >
+                  view all packages
+                </span>
+              ) : (
+                <span
+                  className='bg-white text-black w-54 text-center rounded-full border-2 p-1'
+                  onClick={handleBack}
+                >
+                  Back to details
+                </span>
+              )}
             </div>
           </div>
-          {isView ? <div className='p-4'>
-            <h2 className="product-title text-gray-800">{title}</h2>
+          {isView ? (
+            <div className='p-4'>
+              <h2 className='product-title text-gray-800'>{title}</h2>
 
-            {/* Product Price */}
-            <p className="cart-price text-bold text-lg mt-2">
+              {/* Product Price */}
+              <p className='cart-price text-bold text-lg mt-2'>
+                <span className='text-[#FF2D55] font-[600] text-[14px]'>
+                  ₹{rentalPrice[0]?.price && `${rentalPrice[0].price}`}
+                  <span className='text-[#070707A6] font-[400] text-[12]'>
+                    /day
+                  </span>
+                </span>
+              </p>
 
-              <span className="text-[#FF2D55] font-[600] text-[14px]">
-                ₹{rentalPrice[0]?.price && `${rentalPrice[0].price}`}<span className='text-[#070707A6] font-[400] text-[12]'>/day</span>
-              </span>
+              {/* Delivery Information */}
+              <div className='flex items-center mt-2'>
+                <Image
+                  src={DeliveryIcon}
+                  alt='Calendar icon'
+                  className='w-4 h-4 text-gray-500 mr-1'
+                  width={16}
+                  height={16}
+                />
+                <span className='text-gray-500 text-xs'>
+                  Delivery: {dateRange}
+                </span>
+              </div>
 
+              {/* Availability */}
+              <div className='flex items-center mt-2'>
+                <Image
+                  src={AvailabilityIcon}
+                  alt='Availability icon'
+                  className='w-4 h-4 text-gray-500 mr-1'
+                  width={16}
+                  height={16}
+                />
+                {rentalAvailability && (
+                  <span className='text-gray-500 text-xs'>
+                    Availability: {formattedDate}
+                  </span>
+                )}
+              </div>
 
-            </p>
+              {/* Stock Information */}
+              <div className='flex items-center mt-2'>
+                <Image
+                  src={AvailabilIcon}
+                  alt='Check icon'
+                  className='w-4 h-4 text-blue-500'
+                  width={16}
+                  height={16}
+                />
+                <span className='text-blue-500 text-xs'>
+                  {" "}
+                  Available Stock: {stockQuantity}
+                </span>
+              </div>
 
-            {/* Delivery Information */}
-            <div className="flex items-center mt-2">
-              <Image
-                src={DeliveryIcon}
-                alt="Calendar icon"
-                className="w-4 h-4 text-gray-500 mr-1"
-                width={16}
-                height={16}
-              />
-              <span className="text-gray-500 text-xs">Delivery: {dateRange}</span>
-            </div>
-
-            {/* Availability */}
-            <div className="flex items-center mt-2"> 
-              <Image
-                src={AvailabilityIcon}
-                alt="Availability icon"
-                className="w-4 h-4 text-gray-500 mr-1"
-                width={16}
-                height={16}
-              />
-              {rentalAvailability && <span className="text-gray-500 text-xs">Availability: {formattedDate}</span>}
-            </div>
-
-            {/* Stock Information */}
-            <div className="flex items-center mt-2">
-              <Image
-                src={AvailabilIcon}
-                alt="Check icon"
-                className="w-4 h-4 text-blue-500"
-                width={16}
-                height={16}
-              />
-              <span className="text-blue-500 text-xs"> Available Stock: {stockQuantity}</span>
-            </div>
-
-            {/* Add to Cart Button */}
-            {/* <button
+              {/* Add to Cart Button */}
+              {/* <button
           className="cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         > */}
-            <button className="cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-              onClick={() => handleAddCart()}>
-              <Image
-                src={isHovered ? cartIconHov : cartIcon}
-                alt="Cart icon"
-                className="w-4 h-4"
-                width={500}
-                height={300}
-              />
-              <span className="text-sm">Add to cart</span>
-            </button>
-          </div> : <div>
-
-            <div className="w-full">
-              <div className="grid grid-cols-2 text-center">
-                {rentalPrice.slice(0, -2).map((detail) => (
-                  <div key={rentalPrice._id} className="border p-2.5">
-                    <span className="block text-blue-500 font-[500] text-[12px]">{detail.period}</span>
-                    <span className="block text-black text-lg font-[500] text-[16px]">
-                      ₹{detail.price ? detail.price.toLocaleString() : "Not Available"}
-                    </span>
+              <button
+                className='cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group'
+                onClick={() => handleAddCart()}
+              >
+                <Image
+                  src={isHovered ? cartIconHov : cartIcon}
+                  alt='Cart icon'
+                  className='w-4 h-4'
+                  width={500}
+                  height={300}
+                />
+                <span className='text-sm'>Add to cart</span>
+              </button>
+            </div>
+          ) : (
+            <div>
+              <div className='w-full'>
+                <div className='grid grid-cols-2 text-center'>
+                  {rentalPrice.slice(0, -2).map((detail) => (
+                    <div key={rentalPrice._id} className='border p-2.5'>
+                      <span className='block text-blue-500 font-[500] text-[12px]'>
+                        {detail.period}
+                      </span>
+                      <span className='block text-black text-lg font-[500] text-[16px]'>
+                        ₹
+                        {detail.price
+                          ? detail.price.toLocaleString()
+                          : "Not Available"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                {/* Additional rows like "6 Months" */}
+                <div className='mt-4'>
+                  <div className='text-blue-500 font-[500] text-center text-[12px]'>
+                    6 Months
                   </div>
-                ))}
-              </div>
-              {/* Additional rows like "6 Months" */}
-              <div className="mt-4">
-                <div className="text-blue-500 font-[500] text-center text-[12px]">6 Months</div>
-                <div className="text-center text-gray-600 text-[16px] font-[500]">Not Available</div>
+                  <div className='text-center text-gray-600 text-[16px] font-[500]'>
+                    Not Available
+                  </div>
+                </div>
               </div>
             </div>
-
-          </div>}
+          )}
         </div>
       </div>
     </>
