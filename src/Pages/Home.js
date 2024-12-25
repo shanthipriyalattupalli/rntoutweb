@@ -28,10 +28,12 @@ import { ToastContainer } from "react-toastify";
 const Home = ({ categories }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [products, setProducts] = useState([]);
-  let categoryId;
+
+  const [categoryId, setCategoryId] = useState("");
 
   useEffect(() => {
-    categoryId = localStorage.getItem("categoryId");
+    const categoryId = localStorage.getItem("categoryId");
+    setCategoryId(categoryId);
   }, []);
 
   // Fetch all product variants

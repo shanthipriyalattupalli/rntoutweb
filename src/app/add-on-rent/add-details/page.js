@@ -14,7 +14,7 @@ const upload = "/Assets/upload.png";
 const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
-  console.log(subCategoryId, "ghbnm,lpoiuyghvb nmkiuyghvb");
+  //console.log(subCategoryId, "ghbnm,lpoiuyghvb nmkiuyghvb");
   const [products, setProducts] = useState([]);
 
   const [productName, setProductName] = useState("");
@@ -29,13 +29,21 @@ const MainContent = () => {
     },
   ]);
 
-  let userId, categoryId, subCategoryId, token;
+  //let subCategoryId;
+  const [userId, setUserId] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [token, setToken] = useState("");
+  const [subCategoryId, setSubCategoryId] = useState("");
 
   useEffect(() => {
-    userId = localStorage.getItem("userId");
-    categoryId = localStorage.getItem("selectedcategoryId");
-    subCategoryId = localStorage.getItem("selectedSubCategoryId");
-    token = localStorage.getItem("userToken");
+    const userId = localStorage.getItem("userId");
+    const categoryId = localStorage.getItem("selectedcategoryId");
+    const subCategoryId = localStorage.getItem("selectedSubCategoryId");
+    const token = localStorage.getItem("userToken");
+    setUserId(userId);
+    setCategoryId(categoryId);
+    setToken(token);
+    setSubCategoryId(subCategoryId);
   }, []);
 
   const handleAddSection = () => {

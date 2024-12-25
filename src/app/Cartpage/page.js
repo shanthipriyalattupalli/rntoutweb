@@ -30,12 +30,16 @@ const CartPage = () => {
   const [selectedPrice, setSelectedPrice] = useState("");
   const [selectedPeriod, setSelectedPeriod] = useState("");
   const [selectedOptions, setSelectedOptions] = useState({});
+  const [userId, setUserId] = useState("");
+  const [token, setToken] = useState("");
 
-  let userId, token;
   useEffect(() => {
-    userId = localStorage.getItem("userId");
-    token = localStorage.getItem("userToken");
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("userToken");
+    setUserId(userId);
+    setToken(token);
   }, []);
+
   const handleSelectChange = async (variantId, selectedPeriod) => {
     const selectedRental = cartItems
       .find((item) => item.variant_id._id === variantId)

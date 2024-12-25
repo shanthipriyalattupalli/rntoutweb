@@ -8,12 +8,16 @@ const edit = "/Assets/editicon.svg";
 
 const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  let token;
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selected, setSelected] = useState(null);
+
+  const [token, setToken] = useState("");
+
   useEffect(() => {
-    token = localStorage.getItem("userToken");
+    const token = localStorage.getItem("userToken");
+    setToken(token);
   }, []);
+
   const initialFormData = {
     type: "",
     street: "",

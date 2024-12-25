@@ -5,14 +5,14 @@ import axios from "axios";
 const Blog = () => {
   // Managing the active slide index (for 4 items at a time)
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  let token;
   const [blogs, setBlogs] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [expanded, setExpanded] = useState({}); // Track expanded state for each blog
-
+  const [token, setToken] = useState("");
   useEffect(() => {
-    token = localStorage.getItem("userToken");
+    setToken(localStorage.getItem("userToken"));
   }, []);
+
   const toggleDescription = (index) => {
     setExpanded((prev) => ({
       ...prev,

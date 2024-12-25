@@ -37,13 +37,17 @@ const ProductPage = () => {
    */
   const params = useParams();
   const productId = params.id;
-  let userId;
-  let token;
+
+  const [userId, setUserId] = useState("");
+  const [token, setToken] = useState("");
 
   useEffect(() => {
-    userId = localStorage.getItem("userId");
-    token = localStorage.getItem("userToken");
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("userToken");
+    setUserId(userId);
+    setToken(token);
   }, []);
+
   console.log(productId, "productIdurdfcvbjhhgc");
 
   const fetchProductById = async () => {

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 
@@ -27,12 +27,14 @@ const ProductItem = ({ product }) => {
 
   // const { imgSrc, name, price, dateRange, availability, stock } = product;
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  let userId;
-  let token;
+  const [userId, setUserId] = useState("");
+  const [token, setToken] = useState("");
 
   useEffect(() => {
-    userId = localStorage.getItem("userId");
-    token = localStorage.getItem("userToken");
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("userToken");
+    setUserId(userId);
+    setToken(token);
   }, []);
 
   const [isView, setIsview] = useState(true);

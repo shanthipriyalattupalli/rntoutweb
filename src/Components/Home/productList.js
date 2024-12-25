@@ -19,12 +19,12 @@ const productList = ({ product }) => {
   console.log(product, "productlist in produclist");
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isView, setIsview] = useState(true);
-  let userId;
-  let token;
+  const [userId, setUserId] = useState("");
+  const [token, setToken] = useState("");
 
   useEffect(() => {
-    userId = localStorage.getItem("userId");
-    token = localStorage.getItem("userToken");
+    setUserId(localStorage.getItem("userId"));
+    setToken(localStorage.getItem("userToken"));
   }, []);
 
   const {

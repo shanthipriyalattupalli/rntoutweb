@@ -8,10 +8,11 @@ import logo from "../../../public/Assets/Rntout_logo.png";
 const Photo = "/Assets/Photo.png";
 
 function Header() {
-  let name;
+  const [name, setName] = useState("");
 
   useEffect(() => {
-    name = localStorage.getItem("userName");
+    const name = localStorage.getItem("userName");
+    setName(name);
   }, []);
 
   const [location, setLocation] = useState("HYD - 500008");
@@ -99,9 +100,9 @@ function Header() {
                   "HYD - 500028",
                   "HYD - 500032",
                   "HYD - 500084",
-                ].map((index, loc) => (
+                ].map((loc) => (
                   <a
-                    key={index}
+                    key={loc}
                     href='#'
                     className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
                     role='menuitem'

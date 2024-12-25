@@ -6,11 +6,13 @@ import "@/styles/Adddetail.css";
 
 const MenuItems = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  let categoryId;
+
   const [subcategories, setSubcategories] = useState([]);
   const [activeItem, setActiveItem] = useState(null); // State to track the active subcategory
+  const [categoryId, setCategoryId] = useState("");
+
   useEffect(() => {
-    localStorage.getItem("selectedcategoryId");
+    setCategoryId(localStorage.getItem("selectedcategoryId"));
   }, []);
   // Fetch subcategories by categoryId
   const fetchSubCategories = async () => {
