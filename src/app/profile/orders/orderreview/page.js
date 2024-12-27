@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import "@/styles/OrderTrackingWithNavigate.css";
 import OrderItem from "@/Components/OrderItem";
-import "@/styles/orderReview.css";
+//import "@/styles/orderReview.css";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { RiCloseLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
