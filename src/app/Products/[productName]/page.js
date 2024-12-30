@@ -13,7 +13,7 @@ import {
   Smartphone,
   ChevronDown,
 } from "lucide-react";
-import { toast, ToastContainer } from "reactoastt-ify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {useRouter , useSearchParams ,useParams} from "next/navigation";
 const productimg = "/Assets/pi-1.png";

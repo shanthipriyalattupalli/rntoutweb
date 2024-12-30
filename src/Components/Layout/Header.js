@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import SearchInput from "../SearchInput";
 import { useRouter } from "next/navigation";
-const logo = "../../../public/Assets/Rntout_logo.png";
+const logo = "/Assets/Rntout_Logo.png";
 const Photo = "/Assets/Photo.png";
 
 function Header() {
@@ -52,9 +52,7 @@ function Header() {
     <header className='flex items-center justify-between px-6 py-4 bg-white shadow-md'>
       <div className='flex items-center'>
         <a href='/'>
-          <Image
-            width=''
-            height=''
+          <img
             src={logo}
             alt='RNT Out Logo'
             className='h-10'
