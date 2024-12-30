@@ -128,6 +128,9 @@
     margin-top: -30px;
     
 }
+.delete-btn img{
+    margin-left: 500%;
+}
 
 /* Summary Section */
 .summary-section {

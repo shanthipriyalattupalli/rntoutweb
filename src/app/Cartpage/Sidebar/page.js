@@ -62,7 +62,7 @@ const Sidebar = ({ isOpen, onClose, products }) => {
               <div className='product-info'>
                 <h4 className='product-name'>{product.variant_id.title}</h4>
                 <p className='product-price'>
-                  {product.variant_id.rentalPrice.monthly} /month
+                  {product.variant_id.rentalPrice.monthly}/month
                 </p>
               </div>
             </div>

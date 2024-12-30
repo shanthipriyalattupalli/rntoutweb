@@ -9,10 +9,13 @@ const Photo = "/Assets/Photo.png";
 
 function Header() {
   const [name, setName] = useState("");
+  const [token,setToken]=useState("")
 
   useEffect(() => {
     const name = localStorage.getItem("userName");
+    const token = localStorage.getItem("token");
     setName(name);
+    setToken(token)
   }, []);
 
   const [location, setLocation] = useState("HYD - 500008");
@@ -139,7 +142,7 @@ function Header() {
           </button>
         </div>
 
-        {name ? (
+        {name || token ? (
           <button
             className='flex items-center justify-center gap-2 px-6 py-2 rounded-full text-white text-base font-medium shadow-lg 
 bg-[linear-gradient(90deg,_#FEAC5E_0%,_#C779D0_50%,_#4BC0C8_100%)] hover:scale-105 hover:shadow-xl hover:from-red-600 hover:via-rose-600 hover:to-red-800 
@@ -153,56 +156,57 @@ bg-[linear-gradient(90deg,_#FEAC5E_0%,_#C779D0_50%,_#4BC0C8_100%)] hover:scale-1
         ) : null}
 
         <nav className='navbar'>
-          {!name ? (
-            <button
-              className='ml-5 bg-[#FF2D55] hover:bg-[#e6264c] text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300'
-              onClick={() => router.push("/Login")}
-            >
-              Sign In / Sign Up
-            </button>
-          ) : (
-            <div
-              onClick={() => router.push("/profile")} // Redirect to profile page
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                border: "1px solid #E1E6EF",
-                borderRadius: "44px",
-                overflow: "hidden",
-                padding: "0 10px 0 0",
-                cursor: "pointer",
-                marginLeft: "20px",
-              }}
-            >
-              <img
-                src={Photo}
-                alt='user'
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  objectFit: "cover",
+          {name || token ? (
+                  <div
+                  onClick={() => router.push("/profile")} // Redirect to profile page
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    border: "1px solid #E1E6EF",
+                    borderRadius: "44px",
+                    overflow: "hidden",
+                    padding: "0 10px 0 0",
+                    cursor: "pointer",
+                    marginLeft: "20px",
+                  }}
+                >
+                  <img
+                    src={Photo}
+                    alt='user'
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
+                  />
+                  <p style={{ margin: 0 }}>{name}</p>
+                  {/* <button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent triggering profile page redirect
+                  handleLogout();
                 }}
-              />
-              <p style={{ margin: 0 }}>{name}</p>
-              {/* <button
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering profile page redirect
-              handleLogout();
-            }}
-            style={{
-              marginLeft: "10px",
-              background: "transparent",
-              border: "none",
-              color: "#007BFF",
-              cursor: "pointer",
-              fontSize: "14px",
-            }}
+                style={{
+                  marginLeft: "10px",
+                  background: "transparent",
+                  border: "none",
+                  color: "#007BFF",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                }}
+              >
+                Logout
+              </button> */}
+                </div>
+  
+          ) : (
+            <button
+            className='ml-5 bg-[#FF2D55] hover:bg-[#e6264c] text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300'
+            onClick={() => router.push("/Login")}
           >
-            Logout
-          </button> */}
-            </div>
+            Sign In / Sign Up
+          </button>
           )}
         </nav>
 

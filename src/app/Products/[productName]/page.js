@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+// import { useRouter } from "next/router";
 import {
   Star,
   Minus,
@@ -12,9 +13,9 @@ import {
   Smartphone,
   ChevronDown,
 } from "lucide-react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "reactoastt-ify";
 import "react-toastify/dist/ReactToastify.css";
-import { useRouter, useSearchParams } from "next/navigation";
+import {useRouter , useSearchParams ,useParams} from "next/navigation";
 const productimg = "/Assets/pi-1.png";
 const AvailIcon = "/Assets/Icons/ava-stock.png";
 const AvailtyIcon = "/Assets/Icons/availability.png";
@@ -32,11 +33,16 @@ const ProductPage = () => {
   const [owner, setOwner] = useState({});
   const [images, setImages] = useState([]);
   const router = useRouter();
-  /* const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
   const productId = searchParams.get("id");
-   */
+  
+// console.log(router , "route information")
+//   const { id, title } = router;
+//   console.log(id, "productId");
   const params = useParams();
-  const productId = params.id;
+//   console.log(params,"params")
+  // const productId = params.id;
+  console.log(productId, "productId");
 
   const [userId, setUserId] = useState("");
   const [token, setToken] = useState("");

@@ -82,7 +82,7 @@ const ProductItem = ({ product }) => {
         user_id: userId,
         variant_id: productId,
         quantity: 1,
-        rentalPeriod: "monthly",
+        rentalPeriod: "daily",
       };
       const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
         headers: {

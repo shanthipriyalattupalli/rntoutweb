@@ -28,6 +28,8 @@ const MenuItems = () => {
         const firstSubcategory = response.data[0];
         setActiveItem(firstSubcategory._id);
         localStorage.setItem("selectedSubCategoryId", firstSubcategory._id);
+        window.dispatchEvent(new Event("storage"));
+        
       }
     } catch (error) {
       console.error("Error fetching subcategories:", error);
@@ -43,6 +45,7 @@ const MenuItems = () => {
     setActiveItem(itemId);
     console.log(itemId, "clicking subcatgoryid");
     localStorage.setItem("selectedSubCategoryId", itemId); // Update localStorage
+    window.dispatchEvent(new Event("storage"));
   };
 
   return (

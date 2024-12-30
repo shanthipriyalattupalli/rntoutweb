@@ -12,7 +12,7 @@ const Rntout = "/Assets/Rntout_Logo.png";
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: "",
-    role: "",
+    role: "Guest",
     email: "",
     mobile: "",
     password: "",
@@ -30,8 +30,10 @@ const Signup = () => {
 
   // Handle form submission
   const handleCreateAccount = async () => {
-    const { name, role, email, mobile, password, confirmPassword } = formData;
+   
 
+    const { name, role, email, mobile, password, confirmPassword } = formData;
+    console.log(role,"role")
     // Validation
     if (!name || !role || !email || !mobile || !password || !confirmPassword) {
       toast.error("All fields are required.");
@@ -45,6 +47,7 @@ const Signup = () => {
 
     setIsLoading(true);
     try {
+      console.log(role,"role123")
       const response = await axios.post(`${BASE_URL}/users`, {
         name,
         role,
@@ -90,7 +93,7 @@ const Signup = () => {
             value={formData.name}
             onChange={handleInputChange}
           />
-          <p className='login-p1 m-0'>Role</p>
+          {/* <p className='login-p1 m-0'>Role</p>
           <input
             type='text'
             placeholder='Enter role'
@@ -98,7 +101,7 @@ const Signup = () => {
             name='role'
             value={formData.role}
             onChange={handleInputChange}
-          />
+          /> */}
           <p className='login-p1 m-0'>Email Address</p>
           <input
             type='email'

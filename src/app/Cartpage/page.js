@@ -46,26 +46,61 @@ const CartPage = () => {
       ?.variant_id?.rentalPrice.find(
         (rental) => rental.period === selectedPeriod
       );
-
+  
     if (!selectedRental) {
       toast.error("Selected rental period is invalid");
       return;
     }
-
+  
     try {
-      console.log(quantities[variantId], "qauntityselerdcewdc");
+      // Update the selectedOptions state
+      setSelectedOptions((prevOptions) => {
+        const updatedOptions = {
+          ...prevOptions,
+          [variantId]: { ...prevOptions[variantId], period: selectedPeriod },
+        };
+  
+        // Save to localStorage for persistence
+        localStorage.setItem("selectedOptions", JSON.stringify(updatedOptions));
+  
+        return updatedOptions;
+      });
+  
       // Send the selected period and quantity to `handleAddToCart`
       await handleAddToCart(
         variantId,
         quantities[variantId],
         selectedRental.period
       );
+  
       fetchCartDetails();
     } catch (error) {
       console.error("Error updating rental period:", error);
       toast.error("Failed to update rental period.");
     }
   };
+  useEffect(() => {
+    if (cartItems?.length) {
+      const updatedOptions = { ...selectedOptions };
+      cartItems.forEach((item) => {
+        if (!updatedOptions[item.variant_id._id]) {
+          updatedOptions[item.variant_id._id] = { 
+            period: item?.variant_id?.rentalPrice?.[0]?.period 
+          };
+        }
+      });
+      setSelectedOptions(updatedOptions);
+    }
+  }, [cartItems]);
+  
+  // Retrieve persisted selected options on component load
+  useEffect(() => {
+    const storedOptions = localStorage.getItem("selectedOptions");
+    if (storedOptions) {
+      setSelectedOptions(JSON.parse(storedOptions));
+    }
+  }, []);
+  
 
   console.log(quantities, "quantituessd");
   // useEffect(() => {
@@ -89,39 +124,65 @@ const CartPage = () => {
     setIsAddressSidebarOpen(!isAddressSidebarOpen);
   };
 
+
+
   const increaseQuantity = async (variantId) => {
-    const newQuantity = +1;
-    console.log(newQuantity, "quantity");
+    const newQuantity =  + 1;
+  
+    // Get the selected rental period for this variant
+    const selectedRentalPeriod = selectedOptions[variantId]?.period;
+    console.log(selectedRentalPeriod,"selectedRentalPeriod")
+    console.log(selectedOptions,"selectedOptions")
+  
+    if (!selectedRentalPeriod) {
+      toast.error("Please select a rental period before updating the quantity.");
+      return;
+    }
+  
     try {
-      await handleAddToCart(variantId, newQuantity);
+      await handleAddToCart(variantId, newQuantity, selectedRentalPeriod);
       setQuantities((prevQuantities) => ({
         ...prevQuantities,
         [variantId]: newQuantity,
       }));
-      toast.success("Updated successfully");
+      toast.success("Quantity updated successfully.");
       fetchCartDetails();
     } catch (error) {
       console.error("Error increasing quantity:", error);
-      toast.error("Failed to update quantity. Please try again.");
+      toast.error(error.response.data.message);
     }
   };
-
+  
   const decreaseQuantity = async (variantId) => {
-    const newQuantity = -1;
+    const newQuantity =  - 1;
+  
+    // if (newQuantity < 1) {
+    //   toast.error("Quantity cannot be less than 1.");
+    //   return;
+    // }
+  
+    // Get the selected rental period for this variant
+    const selectedRentalPeriod = selectedOptions[variantId]?.period;
+  
+    if (!selectedRentalPeriod) {
+      toast.error("Please select a rental period before updating the quantity.");
+      return;
+    }
+  
     try {
-      await handleAddToCart(variantId, newQuantity);
+      await handleAddToCart(variantId, newQuantity, selectedRentalPeriod);
       setQuantities((prevQuantities) => ({
         ...prevQuantities,
         [variantId]: newQuantity,
       }));
-      toast.success("Updated successfully");
+      toast.success("Quantity updated successfully.");
       fetchCartDetails();
     } catch (error) {
       console.error("Error decreasing quantity:", error);
-      toast.error("Failed to update quantity. Please try again.");
+   
     }
   };
-
+  
   console.log(selectedOptions, "selectedperiod");
   const handleAddToCart = async (variantId, quantity, rentalPeriod) => {
     try {
@@ -142,10 +203,11 @@ const CartPage = () => {
       );
     } catch (error) {
       console.error("Error adding product to cart:", error);
-      toast.error(
-        error.response?.data?.message ||
-          "Something went wrong. Please try again."
-      );
+      toast.error(error.response.data.error);
+      // toast.error(
+      //   error.response?.data?.message ||
+      //     "Something went wrong. Please try again."
+      // );
       throw error;
     }
   };
@@ -171,19 +233,29 @@ const CartPage = () => {
     fetchCartDetails();
   }, [userId]);
 
-  const handleRemove = async (cartId) => {
+  const handleRemove = async (cartId, variantId) => {
     console.log(cartId, "removeid");
     try {
       console.log(cartId, "variantId remove");
       const response = await axios.delete(`${BASE_URL}/cart/remove/${cartId}`);
       console.log(response.data, "deleted");
+  
+      // Remove the corresponding entry from selectedOptions in localStorage
+      setSelectedOptions((prevOptions) => {
+        const updatedOptions = { ...prevOptions };
+        delete updatedOptions[variantId]; // Remove the variantId from selectedOptions
+        localStorage.setItem("selectedOptions", JSON.stringify(updatedOptions)); // Update localStorage
+        return updatedOptions;
+      });
+  
       fetchCartDetails();
       toast.success(response.data.message || "Removed successfully");
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message || "Error removing item from cart.");
       console.error("Error removing item from cart:", error);
     }
   };
+  
 
   const createPayment = () => {
     if (!userId) {
@@ -217,80 +289,78 @@ const CartPage = () => {
           My Cart <span className='cart-count'>{cartItems.length}</span>
         </h2>
         {cartItems?.map((item, index) => (
-          <div key={index} className='cart-item cursor-pointer'>
-            <Link
-              href={{
-                pathname: `/Products/${item.variant_id.title}`,
-                query: { id: item.variant_id._id },
-              }}
-              key={item._id}
-            >
-              <img
-                src={item.variant_id.images[0]}
-                alt='Product'
-                className='item-image'
-              />
-            </Link>
-            <div className='item-details'>
-              <h3 className='item-name'>{item.variant_id.title}</h3>
-              <p className='item-price'>
-                ₹{item.unitPrice}/{item.rentalPeriod}
-              </p>
-              <div className='quantity-controls'>
-                <button
-                  className='quantity-btn'
-                  onClick={() =>
-                    decreaseQuantity(item.variant_id._id, item.quantity)
-                  }
-                >
-                  -
-                </button>
-                <span className='quantity'>{item.quantity || 1}</span>
-                <button
-                  className='quantity-btn'
-                  onClick={() =>
-                    increaseQuantity(item.variant_id._id, item.quantity)
-                  }
-                >
-                  +
-                </button>
+  <div key={item._id || index} className="cart-item cursor-pointer">
+    <Link
+      href={{
+        pathname: `/Products/${item.variant_id.title}`,
+        query: { id: item.variant_id._id },
+      }}
+    >
+      <img
+        src={item.variant_id.images[0]}
+        alt="Product"
+        className="item-image"
+      />
+    </Link>
+    <div className="item-details">
+      <h3 className="item-name">{item.variant_id.title}</h3>
+      <p className="item-price">
+        ₹{item.unitPrice}/{item.rentalPeriod}
+      </p>
+      <div className="quantity-controls">
+        <button
+          className="quantity-btn"
+          onClick={() =>
+            decreaseQuantity(item.variant_id._id, item.quantity)
+          }
+        >
+          -
+        </button>
+        <span className="quantity">{item.quantity || 1}</span>
+        <button
+          className="quantity-btn"
+          onClick={() =>
+            increaseQuantity(item.variant_id._id, item.quantity)
+          }
+        >
+          +
+        </button>
+        <select
+          className="duration-select"
+          value={
+            selectedOptions[item.variant_id._id]?.period ||
+            item?.variant_id?.rentalPrice?.[0]?.period
+          }
+          onChange={(e) => {
+            handleSelectChange(item.variant_id._id, e.target.value);
+          }}
+        >
+          {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
+            <option key={rentalPrice._id} value={rentalPrice.period}>
+              {rentalPrice.period}
+            </option>
+          ))}
+        </select>
+        <p>Total: {item.lineTotal}</p>
+      </div>
+      <div className="product-right">
+        <button className="delete-btn" onClick={() => handleRemove(item._id,item.variant_id._id)}>
+          <img
+            src={deleteicon}
+            className="flex justify-center ml-20"
+          />
+        </button>
+        <div className="flex gap-2">
+          <img src={cube} />
+          <p className="stock-info">
+            {item.variant_id.stockQuantity} stock avail.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+))}
 
-                <select
-                  className='duration-select'
-                  value={selectedOptions[item.variant_id._id]?.period || ""}
-                  onChange={(e) =>
-                    handleSelectChange(item.variant_id._id, e.target.value)
-                  }
-                >
-                  {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
-                    <option key={rentalPrice._id} value={rentalPrice.period}>
-                      {rentalPrice.period}
-                    </option>
-                  ))}
-                </select>
-
-                <p>Total: {item.lineTotal}</p>
-              </div>
-              <div className='product-right'>
-                <button className='delete-btn'>
-                  <img
-                    src={deleteicon}
-                    onClick={() => {
-                      handleRemove(item._id);
-                    }}
-                    className='flex justify-center ml-20'
-                  />
-                  <div className='flex gap-2'>
-                    <img src={cube} />
-                    <p className='stock-info'>
-                      {item.variant_id.stockQuantity} stock avail.
-                    </p>
-                  </div>
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
       </div>
 
       <div className='summary-section'>

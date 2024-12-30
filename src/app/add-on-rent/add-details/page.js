@@ -36,6 +36,7 @@ const MainContent = () => {
   const [subCategoryId, setSubCategoryId] = useState("");
 
   useEffect(() => {
+    const handleStorageChange = () => {
     const userId = localStorage.getItem("userId");
     const categoryId = localStorage.getItem("selectedcategoryId");
     const subCategoryId = localStorage.getItem("selectedSubCategoryId");
@@ -44,7 +45,22 @@ const MainContent = () => {
     setCategoryId(categoryId);
     setToken(token);
     setSubCategoryId(subCategoryId);
-  }, []);
+    setFormData({
+      ...formData,
+      categoryId: categoryId,
+      subCategoryId: subCategoryId
+    });
+  }
+
+  window.addEventListener("storage", handleStorageChange);
+  return () => window.removeEventListener("storage", handleStorageChange);
+
+},[]);
+
+console.log(categoryId,subCategoryId,"fetchProducts ")
+
+
+
 
   const handleAddSection = () => {
     setProductDetails([
@@ -165,6 +181,10 @@ const MainContent = () => {
         previews.push(reader.result);
         if (previews.length === files.length) {
           setPreviewImages(previews); // Update preview images after reading all files
+          setFormData((prevData) => ({
+            ...prevData,
+                images: previews,
+          }));
         }
       };
       reader.readAsDataURL(file);
@@ -176,6 +196,7 @@ const MainContent = () => {
   };
   useEffect(() => {
     const fetchProducts = async () => {
+      // console.log(categoryId,subCategoryId,"fetchProducts")
       try {
         if (categoryId && subCategoryId) {
           const response = await axios.get(
@@ -191,6 +212,9 @@ const MainContent = () => {
 
     fetchProducts();
   }, [categoryId, subCategoryId]);
+  
+  
+  
   const handleOptionChange = (option) => {
     setSelectedOption(option);
     setFormData({
@@ -203,7 +227,7 @@ const MainContent = () => {
     owner: userId,
     title: "",
     description: "",
-    images: ["", "", "", "", ""],
+    images: ["","","",""],
     categoryId: categoryId,
     subCategoryId: subCategoryId,
     productId: selectedOption,
@@ -269,6 +293,8 @@ const MainContent = () => {
   useEffect(() => {
     mapDetailsToFormData();
   }, [productDetails]);
+ 
+ 
   const mapDetailsToFormData = () => {
     const mappedDetails = productDetails.flatMap((section) =>
       section.details?.map((detail) => ({
