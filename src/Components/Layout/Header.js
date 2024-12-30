@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import SearchInput from "../SearchInput";
 import { useRouter } from "next/navigation";
-import logo from "../../../public/Assets/Rntout_logo.png";
+const logo = "../../../public/Assets/Rntout_logo.png";
 const Photo = "/Assets/Photo.png";
 
 function Header() {
