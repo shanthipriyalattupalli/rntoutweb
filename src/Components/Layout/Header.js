@@ -11,7 +11,13 @@ function Header() {
   const [name, setName] = useState("");
   const [token,setToken]=useState("")
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   const name = localStorage.getItem("userName");
+  //   const token = localStorage.getItem("token");
+  //   setName(name);
+  //   setToken(token)
+  // }, []);
+    useEffect(() => {
     const name = localStorage.getItem("userName");
     const token = localStorage.getItem("token");
     setName(name);
