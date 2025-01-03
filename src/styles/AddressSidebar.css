@@ -92,13 +92,28 @@
     /* height: 36px; */
     /* border: 1px solid red; */
 }
+.address-context h4{
+    color: rgba(7, 7, 7, 1);
+    font-weight: 500;
+    font-size: 14px;
+
+}
 
 .address-context p {
     /* border: 1px solid red; */
     height: 20px;
     /* margin-top: 20px; */
 }
+.address-context span{
+    width: 54px;
+height: 20px;
+padding: 0px 6px 6px 6px;
+gap: 8px;
+border-radius: 6px;
+opacity: 0px;
+background: rgba(7, 7, 7, 0.1);
 
+}
 .address-button {
     width: 100%;
     padding: 12px;

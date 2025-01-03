@@ -40,6 +40,9 @@ const CartPage = () => {
     setToken(token);
   }, []);
 
+console.log(token,"outside")
+
+
   const handleSelectChange = async (variantId, selectedPeriod) => {
     const selectedRental = cartItems
       .find((item) => item.variant_id._id === variantId)
@@ -281,6 +284,8 @@ const CartPage = () => {
     0
   );
 
+  console.log(selectedAddress,"selectedaddress")
+
   return (
     <div className='cart-page'>
       <ToastContainer />
@@ -375,9 +380,11 @@ const CartPage = () => {
               <div className='address-context'>
                 <h4>{selectedAddress.name}</h4>
                 <p>|</p>
-                <p>{selectedAddress.mobile}</p>
+                <p>{selectedAddress.mobile}</p> 
+                <span>{selectedAddress.type}</span>
               </div>
-              <p>{selectedAddress.address}</p>
+              <p>{selectedAddress.flatOrHouseNo},{selectedAddress.street},{selectedAddress.city},{selectedAddress.state},{selectedAddress.country},({selectedAddress.zip})</p>
+
             </>
           )}
         </div>

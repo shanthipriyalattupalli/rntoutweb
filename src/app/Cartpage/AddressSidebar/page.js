@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "@/styles/AddressSidebar.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const edit = "/Assets/editicon.svg";
 
@@ -10,6 +12,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [addresses, setAddresses] = useState([]);
 
   const [token, setToken] = useState("");
 
@@ -18,13 +21,42 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
     setToken(token);
   }, []);
 
+useEffect(() => {
+  const fetchAddress = async () => {
+    console.log(token, "token");
+    try {
+      const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(response.data.profile.addresses, "addresses");
+      setAddresses(response.data.profile.addresses);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to fetch addresses.");
+    }
+  };
+
+  if (token) {
+    fetchAddress();
+  }
+}, [token]);
+
   const initialFormData = {
     type: "",
+    name: "",
+    mobile: "",
+    flatOrHouseNo: "",
     street: "",
+    landmark: "",
     city: "",
     state: "",
+    country: "",
     zip: "",
-  };
+    location: {
+      latitude: 0,
+      longitude: 0
+    },
+  }
 
   const [formData, setFormData] = useState(initialFormData);
   console.log(formData, "initial form");
@@ -61,11 +93,12 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
         }
       );
       console.log(response.data, "successful");
-
+toast.success(response.data.message)
       setFormData(initialFormData); // Reset the form
       setIsAddAddress(false); // Return to address list view
     } catch (error) {
       console.error("Error saving address:", error);
+  toast.error(error.response.data.message)
     }
   };
 
@@ -92,6 +125,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
 
   return (
     <div className='sidebar-overlay' onClick={onClose}>
+      <ToastContainer />
       <div className='sidebar' onClick={(e) => e.stopPropagation()}>
         {isAddAddress ? (
           <div>
@@ -115,30 +149,30 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
                   </span>
                 ))}
               </div>
-              {/* <input
+              <input
                 type="text"
                 placeholder="Receiver’s name"
                 className="text-input"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-              /> */}
-              {/* <input
+              />
+              <input
                 type="number"
                 placeholder="Receiver’s contact number"
                 className="text-input"
                 name="mobile"
                 value={formData.mobile}
                 onChange={handleInputChange}
-              /> */}
-              {/* <input
+              />
+              <input
                 type="text"
                 placeholder="Flat/ House no/ Floor / Building"
                 className="text-input"
                 name="flatOrHouseNo"
                 value={formData.flatOrHouseNo}
                 onChange={handleInputChange}
-              /> */}
+              />
               <input
                 type='text'
                 placeholder='Area / Sector / Locality'
@@ -147,23 +181,23 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
                 value={formData.street}
                 onChange={handleInputChange}
               />
-              {/* <input
+              <input
                 type="text"
                 placeholder="Nearby Landmark (Optional)"
                 className="text-input"
                 name="landmark"
                 value={formData.landmark}
                 onChange={handleInputChange}
-              /> */}
+              />
               <div className='flex gap-2'>
-                {/* <input
+                <input
                   type="text"
                   placeholder="Country"
                   className="text-input"
                   name="country"
                   value={formData.country}
                   onChange={handleInputChange}
-                /> */}
+                />
                 <input
                   type='text'
                   placeholder='State'
@@ -204,7 +238,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
                 &times;
               </button>
             </div>
-            {Address?.map((address, index) => (
+            {addresses?.map((address, index) => (
               <div
                 key={index}
                 className='container address-card'
@@ -216,7 +250,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
                 <div className='delivery-content'>
                   <div className='delivery-context'>
                     <h5 className='delivery-to'>DELIVERS TO</h5>
-                    <span>Home</span>
+                    <span>{address.type}</span>
                   </div>
                   <div className='address-edit'>
                     <img src={edit} alt='edit' />
@@ -228,7 +262,8 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
                   <p>{address.mobile}</p>
                 </div>
                 <div>
-                  <p>{address.address}</p>
+                  <p>{address.flatOrHouseNo},{address.street},{address.city},{address.state},{address.country}</p>
+                  <p>({address.zip})</p>
                 </div>
               </div>
             ))}

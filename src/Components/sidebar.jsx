@@ -25,7 +25,7 @@ const buttonsData = [
     id: 3,
     title: "Business Information",
     icon: <FiShoppingBag />,
-    route: "/profile/business-information",
+    route: "/profile/business-information/add-business",
   },
   { id: 4, title: "Products", icon: <GrCubes />, route: "/profile/products" },
   {
