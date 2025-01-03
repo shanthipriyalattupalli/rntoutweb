@@ -76,6 +76,7 @@ const CategoryGrid = () => {
       setCategories(response?.data.categories);
       if (response?.data.categories.length > 0) {
         const firstCategory = response.data.categories[0];
+        console.log(firstCategory,"firstCategory")
         setSelectedCategory(firstCategory._id);
         setSelectedCategoryLabel(firstCategory.categoryName);
         localStorage.setItem("selectedcategoryId", firstCategory._id);
@@ -89,7 +90,8 @@ const CategoryGrid = () => {
     fetchCategories();
   }, []);
 
-
+console.log(selectedCategory,"selectedCategory");
+console.log(selectedCategoryLabel,"selectedCategoryLabel")
   const fetchBusinessDetails = async () => {
     if (!token) {
       console.error("Token is not set yet");
@@ -116,7 +118,7 @@ const CategoryGrid = () => {
 
 
   const handleNextClick = () => {
-    if (selectedCategoryLabel && selectedCategory && BusinessId) {
+    if (selectedCategoryLabel && selectedCategory) {
       console.log(selectedCategory, "selected category");
       router.push(`/add-on-rent/add-details?${selectedCategoryLabel}`);
     }

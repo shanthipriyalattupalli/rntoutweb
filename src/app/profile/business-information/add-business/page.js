@@ -172,8 +172,9 @@ console.log(formData,"formData");
       </div>
       </h2>
     <div className="bi2-main-div">
+
       {/* Owner Info Section */}
-      <div className="section">
+      {/* <div className="section">
    
         <h3 className="section-title">Owner Info</h3>
         <div className="input-group">
@@ -220,59 +221,68 @@ console.log(formData,"formData");
           <input type="checkbox" />
           Same address as the store
         </label>
-      </div>
+      </div> */}
 
-      {/* Bank Details Section */}
+
+      {/* Business Details Section */}
       <div className="section">
-  <h3 className="section-title">Bank Details</h3>
-  <div className="input-group">
-    <div className="input-item">
-      <label htmlFor="bank-select">Bank</label>
-      <select id="bank-select"     name='bankName'
-    value={formData.bankName}
-    onChange={handleInputChange}>
-        <option>Select bank</option>
-        <option>State Bank of India</option>
-        <option>ICICI Bank</option>
-      </select>
-    </div>
-    <div className="input-item">
-      <label htmlFor="ifsc">IFSC</label>
-      <input id="ifsc" 
-      type="text" 
-      placeholder="Enter code"
-      name='ifsc'
-      value={formData.ifsc}
-      onChange={handleInputChange} />
-    </div>
-    <div className="input-item">
-      <label htmlFor="bank-mobile">Owner Mobile Number</label>
-      <input id="bank-mobile" 
-      type="text" 
-      placeholder="Enter mobile number"
-      name='contactPhone'
-      value={formData.contactPhone}
-      onChange={handleInputChange} />
-    </div>
-  </div>
   <div className='address-bar'>
-  {/* <div className="input-item">
-    <label htmlFor="bank-address">Address</label>
-    <input 
-    id="bank-address" 
-    type="text" 
-    placeholder="Enter address" 
-    className='full-width'
-    name='title'
-    value={formData.businessAddress.full}
-    onChange={handleInputChange} />
-  </div> */}
+    <div className="input-item">
+      <label htmlFor="business-name">Business Name</label>
+      <input id="business-name" 
+      type="text" 
+      placeholder="Enter name"  
+      className='full-width'
+      name='businessName'
+      value={formData.businessName}
+      onChange={handleInputChange}/>
+    </div>
+    </div>
+    <div className="input-group">
+      <div className="input-item">
+        <label htmlFor="store-name">Store Name</label>
+        <input id="store-name" 
+        type="text" 
+        placeholder="Enter name"
+        name='storeName'
+        value={formData.storeName}
+        onChange={handleInputChange} />
+      </div>
+      <div className="input-item">
+        <label htmlFor="mobile-number">Mobile Number</label>
+        <input id="mobile-number" 
+        type="text" 
+        placeholder="Enter mobile number"
+        name='contactPhone'
+        value={formData.contactPhone}
+        onChange={handleInputChange} />
+      </div>
+      <div className="input-item">
+        <label htmlFor="email-address">Email Address</label>
+        <input id="email-address" 
+        type="email" 
+        placeholder="Enter email address"
+        name='contactEmail'
+        value={formData.contactEmail}
+        onChange={handleInputChange} />
+      </div>
+    </div>
+    <div className='address-bar'>
+    <div className="input-item ">
+      <label htmlFor="store-description">Store Description</label>
+      <textarea id="store-description" 
+      placeholder="Enter description" 
+      className="full-width" 
+      rows={5}
+      name='storeDescription'
+      value={formData.storeDescription}
+      onChange={handleInputChange}></textarea>
+    </div></div>
   </div>
-</div>
 
 
-      {/* Basic Info Section */}
-      <div className="section">
+        {/* Basic Info Section */}
+        <div className="section">
   <h3 className="section-title">Basic Info</h3>
   <div className="basic-info">
     <div className="icon-text">
@@ -335,61 +345,55 @@ console.log(formData,"formData");
 </div>
 
 
-      {/* Business Details Section */}
+      {/* Bank Details Section */}
       <div className="section">
-  <div className='address-bar'>
+  <h3 className="section-title">Bank Details</h3>
+  <div className="input-group">
     <div className="input-item">
-      <label htmlFor="business-name">Business Name</label>
-      <input id="business-name" 
+      <label htmlFor="bank-select">Bank</label>
+      <select id="bank-select"     name='bankName'
+    value={formData.bankName}
+    onChange={handleInputChange}>
+        <option>Select bank</option>
+        <option>State Bank of India</option>
+        <option>ICICI Bank</option>
+      </select>
+    </div>
+    <div className="input-item">
+      <label htmlFor="ifsc">IFSC</label>
+      <input id="ifsc" 
       type="text" 
-      placeholder="Enter name"  
-      className='full-width'
-      name='businessName'
-      value={formData.businessName}
-      onChange={handleInputChange}/>
+      placeholder="Enter code"
+      name='ifsc'
+      value={formData.ifsc}
+      onChange={handleInputChange} />
     </div>
+    <div className="input-item">
+      <label htmlFor="bank-mobile">Owner Mobile Number</label>
+      <input id="bank-mobile" 
+      type="text" 
+      placeholder="Enter mobile number"
+      name='contactPhone'
+      value={formData.contactPhone}
+      onChange={handleInputChange} />
     </div>
-    <div className="input-group">
-      <div className="input-item">
-        <label htmlFor="store-name">Store Name</label>
-        <input id="store-name" 
-        type="text" 
-        placeholder="Enter name"
-        name='storeName'
-        value={formData.storeName}
-        onChange={handleInputChange} />
-      </div>
-      <div className="input-item">
-        <label htmlFor="mobile-number">Mobile Number</label>
-        <input id="mobile-number" 
-        type="text" 
-        placeholder="Enter mobile number"
-        name='contactPhone'
-        value={formData.contactPhone}
-        onChange={handleInputChange} />
-      </div>
-      <div className="input-item">
-        <label htmlFor="email-address">Email Address</label>
-        <input id="email-address" 
-        type="email" 
-        placeholder="Enter email address"
-        name='contactEmail'
-        value={formData.contactEmail}
-        onChange={handleInputChange} />
-      </div>
-    </div>
-    <div className='address-bar'>
-    <div className="input-item ">
-      <label htmlFor="store-description">Store Description</label>
-      <textarea id="store-description" 
-      placeholder="Enter description" 
-      className="full-width" 
-      rows={5}
-      name='storeDescription'
-      value={formData.storeDescription}
-      onChange={handleInputChange}></textarea>
-    </div></div>
   </div>
+  <div className='address-bar'>
+  <div className="input-item">
+    <label htmlFor="bank-address">Address</label>
+    <input 
+    id="bank-address" 
+    type="text" 
+    placeholder="Enter address" 
+    className='full-width'
+    name='title'
+    value={formData.businessAddress.full}
+    onChange={handleInputChange} />
+  </div>
+  </div>
+</div>
+
+
   <div className="businness-submit-button">
   <button className="bussiness-submit" onClick={handleBusinessInformation}>
       Publish Business

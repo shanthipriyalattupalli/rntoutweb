@@ -12,7 +12,7 @@ const Rntout = "/Assets/Rntout_Logo.png";
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: "",
-    role: "Guest",
+    role: "User",
     email: "",
     mobile: "",
     password: "",
@@ -68,6 +68,7 @@ const Signup = () => {
       }
     } catch (error) {
       setIsLoading(false);
+      console.log(error ,"error")
       toast.error(
         error.response?.data?.error ||
           "Something went wrong. Please try again later."
