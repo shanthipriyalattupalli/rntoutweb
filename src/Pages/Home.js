@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import "../styles/Home.css";
+import "@/styles/Home.css";
 import Banner from "../Components/Home/Banner";
 import CategoryList from "../Components/Home/CategoryList";
 import ProductGrid from "../Components/Home/ProductGrid";
@@ -25,9 +25,47 @@ import MobileApp from "../Components/Home/MobileApp";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
 
-const Home = ({ categories }) => {
+const Home = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [categoryId, setCategoryId] = useState("");
+  const [subcategories, setSubcategories] = useState([]);
+
+  const fetchcategories = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/categories`);
+      console.log(response.data.categories, "categories");
+      setCategories(response.data.categories);
+      if (response?.data?.length > 0) {
+        setCategoryId(response.data[0]._id); // Set categoryId to the first category
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchcategories();
+  }, []);
+
+  const fetchSubcategories = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/subcategories/categories/${categoryId}`
+      );
+      console.log(response.data, "subcategories");
+      setSubcategories(response.data);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (categoryId) {
+      fetchSubcategories();
+    }
+  }, [categoryId]);
 
   // const [categoryId, setCategoryId] = useState("");
 
@@ -35,7 +73,9 @@ const Home = ({ categories }) => {
   //   const categoryId = localStorage.getItem("categoryId");
   //   setCategoryId(categoryId);
   // }, []);
- const categoryId = (typeof window !== 'undefined') ? localStorage.getItem("categoryId") : null;
+ const categoryIds = (typeof window !== 'undefined') ? localStorage.getItem("categoryId") : null;
+
+ console.log(categoryIds,"categoriesid");
   // Fetch all product variants
   const fetchProducts = async () => {
     try {
@@ -63,10 +103,10 @@ const Home = ({ categories }) => {
   const getToptrendingProducts = () => {
     console.log(
       "Getting products by category",
-      products.filter((product) => product.categoryId._id === categoryId)
+      products.filter((product) => product.categoryId._id === categoryIds)
     );
-    console.log("caategoryid", categoryId);
-    return products.filter((product) => product.categoryId._id === categoryId);
+    console.log("caategoryid", categoryIds);
+    return products.filter((product) => product.categoryId._id === categoryIds);
   };
 
   const IT_INFRASTRUCTURE_ID = "67483b5c3b62da6a9bed56fd";
@@ -84,8 +124,8 @@ const Home = ({ categories }) => {
       <CategoryList categories={categories} />
       <ProductGrid categories={categories} />
       <Products
-        products={getToptrendingProducts(categoryId)}
-        categoryId={categoryId}
+        products={getToptrendingProducts(categoryIds)}
+        categoryId={categoryIds}
       />
       <CuratedCollections />
       {/* Pass filtered products to each component */}

@@ -114,31 +114,59 @@ console.log(categoryId,subCategoryId,"fetchProducts ")
 
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
-
-    // Map timeframe to the rentalPrice index
+  
+    // Map timeframe to the rentalPrice period
     const mapping = {
       perDay: "daily",
       perWeek: "weekly",
       perMonth: "monthly",
       perQuarter: "quarterly",
       perSixMonths: "semiannual",
+      perYear: "annual",
     };
-
+  
     const mappedPeriod = mapping[name];
-
-    // Update state with the correct index
-    setFormData((prevData) => ({
-      ...prevData,
-      rentalPrice: prevData.rentalPrice.map((item) =>
-        item.period === mappedPeriod
-          ? { ...item, price: parseFloat(value) || 0 }
-          : item
-      ),
-    }));
-
-    console.log(formData.rentalPrice);
+  
+    // Update state with the correct price
+    setFormData((prevData) => {
+      // Check if the period already exists
+      const existingItem = prevData.rentalPrice.find(
+        (item) => item.period === mappedPeriod
+      );
+  
+      let updatedRentalPrice;
+  
+      if (existingItem) {
+        // Update the price for the existing period
+        updatedRentalPrice = prevData.rentalPrice.map((item) =>
+          item.period === mappedPeriod
+            ? { ...item, price: parseFloat(value) || 0 }
+            : item
+        );
+      } else {
+        // Add a new period with the entered price
+        updatedRentalPrice = [
+          ...prevData.rentalPrice,
+          { period: mappedPeriod, price: parseFloat(value) || 0 },
+        ];
+      }
+  
+      // Filter out empty price values
+      const filteredRentalPrice = updatedRentalPrice.filter(
+        (item) => item.price > 0
+      );
+  
+      // Return updated formData
+      return {
+        ...prevData,
+        rentalPrice: filteredRentalPrice,
+      };
+    });
+  
+ console.log(formData.rentalPrice)// Ensure state update reflects
   };
-
+  
+  
   const [previewImages, setPreviewImages] = useState([]); // To store the preview images
   const fileInputRef = useRef();
 
