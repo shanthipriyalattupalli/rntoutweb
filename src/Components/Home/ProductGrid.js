@@ -5,9 +5,10 @@ import Image from "next/image";
 
 const CategorySection = ({ categories }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
+  const storedCategoryId=(typeof window !== 'undefined') ? localStorage.getItem("categoryId") : null;
 
   useEffect(() => {
-    const storedCategoryId = localStorage.getItem("categoryId");
+    // const storedCategoryId = localStorage.getItem("categoryId");
     const defaultCategoryId =
       storedCategoryId || (categories[0] && categories[0]._id);
     setSelectedCategory(defaultCategoryId);
@@ -17,7 +18,7 @@ const CategorySection = ({ categories }) => {
   }, [categories]);
 
   const handleCategoryClick = (categoryId) => {
-    localStorage.setItem("categoryId", categoryId); // Save to localStorage
+ localStorage.setItem("categoryId",categoryId); // Save to localStorage
     setSelectedCategory(categoryId); // Update state
     window.location.reload(); // Refresh the page
   };

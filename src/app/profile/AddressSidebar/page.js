@@ -13,7 +13,6 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selected, setSelected] = useState(null);
   const [addresses, setAddresses] = useState([]);
-  const [editingAddressId, setEditingAddressId] = useState(null);
 
   // const [token, setToken] = useState("");
 
@@ -70,12 +69,6 @@ useEffect(() => {
   const handleAddAddress = () => {
     setIsAddAddress(true);
   };
-  const handleEditAddress = (address) => {
-    setEditingAddressId(address._id); // Track the address being edited
-    setFormData({ ...address }); // Populate form data
-    setSelected(address.type);
-    setIsAddAddress(true);
-  };
 
   const handleSelect = (item) => {
     setSelected(item);
@@ -112,72 +105,6 @@ toast.success(response.data.message)
     }
   };
 
-
-  const handleUpdateAddress = async () => {
-    if (!editingAddressId) {
-      toast.error("No address selected for updating.");
-      return;
-    }
-  
-    // Prepare the payload
-    const payload = {
-      addressId: editingAddressId,
-      type: formData.type,
-      name: formData.name,
-      mobile: parseInt(formData.mobile, 10),
-      flatOrHouseNo: formData.flatOrHouseNo,
-      street: formData.street,
-      landmark: formData.landmark,
-      city: formData.city,
-      state: formData.state,
-      country: formData.country,
-      zip: formData.zip,
-      location: {
-        latitude: formData.location.latitude || 0,
-        longitude: formData.location.longitude || 0,
-      },
-    };
-  
-    console.log("Update Payload:", payload);
-  
-    try {
-      const token =
-        typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
-      if (!token) {
-        toast.error("User token is missing.");
-        return;
-      }
-  
-      const response = await axios.put(
-        `${BASE_URL}/profile/update-address`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-  
-      if (response.status === 200) {
-        toast.success("Address updated successfully!");
-        // Reset the form and state after successful update
-        setEditingAddressId(null);
-        setFormData(initialFormData); // Reset form to initial state
-        setIsAddAddress(false); // Hide the address form
-      } else {
-        toast.error("Failed to update address.");
-      }
-    } catch (error) {
-      console.error("Error updating address:", error);
-      if (error.response && error.response.data) {
-        toast.error(error.response.data.message || "Failed to update address.");
-      } else {
-        toast.error("An unexpected error occurred.");
-      }
-    }
-  };
-  
-
   const Address = [
     {
       name: "Rohan Johnson",
@@ -203,7 +130,7 @@ toast.success(response.data.message)
     <div className='sidebar-overlay' onClick={onClose}>
       <ToastContainer />
       <div className='sidebar' onClick={(e) => e.stopPropagation()}>
-        {isAddAddress ? (
+        
           <div>
             <div className='sidebar-header'>
               <h2>Add New Address</h2>
@@ -301,57 +228,12 @@ toast.success(response.data.message)
                   onChange={handleInputChange}
                 />
               </div>
-      { editingAddressId?     <button className='address-button' onClick={handleSaveAddress}>
-                update Address
-              </button>:    
-               <button className='address-button' onClick={handleUpdateAddress}>
+              <button className='address-button' onClick={handleSaveAddress}>
                 Save Address
               </button>
-           }
             </div>
           </div>
-        ) : (
-          <div>
-            <div className='sidebar-header'>
-              <h2>Select Location</h2>
-              <button onClick={onClose} className='close-button'>
-                &times;
-              </button>
-            </div>
-            {addresses?.map((address, index) => (
-              <div
-                key={index}
-                className='container address-card'
-
-              >
-                <div className='delivery-content'>
-                  <div className='delivery-context'>
-                    <h5 className='delivery-to'>DELIVERS TO</h5>
-                    <span>{address.type}</span>
-                  </div>
-                  <div className='address-edit' onClick={() => handleEditAddress(address)}>
-  <img src={edit} alt='edit' />
-</div>
-                </div>
-                <div className='address-context'                 onClick={() => {
-                  onAddressSelect(address);
-                  onClose();
-                }}>
-                  <h4>{address.name}</h4>
-                  <p>|</p>
-                  <p>{address.mobile}</p>
-                </div>
-                <div>
-                  <p>{address.flatOrHouseNo},{address.street},{address.city},{address.state},{address.country}</p>
-                  <p>({address.zip})</p>
-                </div>
-              </div>
-            ))}
-            <button className='address-button' onClick={handleAddAddress}>
-              Add New Address
-            </button>
-          </div>
-        )}
+  
       </div>
     </div>
   );

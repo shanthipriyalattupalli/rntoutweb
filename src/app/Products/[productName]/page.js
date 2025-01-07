@@ -44,15 +44,19 @@ const ProductPage = () => {
   // const productId = params.id;
   console.log(productId, "productId");
 
-  const [userId, setUserId] = useState("");
-  const [token, setToken] = useState("");
+  // const [userId, setUserId] = useState("");
+  // const [token, setToken] = useState("");
 
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("userToken");
-    setUserId(userId);
-    setToken(token);
-  }, []);
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("userId");
+  //   const token = localStorage.getItem("userToken");
+  //   setUserId(userId);
+  //   setToken(token);
+  // }, []);
+
+  const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+
 
   console.log(productId, "productIdurdfcvbjhhgc");
 
@@ -123,15 +127,21 @@ const ProductPage = () => {
     productimg,
     productimg,
   ];
+  const otherDetails = otherDetail
+  ? Object.entries(otherDetail).map(([key, value]) => ({
+      label: key.charAt(0).toUpperCase() + key.slice(1),
+      value,
+    }))
+  : [];
 
-  const otherDetails = Object.entries(otherDetail).map(([key, value]) => ({
-    label: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize the key
-    value,
-  }));
-  const productDetails = Object.entries(otherDetail).map(([key, value]) => ({
-    label: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize the key
-    value,
-  }));
+const productDetails = otherDetail
+  ? Object.entries(otherDetail).map(([key, value]) => ({
+      label: key.charAt(0).toUpperCase() + key.slice(1),
+      value,
+    }))
+  : [];
+  console.log(otherDetails,"otherDetails")
+
   const faqItems = [
     {
       question: "Can I return before 2 months?",

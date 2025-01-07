@@ -9,11 +9,14 @@ const MenuItems = () => {
 
   const [subcategories, setSubcategories] = useState([]);
   const [activeItem, setActiveItem] = useState(null); // State to track the active subcategory
-  const [categoryId, setCategoryId] = useState("");
+  // const [categoryId, setCategoryId] = useState("");
 
-  useEffect(() => {
-    setCategoryId(localStorage.getItem("selectedcategoryId"));
-  }, []);
+  // useEffect(() => {
+  //   setCategoryId(localStorage.getItem("selectedcategoryId"));
+  // }, []);
+
+  const categoryId=(typeof window !== 'undefined') ? localStorage.getItem("selectedcategoryId") : null;
+
   // Fetch subcategories by categoryId
   const fetchSubCategories = async () => {
     try {

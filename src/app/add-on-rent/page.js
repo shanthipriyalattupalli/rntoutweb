@@ -26,15 +26,18 @@ const CategoryGrid = () => {
   const [selectedCategoryLabel, setSelectedCategoryLabel] = useState(""); 
   const [error, setError] = useState("");
   const router = useRouter();
-  const [userId, setUserId] = useState("");
-  const [token, setToken] = useState("");
+  // const [userId, setUserId] = useState("");
+  // const [token, setToken] = useState("");
   const [BusinessId, setBusinessId] = useState("");
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("userToken");
-    setUserId(userId);
-    setToken(token);
-  }, []);
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("userId");
+  //   const token = localStorage.getItem("userToken");
+  //   setUserId(userId);
+  //   setToken(token);
+  // }, []);
+
+  const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   // console.log(token, "token of user")
 
   // Define background colors

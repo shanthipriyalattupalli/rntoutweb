@@ -136,16 +136,18 @@ const Sidebar = ({ subCategories, subcategoryId }) => {
               className='flex items-center justify-between cursor-pointer'
               onClick={handleFilterToggle}
             >
-              <h3 className='text-md font-bold mb-2'>Filter</h3>
-              {isFilterOpen ? (
+              <h2 className='text-md font-bold mb-2'>Filters</h2>
+              <span className="text-blue-400">Clear all</span>
+              {/* {isFilterOpen ? (
                 <ChevronDownIcon className='w-5 h-5 text-gray-600' />
               ) : (
                 <ChevronRightIcon className='w-5 h-5 text-gray-600' />
-              )}
+              )} */}
             </div>
-            {isFilterOpen && (
+     
+              <>
               <div className='space-y-1'>
-                <label className='flex items-center'>
+                {/* <label className='flex items-center'>
                   <input
                     type='radio'
                     name='filter'
@@ -188,14 +190,10 @@ const Sidebar = ({ subCategories, subcategoryId }) => {
                     className='mr-2'
                   />
                   New Arrivals
-                </label>
+                </label> */}
               </div>
-            )}
-          </div>
-        </div>
-
-        <div className='border-b-2'>
-          <div className='px-6 pb-4'>
+              <div className=''>
+          <div className=''>
             <div
               className='flex items-center justify-between cursor-pointer'
               onClick={handlePriceToggle}
@@ -208,7 +206,8 @@ const Sidebar = ({ subCategories, subcategoryId }) => {
               )}
             </div>
             {isPriceOpen && (
-              <div className='flex flex-col'>
+              <div className="grid grid-cols-2 gap-2 cursor-pointer">
+              {/* <div className='flex flex-col'>
                 <input
                   type='range'
                   min='800'
@@ -221,10 +220,23 @@ const Sidebar = ({ subCategories, subcategoryId }) => {
                   <span>₹{priceRange[0]}</span>
                   <span>₹{priceRange[1]}</span>
                 </div>
+              </div> */}
+
+              <span className="w-20 px-2 py-1 border border-2 rounded-lg bg-stone-100 border border-[rgba(7,7,7,0.1)]">₹800 +</span>
+              <span className="w-20 px-2 py-1 border border-2 rounded-lg bg-stone-100 border border-[rgba(7,7,7,0.1)]">₹800 +</span>
+              <span className="w-20 px-2 py-1 border border-2 rounded-lg bg-stone-100 border border-[rgba(7,7,7,0.1)]">₹800 +</span>
+              <span className="w-20 px-2 py-1 border border-2 rounded-lg bg-stone-100 border border-[rgba(7,7,7,0.1)]">₹800 +</span>
+
               </div>
             )}
           </div>
         </div>
+             </> 
+          
+          </div>
+        </div>
+
+
 
         <div className='border-b-2'>
           <div className='px-6 pb-4'>

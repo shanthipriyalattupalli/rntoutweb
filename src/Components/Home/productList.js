@@ -19,13 +19,16 @@ const productList = ({ product }) => {
   console.log(product, "productlist in produclist");
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isView, setIsview] = useState(true);
-  const [userId, setUserId] = useState("");
-  const [token, setToken] = useState("");
+  // const [userId, setUserId] = useState("");
+  // const [token, setToken] = useState("");
 
-  useEffect(() => {
-    setUserId(localStorage.getItem("userId"));
-    setToken(localStorage.getItem("userToken"));
-  }, []);
+  // useEffect(() => {
+  //   setUserId(localStorage.getItem("userId"));
+  //   setToken(localStorage.getItem("userToken"));
+  // }, []);
+
+  const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
   const {
     availability,

@@ -53,6 +53,7 @@
 .address-edit {
     /* border: 1px solid red; */
     padding-top: 1px;
+    cursor: pointer;
 }
 
 .delivery-to {

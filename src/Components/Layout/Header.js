@@ -8,8 +8,8 @@ const logo = "/Assets/Rntout_Logo.png";
 const Photo = "/Assets/Photo.png";
 
 function Header() {
-  const [name, setName] = useState("");
-  const [token,setToken]=useState("")
+  // const [name, setName] = useState("");
+  // const [token,setToken]=useState("")
 
   // useEffect(() => {
   //   const name = localStorage.getItem("userName");
@@ -17,12 +17,17 @@ function Header() {
   //   setName(name);
   //   setToken(token)
   // }, []);
-    useEffect(() => {
-    const name = localStorage.getItem("userName");
-    const token = localStorage.getItem("token");
-    setName(name);
-    setToken(token)
-  }, []);
+  //   useEffect(() => {
+  //   const name = localStorage.getItem("userName");
+  //   const token = localStorage.getItem("token");
+  //   setName(name);
+  //   setToken(token)
+  // }, []);
+
+  const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const name=(typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
+
 
   const [location, setLocation] = useState("HYD - 500008");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -57,13 +62,13 @@ function Header() {
   return (
     <header className='flex items-center justify-between px-6 py-4 bg-white shadow-md'>
       <div className='flex items-center'>
-        <a href='/'>
+        <Link href='/'>
           <img
             src={logo}
             alt='RNT Out Logo'
             className='h-10'
           />
-        </a>
+        </Link>
       </div>
       <div className='flex items-center'>
         <div className='relative ml-4'>
@@ -207,9 +212,8 @@ bg-[linear-gradient(90deg,_#FEAC5E_0%,_#C779D0_50%,_#4BC0C8_100%)] hover:scale-1
           ) : (
             <button
             className='ml-5 bg-[#FF2D55] hover:bg-[#e6264c] text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300'
-            onClick={() => router.push("/Login")}
           >
-            Sign In / Sign Up
+           <Link href='/Login'>Sign In / Sign Up</Link> 
           </button>
           )}
         </nav>

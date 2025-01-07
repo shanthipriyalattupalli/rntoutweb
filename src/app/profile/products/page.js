@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "@/styles/ProductInformation.css";
 import { LuPencil } from "react-icons/lu";
 import { FaEye } from "react-icons/fa";
@@ -10,65 +11,88 @@ const prodimg = "/Assets/dummy-image.svg";
 const vector = "/Assets/vector-icon.svg";
 
 export default function Dashboard({ products }) {
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+
+  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const [userProducts,setUserProducts]=useState([])
+const fetchUserProducts=async()=>{
+  try {
+    const response = await axios.get(`${BASE_URL}/variants/userVariants`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log(response, "userproducts");
+    setUserProducts(response.data)
+    
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
+}
+
+useEffect(() => {
+  if(token){
+  fetchUserProducts();
+  }
+}, [token]);
+
   const router = useRouter();
-  // const items = [
-  //   {
-  //     id: 1,
-  //     status: 'Out of Stock',
-  //     title: 'Windows i3/8GB 4th/6th Gen - Powered by Soldrit',
-  //     stock: '0/8',
-  //     earning: '₹50,000',
-  //     rating: 4.5,
-  //     reviews: 154,
-  //     onRent: false,
-  //     imageUrl: "/Assets/dummy-image.svg"
-  //   },
-  //   {
-  //     id: 2,
-  //     status: 'On Rent 3 Item',
-  //     title: 'Apple Macbook Air 13" 2017 - Powered by Soldrit',
-  //     stock: '5/8',
-  //     earning: '₹50,000',
-  //     rating: 4.5,
-  //     reviews: 154,
-  //     onRent: true,
-  //     imageUrl: prodimg,
-  //   },
-  //   {
-  //     id: 3,
-  //     status: 'On Rent 3 Item',
-  //     title: '40 Core Server On Rental, Hard-Disk: 2 Tb Ssd, Area Of Network',
-  //     stock: '5/8',
-  //     earning: '₹50,000',
-  //     rating: 4.5,
-  //     reviews: 154,
-  //     onRent: true,
-  //     imageUrl: prodimg,
-  //   },
-  //   {
-  //     id: 4,
-  //     status: 'On Rent 3 Item',
-  //     title: 'Dell 24 Inch P2425H Monitor | 100Hz | 5ms G-to-G',
-  //     stock: '5/8',
-  //     earning: '₹50,000',
-  //     rating: 4.5,
-  //     reviews: 154,
-  //     onRent: true,
-  //     imageUrl: prodimg,
-  //   },
-  //   {
-  //     id: 5,
-  //     status: 'All Available',
-  //     title: 'iBELL BM18-60 Electric Cordless Impact Wrench (3/8 inch)',
-  //     stock: '8/8',
-  //     earning: '₹50,000',
-  //     rating: 4.5,
-  //     reviews: 154,
-  //     onRent: false,
-  //     imageUrl: prodimg,
-  //   },
-  //   // Add more items as needed
-  // ];
+  const items = [
+    {
+      id: 1,
+      status: 'Out of Stock',
+      title: 'Windows i3/8GB 4th/6th Gen - Powered by Soldrit',
+      stock: '0/8',
+      earning: '₹50,000',
+      rating: 4.5,
+      reviews: 154,
+      onRent: false,
+      imageUrl: "/Assets/dummy-image.svg"
+    },
+    {
+      id: 2,
+      status: 'On Rent 3 Item',
+      title: 'Apple Macbook Air 13" 2017 - Powered by Soldrit',
+      stock: '5/8',
+      earning: '₹50,000',
+      rating: 4.5,
+      reviews: 154,
+      onRent: true,
+      imageUrl: prodimg,
+    },
+    {
+      id: 3,
+      status: 'On Rent 3 Item',
+      title: '40 Core Server On Rental, Hard-Disk: 2 Tb Ssd, Area Of Network',
+      stock: '5/8',
+      earning: '₹50,000',
+      rating: 4.5,
+      reviews: 154,
+      onRent: true,
+      imageUrl: prodimg,
+    },
+    {
+      id: 4,
+      status: 'On Rent 3 Item',
+      title: 'Dell 24 Inch P2425H Monitor | 100Hz | 5ms G-to-G',
+      stock: '5/8',
+      earning: '₹50,000',
+      rating: 4.5,
+      reviews: 154,
+      onRent: true,
+      imageUrl: prodimg,
+    },
+    {
+      id: 5,
+      status: 'All Available',
+      title: 'iBELL BM18-60 Electric Cordless Impact Wrench (3/8 inch)',
+      stock: '8/8',
+      earning: '₹50,000',
+      rating: 4.5,
+      reviews: 154,
+      onRent: false,
+      imageUrl: prodimg,
+    },
+    // Add more items as needed
+  ];
 
   return (
     <div className='prod-container-page'>
@@ -95,9 +119,9 @@ export default function Dashboard({ products }) {
         </div>
 
         <div className='items-grid'>
-          {products?.map((item) => (
-            <div className='item-card' key={item.id}>
-              <div
+          {userProducts?.map((item) => (
+            <div className='item-card' key={item._id}>
+              {/* <div
                 className={`status ${
                   item.status.includes("Out of Stock")
                     ? "out-of-stock"
@@ -109,7 +133,7 @@ export default function Dashboard({ products }) {
                 }`}
               >
                 {item.status}
-              </div>
+              </div> */}
 
               <div className='action-menu'>
                 <button className='menu-button'>⋮</button>
@@ -133,7 +157,7 @@ export default function Dashboard({ products }) {
                 </div>
               </div>
               <img
-                src='/Assets/dummy-image.svg'
+                src={item.images[0]}
                 alt={item.title}
                 className='item-image'
               />
@@ -141,7 +165,7 @@ export default function Dashboard({ products }) {
                 <div className='item-det-section'>
                   <h3 className='item-title'>{item.title}</h3>
                   <div className='item-details'>
-                    <p>Available Stock: {item.stock}</p>
+                    <p>Available Stock: {item.stockQuantity}</p>
                     <p>
                       Earning: <span>{item.earning}</span>
                     </p>

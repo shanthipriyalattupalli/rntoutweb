@@ -30,15 +30,18 @@ const CartPage = () => {
   const [selectedPrice, setSelectedPrice] = useState("");
   const [selectedPeriod, setSelectedPeriod] = useState("");
   const [selectedOptions, setSelectedOptions] = useState({});
-  const [userId, setUserId] = useState("");
-  const [token, setToken] = useState("");
+  // const [userId, setUserId] = useState("");
+  // const [token, setToken] = useState("");
 
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("userToken");
-    setUserId(userId);
-    setToken(token);
-  }, []);
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("userId");
+  //   const token = localStorage.getItem("userToken");
+  //   setUserId(userId);
+  //   setToken(token);
+  // }, []);
+  const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+
+  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
 console.log(token,"outside")
 
@@ -95,10 +98,11 @@ console.log(token,"outside")
       setSelectedOptions(updatedOptions);
     }
   }, [cartItems]);
-  
+  const storedOptions=(typeof window !== 'undefined') ? localStorage.getItem("selectedOptions") : null;
+
   // Retrieve persisted selected options on component load
   useEffect(() => {
-    const storedOptions = localStorage.getItem("selectedOptions");
+    // const storedOptions = localStorage.getItem("selectedOptions");
     if (storedOptions) {
       setSelectedOptions(JSON.parse(storedOptions));
     }
@@ -126,8 +130,6 @@ console.log(token,"outside")
   const handleAddressToggle = () => {
     setIsAddressSidebarOpen(!isAddressSidebarOpen);
   };
-
-
 
   const increaseQuantity = async (variantId) => {
     const newQuantity =  + 1;
@@ -242,12 +244,10 @@ console.log(token,"outside")
       console.log(cartId, "variantId remove");
       const response = await axios.delete(`${BASE_URL}/cart/remove/${cartId}`);
       console.log(response.data, "deleted");
-  
-      // Remove the corresponding entry from selectedOptions in localStorage
       setSelectedOptions((prevOptions) => {
         const updatedOptions = { ...prevOptions };
-        delete updatedOptions[variantId]; // Remove the variantId from selectedOptions
-        localStorage.setItem("selectedOptions", JSON.stringify(updatedOptions)); // Update localStorage
+        delete updatedOptions[variantId]; 
+        localStorage.setItem("selectedOptions", JSON.stringify(updatedOptions)); 
         return updatedOptions;
       });
   
@@ -269,6 +269,7 @@ console.log(token,"outside")
   };
 
   const handlePayment = (status, orderDetails) => {
+    console.log(orderDetails,"orderdetails")
     if (status === "succeeded") {
       setDisplayRazorpay(false);
     } else if (status === "cancelled") {
@@ -413,7 +414,7 @@ console.log(token,"outside")
                 currency={"INR"}
                 keyId={apiKey}
                 handlePayment={handlePayment}
-                name={localStorage.getItem("userName")}
+                name={(typeof window !== 'undefined') ? localStorage.getItem("userName") : null}
               />
             )}
           </div>

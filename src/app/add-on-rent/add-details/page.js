@@ -23,34 +23,29 @@ const MainContent = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [productDetails, setProductDetails] = useState([
     {
-      id: Date.now(),
-      title: "",
-      details: [{ id: Date.now() + 1, key: "", value: "" }],
+      // id: Date.now(),
+      // title: "",
+      details: [{key: "", value: "" }],
     },
   ]);
 
-  //let subCategoryId;
-  const [userId, setUserId] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [token, setToken] = useState("");
-  const [subCategoryId, setSubCategoryId] = useState("");
+
+const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const categoryId=(typeof window!== 'undefined') ? localStorage.getItem("selectedcategoryId") : null;
+  const subCategoryId=(typeof window!== 'undefined') ? localStorage.getItem("selectedSubCategoryId") : null;
+  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+
 
   useEffect(() => {
     const handleStorageChange = () => {
-    const userId = localStorage.getItem("userId");
-    const categoryId = localStorage.getItem("selectedcategoryId");
-    const subCategoryId = localStorage.getItem("selectedSubCategoryId");
-    const token = localStorage.getItem("userToken");
-    setUserId(userId);
-    setCategoryId(categoryId);
-    setToken(token);
-    setSubCategoryId(subCategoryId);
     setFormData({
       ...formData,
       categoryId: categoryId,
       subCategoryId: subCategoryId
     });
   }
+
+
 
   window.addEventListener("storage", handleStorageChange);
   return () => window.removeEventListener("storage", handleStorageChange);
@@ -109,30 +104,6 @@ console.log(categoryId,subCategoryId,"fetchProducts ")
   };
 
   console.log(selectedOption, "selectedoption");
-
-  // const handleInputChange = (sectionId, detailId, field, value) => {
-  //     setProductDetails((prevDetails) =>
-  //         prevDetails.map((section) =>
-  //             section.id === sectionId
-  //                 ? {
-  //                     ...section,
-  //                     details: section.details.map((detail) =>
-  //                         detail.id === detailId ? { ...detail, [field]: value } : detail
-  //                     ),
-  //                 }
-  //                 : section
-  //         )
-  //     );
-  // };
-
-  const handleTitleChange = (sectionId, value) => {
-    setProductDetails((prevDetails) =>
-      prevDetails.map((section) =>
-        section.id === sectionId ? { ...section, title: value } : section
-      )
-    );
-  };
-
   const [prices, setPrices] = useState({
     perDay: 0,
     perWeek: 0,
@@ -227,7 +198,7 @@ console.log(categoryId,subCategoryId,"fetchProducts ")
     owner: userId,
     title: "",
     description: "",
-    images: ["","","",""],
+    images: [],
     categoryId: categoryId,
     subCategoryId: subCategoryId,
     productId: selectedOption,
@@ -244,7 +215,7 @@ console.log(categoryId,subCategoryId,"fetchProducts ")
       startDate: null,
       endDate: null,
     },
-    seoTags: ["", "", "", ""],
+    seoTags: [],
     isForSale: true,
     salePrice: 0,
     stockQuantity: 0,
@@ -296,19 +267,22 @@ console.log(categoryId,subCategoryId,"fetchProducts ")
  
  
   const mapDetailsToFormData = () => {
-    const mappedDetails = productDetails.flatMap((section) =>
-      section.details?.map((detail) => ({
-        key: detail.key,
-        value: detail.value,
-      }))
-    );
-
+    const mappedDetails = productDetails.reduce((acc, section) => {
+      section.details?.forEach((detail) => {
+        if (detail.key && detail.value) {
+          acc[detail.key] = detail.value; // Grouping key-value pairs into a single object
+        }
+      });
+      return acc;
+    }, {});
+  
     console.log("Mapped itemDetails: ", mappedDetails);
     setFormData((prev) => ({
       ...prev,
       itemDetails: mappedDetails,
     }));
   };
+  
 
   const handlePublishProduct = async () => {
     try {
@@ -316,7 +290,7 @@ console.log(categoryId,subCategoryId,"fetchProducts ")
         owner: userId,
         title: formData.title,
         description: formData.description,
-        images: formData.images,
+        images: formData.images, // Ensure images are included
         categoryId: formData.categoryId,
         subCategoryId: formData.subCategoryId,
         productId: formData.productId,
@@ -338,20 +312,29 @@ console.log(categoryId,subCategoryId,"fetchProducts ")
         pickupAvailable: formData.pickupAvailable,
         itemDetails: formData.itemDetails,
       };
-      console.log(payload, "payload");
+  
+      console.log("Payload to be sent:", payload);
+  
       const response = await axios.post(`${BASE_URL}/variants`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
         },
       });
-      console.log(response, "created product");
-      toast.success("Product created successfully");
+  
+      if (response.data.success) {
+        toast.success("Product published successfully!");
+        setFormData(initialFormData); // Clear form
+        setPreviewImages([]); // Clear preview images
+      } else {
+        toast.error("Failed to publish the product. Please try again.");
+      }
+  
     } catch (error) {
-      toast.error(error.response.data.message);
-      console.error("Error publishing product:", error);
+      console.error("Error while publishing product:", error);
+      toast.error(`Error: ${error.response?.data?.message || error.message}`);
     }
   };
+  
 
   console.log(productDetails, "productDetails");
   console.log(formData.itemDetails, "formdata itemDetails");
@@ -526,7 +509,7 @@ console.log(categoryId,subCategoryId,"fetchProducts ")
           <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
         </h2>
         {productDetails?.map((section) => (
-          <div key={section.id} className='product-details-card'>
+          <div className='product-details-card'>
             Title
             {section.details?.map((detail) => (
               <div key={detail.id} className='detail-row'>

@@ -8,10 +8,13 @@ const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [expanded, setExpanded] = useState({}); // Track expanded state for each blog
-  const [token, setToken] = useState("");
-  useEffect(() => {
-    setToken(localStorage.getItem("userToken"));
-  }, []);
+  // const [token, setToken] = useState("");
+  // useEffect(() => {
+  //   setToken(localStorage.getItem("userToken"));
+  // }, []);
+
+  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+
 
   const toggleDescription = (index) => {
     setExpanded((prev) => ({

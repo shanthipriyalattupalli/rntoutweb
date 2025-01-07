@@ -29,13 +29,13 @@ const Home = ({ categories }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [products, setProducts] = useState([]);
 
-  const [categoryId, setCategoryId] = useState("");
+  // const [categoryId, setCategoryId] = useState("");
 
-  useEffect(() => {
-    const categoryId = localStorage.getItem("categoryId");
-    setCategoryId(categoryId);
-  }, []);
-
+  // useEffect(() => {
+  //   const categoryId = localStorage.getItem("categoryId");
+  //   setCategoryId(categoryId);
+  // }, []);
+ const categoryId = (typeof window !== 'undefined') ? localStorage.getItem("categoryId") : null;
   // Fetch all product variants
   const fetchProducts = async () => {
     try {

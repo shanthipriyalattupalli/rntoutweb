@@ -13,15 +13,20 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function BusinessInformation2  ()  {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
-   const [userId, setUserId] = useState("");
-    const [token, setToken] = useState("");
+  //  const [userId, setUserId] = useState("");
+  //   const [token, setToken] = useState("");
     const [isBuisness,setIsBuisness] = useState(false);
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("userToken");
-    setUserId(userId);
-    setToken(token);
-  }, []);
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("userId");
+  //   const token = localStorage.getItem("userToken");
+  //   setUserId(userId);
+  //   setToken(token);
+  // }, []);
+
+
+  const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+
 
   const initialFormData = {
     businessName: "",

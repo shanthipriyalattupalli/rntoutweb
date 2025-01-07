@@ -9,6 +9,7 @@ const AvailabilIcon = "/Assets/Icons/ava-stock.png";
 const cartIcon = "/Assets/Icons/add-to-cart.png";
 const cartIconHov = "/Assets/Icons/add-to-cart-white.png";
 const stars = "/Assets/stars.svg";
+const favIcon="/Assets/bookmarks_line.svg"
 import Link from "next/link";
 // import DeliveryIcon from '/public/Assets/Icons/delivery.png';
 // import AvailabilityIcon from '/public/Assets/Icons/availability.png';
@@ -27,15 +28,19 @@ const ProductItem = ({ product }) => {
 
   // const { imgSrc, name, price, dateRange, availability, stock } = product;
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  const [userId, setUserId] = useState("");
-  const [token, setToken] = useState("");
+  // const [userId, setUserId] = useState("");
+  // const [token, setToken] = useState("");
 
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("userToken");
-    setUserId(userId);
-    setToken(token);
-  }, []);
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("userId");
+  //   const token = localStorage.getItem("userToken");
+  //   setUserId(userId);
+  //   setToken(token);
+  // }, []);
+
+  const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+
 
   const [isView, setIsview] = useState(true);
   const {
@@ -108,6 +113,25 @@ const ProductItem = ({ product }) => {
     }
   };
 
+
+  const handleAddToFavorites=async()=>{
+    try {
+      const response = await axios.post(`${BASE_URL}/favorites/add`, {variantId:_id}, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+        },
+      });
+      console.log(response.data);
+      toast.success(response.data.message);
+    } catch (error) {
+      console.error("Error adding product to favorites:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Something went wrong. Please try again."
+      );
+    }
+  }
+
   return (
     <>
       <div>
@@ -132,6 +156,9 @@ const ProductItem = ({ product }) => {
               <p className='absolute flex top-[14px] right-4 bg-amber-500 px-2 rounded-full text-[white]'>
                 <img src={stars} />
                 4.5
+              </p>
+              <p className='absolute flex top-[36px] right-5 cursor-pointer'>
+                <img src={favIcon} className="w-7" onClick={()=>handleAddToFavorites()} />    
               </p>
             </div>
             <div className='absolute top-[159px] left-1/4 flex items-center justify-center'>
