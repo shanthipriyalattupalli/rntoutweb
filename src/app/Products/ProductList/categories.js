@@ -2,7 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-
+import '@/styles/productlist.css'
+// const it='/Assets/it.svg'
+// const furniture='/Assets/furniture.svg';
+// const medical ='/Assets/medical.svg';
+// const vaccation='/Assets/vaccaton.svg';
+// const vehicles='/Aseets/vehicles.svg';
+// const party ='/Assets/party.svg';
+// const sport='Assets/sport.svg';
+// const household='Assets/household.svg'; 
 const Submenu = ({ categories }) => {
   let category = categories;
   console.log(categories, "category in submenu...............................");
@@ -21,10 +29,21 @@ const Submenu = ({ categories }) => {
     router.push(`/Product-list/${categoryId}`); // Navigate to ProductList with categoryId
   };
 
+  const images = [
+    "/Assets/it.svg",
+    "/Assets/furniture.svg",
+    "/Assets/medical.svg",
+    "/Assets/vaccation.svg",
+    "/Assets/vehicles.svg",
+    "/Assets/party.svg",
+    "/Assets/sport.svg",
+    "/Assets/household.svg",
+  ];
+
   return (
     <div className='container mx-auto flex mt-4 pt-4'>
       <nav className='flex flex-row gap-4 overflow-x-auto'>
-        {categories?.map((category) => (
+        {categories?.map((category,index) => (
           <button
             key={category._id}
             onClick={() => handleMenuClick(category._id)}
@@ -34,7 +53,15 @@ const Submenu = ({ categories }) => {
                 : "bg-slate-200"
             } hover:bg-white transition-colors duration-300`}
           >
-            <span className='text-sm font-xs'>{category.categoryName}</span>
+              {images[index] && (
+              <img 
+              src={images[index]} 
+              alt={`${category.categoryName} icon`} 
+              className={`w-6 h-6 ${
+                activeMenu === category._id ? "filter-red" : ""
+              }`} 
+            />
+            )} <span className='text-sm font-xs'>{category.categoryName}</span>
           </button>
         ))}
       </nav>

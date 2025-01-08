@@ -25,6 +25,7 @@ const CartPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAddressSidebarOpen, setIsAddressSidebarOpen] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [isCoupon,setIsCoupon]=useState(false)
   const [quantities, setQuantities] = useState({});
   const [displayRazorpay, setDisplayRazorpay] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState("");
@@ -126,6 +127,10 @@ console.log(token,"outside")
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+const handleCouponToggle=()=>{
+  setIsCoupon(!isCoupon)
+}
 
   const handleAddressToggle = () => {
     setIsAddressSidebarOpen(!isAddressSidebarOpen);
@@ -419,7 +424,7 @@ console.log(token,"outside")
             )}
           </div>
         </div>
-        <div className='summary-item address'>
+        <div className='summary-item address'  onClick={handleCouponToggle}>
           <div className='address-content'>
             <img src={coupon} />
             <span>Promo Coupon</span>

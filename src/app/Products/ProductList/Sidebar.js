@@ -30,7 +30,7 @@ const Sidebar = ({ subCategories, subcategoryId }) => {
   const categoryId = params.categoryId; // Extract categoryId directly from params
   console.log("categoryId from params:", categoryId);
   const router = useRouter();
-
+console.log(subcategoryId,"subcategoryid....")
   const handlePriceRangeChange = (event) => {
     const [min, max] = event.target.value.split(",")?.map(Number);
     setPriceRange([min, max]);
@@ -79,10 +79,17 @@ const Sidebar = ({ subCategories, subcategoryId }) => {
   const handleClick = (subcategoryId, categoryId) => {
     console.log(categoryId, "categoryID.............");
     console.log(subcategoryId, "subcategoryIds...........");
-    // Toggle the active index
+    
+
+    setActiveIndex(subcategoryId);
+  
     router.push(`/Product-list/${categoryId}/${subcategoryId}`);
     setActiveIndex(subcategoryId);
   };
+
+  useEffect(() => {
+    console.log("Active Index Updated:", activeIndex);
+  }, [activeIndex]);
 
   // useEffect(() => {
   //   if (subCategories.length > 0) {
@@ -107,26 +114,25 @@ const Sidebar = ({ subCategories, subcategoryId }) => {
             )}
           </div>
           {isSubCategoriesOpen && (
-            <ul className='space-y-1'>
-              {subCategories?.map((subcategory) => (
-                <li key={subcategory._id}>
-                  <div
-                    onClick={() =>
-                      handleClick(subcategory._id, subcategory.categoryId._id)
-                    }
-                    className={`flex justify-between text-gray-700 border rounded-lg  hover:text-gray-900 border-[Neutral/200] cursor-pointer p-2 ${
-                      activeIndex === subcategory._id
-                        ? "bg-[#F0F5FF] text-Black border-[#2F6FED]"
-                        : "bg-[#0707070D] text-Black border-[#0707071A]"
-                    }`}
-                  >
-                    {subcategory.subCategoryName}
-                    <ChevronDownIcon className='w-5 h-5 text-gray-600' />
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
+  <ul className="space-y-1">
+    {subCategories?.map((subcategory) => (
+      <li key={subcategory._id}>
+        <div
+          onClick={() => handleClick(subcategory._id, subcategory.categoryId._id)}
+          className={`flex justify-between text-gray-700 border rounded-lg hover:text-gray-900 cursor-pointer p-2 ${
+            activeIndex === subcategory._id
+              ? "bg-[#F0F5FF] text-black border-[#2F6FED]"
+              : "bg-[#0707070D] text-black border-[#0707071A]"
+          }`}
+        >
+          {subcategory.subCategoryName}
+          <ChevronDownIcon className="w-5 h-5 text-gray-600" />
+        </div>
+      </li>
+    ))}
+  </ul>
+)}
+
         </div>
       </div>
       <div className='space-y-6 border-l-2 border-r-2'>

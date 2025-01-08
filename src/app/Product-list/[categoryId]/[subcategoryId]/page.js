@@ -122,10 +122,12 @@ useEffect(() => {
           <Sidebar subCategories={subCategories} subcategoryId={subcategoryId} />
   
           <div className="flex flex-col gap-2 p-4 w-full  h-[auto] border border-slate-200 bg-white rounded-lg">
-          <div className="w-auto flex border rounded-lg">
+          <div className="w-auto flex border rounded-lg justify-between">
     {product.map((product) => (
-      <p key={product._id} className={`w-auto items-center flex justify-between p-2 text-center rounded-lg ${
-        active === product._id ? 'bg-[#2F6FED] text-white border-[#2F6FED]' : ''}`} onClick={() => handleProductClick(product._id)}>{product.productName}</p>
+      <div className={`w-full text-center rounded-lg ${active === product._id? ' bg-[#2F6FED] ':''}`}>
+      <p key={product._id} className={`w-auto justify-center flex p-2 text-center rounded-lg ${
+        active === product._id ? 'text-white border-[#2F6FED]' : ''}`} onClick={() => handleProductClick(product._id)}>{product.productName}</p>
+        </div>
     ))}
   </div>
             {/* <Products/> */}

@@ -3,7 +3,7 @@
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import axios from "axios";
-//import "@/styles/SellerProfile.css";
+import "@/styles/SellerProfile.css";
 import { useRouter } from "next/navigation";
 
 // Lazy load components

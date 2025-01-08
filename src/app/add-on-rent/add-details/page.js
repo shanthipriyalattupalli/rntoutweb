@@ -193,6 +193,9 @@ console.log(categoryId,subCategoryId,"fetchProducts ")
   const handleIconClick = () => {
     fileInputRef.current.click();
   };
+
+
+
   useEffect(() => {
     const fetchProducts = async () => {
       // console.log(categoryId,subCategoryId,"fetchProducts")
@@ -311,14 +314,14 @@ console.log(categoryId,subCategoryId,"fetchProducts ")
     }));
   };
   
-
+console.log(formData.images)
   const handlePublishProduct = async () => {
     try {
       const payload = {
         owner: userId,
         title: formData.title,
         description: formData.description,
-        images: formData.images, // Ensure images are included
+        images: formData.images, 
         categoryId: formData.categoryId,
         subCategoryId: formData.subCategoryId,
         productId: formData.productId,
@@ -345,6 +348,7 @@ console.log(categoryId,subCategoryId,"fetchProducts ")
   
       const response = await axios.post(`${BASE_URL}/variants`, payload, {
         headers: {
+       "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
@@ -395,7 +399,6 @@ console.log(categoryId,subCategoryId,"fetchProducts ")
           <p>No products found for the selected subcategory.</p>
         )}
       </div>
-
       <div className='product-form'>
         <h2 className='ba-in'>BASICS INFO</h2>
         <div className='basic-details'>

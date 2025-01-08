@@ -16,6 +16,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {useRouter , useSearchParams ,useParams} from "next/navigation";
+import Link from "next/link";
 const productimg = "/Assets/pi-1.png";
 const AvailIcon = "/Assets/Icons/ava-stock.png";
 const AvailtyIcon = "/Assets/Icons/availability.png";
@@ -252,13 +253,15 @@ const productDetails = otherDetail
                 className='w-6 h-6 rounded-full'
               />
               {owner && (
-                <span
+              
+              <Link href='/SellerProfile'><span
                   className='text-xs'
                   onClick={handleSellerclick}
                   key={owner._id}
                 >
                   {owner.name}
                 </span>
+                </Link>
               )}
               <div className='flex items-center'>
                 <Star className='w-4 h-4 fill-yellow-400 text-yellow-400' />
