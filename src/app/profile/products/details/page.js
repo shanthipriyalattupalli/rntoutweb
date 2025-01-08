@@ -174,7 +174,7 @@ const MainContent = () => {
                 ref={fileInputRef}
                 multiple
                 accept='.jpeg, .png, .jpg'
-                style={{ display: "none" }}
+                // style={{ display: "none" }}
               />
               <div className='upload-icon-wrapper-pd' onClick={handleIconClick}>
                 <FaUpload />

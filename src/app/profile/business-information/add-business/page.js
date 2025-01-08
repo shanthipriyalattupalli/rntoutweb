@@ -324,7 +324,7 @@ console.log(isBuisness,"business")
   id="fileInput"
   accept=".jpg,.jpeg,.png"
   multiple
-  style={{ display: "none" }}
+  // style={{ display: "none" }}
   onChange={handleFileUpload}
 />
 

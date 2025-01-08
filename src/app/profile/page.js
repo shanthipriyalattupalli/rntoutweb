@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import "@/styles/ProfileSettings.css";
+import '../../styles/ProfileSettings.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const profile_avatar = "/Assets/profile_avatar.png";
@@ -107,7 +107,7 @@ export default function ProfileSettings() {
           <input
             type="file"
             ref={fileInputRef}
-            style={{ display: "none" }}
+            // style={{ display: "none" }}
             accept="image/*"
             onChange={handleFileChange}
             className="input-group"
