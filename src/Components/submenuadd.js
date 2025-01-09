@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "@/styles/Adddetail.css";
+// import "@/styles/Adddetail.css";
+import '../styles/Adddetail.css';
 
 const MenuItems = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;

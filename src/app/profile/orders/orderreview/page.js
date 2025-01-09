@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import "@/styles/OrderTrackingWithNavigate.css";
+// import "@/styles/OrderTrackingWithNavigate.css";
+import '../../../../styles/OrderTrackingWithNavigate.css';
 import OrderItem from "@/Components/OrderItem";
 //import "@/styles/orderReview.css";
 import { IoMdArrowRoundBack } from "react-icons/io";

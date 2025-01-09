@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import { PiClockClockwiseBold } from "react-icons/pi";
 import { AiFillShop } from "react-icons/ai";
-import "@/styles/OrderReviewSubmited.css";
+// import "@/styles/OrderReviewSubmited.css";
+import '../../../../styles/OrderReviewSubmited.css';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import OrderItem from "@/Components/OrderItem";
 import { HiLocationMarker } from "react-icons/hi";

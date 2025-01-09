@@ -2,7 +2,8 @@
 'use client'
 import React from 'react';
 import MenuItems from '@/Components/submenuadd';
-import '@/styles/Adddetail.css';
+// import '@/styles/Adddetail.css';
+import '../../../styles/Adddetail.css';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

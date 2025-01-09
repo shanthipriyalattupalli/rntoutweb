@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import '@/styles/productlist.css'
+// import '@/styles/productlist.css'
+import '../../../styles/productlist.css';
 // const it='/Assets/it.svg'
 // const furniture='/Assets/furniture.svg';
 // const medical ='/Assets/medical.svg';

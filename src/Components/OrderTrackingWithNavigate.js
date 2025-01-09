@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import "@/styles/OrderTrackingWithNavigate.css";
+// import "@/styles/OrderTrackingWithNavigate.css";
+import '../styles/orderTrackingWithNavigate.css';
 import OrderItem from "@/Components/OrderItem";
 import { PiClockClockwiseBold } from "react-icons/pi";
 import { AiFillShop } from "react-icons/ai";

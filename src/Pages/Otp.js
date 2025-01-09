@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import "@/styles/Otp.css";
+// import "@/styles/Otp.css";
+import '../styles/Otp.css';
 import axios from "axios"; // Import axios for API requests
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";

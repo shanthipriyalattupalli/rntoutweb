@@ -1,6 +1,7 @@
 "use client";
 
-import "@/styles/Sidemenubar.css";
+// import "@/styles/Sidemenubar.css";
+import '../styles/Sidemenubar.css';
 import { useRouter, usePathname } from "next/navigation";
 import { PiCirclesFourFill } from "react-icons/pi";
 import { FaUser } from "react-icons/fa";

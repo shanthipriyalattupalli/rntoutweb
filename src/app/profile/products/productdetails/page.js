@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
-import "@/styles/ProductInformation2.css";
+// import "@/styles/ProductInformation2.css";
+import '../../../../styles/ProductInformation.css'
 import { FileX } from "lucide-react";
 
 const dummyimage = "/Assets/dummy-image-2.svg";

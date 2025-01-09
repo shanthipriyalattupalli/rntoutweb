@@ -1,5 +1,6 @@
 "use client";
-import "@/styles/Favorites.css";
+// import "@/styles/Favorites.css";
+import '../../../styles/Favorites.css';
 import Image from "next/image"; // Import Image component
 const pro1 = "/Assets/laptop-1.jpg";
 const pro2 = "/Assets/laptop-2.jpg";

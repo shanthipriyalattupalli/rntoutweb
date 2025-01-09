@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import "@/styles/Cart.css";
+// import "@/styles/Cart.css";
+import '../../styles/Cart.css';
 import axios from "axios";
 import Sidebar from "./Sidebar/page";
 import AddressSidebar from "./AddressSidebar/page";

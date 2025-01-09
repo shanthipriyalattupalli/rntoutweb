@@ -1,6 +1,7 @@
 'use client';
 import React from "react";
-import "@/styles/Orderpage.css";
+// import "@/styles/Orderpage.css";
+import '../../../../styles/orderpage.css';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useRouter } from 'next/navigation';
 import OrderTrackingWithNavigate from "@/Components/OrderTrackingWithNavigate";

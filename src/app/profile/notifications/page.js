@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import "@/styles/Notifications.css";
+// import "@/styles/Notifications.css";
+import '../../../styles/Notifications.css';
 const chair = "/Assets/chair.png";
 import { FaEllipsisV } from "react-icons/fa";
 

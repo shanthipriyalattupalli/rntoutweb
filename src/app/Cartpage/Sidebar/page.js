@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import "@/styles/Sidebar.css";
+import '../../../styles/Sidebar.css';
 
 const Sidebar = ({ isOpen, onClose, products }) => {
   const [selectAll, setSelectAll] = useState(false);

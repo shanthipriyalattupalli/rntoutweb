@@ -1,7 +1,8 @@
 "use client"
 
 import React from 'react';
-import "@/styles/About.css";
+// import "@/styles/About.css";
+import '../styles/About.css';
 
 const Aboutus = () => {
     return (
