@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 // import "@/styles/OrderTrackingWithNavigate.css";
-import '../styles/orderTrackingWithNavigate.css';
+import '../styles/OrderTrackingWithNavigate.css';
 import OrderItem from "@/Components/OrderItem";
 import { PiClockClockwiseBold } from "react-icons/pi";
 import { AiFillShop } from "react-icons/ai";
