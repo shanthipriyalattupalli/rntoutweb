@@ -25,7 +25,7 @@ const CategorySection = ({ categories }) => {
 
   return (
     <div className='bg-white pt-6'>
-      <div className='container mx-auto px-4 text-center'>
+      <div className='container flex flex-col gap-2 mx-auto px-4 text-center'>
         <h1 className='text-3xl font-bold text-gray-800'>
           Our Top Trending Products
         </h1>
@@ -34,7 +34,7 @@ const CategorySection = ({ categories }) => {
         </p>
       </div>
 
-      <div className='bg-white-100 py-4'>
+      <div className='bg-white-100 py-6'>
         <div className='container mx-auto flex flex-wrap justify-center gap-1'>
           {categories?.map((category) => (
             <button

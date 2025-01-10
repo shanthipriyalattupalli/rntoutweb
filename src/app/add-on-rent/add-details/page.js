@@ -460,7 +460,7 @@ console.log(formData.images)
               ref={fileInputRef}
               multiple
               accept='.jpeg, .png, .jpg'
-              style={{ display: "none" }}
+              // style={{ display: "none" }}
               onChange={handleFileChange} // Add onChange handler
             />
             <div className='upload-icon' onClick={handleIconClick}>

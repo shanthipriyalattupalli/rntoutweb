@@ -34,7 +34,7 @@ const OurBestServices = () => {
   ];
 
   return (
-    <div className='w-full bg-white border border-y border-slate-200 mx-auto p-8 mt-4 mb-4'>
+    <div className='w-full bg-white border border-y border-slate-200 mx-auto px-28 py-10 mt-4 mb-4'>
       <h1 className='text-3xl font-bold text-gray-800 text-center mb-6'>
         Our Best Services
       </h1>

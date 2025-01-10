@@ -1,8 +1,12 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, { use, useEffect, useState,useRef } from "react";
 import axios from "axios";
 import Image from "next/image";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
+const left = '/Assets/leftarrow.svg';
 const DeliveryIcon = "/Assets/Icons/delivery.png";
 const AvailabilityIcon = "/Assets/Icons/availability.png";
 const AvailabilIcon = "/Assets/Icons/ava-stock.png";
@@ -24,6 +28,7 @@ const customStyles = `
   .cart-price {    color: #FF2D55;  }`;
 
 const ProductItem = ({ product }) => {
+    const swiperRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
 
   // const { imgSrc, name, price, dateRange, availability, stock } = product;
@@ -138,47 +143,99 @@ const ProductItem = ({ product }) => {
         <ToastContainer />
         <style>{customStyles}</style>
 
-        <div className='w-[300px] bg-white rounded-lg border border-slate-200'>
-          <div className='relative rounded-lg'>
-            <div className='border-b-2 border-bottom-color: rgb(209 213 219 / var(--tw-border-opacity, 1))'>
-              <Link
-                href={{ pathname: `/Products/${title}`, query: { id: _id } }}
-                key={_id}
-              >
-                <Image
-                  src={images[0]}
-                  alt={title}
-                  className='w-full h-44 object-cover rounded-lg'
-                  width={500}
-                  height={300}
-                />
-              </Link>
-              <p className='absolute flex top-[14px] right-4 bg-amber-500 px-2 rounded-full text-[white]'>
-                <img src={stars} />
-                4.5
-              </p>
-              <p className='absolute flex top-[36px] right-5 cursor-pointer'>
-                <img src={favIcon} className="w-7" onClick={()=>handleAddToFavorites()} />    
-              </p>
-            </div>
-            <div className='absolute top-[159px] left-1/4 flex items-center justify-center'>
-              {isView ? (
-                <span
-                  className='bg-white text-black w-54 text-center rounded-full border-2 p-1'
-                  onClick={handleclick}
-                >
-                  view all packages
-                </span>
-              ) : (
-                <span
-                  className='bg-white text-black w-54 text-center rounded-full border-2 p-1'
-                  onClick={handleBack}
-                >
-                  Back to details
-                </span>
-              )}
-            </div>
-          </div>
+        <div className='w-[300px] bg-white rounded-lg border border-slate-200'
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}>
+<div className="relative rounded-lg">
+  <div className="border-b-2 border-bottom-color: rgb(209 213 219 / var(--tw-border-opacity, 1))">
+    {isHovered ? (
+ <>
+         <div
+          className="absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
+          onClick={() => swiperRef.current?.slidePrev()} // Navigate to the previous slide
+        >
+          <img src={left} alt="Previous" className="rotate-360" />
+        </div>
+        <div
+          className="absolute right-[2.7px] top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
+          onClick={() => swiperRef.current?.slideNext()} // Navigate to the next slide
+        >
+          <img src={left} alt="Next" className="rotate-180" />
+        </div>
+      <Swiper
+        onSwiper={(swiper) => (swiperRef.current = swiper)} // Set the Swiper instance to the ref
+        navigation={false} // Disable default navigation as we are using custom buttons
+        pagination={{ clickable: true }}
+        modules={[Navigation]}
+        autoplay={{ delay: 3000 }}
+        // className="rounded-[40px] border border-gray-200"
+        // className="h-44"
+      >
+        {images.map((img, index) => (
+          <SwiperSlide key={index}>
+      <Link href={{ pathname: `/Products/${title}`, query: { id: _id } }} key={_id}>
+            
+            <Image
+              src={img}
+              alt={`${title} - ${index + 1}`}
+              className="w-full h-44 object-cover rounded-lg"
+              width={500}
+              height={300}
+            />
+            </Link>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      </>
+    ) : (
+      // Show single image when not hovered
+      <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
+        <Image
+          src={images[0]}
+          alt={title}
+          className="w-full h-44 object-cover rounded-lg"
+          width={500}
+          height={300}
+        />
+      </Link>
+    )}
+
+    {/* Rating and Fav Icon positioned on top */}
+    <div className="absolute top-[14px] right-4 z-10 flex flex-col items-center space-x-2">
+      <p className="flex items-center bg-amber-500 px-2 rounded-full text-white">
+        <img src={stars} alt="Rating stars" className="w-4 h-4" />
+        <span className="ml-1">4.5</span>
+      </p>
+      <p
+        className="cursor-pointer"
+        onClick={() => handleAddToFavorites()}
+      >
+        <img src={favIcon} className="w-7" alt="Favorite icon" />
+      </p>
+    </div>
+
+    {/* View All Details Button */}
+    <div className="absolute top-[159px]  z-10 flex items-center justify-center w-full">
+      {isView ? (
+        <span
+          className="bg-white text-black w-54 text-center rounded-full border-2 p-1"
+          onClick={handleclick}
+        >
+          View all details
+        </span>
+      ) : (
+        <span
+          className="bg-white text-black w-54 text-center rounded-full border-2 p-1"
+          onClick={handleBack}
+        >
+          Back to details
+        </span>
+      )}
+    </div>
+  </div>
+</div>
+
+
           {isView ? (
             <div className='p-4'>
               <h2 className='product-title text-gray-800'>{title}</h2>
@@ -245,7 +302,7 @@ const ProductItem = ({ product }) => {
           onMouseLeave={() => setIsHovered(false)}
         > */}
               <button
-                className='cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group'
+                className={`cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group ${isHovered?"bg-red-600 text-white":""}`}
                 onClick={() => handleAddCart()}
               >
                 <Image

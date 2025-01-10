@@ -107,7 +107,7 @@ export default function ProfileSettings() {
           <input
             type="file"
             ref={fileInputRef}
-            style={{ display: "none" }}
+            // style={{ display: "none" }}
             accept="image/*"
             onChange={handleFileChange}
             className="input-group"
