@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
-import "@/styles/SellerReview.css";
+// import "@/styles/SellerReview.css";
+import '../../../../styles/SellerReview.css';
 import { IoMdArrowRoundBack } from "react-icons/io";
 const prop = "/Assets/user-prop.png";
 

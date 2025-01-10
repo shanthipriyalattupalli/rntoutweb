@@ -1,6 +1,7 @@
 'use client';
 import React from "react";
-import "@/styles/Orders.css";
+// import "@/styles/Orders.css";
+import '../../../styles/Orders.css';
 import { FaTruck } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 const orderHistoryImage = "/Assets/orderHistoryImage.png";

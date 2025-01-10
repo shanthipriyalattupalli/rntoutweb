@@ -1,7 +1,8 @@
 "use client"
 
 import React from 'react';
-import "@/styles/Privacypolicy.css";
+// import "@/styles/Privacypolicy.css";
+import '../../../styles/Privacypolicy.css';
 
 export default function Privacypolicy () {
     return (

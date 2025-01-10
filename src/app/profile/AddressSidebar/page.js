@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "@/styles/AddressSidebar.css";
+// import "@/styles/AddressSidebar.css";
+import '../../../styles/AddressSidebar.css';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

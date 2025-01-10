@@ -2,7 +2,8 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import "@/styles/Adddetail.css";
+// import "@/styles/Adddetail.css";
+import '../../../styles/Adddetail.css';
 import { FaUpload, FaRegCalendarAlt } from "react-icons/fa";
 import { FiPlus, FiTrash } from "react-icons/fi";
 import DatePicker from "react-datepicker";

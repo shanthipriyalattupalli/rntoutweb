@@ -2,10 +2,12 @@
 
 
 import {React,useState,useEffect} from 'react';
-import '@/styles/BusinessInformation1.css';
+// import '@/styles/BusinessInformation1.css';
+import '../../../../styles/BusinessInformation1.css'
 import { IoMdArrowRoundBack } from "react-icons/io";
 import axios from "axios";
-import '@/styles/BusinessInformation2.css';
+// import '@/styles/BusinessInformation2.css';
+import '../../../../styles/BusinessInformation2.css';
 import { useRouter } from 'next/navigation';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

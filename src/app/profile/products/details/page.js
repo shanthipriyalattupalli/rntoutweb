@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import "@/styles/details.css";
+// import "@/styles/details.css";
+import '../../../../styles/details.css';
 import { useRouter } from "next/navigation";
 import { FaUpload, FaRegCalendarAlt } from "react-icons/fa";
 import { FiPlus, FiTrash } from "react-icons/fi";

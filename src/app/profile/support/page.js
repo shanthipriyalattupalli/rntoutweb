@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { FaPaperPlane, FaMicrophone, FaImage } from "react-icons/fa";
 
-import "@/styles/Support.css";
+// import "@/styles/Support.css";
+import '../../../styles/Support.css';
 
 const HelpCenter = () => {
   const [message, setMessage] = useState("");

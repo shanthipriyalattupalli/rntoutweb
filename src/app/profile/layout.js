@@ -2,6 +2,7 @@
 
 import Sidebar from "@/Components/sidebar";
 import "@/styles/ProfileMenus.css";
+import '../../styles/ProfileMenus.css';
 
 export default function ProfileLayout({ children }) {
   return (

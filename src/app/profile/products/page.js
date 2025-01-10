@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "@/styles/ProductInformation.css";
+// import "@/styles/ProductInformation.css";
+import '../../../styles/ProductInformation.css';
 import { LuPencil } from "react-icons/lu";
 import { FaEye } from "react-icons/fa";
 import { MdToggleOff } from "react-icons/md";
