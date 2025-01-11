@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 // import "@/styles/Login.css";
-import '../styles/Login.css';
+import '../../styles/Login.css';
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -39,12 +39,12 @@ const Login = () => {
 
       if (response.status === 200) {
         toast.success(response.data.message || "OTP sent successfully!");
-        //router.push("/Otp?mobileNumber=" + mobileNumber);
         console.log(mobileNumber, "mobilenum in login page");
-        router.push({
-          pathname: "/Otp",
-          query: { mobileNumber: mobileNumber },
-        });
+        // router.push({
+        //   pathname: "/Otp",
+        //   query: { mobileNumber: mobileNumber },
+        // });
+        router.push(`/Otp?mobileNumber=${encodeURIComponent(mobileNumber)}`);
       } else {
         toast.error(response.data.error || "Failed to send OTP. Try again.");
       }

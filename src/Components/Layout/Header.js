@@ -213,7 +213,7 @@ bg-[linear-gradient(90deg,_#FEAC5E_0%,_#C779D0_50%,_#4BC0C8_100%)] hover:scale-1
             <button
             className='ml-5 bg-[#FF2D55] hover:bg-[#e6264c] text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300'
           >
-           <Link href='/Login'>Sign In / Sign Up</Link> 
+           <Link href='/login'>Sign In / Sign Up</Link> 
           </button>
           )}
         </nav>
