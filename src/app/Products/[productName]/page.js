@@ -99,7 +99,7 @@ const ProductPage = () => {
 
   const durations = Object.entries(rentalPrice).map(([key, value]) => ({
     name: key,
-    label: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize the label
+    label: key.charAt(0).toUpperCase() + key.slice(1), 
     price: `$${parseFloat(value).toFixed(2)}`, // Convert to number and format price
   }));
 
