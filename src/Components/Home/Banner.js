@@ -16,7 +16,7 @@ const Banner = () => {
 
   return (
     <div className="w-full bg-slate-50">
-      <div className="relative px-24 py-10">
+      <div className="relative px-20 py-10">
         {/* Custom Navigation Buttons */}
         <div
           className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"

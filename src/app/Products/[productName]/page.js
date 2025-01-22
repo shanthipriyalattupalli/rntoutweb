@@ -335,10 +335,16 @@ const productDetails = otherDetail
 
           {/* Delivery Info */}
           <div className='flex items-center justify-around bg-white p-3 border border-slate-200 rounded-xl'>
+          <div className='flex items-center text-center  justify-center'>
+              <Truck className='w-5 h-5 mr-2' />
+              <span className=' text-sm text-[#070707CC] font-[600]'>
+           within 2 days
+              </span>
+            </div>|
             <div className='flex items-center text-center  justify-center'>
               <Truck className='w-5 h-5 mr-2' />
               <span className=' text-sm text-[#070707CC] font-[600]'>
-                27 Sep - 29 Sep to 500008
+              {formattedStartDate} -{formattedEndDate}
               </span>
             </div>
             <span>|</span>

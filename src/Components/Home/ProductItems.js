@@ -22,6 +22,7 @@ import Link from "next/link";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const customStyles = `
   .product-title {    font-size: 14px;    font-weight: 400;    line-height: normal;  }
   .cart-btn {    font-size: 13px;    font-weight: 500;  }
@@ -99,7 +100,7 @@ const ProductItem = ({ product }) => {
           Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
         },
       });
-      console.log(response.data);
+      console.log(response,"cart concole");
       toast.success(response.data.message);
     } catch (error) {
       console.error("Error adding product to cart:", error);
@@ -138,9 +139,9 @@ const ProductItem = ({ product }) => {
   }
 
   return (
-    <>
+   
       <div>
-        <ToastContainer />
+        {/* <ToastContainer /> */}
         <style>{customStyles}</style>
 
         <div className='w-[300px] bg-white rounded-lg border border-slate-200'
@@ -347,7 +348,7 @@ const ProductItem = ({ product }) => {
           )}
         </div>
       </div>
-    </>
+    
   );
 };
 
