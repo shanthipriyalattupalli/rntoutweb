@@ -19,7 +19,9 @@ const ProductList = () => {
   const [product,setProduct] = useState([])
   const [subCategories,setSubcategories] = useState([]);
   const params = useParams();
-  const subcategoryId=params.subcategoryId
+  const subcategoryId=(typeof window !== 'undefined') ? localStorage.getItem("subcategoryId") : null;
+  console.log(subcategoryId,"subcategoryid selected")
+  // const subcategoryId=params.subcategoryId
   console.log("subcategoryId from params:", subcategoryId);
   const categoryId = params.categoryId; // Extract categoryId directly from params
   console.log("categoryId from params:", categoryId);
@@ -77,6 +79,7 @@ const ProductList = () => {
       const response= await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`)
       console.log(response.data,"subcategories by category");
       setSubcategories(response.data);
+
       
     } catch (error) {
       console.error('Error fetching subcategories:', error);

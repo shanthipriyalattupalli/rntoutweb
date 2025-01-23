@@ -10,6 +10,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 const prodimg = "/Assets/dummy-image.svg";
 const vector = "/Assets/vector-icon.svg";
+import Link from "next/link";
 
 export default function Dashboard({ products }) {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -157,11 +158,14 @@ useEffect(() => {
                   </p>
                 </div>
               </div>
+              <Link href={{ pathname: `/Products/${item._id}`, query: { id: item._id } }} key={item._id}>
               <img
                 src={item.images[0]}
                 alt={item.title}
                 className='item-image'
+
               />
+              </Link>
               <div className='item-card-details'>
                 <div className='item-det-section'>
                   <h3 className='item-title'>{item.title}</h3>

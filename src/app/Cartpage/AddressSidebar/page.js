@@ -9,13 +9,14 @@ import "react-toastify/dist/ReactToastify.css";
 
 const edit = "/Assets/editicon.svg";
 
-const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
+const AddressSidebar = ({ isOpen, onClose, onAddressSelect,addressId }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selected, setSelected] = useState(null);
   const [addresses, setAddresses] = useState([]);
   const [editingAddressId, setEditingAddressId] = useState(null);
-
+  const latitude=(typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
+  const longitude=(typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
   // const [token, setToken] = useState("");
 
   // useEffect(() => {
@@ -58,8 +59,10 @@ useEffect(() => {
     country: "",
     zip: "",
     location: {
-      latitude: 0,
-      longitude: 0
+      latitude: latitude,
+      longitude: longitude,
+      // lat: latitude,
+      // lng: longitude,
     },
   }
 
@@ -134,8 +137,10 @@ toast.success(response.data.message)
       country: formData.country,
       zip: formData.zip,
       location: {
-        latitude: formData.location.latitude || 0,
-        longitude: formData.location.longitude || 0,
+        // latitude: latitude|| 0,
+        // longitude: longitude|| 0,
+        lat: latitude,
+        lng: longitude
       },
     };
   
@@ -302,10 +307,10 @@ toast.success(response.data.message)
                   onChange={handleInputChange}
                 />
               </div>
-      { editingAddressId?     <button className='address-button' onClick={handleSaveAddress}>
+      { editingAddressId?     <button className='address-button' onClick={handleUpdateAddress}>
                 update Address
               </button>:    
-               <button className='address-button' onClick={handleUpdateAddress}>
+               <button className='address-button' onClick={handleSaveAddress}>
                 Save Address
               </button>
            }

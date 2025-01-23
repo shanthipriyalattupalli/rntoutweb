@@ -2,14 +2,16 @@
 
 import React, { useState } from "react";
 // import "@/styles/Login.css";
-import '../styles/Login.css';
+import '../../styles/Login.css';
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Rntout = "/Assets/Rntout_Logo.png";
 import { useRouter } from "next/navigation";
+import Otp from "./Otp";
+import Signup from "./Signup";
 
-const Login = () => {
+const Login = ({setIsLoginOpen}) => {
   const [isPhoneSelected, setIsPhoneSelected] = useState(true);
   const [isForgetPassword, setIsForgetPassword] = useState(false);
   const [mobileNumber, setMobileNumber] = useState(""); // For phone login
@@ -21,7 +23,8 @@ const Login = () => {
   const [loginError, setLoginError] = useState(""); //
   const router = useRouter();
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-
+  const [isOtpOpen, setIsOtpOpen] = useState(false);
+  const [isregisterOpen, setIsRegisterOpen] = useState(false);
   // Handle OTP API integration
   const handleSendOtp = async () => {
     if (!mobileNumber || !/^\+?[0-9]{10,13}$/.test(mobileNumber)) {
@@ -39,12 +42,14 @@ const Login = () => {
 
       if (response.status === 200) {
         toast.success(response.data.message || "OTP sent successfully!");
-        //router.push("/Otp?mobileNumber=" + mobileNumber);
         console.log(mobileNumber, "mobilenum in login page");
-        router.push({
-          pathname: "/Otp",
-          query: { mobileNumber: mobileNumber },
-        });
+        // router.push({
+        //   pathname: "/Otp",
+        //   query: { mobileNumber: mobileNumber },
+        // });
+        // setIsLoginOpen(false)
+        setIsOtpOpen(true)
+        // router.push(`/Otp?mobileNumber=${encodeURIComponent(mobileNumber)}`);
       } else {
         toast.error(response.data.error || "Failed to send OTP. Try again.");
       }
@@ -109,10 +114,10 @@ const Login = () => {
   return (
     <div className='login-container'>
       <ToastContainer position='top-right' autoClose={3000} />
-      <div className='login-first'>
+      {/* <div className='login-first'>
         <img src={Rntout} alt='RentOut Logo' className='login-logo' />
         <h2 className='subtitle'>Sign in to RntOut</h2>
-      </div>
+      </div> */}
 
       <div className='login-card'>
         {isForgetPassword ? (
@@ -138,7 +143,11 @@ const Login = () => {
           </div>
         ) : (
           <div>
-            <div className='tab-container'>
+                  <div className='login-first'>
+        <img src={Rntout} alt='RentOut Logo' className='login-logo' />
+        <h2 className='subtitle'>Sign in to RntOut</h2>
+      </div>
+            {/* <div className='tab-container'>
               <button
                 className={`tab ${isPhoneSelected ? "active" : "inactive"}`}
                 onClick={() => setIsPhoneSelected(true)}
@@ -151,7 +160,7 @@ const Login = () => {
               >
                 Email
               </button>
-            </div>
+            </div> */}
 
             {isPhoneSelected && (
               <div>
@@ -170,6 +179,16 @@ const Login = () => {
                 >
                   {isLoading ? "Sending..." : "Get OTP"}
                 </button>
+        {isOtpOpen && (
+              <div className="modal-overlay">
+                <div className="modal-content">
+                  <button className="close-button" onClick={() => setIsOtpOpen(false)}>
+                    ✕
+                  </button>
+                  <Otp mobileNumber={mobileNumber} setIsOtpOpen={setIsOtpOpen}/>
+                </div>
+              </div>
+            )}
               </div>
             )}
 
@@ -211,10 +230,20 @@ const Login = () => {
             </button>
             <p className='footer-text mb-0'>
               Don't have any account?{" "}
-              <span className='link' onClick={() => router.push("/Signup")}>
+              <span className='link'   onClick={() => setIsRegisterOpen(true)}>
                 Create account
               </span>
             </p>
+                        {isregisterOpen && (
+                          <div className="modal-overlay">
+                            <div className="modal-content">
+                              <button className="close-button" onClick={() => setIsRegisterOpen(false)}>
+                                ✕
+                              </button>
+                              <Signup />
+                            </div>
+                          </div>
+                        )}
           </div>
         )}
       </div>

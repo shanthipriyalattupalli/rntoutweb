@@ -1,61 +1,25 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation"; // Import useRouter
 import axios from "axios";
-const InfrastructureIcon = "/Assets/Icons/braces_line.png";
-const FurnitureIcon = "/Assets/Icons/sofa_line.png";
-const MedicalIcon = "/Assets/Icons/first_aid_kit_line.png";
-const VacationIcon = "/Assets/Icons/umbrella_line.png";
-const VehiclesIcon = "/Assets/Icons/car_line.png";
-const PartyIcon = "/Assets/Icons/celebrate_line.png";
-const SportIcon = "/Assets/Icons/football_line.png";
-const KitchenIcon = "/Assets/Icons/fork_spoon_line.png";
-
-const customStyles = `
-.nav-font{font-size:14px; !important}
-`;
-
-const DropdownItem = ({ label, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div
-      className='relative group'
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-    >
-      <button className='flex items-center space-x-2 text-gray-700 hover:text-gray-900 py-2'>
-        {/* <img src={icon} alt={label} className="h-5 w-5" /> Replace SVG with PNG image */}
-        <span className='nav-font'>{label}</span>
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          className='h-4 w-4'
-          fill='none'
-          viewBox='0 0 24 24'
-          stroke='currentColor'
-        >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth='2'
-            d='M19 9l-7 7-7-7'
-          />
-        </svg>
-      </button>
-
-      {isOpen && (
-        <div className='absolute left-0 top-full w-48 bg-white rounded-md shadow-lg z-10'>
-          {children}
-        </div>
-      )}
-    </div>
-  );
-};
-
 const Navigation = () => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [timeoutId, setTimeoutId] = useState(null);
+  const router = useRouter(); // Initialize useRouter
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+
+  const categoryImages = {
+    ItInfrastructure: "/Assets/itinfrastructure.svg",
+    Furniture: "/Assets/furnitures.svg",
+    MedicalEquipment: "/Assets/medicalequip.svg",
+    VacationEquipment: "/Assets/vaccationequip.svg",
+    Vehicles: "/Assets/vehicle.svg",
+    PartyMaterial: "/Assets/partmaterial.svg",
+    Sport: "/Assets/gym.svg",
+    Household: "/Assets/kitchen.svg",
+  };
 
   // Fetch Categories
   const fetchCategories = async () => {
@@ -68,16 +32,35 @@ const Navigation = () => {
   };
 
   // Fetch Subcategories by Category ID
-
   const fetchSubCategories = async (categoryId) => {
     try {
       const response = await axios.get(
         `${BASE_URL}/subcategories/categories/${categoryId}`
       );
       setSubcategories(response.data || []);
+      setActiveCategory(categoryId); // Set active category
     } catch (error) {
       console.error("Error fetching subcategories:", error);
     }
+  };
+
+  // Handle Mouse Enter
+  const handleMouseEnter = (categoryId) => {
+    clearTimeout(timeoutId); // Clear any existing timeout
+    fetchSubCategories(categoryId); // Fetch subcategories
+  };
+
+  // Handle Mouse Leave
+  const handleMouseLeave = () => {
+    const id = setTimeout(() => {
+      setActiveCategory(null); // Hide subcategories after 1000ms
+    }, 1000);
+    setTimeoutId(id);
+  };
+
+  // Handle Subcategory Click
+  const handleSubcategoryClick = (categoryId, subcategoryId) => {
+    router.push(`/Product-list/${categoryId}`);
   };
 
   // Initialize Categories on Mount
@@ -86,23 +69,47 @@ const Navigation = () => {
   }, []);
 
   return (
-    <nav className='bg-white border border-slate-200 relative z-20'>
-      <div className='max-w-7xl mx-auto px-4'>
-        <div className='flex items-center space-x-4 h-12'>
+    <nav className="w-full px-20 bg-white border border-slate-200 relative z-20">
+      <div className="max-w-16xl mx-auto">
+        <div className="flex items-center h-12 gap-1 ">
           {categories?.map((category) => (
-            <DropdownItem key={category._id} label={category.categoryName}>
-              <div onMouseEnter={() => fetchSubCategories(category._id)}>
-                {/* {subcategories.map((subcategory) => (
-                                        <a
-                                            key={subcategory._id}
-                                            href="#"
-                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                        >
-                                            {subcategory.subCategoryName}
-                                        </a>
-                                    ))} */}
-              </div>
-            </DropdownItem>
+            <div
+              key={category._id}
+              className="relative"
+              onMouseEnter={() => handleMouseEnter(category._id)}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button className="w-42 justify-center flex items-center space-x-2 text-gray-700 hover:text-gray-900 py-2">
+                <img
+                  src={category.image}
+                  alt={category.categoryName}
+                  className="w-5 h-5"
+                />
+                <span className="font-poppins text-sm font-normal leading-5 text-center [text-underline-position:from-font] [text-decoration-skip-ink:none]">
+                  {category.categoryName}
+                </span>
+                <img
+                  src={"/Assets/down_line.svg"}
+                  alt={category.categoryName}
+                  className="w-5 h-5"
+                />
+              </button>
+              {activeCategory === category._id && (
+                <div className="absolute left-0 top-full w-48 bg-white rounded-md shadow-lg z-10">
+                  {subcategories.map((subcategory) => (
+                    <a
+                      key={subcategory._id}
+                      onClick={() =>
+                        handleSubcategoryClick(category._id, subcategory._id)
+                      }
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-poppins text-sm font-normal leading-5 [text-underline-position:from-font] [text-decoration-skip-ink:none] cursor-pointer"
+                    >
+                      {subcategory.subCategoryName}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </div>

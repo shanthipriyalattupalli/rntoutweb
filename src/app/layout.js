@@ -1,6 +1,4 @@
-"use client";
 
-import React, { useState, useEffect } from "react";
 import axios from "axios";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -27,51 +25,9 @@ const geistMono = localFont({
 // };
 
 export default function RootLayout({ children }) {
-  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  const [categories, setCategories] = useState([]);
-  const [categoryId, setCategoryId] = useState("");
-  const [subcategories, setSubcategories] = useState([]); // Ensure this starts as an array
+ 
 
-  const fetchSubcategories = async () => {
-    if (categoryId) {
-      try {
-        const response = await axios.get(
-          `${BASE_URL}/subcategories/categories/${categoryId}`
-        );
-        console.log(response.data, "subcategories");
-        // Check if the response is an array before setting it
-        if (Array.isArray(response.data)) {
-          setSubcategories(response.data);
-        } else {
-          setSubcategories([]); // Fallback to empty array if the data is not an array
-        }
-      } catch (error) {
-        console.error("Error fetching subcategories:", error);
-        setSubcategories([]); // Set to empty array on error
-      }
-    }
-  };
 
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/categories`);
-      console.log(response.data.categories, "categories");
-      setCategories(response.data.categories);
-      if (response?.data?.length > 0) {
-        setCategoryId(response.data[0]._id); // Set the first category as default
-      }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    fetchSubcategories();
-  }, [categoryId]);
 
   return (
     <html lang='en'>

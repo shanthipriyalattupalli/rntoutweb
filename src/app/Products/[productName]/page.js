@@ -99,7 +99,7 @@ const ProductPage = () => {
 
   const durations = Object.entries(rentalPrice).map(([key, value]) => ({
     name: key,
-    label: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize the label
+    label: key.charAt(0).toUpperCase() + key.slice(1), 
     price: `$${parseFloat(value).toFixed(2)}`, // Convert to number and format price
   }));
 
@@ -335,10 +335,16 @@ const productDetails = otherDetail
 
           {/* Delivery Info */}
           <div className='flex items-center justify-around bg-white p-3 border border-slate-200 rounded-xl'>
+          <div className='flex items-center text-center  justify-center'>
+              <Truck className='w-5 h-5 mr-2' />
+              <span className=' text-sm text-[#070707CC] font-[600]'>
+           within 2 days
+              </span>
+            </div>|
             <div className='flex items-center text-center  justify-center'>
               <Truck className='w-5 h-5 mr-2' />
               <span className=' text-sm text-[#070707CC] font-[600]'>
-                27 Sep - 29 Sep to 500008
+              {formattedStartDate} -{formattedEndDate}
               </span>
             </div>
             <span>|</span>

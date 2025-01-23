@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import '../../../styles/productslist.css';
 import {
   ArrowDownNarrowWide,
   ChevronDownIcon,
@@ -11,16 +12,16 @@ import Image from "next/image";
 // import { useParams } from 'next/navigation';
 const downArrow = "/Assets/down_line.png";
 
-const Sidebar = ({ subCategories, subcategoryId }) => {
+const Sidebar = ({ subCategories, subcategoryId,subcategoryID,price }) => {
   console.log(subCategories, "subcategories in sidebar menu");
   const [activeIndex, setActiveIndex] = useState(null);
-  const [priceRange, setPriceRange] = useState([800, 1000]);
+  const [priceRange, setPriceRange] = useState(0);
   const [discount, setDiscount] = useState(null);
   const [deliveryBy, setDeliveryBy] = useState("Today");
   const [duration, setDuration] = useState(null);
   const [filter, setFilter] = useState(null);
   const [isSubCategoriesOpen, setIsSubCategoriesOpen] = useState(true);
-  const [isPriceOpen, setIsPriceOpen] = useState(false);
+  const [isPriceOpen, setIsPriceOpen] = useState(true);
   const [isDiscountOpen, setIsDiscountOpen] = useState(false);
   const [isDeliveryByOpen, setIsDeliveryByOpen] = useState(false);
   const [isDurationOpen, setIsDurationOpen] = useState(false);
@@ -31,10 +32,16 @@ const Sidebar = ({ subCategories, subcategoryId }) => {
   console.log("categoryId from params:", categoryId);
   const router = useRouter();
 console.log(subcategoryId,"subcategoryid....")
-  const handlePriceRangeChange = (event) => {
-    const [min, max] = event.target.value.split(",")?.map(Number);
-    setPriceRange([min, max]);
-  };
+
+
+// Set the default active subcategory when the component mounts
+
+
+
+  // const handlePriceRangeChange = (event) => {
+  //   const [min, max] = event.target.value.split(",")?.map(Number);
+  //   setPriceRange([min, max]);
+  // };
 
   const handleDiscountChange = (event) => {
     setDiscount(event.target.value);
@@ -81,22 +88,32 @@ console.log(subcategoryId,"subcategoryid....")
     console.log(subcategoryId, "subcategoryIds...........");
     
 
-    setActiveIndex(subcategoryId);
+    setActiveIndex(subcategoryId ===activeIndex ? null :subcategoryId);
+    subcategoryID(subcategoryId);
+    localStorage.setItem("subcategoryId",subcategoryId);
   
-    router.push(`/Product-list/${categoryId}/${subcategoryId}`);
-    setActiveIndex(subcategoryId);
+    // router.push(`/Product-list/${categoryId}/${subcategoryId}`);
+    // setActiveIndex(subcategoryId);
   };
 
-  useEffect(() => {
-    console.log("Active Index Updated:", activeIndex);
-  }, [activeIndex]);
-
   // useEffect(() => {
-  //   if (subCategories.length > 0) {
-  //     setActiveIndex(subCategories[0]);
+  //   console.log("Active Index Updated:", activeIndex);
+  // }, [activeIndex]);
 
-  //   }
-  // }, [subCategories]);
+  useEffect(() => {
+    if (subCategories.length > 0 && !activeIndex) {
+      setActiveIndex(subCategories[0]._id);
+
+    }
+  }, [subCategories]);
+
+
+const handlePriceRange =(e)=>{
+  const newPrice =e.target.value;
+  setPriceRange(newPrice);
+  price(newPrice);
+}
+
 
   return (
     <div className='w-80'>
@@ -115,7 +132,7 @@ console.log(subcategoryId,"subcategoryid....")
           </div>
           {isSubCategoriesOpen && (
   <ul className="space-y-1">
-    {subCategories?.map((subcategory) => (
+{subCategories?.map((subcategory) => (
       <li key={subcategory._id}>
         <div
           onClick={() => handleClick(subcategory._id, subcategory.categoryId._id)}
@@ -228,11 +245,52 @@ console.log(subcategoryId,"subcategoryid....")
                 </div>
               </div> */}
 
-              <span className="w-20 px-2 py-1 border border-2 rounded-lg bg-stone-100 border border-[rgba(7,7,7,0.1)]">₹800 +</span>
-              <span className="w-20 px-2 py-1 border border-2 rounded-lg bg-stone-100 border border-[rgba(7,7,7,0.1)]">₹800 +</span>
-              <span className="w-20 px-2 py-1 border border-2 rounded-lg bg-stone-100 border border-[rgba(7,7,7,0.1)]">₹800 +</span>
-              <span className="w-20 px-2 py-1 border border-2 rounded-lg bg-stone-100 border border-[rgba(7,7,7,0.1)]">₹800 +</span>
+   
+          <div className="w-2">
+            <input
+  type="range"
+  id="price"
+  min="0"
+  max="2000"
+  step="1"
+  value={priceRange}
+  onChange={(e) => handlePriceRange(e)}
+  // onChange={(e) => setPriceRange(e.target.value)} 
+    className="w-[200px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
+    style={{
+      WebkitAppearance: 'none', 
+      MozAppearance: 'none',
+    }}
+/>
+<div className="price-values3">
+  <div>
+    <span className="ml-2 text-gray-200 ">|</span>
+  <span>₹0</span>
+  </div>
+  <div>
+    <span className="ml-2 text-gray-200 ">|</span>
+  <span>₹500</span>
+  </div>
+  <div>
+    <span className="ml-2 text-gray-200 ">|</span>
+  <span>₹1k</span>
+  </div>
+  <div>
+    <span className="ml-2 text-gray-200 ">|</span>
+  <span>₹1.5k</span>
+  </div>
+  <div>
+    <span className="ml-2 text-gray-200 ">|</span>
+  <span>₹2k+</span>
+  </div>
+</div>
+<div className="price0">
+  {priceRange && `Selected Price: ₹${priceRange}`}
+</div>
+   
 
+
+              </div>
               </div>
             )}
           </div>
@@ -244,7 +302,7 @@ console.log(subcategoryId,"subcategoryid....")
 
 
 
-        <div className='border-b-2'>
+        {/* <div className='border-b-2'>
           <div className='px-6 pb-4'>
             <div
               className='flex items-center justify-between cursor-pointer'
@@ -258,41 +316,85 @@ console.log(subcategoryId,"subcategoryid....")
               )}
             </div>
             {isDiscountOpen && (
-              <div className='space-y-1'>
-                <label className='flex items-center'>
-                  <input
-                    type='radio'
-                    name='discount'
-                    value=''
-                    checked={discount === null}
-                    onChange={handleDiscountChange}
-                    className='mr-2'
-                  />
-                  Clear all
-                </label>
-                <label className='flex items-center'>
-                  <input
-                    type='radio'
-                    name='discount'
-                    value='900'
-                    checked={discount === "900"}
-                    onChange={handleDiscountChange}
-                    className='mr-2'
-                  />
-                  ₹900
-                </label>
-                <label className='flex items-center'>
-                  <input
-                    type='radio'
-                    name='discount'
-                    value='1000'
-                    checked={discount === "1000"}
-                    onChange={handleDiscountChange}
-                    className='mr-2'
-                  />
-                  ₹1000
-                </label>
-              </div>
+              // <div className='space-y-1'>
+              //   <label className='flex items-center'>
+              //     <input
+              //       type='radio'
+              //       name='discount'
+              //       value=''
+              //       checked={discount === null}
+              //       onChange={handleDiscountChange}
+              //       className='mr-2'
+              //     />
+              //     Clear all
+              //   </label>
+              //   <label className='flex items-center'>
+              //     <input
+              //       type='radio'
+              //       name='discount'
+              //       value='900'
+              //       checked={discount === "900"}
+              //       onChange={handleDiscountChange}
+              //       className='mr-2'
+              //     />
+              //     ₹900
+              //   </label>
+              //   <label className='flex items-center'>
+              //     <input
+              //       type='radio'
+              //       name='discount'
+              //       value='1000'
+              //       checked={discount === "1000"}
+              //       onChange={handleDiscountChange}
+              //       className='mr-2'
+              //     />
+              //     ₹1000
+              //   </label>
+              // </div>
+              <div className="w-2">
+              <input
+    type="range"
+    id="price"
+    min="0"
+    max="15000"
+    step="1000"
+    value={priceRange}
+    onChange={(e) => setPriceRange(e.target.value)} 
+      className="w-[200px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
+      style={{
+        WebkitAppearance: 'none', 
+        MozAppearance: 'none',
+      }}
+  />
+  <div className="price-values3">
+    <div>
+      <span className="ml-2 text-gray-200 ">|</span>
+    <span>₹0</span>
+    </div>
+    <div>
+      <span className="ml-2 text-gray-200 ">|</span>
+    <span>₹500</span>
+    </div>
+    <div>
+      <span className="ml-2 text-gray-200 ">|</span>
+    <span>₹1k</span>
+    </div>
+    <div>
+      <span className="ml-2 text-gray-200 ">|</span>
+    <span>₹1.5k</span>
+    </div>
+    <div>
+      <span className="ml-2 text-gray-200 ">|</span>
+    <span>₹2k+</span>
+    </div>
+  </div>
+  <div className="price0">
+    {priceRange && `Selected Price: ₹${priceRange}`}
+  </div>
+     
+  
+  
+                </div>
             )}
           </div>
         </div>
@@ -311,52 +413,96 @@ console.log(subcategoryId,"subcategoryid....")
               )}
             </div>
             {isDeliveryByOpen && (
-              <div className='space-y-1'>
-                <label className='flex items-center'>
-                  <input
-                    type='radio'
-                    name='delivery-by'
-                    value='Today'
-                    checked={deliveryBy === "Today"}
-                    onChange={handleDeliveryByChange}
-                    className='mr-2'
-                  />
-                  Today
-                </label>
-                <label className='flex items-center'>
-                  <input
-                    type='radio'
-                    name='delivery-by'
-                    value='Tomorrow'
-                    checked={deliveryBy === "Tomorrow"}
-                    onChange={handleDeliveryByChange}
-                    className='mr-2'
-                  />
-                  Tomorrow
-                </label>
-                <label className='flex items-center'>
-                  <input
-                    type='radio'
-                    name='delivery-by'
-                    value='24 Sep'
-                    checked={deliveryBy === "24 Sep"}
-                    onChange={handleDeliveryByChange}
-                    className='mr-2'
-                  />
-                  24 Sep
-                </label>
-                <label className='flex items-center'>
-                  <input
-                    type='radio'
-                    name='delivery-by'
-                    value='25 Sep'
-                    checked={deliveryBy === "25 Sep"}
-                    onChange={handleDeliveryByChange}
-                    className='mr-2'
-                  />
-                  25 Sep
-                </label>
-              </div>
+              // <div className='space-y-1'>
+              //   <label className='flex items-center'>
+              //     <input
+              //       type='radio'
+              //       name='delivery-by'
+              //       value='Today'
+              //       checked={deliveryBy === "Today"}
+              //       onChange={handleDeliveryByChange}
+              //       className='mr-2'
+              //     />
+              //     Today
+              //   </label>
+              //   <label className='flex items-center'>
+              //     <input
+              //       type='radio'
+              //       name='delivery-by'
+              //       value='Tomorrow'
+              //       checked={deliveryBy === "Tomorrow"}
+              //       onChange={handleDeliveryByChange}
+              //       className='mr-2'
+              //     />
+              //     Tomorrow
+              //   </label>
+              //   <label className='flex items-center'>
+              //     <input
+              //       type='radio'
+              //       name='delivery-by'
+              //       value='24 Sep'
+              //       checked={deliveryBy === "24 Sep"}
+              //       onChange={handleDeliveryByChange}
+              //       className='mr-2'
+              //     />
+              //     24 Sep
+              //   </label>
+              //   <label className='flex items-center'>
+              //     <input
+              //       type='radio'
+              //       name='delivery-by'
+              //       value='25 Sep'
+              //       checked={deliveryBy === "25 Sep"}
+              //       onChange={handleDeliveryByChange}
+              //       className='mr-2'
+              //     />
+              //     25 Sep
+              //   </label>
+              // </div>
+              <div className="w-2">
+              <input
+    type="range"
+    id="price"
+    min="0"
+    max="15000"
+    step="1000"
+    value={priceRange}
+    onChange={(e) => setPriceRange(e.target.value)} 
+      className="w-[200px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
+      style={{
+        WebkitAppearance: 'none', 
+        MozAppearance: 'none',
+      }}
+  />
+  <div className="price-values3">
+    <div>
+      <span className="ml-2 text-gray-200 ">|</span>
+    <span>₹0</span>
+    </div>
+    <div>
+      <span className="ml-2 text-gray-200 ">|</span>
+    <span>₹500</span>
+    </div>
+    <div>
+      <span className="ml-2 text-gray-200 ">|</span>
+    <span>₹1k</span>
+    </div>
+    <div>
+      <span className="ml-2 text-gray-200 ">|</span>
+    <span>₹1.5k</span>
+    </div>
+    <div>
+      <span className="ml-2 text-gray-200 ">|</span>
+    <span>₹2k+</span>
+    </div>
+  </div>
+  <div className="price0">
+    {priceRange && `Selected Price: ₹${priceRange}`}
+  </div>
+     
+  
+  
+                </div>
             )}
           </div>
         </div>
@@ -423,7 +569,7 @@ console.log(subcategoryId,"subcategoryid....")
               </div>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

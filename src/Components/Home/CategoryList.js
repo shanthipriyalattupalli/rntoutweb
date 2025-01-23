@@ -61,8 +61,9 @@ const CategoryList = ({ products = [], categories }) => {
   };
 
   return (
-    <div className='bg-white py-4'>
-      <div className='container mx-auto'>
+    <div className='bg-white'>
+      <div className='h-52'>
+      <h1 className="text-2xl font-bold px-24 pb-6">Rent Furniture & Appliances</h1>
         {categories?.length > 8 ? (
           <Slider {...settings}>
             {categories?.map((category, index) => (
@@ -85,6 +86,7 @@ const CategoryList = ({ products = [], categories }) => {
                     alt={category.categoryName}
                     width={48}
                     height={48}
+                    layout="responsive"
                     className='w-12 h-12'
                   />
                   <span className='text-center pt-2'>
@@ -100,7 +102,7 @@ const CategoryList = ({ products = [], categories }) => {
               <div
                 key={category._id}
                 className={classNames(
-                  "text-xs font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer p-2"
+                  "text-xs font-semibold pt-3 border border-[rgba(7,7,7,0.05)] rounded-lg flex flex-col items-center transition duration-300 cursor-pointer p-2"
                 )}
                 onClick={() => handleCategoryClick(category._id)}
                 style={{

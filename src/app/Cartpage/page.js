@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 // import "@/styles/Cart.css";
 import '../../styles/Cart.css';
+
 import axios from "axios";
 import Sidebar from "./Sidebar/page";
 import AddressSidebar from "./AddressSidebar/page";
@@ -9,7 +10,7 @@ import Link from "next/link";
 import { toast, ToastContainer } from "react-toastify";
 import RenderRazorpay from "../PayModule/PayModule";
 import "react-toastify/dist/ReactToastify.css";
-
+import PromoCoupon from "./PromoCoupon/page";
 const cube = "/Assets/cube_fill.png";
 const deleteicon = "/Assets/deleteicon.svg";
 const stock = "/Assets/stock.svg";
@@ -32,6 +33,13 @@ const CartPage = () => {
   const [selectedPrice, setSelectedPrice] = useState("");
   const [selectedPeriod, setSelectedPeriod] = useState("");
   const [selectedOptions, setSelectedOptions] = useState({});
+  const [discountedPrice, setDiscountedPrice] = useState(null);
+  const [couponcode, setCouponCode] = useState(null);
+  const [addressId, setAddressId] = useState(null);
+  const [orderId, setOrderId] = useState(null);
+  
+
+
   // const [userId, setUserId] = useState("");
   // const [token, setToken] = useState("");
 
@@ -129,7 +137,7 @@ console.log(token,"outside")
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-const handleCouponToggle=()=>{
+const handleCouponToggle = ()=>{
   setIsCoupon(!isCoupon)
 }
 
@@ -209,6 +217,7 @@ const handleCouponToggle=()=>{
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response ,"cart console")
       toast.success(
         response.data.message || "Rental period updated successfully."
       );
@@ -264,26 +273,138 @@ const handleCouponToggle=()=>{
       console.error("Error removing item from cart:", error);
     }
   };
-  
+console.log(selectedAddress?._id,"selectedid")
 
-  const createPayment = () => {
-    if (!userId) {
-      toast.error("Please login to proceed with payment.");
-      return;
+
+const handlePaymentStatus=async(orderDetails)=>{
+  console.log("payment")
+  console.log(orderDetails,"orderDetails")
+  try {
+    const payload={
+      orderId:orderId,
+      paymentId:orderDetails.paymentId
     }
-    setDisplayRazorpay(true);
-  };
+    const response = await axios.post(`${BASE_URL}/payments/status`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response,"status response")
+  } catch (error) {
+    toast.error(error.message || "Error status payment.");
+    console.error("Error status payment:", error);
+    
+  }
+}
 
-  const handlePayment = (status, orderDetails) => {
+
+
+
+const handleContinueClick=async(orderDetails)=>{
+  console.log("payment")
+  console.log(orderDetails,"orderDetails")
+  try {
+    const payload={
+      orderId:orderId,
+      amount:discountedPrice?discountedPrice:totalPrice
+    }
+    const response = await axios.post(`${BASE_URL}/payments/initiate`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // await handlePaymentStatus(orderDetails)
+
+    console.log(response,"payment response")
+  } catch (error) {
+    toast.error(error.message || "Error initiating payment.");
+    console.error("Error initiating payment:", error);
+    
+  }
+}
+
+const handleOrderCheckout = async () => {
+  try {
+    const payload = {
+      userId: String(userId),
+      couponCode: String(couponcode),
+      addressId: String(selectedAddress._id),
+    };
+    console.log(payload, "payload in checkout");
+
+    // API call
+    const response = await axios.post(`${BASE_URL}/orders/checkout`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response.data, "order data");
+    setOrderId(response.data.orderId)
+    setDisplayRazorpay(true);
+
+    // Display success toast
+    toast.success("Order placed successfully!");
+  } catch (error) {
+    // Extract error message safely
+    const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";   
+    // Display error toast
+    toast.warn(errorMessage);
+    // Log error for debugging
+    console.error(errorMessage);
+  }
+};
+
+
+const createPayment = async () => {
+  if (!userId) {
+    toast.error("Please login to proceed with payment.");
+    return;
+  }
+
+  if (!selectedAddress) {
+    toast.error("Please select an address before proceeding with checkout.");
+    return;
+  }
+
+ await handleOrderCheckout();
+
+
+
+};
+
+
+  
+  
+  const handlePayment = async(status, orderDetails) => {
     console.log(orderDetails,"orderdetails")
     if (status === "succeeded") {
       setDisplayRazorpay(false);
+      console.log(
+        displayRazorpay,
+        "after setting to false (immediate, before state update)"
+      );
+      await handleContinueClick(orderDetails);
+      setFormData(initialFormData);
     } else if (status === "cancelled") {
       setDisplayRazorpay(false);
     }
   };
 
-  const apiKey = "rzp_test_4rrCmYtqWUOUvT";
+
+
+  const handleDiscountedPrice = (newDiscountedPrice,couponcode) => {
+    setDiscountedPrice(newDiscountedPrice);
+    setCouponCode(couponcode)
+  };
+
+  const handleAddress=(addressId)=>{
+    setAddressId(addressId);
+  }
+
+  // const apiKey = "rzp_test_4rrCmYtqWUOUvT";
+  const apiKey = "rzp_test_a4GiGqcTxFZlKT";
+
 
   // Calculate total price
   const totalPrice = cartItems.reduce(
@@ -291,6 +412,8 @@ const handleCouponToggle=()=>{
     0
   );
 
+
+  console.log(discountedPrice,"totalokjj")
   console.log(selectedAddress,"selectedaddress")
 
   return (
@@ -399,6 +522,7 @@ const handleCouponToggle=()=>{
           isOpen={isAddressSidebarOpen}
           onClose={handleAddressToggle}
           onAddressSelect={setSelectedAddress}
+          addressId={handleAddress}
         />
 
         <div className='summary-address'>
@@ -412,11 +536,11 @@ const handleCouponToggle=()=>{
               <span className='amount'>₹{totalPrice}</span>
             </div>
             <button className='pay-btn' onClick={createPayment}>
-              Pay ₹{totalPrice}
+              Pay ₹{discountedPrice?discountedPrice: totalPrice}
             </button>
             {displayRazorpay && (
               <RenderRazorpay
-                amount={totalPrice * 100}
+                amount={discountedPrice?discountedPrice* 100: totalPrice * 100}
                 currency={"INR"}
                 keyId={apiKey}
                 handlePayment={handlePayment}
@@ -425,13 +549,22 @@ const handleCouponToggle=()=>{
             )}
           </div>
         </div>
-        <div className='summary-item address'  onClick={handleCouponToggle}>
-          <div className='address-content'>
-            <img src={coupon} />
-            <span>Promo Coupon</span>
-            <i className='fas fa-chevron-right'></i>
-          </div>
+        <div className="summary-item address" onClick={handleCouponToggle}>
+        <div className="address-content">
+          <img src={coupon} alt="Coupon Icon" />
+          <span>Promo Coupon</span>
+          <i className="fas fa-chevron-right"></i>
         </div>
+      </div>
+
+      {isCoupon && (
+        <PromoCoupon
+          isOpen={isCoupon}
+          onClose={handleCouponToggle} // Properly pass the toggle function
+          totalPrice={totalPrice}
+          onDiscountedPrice={handleDiscountedPrice}
+        />
+      )}
         <div>
           <div className='summary-item address' onClick={handleSidebarToggle}>
             <div className='address-content'>

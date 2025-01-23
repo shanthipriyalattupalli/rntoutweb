@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 // import "@/styles/Signup.css";
-import '../styles/Signup.css'
+import '../../styles/Signup.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -158,7 +158,7 @@ const Signup = () => {
           </button>
           <p className='footer-text mb-0'>
             Already have an account?{" "}
-            <span className='link' onClick={() => router.push("/Login")}>
+            <span className='link' onClick={() => router.push("/login")}>
               Log In
             </span>
           </p>

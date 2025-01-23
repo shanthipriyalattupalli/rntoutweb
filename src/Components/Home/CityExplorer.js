@@ -81,56 +81,8 @@ const CityExplorer = () => {
       cityName: "Mumbai",
       productCount: "2500+",
     },
-    {
-      id: 2,
-      href: "#",
-      imgSrc: city1,
-      altText: "Mumbai",
-      cityName: "Mumbai",
-      productCount: "2500+",
-    },
 
-    {
-      id: 2,
-      href: "#",
-      imgSrc: city2,
-      altText: "Mumbai",
-      cityName: "Mumbai",
-      productCount: "2500+",
-    },
-    {
-      id: 2,
-      href: "#",
-      imgSrc: city1,
-      altText: "Mumbai",
-      cityName: "Mumbai",
-      productCount: "2500+",
-    },
-    {
-      id: 2,
-      href: "#",
-      imgSrc: city2,
-      altText: "Mumbai",
-      cityName: "Mumbai",
-      productCount: "2500+",
-    },
-    {
-      id: 2,
-      href: "#",
-      imgSrc: city1,
-      altText: "Mumbai",
-      cityName: "Mumbai",
-      productCount: "2500+",
-    },
-    {
-      id: 2,
-      href: "#",
-      imgSrc: city2,
-      altText: "Mumbai",
-      cityName: "Mumbai",
-      productCount: "2500+",
-    },
-    // Add more cities here as needed
+
   ];
 
   return (
