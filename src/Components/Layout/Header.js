@@ -6,6 +6,7 @@ import axios from "axios";
 import SearchInput from "../SearchInput";
 import { useRouter } from "next/navigation";
 import {MAP_API} from '../../services/GMap'
+import Login from "../Auth/Login";
 const logo = "/Assets/Rntout_Logo.png";
 const Photo = "/Assets/Photo.png";
 const locations='/Assets/location_fill.svg'
@@ -38,7 +39,7 @@ function Header() {
   const latitude=(typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
   const longitude=(typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
 
-
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [location, setLocation] = useState("HYD - 500008");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
@@ -230,7 +231,7 @@ console.log(location,"locaton")
             {/* <option value={location}>{location}</option> */}
             <option value='HYD - 500008'>20 km</option>
             <option value='HYD - 500028'>30 km</option>
-            <option value='HYD - 500032'>40 k</option>
+            <option value='HYD - 500032'>40 km</option>
             <option value='HYD - 500084'>50 km</option>
             <option value='BTM - 560074'>60 km</option>
             <option value='BTM - 560086'>100 km</option>
@@ -320,11 +321,25 @@ bg-[linear-gradient(90deg,_#FEAC5E_0%,_#C779D0_50%,_#4BC0C8_100%)] hover:scale-1
                 </div>
   
           ) : (
+            <div className="app-container">
             <button
-            className='ml-5 bg-[#FF2D55] hover:bg-[#e6264c] text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300'
-          >
-           <Link href='/login'>Sign In / Sign Up</Link> 
-          </button>
+              className="ml-5 bg-[#FF2D55] hover:bg-[#e6264c] text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300"
+              onClick={() => setIsLoginOpen(true)}
+            >
+              Sign In / Sign Up
+            </button>
+      
+            {isLoginOpen && (
+              <div className="modal-overlay">
+                <div className="modal-content">
+                  <button className="close-button" onClick={() => setIsLoginOpen(false)}>
+                    ✕
+                  </button>
+                  <Login setIsLoginOpen={setIsLoginOpen}/>
+                </div>
+              </div>
+            )}
+          </div>
           )}
         </nav>
 

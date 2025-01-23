@@ -15,6 +15,14 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config) => {
+    config.ignoreWarnings = [
+      {
+        module: /react-toastify\.esm\.mjs/, // Suppress source map warning for react-toastify
+      },
+    ];
+    return config;
+  },
 };
 
 module.exports = nextConfig;

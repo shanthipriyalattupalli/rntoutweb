@@ -27,7 +27,7 @@ export default function ProfileSettings() {
         const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log(response.data.profile.user, "profile");
+        console.log(response.data.profile, "profile");
         setProfile(response.data.profile.user);
       } catch (error) {
         console.error(error);
@@ -40,6 +40,12 @@ export default function ProfileSettings() {
     }
   }, [token]);
 
+
+
+
+
+
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
@@ -52,9 +58,7 @@ export default function ProfileSettings() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // Store the selected file
       setSelectedFile(file);
-      // Create a temporary URL for the selected file to preview
       const newAvatarUrl = URL.createObjectURL(file);
       setAvatar(newAvatarUrl);
     }
@@ -143,7 +147,7 @@ export default function ProfileSettings() {
           <div className="gender-section">
             <label>Gender</label>
             <div className="gender_frame_line">
-              <div><input type="radio" name="gender" value="male" checked /> Male</div>
+              <div><input type="radio" name="gender" value="male"  /> Male</div>
               <div><input type="radio" name="gender" value="female" /> Female</div>
               <div><input type="radio" name="gender" value="other" /> Other</div>
             </div>

@@ -36,6 +36,8 @@ const CartPage = () => {
   const [discountedPrice, setDiscountedPrice] = useState(null);
   const [couponcode, setCouponCode] = useState(null);
   const [addressId, setAddressId] = useState(null);
+  const [orderId, setOrderId] = useState(null);
+  
 
 
   // const [userId, setUserId] = useState("");
@@ -274,12 +276,36 @@ const handleCouponToggle = ()=>{
 console.log(selectedAddress?._id,"selectedid")
 
 
-
-const handleContinueClick=async(orderDetails)=>{
+const handlePaymentStatus=async(orderDetails)=>{
+  console.log("payment")
   console.log(orderDetails,"orderDetails")
   try {
     const payload={
-      orderId:String(orderDetails.paymentId),
+      orderId:orderId,
+      paymentId:orderDetails.paymentId
+    }
+    const response = await axios.post(`${BASE_URL}/payments/status`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response,"status response")
+  } catch (error) {
+    toast.error(error.message || "Error status payment.");
+    console.error("Error status payment:", error);
+    
+  }
+}
+
+
+
+
+const handleContinueClick=async(orderDetails)=>{
+  console.log("payment")
+  console.log(orderDetails,"orderDetails")
+  try {
+    const payload={
+      orderId:orderId,
       amount:discountedPrice?discountedPrice:totalPrice
     }
     const response = await axios.post(`${BASE_URL}/payments/initiate`, payload, {
@@ -287,6 +313,9 @@ const handleContinueClick=async(orderDetails)=>{
         Authorization: `Bearer ${token}`,
       },
     });
+
+    // await handlePaymentStatus(orderDetails)
+
     console.log(response,"payment response")
   } catch (error) {
     toast.error(error.message || "Error initiating payment.");
@@ -311,17 +340,21 @@ const handleOrderCheckout = async () => {
       },
     });
     console.log(response.data, "order data");
-    setDisplayRazorpay(true)
+    setOrderId(response.data.orderId)
+    setDisplayRazorpay(true);
+
+    // Display success toast
     toast.success("Order placed successfully!");
-    // return response.data; // Successful response
   } catch (error) {
-    // // Extract and display error message
-    // const errorMessage =
-    //   error.response?.data?.error ;
-    // toast.error(errorMessage); // Display toast
-    console.error(error); // Log the error
+    // Extract error message safely
+    const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";   
+    // Display error toast
+    toast.warn(errorMessage);
+    // Log error for debugging
+    console.error(errorMessage);
   }
 };
+
 
 const createPayment = async () => {
   if (!userId) {
@@ -369,7 +402,9 @@ const createPayment = async () => {
     setAddressId(addressId);
   }
 
-  const apiKey = "rzp_test_4rrCmYtqWUOUvT";
+  // const apiKey = "rzp_test_4rrCmYtqWUOUvT";
+  const apiKey = "rzp_test_a4GiGqcTxFZlKT";
+
 
   // Calculate total price
   const totalPrice = cartItems.reduce(

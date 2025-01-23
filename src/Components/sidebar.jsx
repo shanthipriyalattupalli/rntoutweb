@@ -92,6 +92,8 @@ function Sidebar() {
       localStorage.removeItem("userToken");
     }
     router.push(eachbar.route);
+    router.push("/");
+    window.location.reload();
   };
   return (
     <div className='sidemenubar'>

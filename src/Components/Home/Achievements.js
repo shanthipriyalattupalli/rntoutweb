@@ -14,6 +14,8 @@ const Achievements = () => {
             src={acheivementImg}
             alt="Office with Chairs"
             className="w-full h-auto"
+            width={20}
+            height={20}
           />
         </div>
 
