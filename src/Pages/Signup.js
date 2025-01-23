@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useState } from "react";
-import "@/styles/Signup.css";
+// import "@/styles/Signup.css";
+import '../styles/Signup.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -10,7 +13,7 @@ const Rntout = "/Assets/Rntout_Logo.png";
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: "",
-    role:"",
+    role: "User",
     email: "",
     mobile: "",
     password: "",
@@ -18,6 +21,7 @@ const Signup = () => {
   });
   const [isLoading, setIsLoading] = useState(false); // For loading state
   const router = useRouter();
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -27,8 +31,10 @@ const Signup = () => {
 
   // Handle form submission
   const handleCreateAccount = async () => {
-    const { name,role, email, mobile, password, confirmPassword } = formData;
+   
 
+    const { name, role, email, mobile, password, confirmPassword } = formData;
+    console.log(role,"role")
     // Validation
     if (!name || !role || !email || !mobile || !password || !confirmPassword) {
       toast.error("All fields are required.");
@@ -42,9 +48,10 @@ const Signup = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post("http://localhost:6001/api/users", {
-       name,
-       role,
+      console.log(role,"role123")
+      const response = await axios.post(`${BASE_URL}/users`, {
+        name,
+        role,
         email,
         mobile,
         password,
@@ -56,98 +63,102 @@ const Signup = () => {
         toast.success(response.data.message || "Account created successfully!");
         router.push("/Login");
       } else {
-        toast.error(response.data.error || "Failed to create account. Try again.");
+        toast.error(
+          response.data.error || "Failed to create account. Try again."
+        );
       }
     } catch (error) {
       setIsLoading(false);
+      console.log(error ,"error")
       toast.error(
-        error.response?.data?.error || "Something went wrong. Please try again later."
+        error.response?.data?.error ||
+          "Something went wrong. Please try again later."
       );
     }
   };
 
   return (
     <div>
-      <ToastContainer position="top-right" autoClose={3000} />
-      <div className="signup-container">
-        <div className="login-first">
-          <img src={Rntout} alt="RentOut Logo" className="login-logo" />
-          <h2 className="subtitle">Sign up for RntOut</h2>
+      <ToastContainer position='top-right' autoClose={3000} />
+      <div className='signup-container'>
+        <div className='login-first'>
+          <img src={Rntout} alt='RentOut Logo' className='login-logo' />
+          <h2 className='subtitle'>Sign up for RntOut</h2>
         </div>
-        <div className="signup-card">
-          <p className="login-p1 m-0">Name</p>
+        <div className='signup-card'>
+          <p className='login-p1 m-0'>Name</p>
           <input
-            type="text"
-            placeholder="Enter First Name"
-            className="input"
-            name="name"
+            type='text'
+            placeholder='Enter First Name'
+            className='input'
+            name='name'
             value={formData.name}
             onChange={handleInputChange}
           />
-          <p className="login-p1 m-0">Role</p>
+          {/* <p className='login-p1 m-0'>Role</p>
           <input
-            type="text"
-            placeholder="Enter role"
-            className="input"
-            name="role"
+            type='text'
+            placeholder='Enter role'
+            className='input'
+            name='role'
             value={formData.role}
             onChange={handleInputChange}
-          />
-          <p className="login-p1 m-0">Email Address</p>
+          /> */}
+          <p className='login-p1 m-0'>Email Address</p>
           <input
-            type="email"
-            placeholder="Enter Email Address"
-            className="input"
-            name="email"
+            type='email'
+            placeholder='Enter Email Address'
+            className='input'
+            name='email'
             value={formData.email}
             onChange={handleInputChange}
           />
-          <p className="login-p1 m-0">Mobile Number</p>
+          <p className='login-p1 m-0'>Mobile Number</p>
           <input
-            type="tel"
-            placeholder="Enter Mobile Number"
-            className="input"
-            name="mobile"
+            type='tel'
+            placeholder='Enter Mobile Number'
+            className='input'
+            name='mobile'
             value={formData.mobile}
             onChange={handleInputChange}
           />
-          <p className="login-p1 m-0">Password</p>
+          <p className='login-p1 m-0'>Password</p>
           <input
-            type="password"
-            placeholder="Enter Password"
-            className="input"
-            name="password"
+            type='password'
+            placeholder='Enter Password'
+            className='input'
+            name='password'
             value={formData.password}
             onChange={handleInputChange}
           />
-          <p className="login-p1 m-0">Confirm Password</p>
+          <p className='login-p1 m-0'>Confirm Password</p>
           <input
-            type="password"
-            placeholder="Confirm Password"
-            className="input"
-            name="confirmPassword"
+            type='password'
+            placeholder='Confirm Password'
+            className='input'
+            name='confirmPassword'
             value={formData.confirmPassword}
             onChange={handleInputChange}
           />
           <button
-            className="button"
+            className='button'
             onClick={handleCreateAccount}
             disabled={isLoading}
           >
             {isLoading ? "Creating..." : "Create Account"}
           </button>
-          <p className="or-text">or</p>
-          <button className="google-button">
+          <p className='or-text'>or</p>
+          <button className='google-button'>
             <img
-              src="https://img.icons8.com/color/48/000000/google-logo.png"
-              alt="Google"
-              className="google-icon"
+              src='https://img.icons8.com/color/48/000000/google-logo.png'
+              alt='Google'
+              className='google-icon'
             />
             Google
           </button>
-          <p className="footer-text mb-0">
+          <p className='footer-text mb-0'>
             Already have an account?{" "}
-            <span className="link" onClick={() => router.push("/Login")}>
+            <span className='link' onClick={() => router.push("/Login")}>
               Log In
             </span>
           </p>

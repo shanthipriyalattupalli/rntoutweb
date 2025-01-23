@@ -1,18 +1,35 @@
-'use client';
-import React, { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import SearchInput from '../SearchInput';
-import { useRouter } from 'next/navigation';
-import logo from '../../../public/Assets/Rntout_logo.png';
-const Photo = "/Assets/Photo.png"
+"use client";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import SearchInput from "../SearchInput";
+import { useRouter } from "next/navigation";
+const logo = "/Assets/Rntout_Logo.png";
+const Photo = "/Assets/Photo.png";
 
 function Header() {
+  // const [name, setName] = useState("");
+  // const [token,setToken]=useState("")
 
-  const name = localStorage.getItem('name');
-  console.log(name);
-  
-  const [location, setLocation] = useState('HYD - 500008');
+  // useEffect(() => {
+  //   const name = localStorage.getItem("userName");
+  //   const token = localStorage.getItem("token");
+  //   setName(name);
+  //   setToken(token)
+  // }, []);
+  //   useEffect(() => {
+  //   const name = localStorage.getItem("userName");
+  //   const token = localStorage.getItem("token");
+  //   setName(name);
+  //   setToken(token)
+  // }, []);
+
+  const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const name=(typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
+
+
+  const [location, setLocation] = useState("HYD - 500008");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 
@@ -29,17 +46,12 @@ function Header() {
     const searchTerm = event.target.value;
   };
 
-
   const handleNavigate = () => {
-    router.push('/Login');
+    router.push("/Login");
   };
 
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // To manage login state
-  const [userName, setUserName] = useState(""); // To store the user's name after login
-  
-
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
 
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -48,39 +60,64 @@ function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-white shadow-md">
-      <div className="flex items-center">
-        <a href="/">
-          <Image src={logo} alt="RNT Out Logo" className="h-10" />
-        </a>
+    <header className='flex items-center justify-between px-6 py-4 bg-white shadow-md'>
+      <div className='flex items-center'>
+        <Link href='/'>
+          <img
+            src={logo}
+            alt='RNT Out Logo'
+            className='h-10'
+          />
+        </Link>
       </div>
-      <div className="flex items-center">
-        <div className="relative ml-4">
+      <div className='flex items-center'>
+        <div className='relative ml-4'>
           <SearchInput onChange={handleSearchInputChange} />
         </div>
-        <div className="relative ml-4">
+        <div className='relative ml-4'>
           <button
-            id="dropdownBtn"
-            className="bg-white border border-gray-300 rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-gray-100"
+            id='dropdownBtn'
+            className='bg-white border border-gray-300 rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-gray-100'
             onClick={toggleDropdown}
           >
-            <span className="text-gray-700">{location}</span>
-            <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            <span className='text-gray-700'>{location}</span>
+            <svg
+              className='h-5 w-5 text-gray-400'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M19 9l-7 7-7-7'
+              ></path>
             </svg>
           </button>
           {isDropdownOpen && (
             <div
-              id="dropdownMenu"
-              className="absolute origin-top-right right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100"
+              id='dropdownMenu'
+              className='absolute origin-top-right right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100'
             >
-              <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                {['HYD - 500008', 'HYD - 500028', 'HYD - 500032', 'HYD - 500084'].map((loc) => (
+              <div
+                className='py-1'
+                role='menu'
+                aria-orientation='vertical'
+                aria-labelledby='options-menu'
+              >
+                {[
+                  "HYD - 500008",
+                  "HYD - 500028",
+                  "HYD - 500032",
+                  "HYD - 500084",
+                ].map((loc) => (
                   <a
                     key={loc}
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    role="menuitem"
+                    href='#'
+                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+                    role='menuitem'
                     onClick={() => handleLocationChange(loc)}
                   >
                     {loc}
@@ -90,72 +127,96 @@ function Header() {
             </div>
           )}
         </div>
-        <div className="ml-6" onClick={() => { router.push('/Cartpage') }}>
-          <button className="bg-white border border-gray-300 rounded-lg p-2 hover:bg-gray-100">
-            <svg className="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+        <div
+          className='ml-6'
+          onClick={() => {
+            router.push("/Cartpage");
+          }}
+        >
+          <button className='bg-white border border-gray-300 rounded-lg p-2 hover:bg-gray-100'>
+            <svg
+              className='h-6 w-6 text-gray-600'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z'
+              ></path>
             </svg>
           </button>
         </div>
 
-        <button className="flex items-center justify-center gap-2 px-6 py-2 rounded-full text-white text-lg font-medium shadow-lg bg-gradient-to-r from-pink-400 via-red-400 to-blue-400 hover:scale-105 hover:shadow-xl transition-transform ml-10" onClick={() => { router.push('/add-on-rent') }}>
-          <span className="text-xl font-bold ">+</span> Rent
-        </button>
-
-
-        <nav className="navbar">
-      {!name ? (
-        <button
-          className="ml-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
-          onClick={() => router.push("/Login")}
-        >
-          Sign In / Sign Up
-        </button>
-      ) : (
-        <div
-          onClick={() => router.push("/profile")} // Redirect to profile page
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            border: "1px solid #E1E6EF",
-            borderRadius: "44px",
-            overflow: "hidden",
-            padding: "0 10px 0 0",
-            cursor: "pointer",
-            marginLeft: "20px",
-          }}
-        >
-          <img
-            src={Photo}
-            alt="user"
-            style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              objectFit: "cover",
-            }}
-          />
-          <p style={{ margin: 0 }}>{name}</p>
-          {/* <button
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering profile page redirect
-              handleLogout();
-            }}
-            style={{
-              marginLeft: "10px",
-              background: "transparent",
-              border: "none",
-              color: "#007BFF",
-              cursor: "pointer",
-              fontSize: "14px",
+        {name || token ? (
+          <button
+            className='flex items-center justify-center gap-2 px-6 py-2 rounded-full text-white text-base font-medium shadow-lg 
+bg-[linear-gradient(90deg,_#FEAC5E_0%,_#C779D0_50%,_#4BC0C8_100%)] hover:scale-105 hover:shadow-xl hover:from-red-600 hover:via-rose-600 hover:to-red-800 
+  transition-transform duration-300 ml-10'
+            onClick={() => {
+              router.push("/add-on-rent");
             }}
           >
-            Logout
-          </button> */}
-        </div>
-      )}
-    </nav>
+            <span className='text-base'>+</span> Rent
+          </button>
+        ) : null}
+
+        <nav className='navbar'>
+          {name || token ? (
+                  <div
+                  onClick={() => router.push("/profile")} // Redirect to profile page
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    border: "1px solid #E1E6EF",
+                    borderRadius: "44px",
+                    overflow: "hidden",
+                    padding: "0 10px 0 0",
+                    cursor: "pointer",
+                    marginLeft: "20px",
+                  }}
+                >
+                  <img
+                    src={Photo}
+                    alt='user'
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
+                  />
+                  <p style={{ margin: 0 }}>{name}</p>
+                  {/* <button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent triggering profile page redirect
+                  handleLogout();
+                }}
+                style={{
+                  marginLeft: "10px",
+                  background: "transparent",
+                  border: "none",
+                  color: "#007BFF",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                }}
+              >
+                Logout
+              </button> */}
+                </div>
+  
+          ) : (
+            <button
+            className='ml-5 bg-[#FF2D55] hover:bg-[#e6264c] text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300'
+          >
+           <Link href='/Login'>Sign In / Sign Up</Link> 
+          </button>
+          )}
+        </nav>
 
         {/* <button className="ml-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" onClick={handleNavigate}>
           Sign In / Sign Up

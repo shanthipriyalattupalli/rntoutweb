@@ -1,0 +1,33 @@
+
+.product-scroll-wrapper {
+    width: 100% !important; 
+    max-width:100%;
+    overflow-x: auto; 
+    padding-bottom: 12px;
+    /* scrollbar-width: thin;  */
+    scroll-snap-type: x mandatory; 
+  }
+  
+  .product-scroll-container {
+    display: flex;
+    width: 100% !important;
+    gap: 1rem; 
+
+    /* scroll-snap-align: start;  */
+  }
+  
+
+  .product-scroll-wrapper::-webkit-scrollbar {
+    /* background-color: blue !important;  */
+    height: 10px;
+  }
+  
+  .product-scroll-wrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(47, 111, 237, 1);
+    /* color: blue !important;  */
+    border-radius: 4px;
+  }
+/*   
+  .product-scroll-wrapper::-webkit-scrollbar-track {
+    background-color: blue !important;
+   */

@@ -28,7 +28,6 @@
     padding: 1px 6px 1px 6px;
     gap: 6px;
     border-radius: 99px;
-    opacity: 0px;
     font-size: 12px;
     background: #F0F5FF;
     color: #3b82f6;
@@ -53,7 +52,7 @@
 }
 
 .item-image {
-    width: 80px;
+    /* width: 80px; */
     height: 80px;
     border-radius: 8px;
     object-fit: cover;
@@ -103,7 +102,7 @@
 }
 
 .stock-info {
-    color: #ef4444;
+    color: #2F6FED;
     font-size: 0.875rem;
     
 }
@@ -122,10 +121,14 @@
     /* border: 1px solid red; */
     cursor: pointer;
     display: flex;
-    flex-direction: row;
+    gap:10px;
+    flex-direction: column;
     margin-left: auto;
     margin-top: -30px;
     
+}
+.delete-btn img{
+    margin-left: 500%;
 }
 
 /* Summary Section */
@@ -140,10 +143,11 @@
 
 .summary-item {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: space-between;
-    align-items: center;
+    /* justify-content: space-between; */
+    align-items: left;
     padding: 16px;
     background: #FFFFFF;
     border: 1px solid #0707071A;

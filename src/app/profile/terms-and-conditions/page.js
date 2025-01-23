@@ -1,5 +1,8 @@
+"use client"
+
 import React from 'react';
-import "@/styles/Terms.css";
+// import "@/styles/Terms.css";
+import '../../../styles/Terms.css';
 
 export default function Terms () {
     return (

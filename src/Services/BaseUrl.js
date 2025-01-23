@@ -1,1 +1,0 @@
-const BASEURL = "http://localhost:6001/api"

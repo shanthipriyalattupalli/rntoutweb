@@ -12,6 +12,28 @@
     
     
 }
+.form-select {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .form-select-item {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .form-select-item:hover {
+    background-color: #f0f0f0 !important;
+  }
+  
+  .form-select-item.selected {
+    background-color: #F0F5FF;
+    color: black;
+    border-color: #2F6FED;
+  }
 
 .delivery-context {
     display: flex;
@@ -31,6 +53,7 @@
 .address-edit {
     /* border: 1px solid red; */
     padding-top: 1px;
+    cursor: pointer;
 }
 
 .delivery-to {
@@ -70,13 +93,27 @@
     /* height: 36px; */
     /* border: 1px solid red; */
 }
+.address-context h4{
+    color: rgba(7, 7, 7, 1);
+    font-weight: 500;
+    font-size: 14px;
+
+}
 
 .address-context p {
     /* border: 1px solid red; */
     height: 20px;
     /* margin-top: 20px; */
 }
+.address-context span{
+    width: 54px;
+height: 20px;
+padding: 0px 6px 6px 6px;
+gap: 8px;
+border-radius: 6px;
+background: rgba(7, 7, 7, 0.1);
 
+}
 .address-button {
     width: 100%;
     padding: 12px;
