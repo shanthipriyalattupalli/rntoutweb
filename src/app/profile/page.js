@@ -104,18 +104,18 @@ export default function ProfileSettings() {
         <div className="avatar-section">
           {/* Display the current or selected avatar */}
           <img src={avatar} alt="Profile Avatar" />
-          <button className="edit-image" onClick={handleButtonClick}>
+          <button className="edit-image"       onChange={handleFileChange}>
             Edit Image
           </button>
           {/* Hidden file input */}
-          <input
+          {/* <input
             type="file"
             ref={fileInputRef}
             // style={{ display: "none" }}
             accept="image/*"
             onChange={handleFileChange}
             className="input-group"
-          />
+          /> */}
         </div>
         <div className="avatar-section_frame">
           <div className="input_group_column">

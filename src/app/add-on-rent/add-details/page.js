@@ -258,8 +258,8 @@ const MainContent = () => {
     salePrice: 0,
     stockQuantity: 0,
     location: {
-      type: "",
-      coordinates: []
+      type: "Point",
+      coordinates: [0,0]
     },
     pickupAvailable: true,
     itemDetails: {},
@@ -329,8 +329,8 @@ const MainContent = () => {
     setFormData((prevData) => ({
       ...prevData,
       location: {
-        ...prevData.location,
-        coordinates: [lat, lng], // Set coordinates as an array
+        type: "Point", // Add default type if missing
+        coordinates: [lng, lat], // Correct order: [longitude, latitude]
       },
     }));
 
@@ -377,14 +377,26 @@ const MainContent = () => {
       });
 
       formDataToSend.append('rentalAvailability[startDate]', formData.rentalAvailability.startDate);
-      formDataToSend.append('rentalAvailability[endDate]', formData.rentalAvailability.endDate);
+      // formDataToSend.append('rentalAvailability[endDate]', formData.rentalAvailability.endDate);
       formDataToSend.append('seoTags', formData.seoTags);
       formDataToSend.append('isForSale', formData.isForSale);
       formDataToSend.append('salePrice', formData.salePrice);
       formDataToSend.append('stockQuantity', formData.stockQuantity);
-      formDataToSend.append('location[type]', '');
-      formDataToSend.append('location[coordinates][]', formData.location.coordinates[0]);
-      formDataToSend.append('location[coordinates][]', formData.location.coordinates[1]);
+      
+      const coordinates = formData.location.coordinates;
+      const validCoordinates = Array.isArray(coordinates) && 
+        coordinates.length === 2 &&
+        !isNaN(coordinates[0]) && !isNaN(coordinates[1]);
+  
+      formDataToSend.append(
+        "location",
+        JSON.stringify({
+          type: formData.location.type || "Point",
+          coordinates: validCoordinates ? coordinates : [0, 0], // Default to [0, 0] if invalid
+        })
+      );
+  
+      
       formDataToSend.append('pickupAvailable', formData.pickupAvailable);
       for (const key in formData.itemDetails) {
         if (formData.itemDetails.hasOwnProperty(key)) {
@@ -401,6 +413,7 @@ const MainContent = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response,"response of variant")
 
       if (response.data.success) {
         toast.success("Product published successfully!");
@@ -673,8 +686,8 @@ const MainContent = () => {
             {formData.location.coordinates && formData.location.coordinates.length === 2 && (
               <Marker
                 position={{
-                  lat: formData.location.coordinates[0], // latitude
-                  lng: formData.location.coordinates[1], // longitude
+                  lat: formData.location.coordinates[1], // latitude
+                  lng: formData.location.coordinates[0], // longitude
                 }}
               />
             )}

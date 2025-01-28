@@ -5,37 +5,44 @@ import Image from "next/image";
 
 const CategorySection = ({ categories }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
-  const storedCategoryId=(typeof window !== 'undefined') ? localStorage.getItem("categoryId") : null;
 
   useEffect(() => {
-    // const storedCategoryId = localStorage.getItem("categoryId");
+    // Get categoryId from localStorage or default to the first category
+    const storedCategoryId =
+      typeof window !== "undefined" ? localStorage.getItem("categoryId") : null;
     const defaultCategoryId =
       storedCategoryId || (categories[0] && categories[0]._id);
-    setSelectedCategory(defaultCategoryId);
+
+    if (defaultCategoryId) {
+      setSelectedCategory(defaultCategoryId);
+      localStorage.setItem("categoryId", defaultCategoryId); // Ensure it's stored by default
+    }
+
     if (defaultCategoryId) {
       console.log(`Fetching products for categoryId: ${defaultCategoryId}`);
     }
   }, [categories]);
 
   const handleCategoryClick = (categoryId) => {
- localStorage.setItem("categoryId",categoryId); // Save to localStorage
+    console.log(categoryId, "categoryId in handleCategoryClick");
+    localStorage.setItem("categoryId", categoryId); // Save to localStorage
     setSelectedCategory(categoryId); // Update state
     window.location.reload(); // Refresh the page
   };
 
   return (
-    <div className='bg-white pt-6'>
-      <div className='container flex flex-col gap-2 mx-auto px-4 text-center'>
-        <h1 className='text-3xl font-bold text-gray-800'>
+    <div className="bg-white pt-6">
+      <div className="container flex flex-col gap-2 mx-auto px-4 text-center">
+        <h1 className="text-3xl font-bold text-gray-800">
           Our Top Trending Products
         </h1>
-        <p className='text-gray-600'>
+        <p className="text-gray-600">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </p>
       </div>
 
-      <div className='bg-white-100 py-6'>
-        <div className='container mx-auto flex flex-wrap justify-center gap-1'>
+      <div className="bg-white-100 py-6">
+        <div className="container mx-auto flex flex-wrap justify-center gap-1">
           {categories?.map((category) => (
             <button
               key={category._id}
@@ -55,7 +62,7 @@ const CategorySection = ({ categories }) => {
               <Image
                 src={category.image || "/default-icon.png"} // Use category-specific icon or a default
                 alt={`${category.categoryName} icon`}
-                className='h-4 w-4 mr-2'
+                className="h-4 w-4 mr-2"
                 width={16}
                 height={16}
               />

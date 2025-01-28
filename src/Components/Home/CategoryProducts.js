@@ -33,7 +33,7 @@ const CategoryProducts = ({ products }) => {
         {products?.length > 0 ? (
           <Suspense fallback={<div>Loading...</div>}>
             {products.map((product) => (
-              <ProductItems key={product.id} product={product} />
+              <ProductItems key={product._id} product={product} />
             ))}
           </Suspense>
         ) : (

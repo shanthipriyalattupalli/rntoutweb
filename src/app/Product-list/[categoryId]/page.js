@@ -9,6 +9,7 @@ import Products from '../../Products/ProductList/products'
 import { useParams } from "next/navigation";
 import { useRouter, useSearchParams } from 'next/navigation';
 import CategoryProducts from '@/Components/Home/CategoryProducts';
+import Breadcrumb from "@/Components/Breadcrumb/Breadcrumb";
 
 
 const ProductList = () => {
@@ -16,19 +17,23 @@ const ProductList = () => {
   const [categories, setCategories] = useState([]);
   const [active, setActive] = useState(null);
   const [products, setProducts] = useState([]);
-  const [product,setProduct] = useState([])
-  const [subCategories,setSubcategories] = useState([]);
-  const [subCategoryID,setSubcatgeoryID]=useState(null)
-  const [priceRange, setPriceRange] = useState();
-  console.log(priceRange,"priceRange")
+  const [product, setProduct] = useState([])
+  const [subCategories, setSubcategories] = useState([]);
+  const [subCategoryID, setSubcatgeoryID] = useState(null)
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
+  const [distance,setDistance] = useState();
+  const [breadcrumbCategoryName, setBreadcrumbCategoryName] = useState("");
   const params = useParams();
-  const subcategoryId=(typeof window !== 'undefined') ? localStorage.getItem("subcategoryId") : null;
-  console.log(subcategoryId,"subcategoryid selected in category")
+  const subcategoryId = (typeof window !== 'undefined') ? localStorage.getItem("subcategoryId") : null;
+  const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
+  const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
+  console.log(subcategoryId, "subcategoryid selected in category")
   // const subcategoryId=params.subcategoryId
   console.log("subcategoryId from params:", subcategoryId);
   const categoryId = params.categoryId; // Extract categoryId directly from params
   console.log("categoryId from params:", categoryId);
-  console.log(categoryId,subcategoryId,active,"activeindex productsbnhjb nmhbjn m")
+  console.log(categoryId, subcategoryId, active, "activeindex productsbnhjb nmhbjn m")
 
 
   const fetchProducts = async () => {
@@ -36,58 +41,70 @@ const ProductList = () => {
       console.log("Missing required parameters: categoryId, subcategoryId, or active.");
       return;
     }
-  
+
     try {
       // Correctly construct the request URL with params
-      const response = await axios.get(`${BASE_URL}/variants/product-variants`, {
+      const response = await axios.get(`${BASE_URL}/variants/filter`, {
         params: {
-          categoryId, 
-          subCategoryId: subcategoryId, 
+          categoryId,
+          subCategoryId: subcategoryId,
           productId: active,
-          upTo:priceRange
+          latitude: latitude,
+          longitude: longitude,
+          distance:distance,
+          minPrice: minPrice,
+          maxPrice: maxPrice,
         },
       });
-  
+
       // Log and set the products state
-      console.log("Product fetch response:", response?.data);
-      setProducts(response?.data);
+      console.log("Product fetch response:", response?.data.data);
+      setProducts(response?.data.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
-  
+
 
   useEffect(() => {
     fetchProducts();
-  }, [categoryId, subcategoryId,active,priceRange]);
-  
+  }, [categoryId, subcategoryId, active, minPrice, maxPrice]);
 
   const fetchCategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/categories`);
       console.log(response?.data.categories, "Categories fetched");
       setCategories(response?.data.categories);
+  
+
+      if (categoryId) {
+        const currentCategory = response?.data.categories.find(
+          (category) => category._id === categoryId
+        );
+        setBreadcrumbCategoryName(currentCategory?.categoryName || "");
+      }
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
   };
+  
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  const getProductsByCategory = (categoryId,subcategoryId) => {
+  const getProductsByCategory = (categoryId, subcategoryId) => {
     return products.filter((product) => product.categoryId?._id === categoryId && product.subCategoryId?._id === subcategoryId && product.productId._id === active);
   };
-  
+
   const fetchSubCategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`);
       console.log(response.data, "Subcategories by category");
       const fetchedSubCategories = response.data;
-  
+
       setSubcategories(fetchedSubCategories);
-  
+
       // Set the first subcategory as default
       if (fetchedSubCategories.length > 0 && !subCategoryID) {
         const defaultSubcategoryId = fetchedSubCategories[0]._id;
@@ -98,14 +115,14 @@ const ProductList = () => {
       console.error("Error fetching subcategories:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchSubCategories();
   }, [categoryId]);
 
   const fetchProductBysubCategoryId = async () => {
     if (!categoryId || !subCategoryID) return; // Ensure both IDs are available
-  
+
     try {
       const response = await axios.get(
         `${BASE_URL}/products/categoryProducts/?categoryId=${categoryId}&subCategoryId=${subCategoryID}`
@@ -116,18 +133,18 @@ const ProductList = () => {
       console.error("Error fetching products by subcategoryId:", error);
     }
   };
-  
-useEffect(() => {
+
+  useEffect(() => {
     fetchProductBysubCategoryId();
-}, [categoryId, subCategoryID]);
+  }, [categoryId, subCategoryID]);
 
-const handleProductClick = (productId) => {
-  setActive(productId === active ? null : productId); // Toggle active state
-};
+  const handleProductClick = (productId) => {
+    setActive(productId === active ? null : productId);
+  };
 
-useEffect(() => {
+  useEffect(() => {
     if (product.length > 0 && !active) {
-      setActive(product[0]._id); // Select the first product's ID as active by default
+      setActive(product[0]._id);
     }
   }, [product]);
 
@@ -135,44 +152,53 @@ useEffect(() => {
 
   const handleSubcategoryId = (selectedSubcategoryId) => {
     setSubcatgeoryID(selectedSubcategoryId);
-    localStorage.setItem("subcategoryId", selectedSubcategoryId); // Update localStorage
+    localStorage.setItem("subcategoryId", selectedSubcategoryId);
+  };
+  const handlePriceChange = (min, max) => {
+    console.log("Updated Prices:", { min, max });
+    setMinPrice(min);
+    setMaxPrice(max)
+    // Use the values as needed
   };
 
-  const handlePriceRangeChange = (newRange) => {
-    setPriceRange(newRange);
-    console.log('Updated Price Range:', newRange);
-  };
+ const handleDistance=(distance)=>{
+   console.log("Updated Distance:", distance);
+   setDistance(distance)
+   // Use the value as needed
+ }
 
   return (
     <main className="min-h-screen">
-      <div className="container mx-auto">
-        <Categories categories={categories} />
+      <div className="pl-24">
+      <Breadcrumb categoryName={breadcrumbCategoryName} />
+      </div>
+      <div className="container mx-auto ">
+        {/* <Categories categories={categories} /> */}
+
         <div className="flex">
-       
-          <Sidebar subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} price={handlePriceRangeChange}/>
-  
-          <div className="flex flex-col gap-2 p-4 w-full  h-[auto] border border-slate-200 bg-white rounded-lg">
-          <div className="w-auto flex border rounded-lg justify-between">
-          {product.map((productItem) => (
-    <div
-      key={productItem._id}
-      className={`w-full text-center rounded-lg ${
-        active === productItem._id ? 'bg-[#2F6FED]' : ''
-      }`}
-    >
-      <p
-        className={`w-auto justify-center flex p-2 text-center rounded-lg ${
-          active === productItem._id ? 'text-white border-[#2F6FED]' : ''
-        }`}
-        onClick={() => handleProductClick(productItem._id)}
-      >
-        {productItem.productName}
-      </p>
-    </div>
-  ))}
-  </div>
+
+          <Sidebar subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance}/>
+
+          <div className="flex flex-col gap-2 p-4 w-full  h-[auto] border border-slate-200 bg-white rounded-r-lg">
+            <div className="w-auto flex border rounded-lg justify-between">
+              {product.map((productItem) => (
+                <div
+                  key={productItem._id}
+                  className={`w-full text-center rounded-lg ${active === productItem._id ? 'bg-[#2F6FED]' : ''
+                    }`}
+                >
+                  <p
+                    className={`w-auto justify-center flex p-2 text-center rounded-lg ${active === productItem._id ? 'text-white border-[#2F6FED]' : ''
+                      }`}
+                    onClick={() => handleProductClick(productItem._id)}
+                  >
+                    {productItem.productName}
+                  </p>
+                </div>
+              ))}
+            </div>
             {/* <Products/> */}
-          <CategoryProducts products={products} />
+            <CategoryProducts products={products} />
           </div>
         </div>
       </div>

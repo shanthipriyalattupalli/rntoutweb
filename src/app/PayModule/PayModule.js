@@ -25,6 +25,7 @@ const RenderRazorpay = ({ orderId, keyId, keySecret, currency, amount, handlePay
      name,
     // order_id: orderId,
     handler: (response) => {
+      console.log(response,"response in razorpay")
       const paymentId = response.razorpay_payment_id;
       if (response) {
         handlePayment('succeeded', {

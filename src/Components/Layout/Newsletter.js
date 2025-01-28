@@ -1,11 +1,15 @@
 "use client"
 
 import React from 'react';
-
-
+const codefacts = '/Assets/codefacts.svg'
+const facebook = '/Assets/face book.svg'
+const twitter = '/Assets/twitter.svg'
+const instagram = '/Assets/instagram.svg'
+const youtube = '/Assets/youtub.svg'
+const rentoutlogo = '/Assets/rentoutlogo.svg'
 const Newsletter = () => {
   return (
-    <div className="bg-black py-12 px-4">
+    <div className="bg-black pt-12 px-24">
       <div className="md:flex md:justify-between">
         {/* Newsletter Subscription Section */}
         <div className="md:w-1/2 mb-8 md:mb-0">
@@ -39,12 +43,23 @@ const Newsletter = () => {
             who share a passion for.
           </p>
           <div className="flex items-center mt-4">
-            <img
-              src="https://www.codefacts.in/images/logo/logo-2.png"
-              alt="CodeFacts Logo"
-              className="w-6 h-6 mr-2"
-            />
-            <span className="text-gray-400 text-sm">Developed by: CODEFACTS</span>
+
+            <span className="flex gap-2 text-gray-400 text-sm">
+              Developed by:
+              <div className="flex cursor-pointer">
+                <a href="https://codefacts.com/" target="_blank" rel="noopener noreferrer">
+                  <img
+                    src={codefacts}
+                    alt="CodeFacts Logo"
+                    className="w-8 h-5 mr-2"
+                  />
+                </a>
+                <a href="https://codefacts.com/" target="_blank" rel="noopener noreferrer" className="text-gray-400">
+                  CODEFACTS
+                </a>
+              </div>
+            </span>
+
           </div>
         </div>
 
@@ -84,47 +99,47 @@ const Newsletter = () => {
       {/* Logo Section */}
       <div className="w-full items-center">
         <img
-          src="https://www.rntout.com/assets/img/logo.png"
+          src={rentoutlogo}
           alt="rntout logo"
           className="w-24 h-auto"
         />
       </div>
 
       {/* Footer Links */}
-      <div className="flex flex-col md:flex-row items-center justify-between mt-12">
-        <div className="text-gray-400 text-sm mt-4 md:mt-0">© 2025 All rights reserved</div>
+      <div className="flex flex-col md:flex-row items-center justify-between mt-12 border-t-2 p-4 border-zinc-400  text-base font-medium leading-6 text-left ">
+        <div className="text-white text-sm mt-4 md:mt-0">© 2025 All rights reserved</div>
         <div className="flex space-x-4 mt-4 md:mt-0">
-          <a href="#" className="text-gray-400 hover:text-white">Terms</a>
-          <a href="#" className="text-gray-400 hover:text-white">Privacy</a>
-          <a href="#" className="text-gray-400 hover:text-white">Cookies</a>
+          <a href="#" className="text-white text-sm">Terms</a>
+          <a href="#" className="text-white text-sm">Privacy</a>
+          <a href="#" className="text-white text-sm">Cookies</a>
         </div>
         <div className="flex space-x-4 mt-4 md:mt-0">
           <a href="#">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png"
+              src={facebook}
               alt="Facebook icon"
-              className="w-6 h-6"
+              className="w-8 h-8"
             />
           </a>
           <a href="#">
             <img
-              src="https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-twitter-circle-512.png"
+              src={twitter}
               alt="Twitter icon"
-              className="w-6 h-6"
+              className="w-8 h-8"
             />
           </a>
           <a href="#">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png"
+              src={instagram}
               alt="Instagram icon"
-              className="w-6 h-6"
+              className="w-8 h-8"
             />
           </a>
           <a href="#">
             <img
-              src="https://www.iconpacks.net/icons/2/free-youtube-logo-icon-2431-thumb.png"
+              src={youtube}
               alt="YouTube icon"
-              className="w-6 h-6"
+              className="w-8 h-8"
             />
           </a>
         </div>
