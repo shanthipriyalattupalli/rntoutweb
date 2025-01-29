@@ -344,6 +344,75 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange,di
                     )}
                   </div>
                 </div>
+                <div className='bt-2'>
+                  <div className='px-6 pb-4'>
+                    <div
+                      className='flex items-center justify-between cursor-pointer'
+                      onClick={handleDeliveryByToggle}
+                    >
+                      <h3 className='text-md font-bold mb-2'>Delivery By</h3>
+                      {isDeliveryByOpen ? (
+                        <ChevronDownIcon className='w-5 h-5 text-gray-600' />
+                      ) : (
+                        <ChevronRightIcon className='w-5 h-5 text-gray-600' />
+                      )}
+                    </div>
+                    {isDeliveryByOpen && (
+
+
+                      <div className="w-2">
+                        <input
+                          type="range"
+                          id="price"
+                          min="0"
+                          max="25"
+                          step="1"
+                          value={priceRange}
+                          onChange={(e) => handlePriceRange(e)}
+                          // onChange={(e) => setPriceRange(e.target.value)} 
+                          className="w-[200px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
+                          style={{
+                            WebkitAppearance: 'none',
+                            MozAppearance: 'none',
+                          }}
+                        />
+
+                        <div className="price-values2">
+                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
+                            <span className="ml-2 text-gray-200 ">|</span>
+                            <span>0km</span>
+                          </div>
+                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
+                            <span className="ml-2 text-gray-200 ">|</span>
+                            <span >5km</span>
+                          </div>
+                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left"> 
+                            <span className="ml-2 text-gray-200 ">|</span>
+                            <span>10km</span>
+                          </div>
+                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
+                            <span className="ml-2 text-gray-200 ">|</span>
+                            <span>15km</span>
+                          </div>
+                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
+                            <span className="ml-2 text-gray-200 ">|</span>
+                            <span>20km</span>
+                          </div>
+                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
+                            <span className="ml-2 text-gray-200 ">|</span>
+                            <span>25+km</span>
+                          </div>
+                        </div >
+                        <div className="price0">
+                          {priceRange && priceRange}
+                        </div>
+
+
+
+                      </div>
+                    )}
+                  </div>
+                </div>
 
 
               </div>

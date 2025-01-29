@@ -56,10 +56,13 @@ const CategoryGrid = () => {
 
   // Function to get background color for a category
   const getCategoryColor = (index, isSelected) => {
-    return isSelected
-      ? "#6A00FF"
-      : categoryColors[index % categoryColors.length];
+    const baseColor = categoryColors[index % categoryColors.length];
+    return isSelected ? baseColor.replace("0D", "80") : baseColor; // 50% opacity when selected
   };
+  
+  
+  
+  
 
   // Function to get text color for a category
   const getTextColor = (isSelected) => {
@@ -138,33 +141,23 @@ console.log(selectedCategoryLabel,"selectedCategoryLabel")
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
       <div className='category-grid'>
         {categories?.map((category, index) => (
-          <div
-            key={category._id}
-            className={`category-card ${selectedCategory === category._id ? "selected" : ""
-              }`}
-            style={{
-              backgroundColor: getCategoryColor(
-                index,
-                selectedCategory === category._id
-              ),
-              color: getTextColor(selectedCategory === category._id),
-            }}
-            onClick={() => handleCardClick(category._id, category.categoryName)}
-          >
-            <img
-              src={category.image}
-              className='category-icon'
-              alt={category.categoryName}
-            />
-            <p
-              style={{ color: getTextColor(selectedCategory === category._id) }}
-            >
-              {category.categoryName}
-            </p>
-            {selectedCategory === category._id && (
-              <MdCheckCircle className='check-icon' />
-            )}
-          </div>
+      <div
+      key={category._id}
+      className={`category-card ${selectedCategory === category._id ? "selected" : ""}`}
+      style={{
+        backgroundColor: getCategoryColor(index, selectedCategory === category._id),
+        color: getTextColor(selectedCategory === category._id),
+      }}
+      onClick={() => handleCardClick(category._id, category.categoryName)}
+    >
+      <img
+        src={category.image}
+        className='category-icon'
+        alt={category.categoryName}
+      />
+      <p>{category.categoryName}</p>
+      {selectedCategory === category._id && <MdCheckCircle className='check-icon' />}
+    </div>
         ))}
       </div>
       {error && <p className='error-message'>{error}</p>}{" "}

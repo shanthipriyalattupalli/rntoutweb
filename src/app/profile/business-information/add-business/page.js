@@ -18,6 +18,8 @@ export default function BusinessInformation2() {
   //  const [userId, setUserId] = useState("");
   //   const [token, setToken] = useState("");
   const [isBuisness, setIsBuisness] = useState(false);
+  const [businessId, setBusinessId] = useState();
+   const [isEditable, setIsEditable] = useState(false);
   // useEffect(() => {
   //   const userId = localStorage.getItem("userId");
   //   const token = localStorage.getItem("userToken");
@@ -29,6 +31,10 @@ export default function BusinessInformation2() {
   const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [previewImages, setPreviewImages] = useState([]);
+
+  const toggleEdit = () => {
+    setIsEditable(!isEditable);
+  };
 
 
   const handleIconClick = () => {
@@ -114,22 +120,10 @@ export default function BusinessInformation2() {
 
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
   // Submit the form data to the backend
   const handleBusinessInformation = async () => {
     try {
-      const bannerImagesString = formData.bannerImages.join(",");
+      // const bannerImagesString = formData.bannerImages.join(",");
       const payload = {
 
         businessName: String(formData.businessName),
@@ -158,7 +152,7 @@ export default function BusinessInformation2() {
           country: String(formData.bankBranchAddress.country),
           full: String(formData.bankBranchAddress.full),
         },
-        bannerImages: bannerImagesString,
+        bannerImages: formData.bannerImages,
       }
       console.log(payload, "payload");
 
@@ -171,7 +165,9 @@ export default function BusinessInformation2() {
       });
 
       console.log(response, "Business info created or updated");
-      setFormData(initialFormData)
+      setIsEditable(false)
+      handlefetchBusinessInfo()
+      // setFormData(initialFormData)
       toast.success("Business information updated successfully");
 
     } catch (error) {
@@ -188,8 +184,36 @@ export default function BusinessInformation2() {
   console.log(isBuisness, "business")
 
   console.log(formData.bannerImages, "bannerimages")
+
+
+const handlefetchBusinessInfo=async()=>{
+  try {
+    
+    const response = await axios.get(`${BASE_URL}/business-info`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    console.log(response.data.data, "business data")
+    setBusinessId(response.data.data._id)
+    setFormData(response.data.data)
+    if(response.data.data._id){
+      setIsBuisness(true)
+    }
+  } catch (error) {
+    console.error(error)
+    
+  }
+}
+
+  useEffect(()=>{
+    handlefetchBusinessInfo()
+  },[token])
+
+
+
   return (
-    isBuisness ?
+    isBuisness && businessId ?
       <div>
         <ToastContainer />
         <h2 className='item-header'>
@@ -197,6 +221,7 @@ export default function BusinessInformation2() {
             <IoMdArrowRoundBack style={{ marginRight: "12px" }} />
             Business Information
           </div>
+          <h3 className="cursor-pointer" onClick={toggleEdit}>edit</h3>
         </h2>
         <div className="bi2-main-div">
 
@@ -262,7 +287,9 @@ export default function BusinessInformation2() {
                   className='full-width'
                   name='businessName'
                   value={formData.businessName}
-                  onChange={handleInputChange} />
+                  onChange={handleInputChange} 
+                  disabled={!isEditable}/>
+                  
               </div>
             </div>
             <div className="input-group">
@@ -273,7 +300,8 @@ export default function BusinessInformation2() {
                   placeholder="Enter name"
                   name='storeName'
                   value={formData.storeName}
-                  onChange={handleInputChange} />
+                  onChange={handleInputChange} 
+                  disabled={!isEditable}/>
               </div>
               <div className="input-item">
                 <label htmlFor="mobile-number">Mobile Number</label>
@@ -282,7 +310,8 @@ export default function BusinessInformation2() {
                   placeholder="Enter mobile number"
                   name='contactPhone'
                   value={formData.contactPhone}
-                  onChange={handleInputChange} />
+                  onChange={handleInputChange} 
+                  disabled={!isEditable} />
               </div>
               <div className="input-item">
                 <label htmlFor="email-address">Email Address</label>
@@ -291,7 +320,8 @@ export default function BusinessInformation2() {
                   placeholder="Enter email address"
                   name='contactEmail'
                   value={formData.contactEmail}
-                  onChange={handleInputChange} />
+                  onChange={handleInputChange} 
+                  disabled={!isEditable}/>
               </div>
             </div>
             <div className='address-bar'>
@@ -302,7 +332,8 @@ export default function BusinessInformation2() {
                   className="full-width"
                   name='businessAddress.full'
                   value={formData.businessAddress.full}
-                  onChange={handleInputChange} />
+                  onChange={handleInputChange} 
+                  disabled={!isEditable}/>
               </div>
 
               <label className="checkbox-label">
@@ -320,7 +351,8 @@ export default function BusinessInformation2() {
                   rows={5}
                   name='storeDescription'
                   value={formData.storeDescription}
-                  onChange={handleInputChange}></textarea>
+                  onChange={handleInputChange} 
+                  disabled={!isEditable}></textarea>
               </div></div>
           </div>
 
@@ -350,6 +382,7 @@ export default function BusinessInformation2() {
                   <span
                     className="browse-link"
                     onClick={handleIconClick}
+                    disabled={!isEditable}
                   >
                     browse
                   </span>
@@ -363,6 +396,7 @@ export default function BusinessInformation2() {
                   multiple
                   // style={{ display: "none" }}
                   onChange={handleFileUpload}
+                  disabled={!isEditable}
                 />
 
                 {/* Preview uploaded files */}
@@ -399,7 +433,8 @@ export default function BusinessInformation2() {
                 <label htmlFor="bank-select">Bank</label>
                 <select id="bank-select" name='bankName'
                   value={formData.bankName}
-                  onChange={handleInputChange}>
+                  onChange={handleInputChange}
+                  disabled={!isEditable}>
                   <option>Select bank</option>
                   <option>State Bank of India</option>
                   <option>ICICI Bank</option>
@@ -412,7 +447,8 @@ export default function BusinessInformation2() {
                   placeholder="Enter code"
                   name='ifsc'
                   value={formData.ifsc}
-                  onChange={handleInputChange} />
+                  onChange={handleInputChange}
+                  disabled={!isEditable} />
               </div>
               <div className="input-item">
                 <label htmlFor="bank-mobile">Owner Mobile Number</label>
@@ -421,7 +457,8 @@ export default function BusinessInformation2() {
                   placeholder="Enter mobile number"
                   name='contactPhone'
                   value={formData.contactPhone}
-                  onChange={handleInputChange} />
+                  onChange={handleInputChange}
+                  disabled={!isEditable} />
               </div>
             </div>
             <div className='address-bar'>
@@ -434,7 +471,8 @@ export default function BusinessInformation2() {
                   className='full-width'
                   name='bankBranchAddress.full'
                   value={formData.bankBranchAddress.full}
-                  onChange={handleInputChange} />
+                  onChange={handleInputChange} 
+                  disabled={!isEditable}/>
               </div>
             </div>
           </div>

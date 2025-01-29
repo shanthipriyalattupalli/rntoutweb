@@ -68,7 +68,7 @@ const ProductList = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [categoryId, subcategoryId, active, minPrice, maxPrice]);
+  }, [categoryId, subcategoryId, active, minPrice, maxPrice,distance]);
 
   const fetchCategories = async () => {
     try {
@@ -168,7 +168,7 @@ const ProductList = () => {
  }
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen py-6">
       <div className="pl-24">
       <Breadcrumb categoryName={breadcrumbCategoryName} />
       </div>
@@ -179,7 +179,7 @@ const ProductList = () => {
 
           <Sidebar subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance}/>
 
-          <div className="flex flex-col gap-2 p-4 w-full  h-[auto] border border-slate-200 bg-white rounded-r-lg">
+          <div className="flex flex-col gap-2 py-4 px-2 w-full  h-[auto] border border-slate-200 bg-white rounded-r-lg">
             <div className="w-auto flex border rounded-lg justify-between">
               {product.map((productItem) => (
                 <div

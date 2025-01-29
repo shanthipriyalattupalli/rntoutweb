@@ -30,7 +30,7 @@ const customStyles = `
   .cart-btn {    font-size: 13px;    font-weight: 500;  }
   .cart-price {    color: #FF2D55;  }`;
 
-const ProductItem = ({ product }) => {
+const RelatedProducts = ({ product }) => {
   const swiperRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -81,9 +81,9 @@ const ProductItem = ({ product }) => {
     year: "numeric",
   });
 
+  
 
-
-  const rentalStartDate = new Date(rentalAvailability?.startDate);
+  const rentalStartDate = new Date(rentalAvailability?.startDate); 
 
 
   const Details = [
@@ -271,10 +271,7 @@ const ProductItem = ({ product }) => {
 
         {isView ? (
           <div className='p-4'>
-            <h2 className="product-title text-gray-800 truncate w-full overflow-hidden whitespace-nowrap">
-              {title}
-            </h2>
-
+            <h2 className='product-title text-gray-800'>{title}</h2>
 
             {/* Product Price */}
             <p className='cart-price text-bold text-lg mt-2'>
@@ -326,8 +323,8 @@ const ProductItem = ({ product }) => {
             <div className="flex items-center mt-2">
               <span
                 className={`text-xs border px-1 py rounded-full ${stockQuantity > 0
-                  ? "text-blue-500 border-blue-200 bg-blue-100"
-                  : "text-red-500 border-red-200 bg-red-100"
+                    ? "text-blue-500 border-blue-200 bg-blue-100"
+                    : "text-red-500 border-red-200 bg-red-100"
                   }`}
               >
                 {stockQuantity > 0 ? "In stock" : "Out of stock"}
@@ -341,34 +338,35 @@ const ProductItem = ({ product }) => {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         > */}
-            {
-              rentalStartDate > new Date() ? ( // Compare raw Date objects
-                <button
-                  className="notify-btn border-blue-500 border  text-blue-400 font-medium px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2"
-                  onClick={() => handleNotifyMe()}
-                >
-                  <span className="text-sm">Notify Me Availability</span>
-                </button>
-              ) : (
-                <button
-                  className={`${stockQuantity > 0
-                      ? "cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-                      : "cart-btn border-red-100 border text-black font-bold px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-                    } ${isHovered && stockQuantity > 0 ? "bg-red-600 text-white" : ""}`}
-                  onClick={() => stockQuantity > 0 && handleAddCart()}
-                  disabled={stockQuantity <= 0}
-                >
-                  <Image
-                    src={isHovered && stockQuantity > 0 ? cartIconHov : cartIcon}
-                    alt="Cart icon"
-                    className="w-4 h-4"
-                    width={500}
-                    height={300}
-                  />
-                  <span className="text-sm">Add to cart</span>
-                </button>
-              )
-            }
+{
+  rentalStartDate > new Date() ? ( // Compare raw Date objects
+    <button
+      className="notify-btn border-blue-500 border  text-blue-400 font-medium px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2"
+      onClick={() => handleNotifyMe()}
+    >
+      <span className="text-sm">Notify Me Availability</span>
+    </button>
+  ) : (
+    <button
+      className={`${
+        stockQuantity > 0
+          ? "cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+          : "cart-btn border-red-100 border text-black font-bold px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+      } ${isHovered && stockQuantity > 0 ? "bg-red-600 text-white" : ""}`}
+      onClick={() => stockQuantity > 0 && handleAddCart()}
+      disabled={stockQuantity <= 0}
+    >
+      <Image
+        src={isHovered && stockQuantity > 0 ? cartIconHov : cartIcon}
+        alt="Cart icon"
+        className="w-4 h-4"
+        width={500}
+        height={300}
+      />
+      <span className="text-sm">Add to cart</span>
+    </button>
+  )
+}
 
           </div>
         ) : (
@@ -407,4 +405,4 @@ const ProductItem = ({ product }) => {
   );
 };
 
-export default ProductItem;
+export default RelatedProducts;
