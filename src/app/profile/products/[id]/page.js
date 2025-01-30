@@ -1,11 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Link from "next/link";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 // import "@/styles/ProductInformation2.css";
-import '../../../../styles/ProductInformation.css'
+// import '../../../../styles/ProductInformation.css'
+import '../../../../styles/ProductInformation2.css'
 import { FileX } from "lucide-react";
+import axios from "axios";
 
 const dummyimage = "/Assets/dummy-image-2.svg";
 const sight1 = "/Assets/sight1.png";
@@ -21,12 +23,18 @@ const badge = "/Assets/badge.png";
 const rouimg = "/Assets/rouimg.png";
 
 export default function ProductInformation2() {
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [activeTab, setActiveTab] = useState("rents");
   const [activePage, setActivePage] = useState(1);
   const totalPages = 10;
-
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const productId = searchParams.get("id");
+  const [product,setProduct]=useState({})
+  const [images,setImages]=useState([])
+console.log(productId,"productId")
 
+// const {id}=Params
   const handlePageClick = (pageNumber) => {
     setActivePage(pageNumber);
   };
@@ -144,6 +152,24 @@ export default function ProductInformation2() {
     // Add other dummy data for rents as needed
   ];
 
+  const fetchProductById = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/variants/${productId}`);
+
+      const data = response.data;
+      console.log(data, "fetch product by id");
+      setProduct(data)
+      setImages(response.data.images)
+
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
+  };
+  useEffect(() => {
+    fetchProductById();
+  }, [productId]);
+
+// console.log(product.images[2],"productimages")
   return (
     <>
       <h2 className='item-header' onClick={() => router.back()}>
@@ -154,13 +180,14 @@ export default function ProductInformation2() {
       <div className='rent-dashboard'>
         {/* Product Header Section */}
         <div className='product-info'>
-          <img src={dummyimage} alt='Product' className='product-image' />
+          <img src={images[0]} alt='Product' className='product-image' />   
           <div className='product-details'>
             <h2>
-              Dell 24 inch P2425H Monitor | 100Hz | 5ms G-to-G (Fast Mode) | 99%
-              sRGB
+              {/* Dell 24 inch P2425H Monitor | 100Hz | 5ms G-to-G (Fast Mode) | 99%
+              sRGB */}
+              {product.title}
             </h2>
-            <p>Available Stock: 5/8</p>
+            <p>Available Stock: {product.stockQuantity}</p>
             <p>Rating & Reviews: ⭐ 4.5 (154 Reviews)</p>
             <a
               className='view-details-link'

@@ -22,18 +22,18 @@ const Banner = () => {
           className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
           onClick={() => swiperRef.current?.slidePrev()} // Navigate to the previous slide
         >
-          <img src={left} alt="Previous" className="rotate-360 ml-20" />
+          <img src={left} alt="Previous" className="rotate-360 ml-16" />
         </div>
         <div
           className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
-          onClick={() => swiperRef.current?.slideNext()} // Navigate to the next slide
+          onClick={() => swiperRef.current?.slideNext()} 
         >
-          <img src={left} alt="Next" className="rotate-180 mr-20" />
+          <img src={left} alt="Next" className="rotate-180 mr-16" />
         </div>
 
         <Swiper
-          onSwiper={(swiper) => (swiperRef.current = swiper)} // Set the Swiper instance to the ref
-          navigation={false} // Disable default navigation as we are using custom buttons
+          onSwiper={(swiper) => (swiperRef.current = swiper)} 
+          navigation={false} 
           pagination={{ clickable: true }}
           modules={[Navigation, Pagination, Autoplay]}
           autoplay={{ delay: 3000 }}

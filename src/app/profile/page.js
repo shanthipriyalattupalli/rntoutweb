@@ -13,28 +13,37 @@ export default function ProfileSettings() {
   const fileInputRef = useRef(null);
   const [isEditable, setIsEditable] = useState(false);
   const [profile, setProfile] = useState({
-    name: "",
-    email: ""
+    user: {
+      name: "",
+      email: ""
+    },
+    dateOfBirth: "",
+    gender: "",
+    profilePic: ""
   });
+  
+
+  console.log(profile,"profile");
   const [selectedFile, setSelectedFile] = useState(null); // to store selected image file
 
   const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
 
-  useEffect(() => {
+
     const fetchProfile = async () => {
       console.log(token, "token");
       try {
         const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log(response.data.profile, "profile");
-        setProfile(response.data.profile.user);
+        console.log(response.data, "profiledata");
+        // setProfile(response.data.profile.user);
+        setProfile(response.data.profile)
       } catch (error) {
         console.error(error);
         toast.error("Failed to fetch profile.");
       }
     };
-
+    useEffect(() => {
     if (token) {
       fetchProfile();
     }
@@ -43,12 +52,18 @@ export default function ProfileSettings() {
 
 
 
-
-
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProfile((prev) => ({ ...prev, [name]: value }));
+    const keys = name.split("."); // Split keys by dot notation
+    setProfile((prev) => {
+      let updatedProfile = { ...prev };
+      let temp = updatedProfile;
+      while (keys.length > 1) {
+        temp = temp[keys.shift()];
+      }
+      temp[keys[0]] = value; // Update the final key
+      return updatedProfile;
+    });
   };
 
   const toggleEdit = () => {
@@ -92,11 +107,34 @@ export default function ProfileSettings() {
     }
   };
 
+
+  const handleSubmitProfile=async()=>{
+    try {
+      const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, profile, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(response.data, "profile updated");
+      setIsEditable(false);
+      fetchProfile()
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.error("Failed to update profile.");
+    }
+  }
+
+
   return (
     <div className="profile-settings">
+      <ToastContainer/>
       <div className="item-header">
         <h2>Profile Settings</h2>
-        <a href="#" className="edit-btn" onClick={toggleEdit}>
+        <a href="#" className="edit-btn"   onClick={() => {
+    if (isEditable) {
+      handleSubmitProfile(); 
+    }
+    toggleEdit(); 
+  }}>
           {isEditable ? 'Save' : 'Edit'}
         </a>
       </div>
@@ -104,18 +142,18 @@ export default function ProfileSettings() {
         <div className="avatar-section">
           {/* Display the current or selected avatar */}
           <img src={avatar} alt="Profile Avatar" />
-          <button className="edit-image" onClick={handleButtonClick}>
+          <button className="edit-image" onChange={handleFileChange}>
             Edit Image
           </button>
           {/* Hidden file input */}
-          <input
+          {/* <input
             type="file"
             ref={fileInputRef}
             // style={{ display: "none" }}
             accept="image/*"
             onChange={handleFileChange}
             className="input-group"
-          />
+          /> */}
         </div>
         <div className="avatar-section_frame">
           <div className="input_group_column">
@@ -123,8 +161,8 @@ export default function ProfileSettings() {
               <label>Name</label>
               <input
                 type="text"
-                name="name"
-                value={profile.name}
+                name="user.name"
+                value={profile.user.name}
                 onChange={handleChange}
                 placeholder="Enter your name"
                 disabled={!isEditable}
@@ -136,8 +174,8 @@ export default function ProfileSettings() {
               <label>Email Address</label>
               <input
                 type="email"
-                name="email"
-                value={profile.email}
+                name="user.email"
+                value={profile.user.email}
                 onChange={handleChange}
                 placeholder="Enter your email"
                 disabled={!isEditable}
@@ -147,18 +185,53 @@ export default function ProfileSettings() {
           <div className="gender-section">
             <label>Gender</label>
             <div className="gender_frame_line">
-              <div><input type="radio" name="gender" value="male"  /> Male</div>
-              <div><input type="radio" name="gender" value="female" /> Female</div>
-              <div><input type="radio" name="gender" value="other" /> Other</div>
+              <div>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Male"
+                  checked={profile.gender === "Male"}
+                  onChange={handleChange}
+                  disabled={!isEditable}
+                /> Male
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Female"
+                  checked={profile.gender === "Female"}
+                  onChange={handleChange}
+                  disabled={!isEditable}
+                /> Female
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Other"
+                  checked={profile.gender === "Other"}
+                  onChange={handleChange}
+                  disabled={!isEditable}
+                /> Other
+              </div>
             </div>
           </div>
+
           <div className="input-group">
             <label>Date of Birth</label>
-            <input type="date" />
+            <input
+              type="date"
+              name="dateOfBirth"
+              value={profile.dateOfBirth}
+              onChange={handleChange}
+              disabled={!isEditable}
+            />
           </div>
+
         </div>
       </div>
-      <button onClick={handleUploadProfile}>Upload Profile Picture</button>
+      {/* <button onClick={handleUploadProfile}>Upload Profile Picture</button> */}
     </div>
   );
 }

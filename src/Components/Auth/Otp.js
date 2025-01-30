@@ -81,6 +81,41 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
     }
   };
 
+
+  const handleSendOtp = async () => {
+    if (!mobileNumber || !/^\+?[0-9]{10,13}$/.test(mobileNumber)) {
+      toast.error("Please enter a valid mobile number.");
+      return;
+    }
+    setIsLoading(true);
+    setOtp(["", "", "", ""])
+
+    try {
+      const response = await axios.post(`${BASE_URL}/users/send-otp`, {
+        phoneNumber: mobileNumber,
+      });
+      console.log(response);
+      setIsLoading(false);
+
+      if (response.status === 200) {
+        toast.success(response.data.message || "OTP sent successfully!");
+        console.log(mobileNumber, "mobilenum in login page");
+        // router.push({
+        //   pathname: "/Otp",
+        //   query: { mobileNumber: mobileNumber },
+        // });
+        // setIsLoginOpen(false)
+        // setIsOtpOpen(true)
+        // router.push(`/Otp?mobileNumber=${encodeURIComponent(mobileNumber)}`);
+      } else {
+        toast.error(response.data.error || "Failed to send OTP. Try again.");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Something went wrong. Please try again later.");
+    }
+  };
+
   return (
     <div className="otp-container">
       <ToastContainer position="top-right" autoClose={3000} />
@@ -131,7 +166,7 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
           {isLoading ? "Verifying..." : "Continue"}
         </button>
 
-        <p className="otp-resend">
+        <p className="otp-resend" onClick={handleSendOtp}>
           <span className="otp-resend-link">Resend OTP</span>
         </p>
         <p className="or-text">or</p>

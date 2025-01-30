@@ -25,11 +25,11 @@
     text-align: center;
 }
 
-.product-image {
+/* .product-image {
     width: 100%;
     height: auto;
     border-radius: 8px;
-}
+} */
 
 /* Badge icon styling */
 .badge-icon {
@@ -47,10 +47,10 @@
 
 
 .product-title {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     margin: 8px 0;
-    /* font-family: 'Mulish', sans-serif; */
+    font-family: 'Mulish', sans-serif;
 }
 
 .product-price {

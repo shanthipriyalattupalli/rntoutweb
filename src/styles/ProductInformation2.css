@@ -22,9 +22,10 @@
 }
 
 .product-image {
-  /* width: 100px; */
+  width: 100px;
   height: auto;
   margin-right: 20px;
+  border-radius: 20px;
 }
 
 .product-details h2 {
@@ -207,6 +208,7 @@
 .product-images img {
   width: 116px;
   height: 116px;
+  border-radius: 20px;
 }
 
 .stock-count {

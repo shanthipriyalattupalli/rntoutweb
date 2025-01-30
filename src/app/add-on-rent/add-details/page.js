@@ -12,6 +12,8 @@ import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { MAP_API } from '../../../services/GMap'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import { GrLocation} from "react-icons/gr";
 const upload = "/Assets/upload.png";
 
 const MainContent = () => {
@@ -258,8 +260,8 @@ const MainContent = () => {
     salePrice: 0,
     stockQuantity: 0,
     location: {
-      type: "",
-      coordinates: []
+      type: "Point",
+      coordinates: [0,0]
     },
     pickupAvailable: true,
     itemDetails: {},
@@ -329,8 +331,8 @@ const MainContent = () => {
     setFormData((prevData) => ({
       ...prevData,
       location: {
-        ...prevData.location,
-        coordinates: [lat, lng], // Set coordinates as an array
+        type: "Point", // Add default type if missing
+        coordinates: [lng, lat], // Correct order: [longitude, latitude]
       },
     }));
 
@@ -377,14 +379,26 @@ const MainContent = () => {
       });
 
       formDataToSend.append('rentalAvailability[startDate]', formData.rentalAvailability.startDate);
-      formDataToSend.append('rentalAvailability[endDate]', formData.rentalAvailability.endDate);
+      // formDataToSend.append('rentalAvailability[endDate]', formData.rentalAvailability.endDate);
       formDataToSend.append('seoTags', formData.seoTags);
       formDataToSend.append('isForSale', formData.isForSale);
       formDataToSend.append('salePrice', formData.salePrice);
       formDataToSend.append('stockQuantity', formData.stockQuantity);
-      formDataToSend.append('location[type]', '');
-      formDataToSend.append('location[coordinates][]', formData.location.coordinates[0]);
-      formDataToSend.append('location[coordinates][]', formData.location.coordinates[1]);
+      
+      const coordinates = formData.location.coordinates;
+      const validCoordinates = Array.isArray(coordinates) && 
+        coordinates.length === 2 &&
+        !isNaN(coordinates[0]) && !isNaN(coordinates[1]);
+  
+      formDataToSend.append(
+        "location",
+        JSON.stringify({
+          type: formData.location.type || "Point",
+          coordinates: validCoordinates ? coordinates : [0, 0], // Default to [0, 0] if invalid
+        })
+      );
+  
+      
       formDataToSend.append('pickupAvailable', formData.pickupAvailable);
       for (const key in formData.itemDetails) {
         if (formData.itemDetails.hasOwnProperty(key)) {
@@ -401,6 +415,7 @@ const MainContent = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response,"response of variant")
 
       if (response.data.success) {
         toast.success("Product published successfully!");
@@ -511,24 +526,24 @@ const MainContent = () => {
             Product Image{" "}
             <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </h2>
-          <div className='file-upload-box'>
+          <div className='file-upload-box' tabIndex={0} onClick={handleIconClick} >
             <input
               type='file'
               ref={fileInputRef}
               multiple
               accept='.jpeg, .png, .jpg'
-              // style={{ display: "none" }}
+              style={{ display: "none" }}
               onChange={handleFileChange} // Add onChange handler
             />
             <div className='upload-icon' onClick={handleIconClick}>
               <img src={upload} />
             </div>
-            <p>
+            <p className="text-sm font-normal leading-5 text-center decoration-none">
               Drag your file(s) or <span onClick={handleIconClick}>browse</span>
             </p>
             <p className='file-note'>Image format will be a JPEG, PNG, JPG</p>
           </div>
-
+<p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 4 images. 📸</p>
           {/* Render Preview Images */}
           <div className='image-preview-container'>
             {previewImages.map((src, index) => (
@@ -542,12 +557,14 @@ const MainContent = () => {
             ))}
           </div>
         </div>
-
-        <div className='date-picker-container'>
-          <label className='ba-in'>
+        <div className="flex flex-col">
+        <label className='ba-in'>
             Product Availability{" "}
             <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </label>
+        <div className='date-picker-container'>
+          <div className="w-full">
+          <label>Product Availability (start date)</label>
           <div className='date-picker-wrapper'>
             <DatePicker
               selected={formData.rentalAvailability.startDate}
@@ -560,6 +577,9 @@ const MainContent = () => {
             />
             <FaRegCalendarAlt className='calendar-icon' />
           </div>
+          </div>
+          <div className="w-full">
+          <label>Product Availability (start date)</label>
           <div className='date-picker-wrapper'>
             <DatePicker
               selected={formData.rentalAvailability.endDate}
@@ -572,7 +592,53 @@ const MainContent = () => {
             />
             <FaRegCalendarAlt className='calendar-icon' />
           </div>
+          </div>
         </div>
+        </div>
+        <div>
+  <label>Location</label>
+  <div className="relative">
+    <input 
+      type="search" 
+      placeholder="Select a location" 
+      className="location-input pl-8" 
+    />
+    
+   <GrLocation className="absolute left-96 ml-20 top-1/2 transform -translate-y-1/2 h-1/2"/>
+  </div>
+</div>
+
+<div className="mt-4">
+  <label>Map</label>
+  <div className="google-content">
+        <LoadScript googleMapsApiKey={MAP_API}>
+          <GoogleMap
+            mapContainerStyle={{
+              height: "300px",
+              width: "100%",
+              borderRadius: "16px",
+            }}
+            center={mapCenter}
+            zoom={10}
+            onClick={handleMapClick}
+          >
+            {formData.location.coordinates && formData.location.coordinates.length === 2 && (
+              <Marker
+                position={{
+                  lat: formData.location.coordinates[1], // latitude
+                  lng: formData.location.coordinates[0], // longitude
+                }}
+              />
+            )}
+          </GoogleMap>
+        </LoadScript>
+        </div>
+      </div>
+      <div className="pt-6 flex flex-col">
+        <label>Description</label>
+        <input type="text" placeholder="Enter product details" className="border p-4 rounded-2xl h-min"/>
+      </div>
+
 
         <div className='form-section4'>
           <h2 className='ba-in'>
@@ -658,29 +724,7 @@ const MainContent = () => {
           <FiPlus /> Add New Product Description
         </button>
       </div>
-      <div className="mt-2">
-        <LoadScript googleMapsApiKey={MAP_API}>
-          <GoogleMap
-            mapContainerStyle={{
-              height: "300px",
-              width: "100%",
-              borderRadius: "16px",
-            }}
-            center={mapCenter}
-            zoom={10}
-            onClick={handleMapClick}
-          >
-            {formData.location.coordinates && formData.location.coordinates.length === 2 && (
-              <Marker
-                position={{
-                  lat: formData.location.coordinates[0], // latitude
-                  lng: formData.location.coordinates[1], // longitude
-                }}
-              />
-            )}
-          </GoogleMap>
-        </LoadScript>
-      </div>
+   
 
 
 

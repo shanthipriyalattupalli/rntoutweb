@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 const left = '/Assets/leftarrow.svg';
-const DeliveryIcon = "/Assets/delivery.svg";
+const DeliveryIcon = "/Assets/Icons/delivery.png";
 const AvailabilityIcon = "/Assets/Icons/availability.png";
 const AvailabilIcon = "/Assets/Icons/ava-stock.png";
 const cartIcon = "/Assets/Icons/add-to-cart.png";
@@ -15,7 +15,7 @@ const cartIconHov = "/Assets/Icons/add-to-cart-white.png";
 const stars = "/Assets/stars.svg";
 const favIcon = "/Assets/bookmarks_line.svg"
 const Badge = '/Assets/Offer Badge.svg';
-const favorited = '/Assets/favoritedicon.svg'
+const favorited='/Assets/favoritedicon.svg'
 import Link from "next/link";
 // import DeliveryIcon from '/public/Assets/Icons/delivery.png';
 // import AvailabilityIcon from '/public/Assets/Icons/availability.png';
@@ -30,7 +30,7 @@ const customStyles = `
   .cart-btn {    font-size: 13px;    font-weight: 500;  }
   .cart-price {    color: #FF2D55;  }`;
 
-const ProductItem = ({ product }) => {
+const FavoriteItem = ({ product,fetchFavorites}) => {
   const swiperRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -64,6 +64,7 @@ const ProductItem = ({ product }) => {
     rentalPrice,
     _id,
   } = product;
+  console.log(rentalAvailability,"favorites products")
 
   console.log(rentalPrice, "rental price");
   const formattedDate = new Date(
@@ -73,18 +74,6 @@ const ProductItem = ({ product }) => {
     month: "short",
     year: "numeric",
   });
-  const formattedendDate = new Date(
-    rentalAvailability?.startDate
-  ).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-
-
-
-  const rentalStartDate = new Date(rentalAvailability?.startDate);
-
 
   const Details = [
     { label: "Day", price: rentalPrice.daily },
@@ -134,21 +123,22 @@ const ProductItem = ({ product }) => {
   };
 
 
-  const handleAddToFavorites = async () => {
+  const handleRemoveFavorites = async () => {
     try {
-      const response = await axios.post(`${BASE_URL}/favorites/add`, { variantId: _id }, {
+      const response = await axios.delete(`${BASE_URL}/favorites/remove-fav/${_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       console.log(response.data);
+      fetchFavorites()
       toast.success(response.data.message);
     } catch (error) {
-      console.error("Error adding product to favorites:", error);
-      toast.error(
-        error.response?.data?.message ||
-        "Something went wrong. Please try again."
-      );
+      console.error("Error removing product from favorites:", error);
+      // toast.error(
+      //   error.response?.data?.message ||
+      //   "Something went wrong. Please try again."
+      // );
     }
   }
 
@@ -158,8 +148,8 @@ const ProductItem = ({ product }) => {
   const startDate = new Date(rentalAvailability?.startDate);
 
   const isOneWeekBefore =
-    startDate &&
-    currentDate.getTime() - startDate.getTime() === 7 * 24 * 60 * 60 * 1000;
+  startDate &&
+  currentDate.getTime() - startDate.getTime() === 7 * 24 * 60 * 60 * 1000;
   return (
 
     <div>
@@ -225,23 +215,23 @@ const ProductItem = ({ product }) => {
 
             {/* Rating and Fav Icon positioned on top */}
             <div className="absolute top-[14px] right-4 z-10 flex flex-col items-center space-x-2">
-              <p className="flex items-center bg-green-700 px-2 rounded-full text-white">
+              {/* <p className="flex items-center bg-green-700 px-2 rounded-full text-white">
                 <img src={stars} alt="Rating stars" className="w-4 h-4" />
                 <span className="ml-1">4.5</span>
-              </p>
+              </p> */}
 
-              {/* <p
+              <p
                 className="cursor-pointer"
-                onClick={() => handleAddToFavorites()}
+                onClick={() => handleRemoveFavorites()}
               >
 
                 <img src={favorited} className="w-7" alt="Favorite icon" />
-              </p> */}
+              </p>
             </div>
             <div className="absolute top-[0px] left-4 z-10 flex flex-col items-center space-x-2">
-              {isOneWeekBefore && (
-                <img src={Badge} className="badge-icon" alt="Favorite icon" />
-              )}
+            {isOneWeekBefore && (
+        <img src={Badge} className="badge-icon" alt="Favorite icon" />
+      )}
 
 
 
@@ -271,14 +261,11 @@ const ProductItem = ({ product }) => {
 
         {isView ? (
           <div className='p-4'>
-            <h2 className="product-title text-gray-800 truncate w-full overflow-hidden whitespace-nowrap">
-              {title}
-            </h2>
-
+            <h1 className='text-[16px] font-medium'>{title}</h1>
 
             {/* Product Price */}
             <p className='cart-price text-bold text-lg mt-2'>
-              <span className='text-[#FF2D55] font-[600] text-[14px]'>
+              <span className='text-blue-500 text-s font-medium'>
                 ₹{rentalPrice[0]?.price && `${rentalPrice[0].price}`}
                 <span className='text-[#070707A6] font-[400] text-[12]'>
                   /day
@@ -296,7 +283,7 @@ const ProductItem = ({ product }) => {
                 height={16}
               />
               <span className='text-gray-500 text-xs'>
-                Free Delivery for: 5 km
+                Delivery: {dateRange}
               </span>
             </div>
 
@@ -315,25 +302,21 @@ const ProductItem = ({ product }) => {
                 </span>
               )}
             </div>
-            {/* <Image
+
+            {/* Stock Information */}
+            <div className='flex items-center mt-2'>
+              <Image
                 src={AvailabilIcon}
                 alt='Check icon'
                 className='w-4 h-4 text-blue-500'
                 width={16}
                 height={16}
-              /> */}
-            {/* Stock Information */}
-            <div className="flex items-center mt-2">
-              <span
-                className={`text-xs border px-1 py rounded-full ${stockQuantity > 0
-                  ? "text-blue-500 border-blue-200 bg-blue-100"
-                  : "text-red-500 border-red-200 bg-red-100"
-                  }`}
-              >
-                {stockQuantity > 0 ? "In stock" : "Out of stock"}
+              />
+              <span className='text-blue-500 text-s font-medium'>
+                {" "}
+                {stockQuantity} Stock available
               </span>
             </div>
-
 
             {/* Add to Cart Button */}
             {/* <button
@@ -341,35 +324,19 @@ const ProductItem = ({ product }) => {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         > */}
-            {
-              rentalStartDate > new Date() ? ( // Compare raw Date objects
-                <button
-                  className="notify-btn border-blue-500 border  text-blue-400 font-medium px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2"
-                  onClick={() => handleNotifyMe()}
-                >
-                  <span className="text-sm">Notify Me Availability</span>
-                </button>
-              ) : (
-                <button
-                  className={`${stockQuantity > 0
-                      ? "cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-                      : "cart-btn border-red-100 border text-black font-bold px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-                    } ${isHovered && stockQuantity > 0 ? "bg-red-600 text-white" : ""}`}
-                  onClick={() => stockQuantity > 0 && handleAddCart()}
-                  disabled={stockQuantity <= 0}
-                >
-                  <Image
-                    src={isHovered && stockQuantity > 0 ? cartIconHov : cartIcon}
-                    alt="Cart icon"
-                    className="w-4 h-4"
-                    width={500}
-                    height={300}
-                  />
-                  <span className="text-sm">Add to cart</span>
-                </button>
-              )
-            }
-
+            <button
+              className={`cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group ${isHovered ? "bg-red-600 text-white" : ""}`}
+              onClick={() => handleAddCart()}
+            >
+              <Image
+                src={isHovered ? cartIconHov : cartIcon}
+                alt='Cart icon'
+                className='w-4 h-4'
+                width={500}
+                height={300}
+              />
+              <span className='text-sm'>Add to cart</span>
+            </button>
           </div>
         ) : (
           <div>
@@ -407,4 +374,4 @@ const ProductItem = ({ product }) => {
   );
 };
 
-export default ProductItem;
+export default FavoriteItem;

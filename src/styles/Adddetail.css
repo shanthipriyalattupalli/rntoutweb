@@ -175,16 +175,26 @@ label {
     gap: 6px;
 
 }
+.google-content{
+    border: 1px dashed #ccc;
+    border-radius: 15px;
+}
 
 .file-upload-box {
     border: 1px dashed #ccc;
     padding: 20px;
     text-align: center;
-    border-radius: 4px;
+    border-radius: 12px;
     color: var(--textColor-default, #0B0B0B);
     position: relative;
     margin-top: 10px;
 
+}
+.file-upload-box:hover {
+    border: 1px dashed  rgb(7, 72, 203);
+    background: rgba(240, 245, 255, 1);
+    color: var(--textColor-default, #0979f1);
+    border-radius: 12px;
 }
 
 .upload-icon {
@@ -506,18 +516,35 @@ label {
 
 .date-picker-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 8px;
-    /* font-family: Arial, sans-serif; */
-    margin-top: 20px;
+
 }
 
 .date-picker-label {
     color: #333;
 
 }
+.location-input{
+    width: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 12px;
+    background-color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+   
+}
+.location-input:focus{
+border: none;
+text-decoration: none;
+}
 
 .date-picker-wrapper {
+    width: 100%;
     position: relative;
     display: flex;
     align-items: center;
@@ -541,7 +568,13 @@ label {
 .date-picker-input::placeholder {
     color: #999;
 }
-
+.location-icon{
+    font-size: 18px;
+    color: #333;
+    cursor: pointer;
+    margin-left: 30px;
+    margin-bottom: 60px;
+}
 .calendar-icon {
     font-size: 18px;
     color: #333;

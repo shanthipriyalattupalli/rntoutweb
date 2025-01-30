@@ -12,6 +12,15 @@
     margin: 0;
    
 }
+.order-item-container{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+}
+.product-info{
+    display: flex;
+    flex-direction: column !important;
+}
 .order-header span {
     height: 20px;
     gap: 0px;
@@ -160,7 +169,7 @@
     color: #08875D;  /* Set to any color representing completed status */
   }
   
-  .progress.in-progress {
+  .progress.pending {
     color: #F48003; /* Set to any color representing in-progress status */
   }
   .profiel_header{

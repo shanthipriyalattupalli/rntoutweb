@@ -299,31 +299,6 @@ const handlePaymentStatus=async(orderDetails)=>{
 
 
 
-
-const handleContinueClick=async(orderDetails)=>{
-  console.log("payment")
-  console.log(orderDetails,"orderDetails")
-  try {
-    const payload={
-      orderId:orderId,
-      amount:discountedPrice?discountedPrice:totalPrice
-    }
-    const response = await axios.post(`${BASE_URL}/payments/initiate`, payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    // await handlePaymentStatus(orderDetails)
-
-    console.log(response,"payment response")
-  } catch (error) {
-    toast.error(error.message || "Error initiating payment.");
-    console.error("Error initiating payment:", error);
-    
-  }
-}
-
 const handleOrderCheckout = async () => {
   try {
     const payload = {
@@ -331,29 +306,61 @@ const handleOrderCheckout = async () => {
       couponCode: String(couponcode),
       addressId: String(selectedAddress._id),
     };
-    console.log(payload, "payload in checkout");
+    console.log(payload, "Payload for checkout");
 
-    // API call
+    // API call for order checkout
     const response = await axios.post(`${BASE_URL}/orders/checkout`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data, "order data");
-    setOrderId(response.data.orderId)
-    setDisplayRazorpay(true);
 
-    // Display success toast
+    console.log(response.data, "Order data");
+    const { orderId, finalAmount } = response.data;
+
+    // If orderId is present, proceed to initiate payment
+    if (orderId) {
+      setOrderId(orderId); // Save orderId for future use
+      await handleContinueClick(orderId, finalAmount);
+    }
+
+    // Display success toast for order placement
     toast.success("Order placed successfully!");
   } catch (error) {
-    // Extract error message safely
-    const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";   
-    // Display error toast
+    // Extract and display error message safely
+    const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";
     toast.warn(errorMessage);
-    // Log error for debugging
-    console.error(errorMessage);
+    console.error("Error during order checkout:", errorMessage);
   }
 };
+
+const handleContinueClick = async (orderId, amount) => {
+  // console.log("Initiating payment");
+  console.log(orderId, amount, "Order Details");
+
+  try {
+    const payload = {
+      orderId: orderId,
+      amount: amount, // Use finalAmount from the previous API response
+    };
+
+    // API call to initiate payment
+    const response = await axios.post(`${BASE_URL}/payments/initiate`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log(response.data, "Payment response");
+   setDisplayRazorpay(true)
+  } catch (error) {
+    // Extract and display error message safely
+    const errorMessage = error.response?.data?.error || "Error initiating payment.";
+    toast.error(errorMessage);
+    console.error("Error initiating payment:", errorMessage);
+  }
+};
+
 
 
 const createPayment = async () => {

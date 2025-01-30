@@ -64,7 +64,7 @@
 
 }
 
-.avatar-section>.edit-image {
+.edit-image {
     width: 108px;
     height: 40px;
     padding: 0px var(--Space4) 0px var(--Space4);

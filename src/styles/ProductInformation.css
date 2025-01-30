@@ -15,6 +15,9 @@
   /* font-family: Arial, sans-serif; */
 
 }
+.product-image{
+width: 19%;
+}
 .prod-1-hed{
   display: flex;
   justify-content: space-between;

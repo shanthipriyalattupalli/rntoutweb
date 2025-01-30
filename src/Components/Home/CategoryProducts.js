@@ -27,21 +27,23 @@ const CategoryProducts = ({ products }) => {
   };
 
   return (
-    <div className="container mx-auto p-2">
+    <div className="container mx-auto pl-6">
       <ToastContainer />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 mt-3">
-        {products?.length > 0 ? (
+      {products?.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 mt-3">
+
           <Suspense fallback={<div>Loading...</div>}>
             {products.map((product) => (
-              <ProductItems key={product.id} product={product} />
+              <ProductItems key={product._id} product={product} />
             ))}
           </Suspense>
-        ) : (
-          <div className="flex text-justify">
-            <img src={noproducts} alt="No products available" className="h-40 w-max justify" />
-          </div>
-        )}
-      </div>
+
+        </div>) : (
+        <div className="flex flex-col text-justify justify-center w-80 ml-80">
+          <img src={noproducts} alt="No products available" className="w-full" />
+          <span className="pl-14 pt-10 font-medium text-xl">No Rental Items found</span>
+        </div>
+      )}
       {products?.length > 0 && (
         <div className="container mx-auto py-16">
           <div className="flex justify-center">
