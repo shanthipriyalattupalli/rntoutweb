@@ -170,7 +170,7 @@ const Home = () => {
       <Achievements />
       <Blogs />
       <Testimonials />
-      <MobileApp />
+      {/* <MobileApp /> */}
     </main>
   );
 };

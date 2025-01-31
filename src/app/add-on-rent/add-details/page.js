@@ -28,8 +28,7 @@ const MainContent = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [productDetails, setProductDetails] = useState([
     {
-      // id: Date.now(),
-      // title: "",
+
       details: [{ key: "", value: "" }],
     },
   ]);
@@ -175,30 +174,45 @@ const MainContent = () => {
   const [previewImages, setPreviewImages] = useState([]); // To store the preview images
   const fileInputRef = useRef();
 
+  // const handleFileChange = (event) => {
+  //   const files = event.target.files; // Get selected files
+  //   const previews = [];
+
+  //   // Generate previews for display
+  //   Array.from(files).forEach((file) => {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       previews.push(reader.result);
+  //       if (previews.length === files.length) {
+  //         setPreviewImages(previews);
+  //       }
+  //     };
+  //     reader.readAsDataURL(file);
+  //   });
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     images: files,
+  //   }));
+  // };
+
   const handleFileChange = (event) => {
-    const files = event.target.files; // Get selected files
-    const previews = [];
-
-    // Generate previews for display
-    Array.from(files).forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        previews.push(reader.result);
-        if (previews.length === files.length) {
-          setPreviewImages(previews);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-
-
-    setFormData((prevData) => ({
-      ...prevData,
-      images: files,
+    const files = Array.from(event.target.files);
+    if (!files.length) {
+      toast.error("No files selected");
+      return;
+    }
+    // Clear previous images in formData
+    setFormData((prev) => ({ ...prev, images: [] }));
+    // Add the selected files to formData
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
     }));
+    // Show toast notification for successful upload
+    toast.success("Files added successfully!");
   };
 
-
+// console.log(formData.images,"images of selected")
   const handleIconClick = () => {
     fileInputRef.current.click();
   };
@@ -362,17 +376,17 @@ const MainContent = () => {
       formDataToSend.append('title', formData.title);
       formDataToSend.append('description', formData.description);
 
-      // Append images
-      Array.from(formData.images).forEach((file) => {
-        formDataToSend.append('images', file);
-      });
+      if (formData.images.length > 0) {
+        formData.images.forEach((file) => {
+          formDataToSend.append("images", file);
+        });
+      }
 
       formDataToSend.append('categoryId', formData.categoryId);
       formDataToSend.append('subCategoryId', formData.subCategoryId);
       formDataToSend.append('productId', formData.productId);
       formDataToSend.append('available', formData.available);
 
-      // Append rentalPrice (assuming it's an array of objects)
       formData.rentalPrice.forEach((item, index) => {
         formDataToSend.append(`rentalPrice[${index}][period]`, item.period);
         formDataToSend.append(`rentalPrice[${index}][price]`, item.price);
@@ -394,7 +408,7 @@ const MainContent = () => {
         "location",
         JSON.stringify({
           type: formData.location.type || "Point",
-          coordinates: validCoordinates ? coordinates : [0, 0], // Default to [0, 0] if invalid
+          coordinates: validCoordinates ? coordinates : [0, 0], 
         })
       );
   
@@ -419,8 +433,8 @@ const MainContent = () => {
 
       if (response.data.success) {
         toast.success("Product published successfully!");
-        setFormData(initialFormData); // Clear form
-        setPreviewImages([]); // Clear preview images
+        setFormData(initialFormData); 
+        setPreviewImages([]);
       } else {
         toast.error("Failed to publish the product. Please try again.");
       }
@@ -526,7 +540,7 @@ const MainContent = () => {
             Product Image{" "}
             <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </h2>
-          <div className='file-upload-box' tabIndex={0} onClick={handleIconClick} >
+          <div className='file-upload-box' tabIndex={0} >
             <input
               type='file'
               ref={fileInputRef}
@@ -608,8 +622,8 @@ const MainContent = () => {
   </div>
 </div>
 
-<div className="mt-4">
-  <label>Map</label>
+<div className="mt-4 mb-4 flex flex-col gap-3">
+  <label className="text-[14px] font-semibold">Select Pick up address</label>
   <div className="google-content">
         <LoadScript googleMapsApiKey={MAP_API}>
           <GoogleMap
@@ -634,6 +648,11 @@ const MainContent = () => {
         </LoadScript>
         </div>
       </div>
+      <p>
+          <strong>Address:</strong> {formData.address}
+          {/* {errors.address && <p style={{ color: "red" }}>{errors.address}</p>} */}
+
+        </p>
       <div className="pt-6 flex flex-col">
         <label>Description</label>
         <input type="text" placeholder="Enter product details" className="border p-4 rounded-2xl h-min"/>
@@ -738,11 +757,7 @@ const MainContent = () => {
                   <p>
                     <strong>Longitude:</strong> {formData.longitude}
                   </p> */}
-        <p>
-          <strong>Address:</strong> {formData.address}
-          {/* {errors.address && <p style={{ color: "red" }}>{errors.address}</p>} */}
 
-        </p>
       </div>
       <button onClick={handlePublishProduct} className='publish-button'>
         Publish Product

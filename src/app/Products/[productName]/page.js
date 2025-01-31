@@ -40,6 +40,11 @@ const star5 = "/Assets/star5.png";
 const star6 = "/Assets/star6.png";
 const star7 = "/Assets/star7.png";
 const left = '/Assets/leftarrow.svg';
+const startfill='/Assets/star_fill.svg'
+const quality='/Assets/quality.svg';
+const relocation='/Assets/relocation.svg';
+const maintenance='/Assets/maintenance.svg';
+const upgrading='/Assets/upgrading.svg';
 
 
 const ProductPage = () => {
@@ -157,10 +162,10 @@ const [isFavorite,setIsFavorite] = useState(false)
   const formattedEndDate = formatDate(rentalAvailability?.endDate);
 
   const services = [
-    { icon: <Truck className='w-6 h-6' />, label: "Finest-Quality" },
-    { icon: <ArrowUpDown className='w-6 h-6' />, label: "Free relocation" },
-    { icon: <Settings className='w-6 h-6' />, label: "Free maintenance" },
-    { icon: <Smartphone className='w-6 h-6' />, label: "Keep upgrading" },
+    { icon:quality, label: "Finest-Quality" },
+    { icon: relocation, label: "Free relocation" },
+    { icon:maintenance, label: "Free maintenance" },
+    { icon: upgrading, label: "Keep upgrading" },
   ];
 
   const productImages = [
@@ -563,7 +568,7 @@ const [isFavorite,setIsFavorite] = useState(false)
               {services.map((service, index) => (
                 <div key={index} className='text-center border rounded-md py-4'>
                   <div className='flex justify-center text-blue-600 mb-2'>
-                    {service.icon}
+                  <img src={service.icon}/>
                   </div>
                   <div className='text-xs'>{service.label}</div>
                 </div>
@@ -640,7 +645,7 @@ const [isFavorite,setIsFavorite] = useState(false)
           </div>
         </div>
       </div>
-      <div className='grid md:grid-cols-2 gap-8 py-6'>
+    
         {/* Left Side - Product Details and Other Details */}
         {/* <div className='space-y-6'>
     
@@ -677,82 +682,22 @@ const [isFavorite,setIsFavorite] = useState(false)
             </table>
           </div>
         </div> */}
-          <div className='rating-reviews'>
-              <div>
-                <div className='product-details-container'>
-                  <div className='earning-and-ratings'>
-                    <div className='rating-summary'>
-                      <div className='average-rating'>
-                        <p className='pro-p4 m-0'>4.7</p>
-                        <div className='stars'>
-                          <img src={star2} width='128px' height='24px' alt='' />
-                        </div>
-                        <p className='pro-p3'>Customer Rating (934,516)</p>
-                      </div>
+        <div className="flex flex-col w-1/2 gap-2 border b-black-200 bg-white-500 p-10 rounded-lg text-center justify-center">
+          <h2 className="text-black-500 text-5xl font-bold ">4.7</h2>
+          <div className="flex gap-2 ml-48">
+          <img src={startfill} alt="Rating stars"className="" />
+          <img src={startfill} alt="Rating stars"className="" />
+          <img src={startfill} alt="Rating stars"className="" />
+          <img src={startfill} alt="Rating stars"className="" />
+          <img src={startfill} alt="Rating stars"className="" />
+          </div>
+          </div>
+          <div className="pt-3 w-1/2 justify-center text-center">
+          <button className="border b-orange-200 bg-orange-400 p-3 w-80 rounded-lg text-white font-semibold">write a review</button>
+          </div>
 
-                      <div className='detailed-ratings'>
-                        <div className='rating-bar'>
-                          <img src={star3} width='88px' height='16px' alt='' />
-                          <div className='progress-bar1'>
-                            <div
-                              className='progress1'
-                              style={{ width: "20%" }}
-                            ></div>
-                          </div>
-                          <span className='rating-count'>(94,532)</span>
-                        </div>
-                        <div className='rating-bar'>
-                          <img src={star4} width='88px' height='16px' alt='' />
-                          <div className='progress-bar1'>
-                            <div
-                              className='progress1'
-                              style={{ width: "20%" }}
-                            ></div>
-                          </div>
-                          <span className='rating-count'>(6,717)</span>
-                        </div>
-                        <div className='rating-bar'>
-                          <img src={star5} width='88px' height='16px' alt='' />
-                          <div className='progress-bar1'>
-                            <div
-                              className='progress1'
-                              style={{ width: "20%" }}
-                            ></div>
-                          </div>
-                          <span className='rating-count'>(714)</span>
-                        </div>
-                        <div className='rating-bar'>
-                          <img src={star6} width='88px' height='16px' alt='' />
-                          <div className='progress-bar1'>
-                            <div
-                              className='progress1'
-                              style={{ width: "20%" }}
-                            ></div>
-                          </div>
-                          <span className='rating-count'>(152)</span>
-                        </div>
-                        <div className='rating-bar'>
-                          <img src={star7} width='88px' height='16px' alt='' />
-                          <div className='progress-bar1'>
-                            <div
-                              className='progress1'
-                              style={{ width: "20%" }}
-                            ></div>
-                          </div>
-                          <span className='rating-count'>(643)</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-              {/* </div> */}
-            </div>
-
-
-      </div>
-      <h2 className='pb-4 font-semibold text-black-700'>
+      
+      <h2 className='pb-4 pt-8 font-semibold text-black-700'>
         Community Feedback
       </h2>
       <div>

@@ -58,7 +58,7 @@ const ITInfrastructure = ({ products, categoryId }) => {
   //   }
 
   return (
-    <div>
+  products.length >0 &&  <div>
       <div className='container mx-auto p-4'>
         <div className='flex justify-between items-center mb-4'>
           <h1 className='text-2xl font-bold text-gray-800'>
@@ -90,7 +90,7 @@ const ITInfrastructure = ({ products, categoryId }) => {
         </div>
 
         {/* Carousel */}
-        {products.length > 5 && (
+        {/* {products.length > 5 && (
           <div className='carousel flex items-center justify-center space-x-4'>
             <button
               onClick={prevSlide}
@@ -108,18 +108,16 @@ const ITInfrastructure = ({ products, categoryId }) => {
               Next
             </button>
           </div>
-        )}
+        )} */}
 
         {/* Product Grid */}
-        <div className='product-scroll-wrapper'>
-          <div className='product-scroll-container'>
-            {products?.map((product) => (
-              <Suspense key={product._id} fallback={<div>Loading...</div>}>
-                <ProductItems product={product} />
-              </Suspense>
-            ))}
-          </div>
-        </div>
+   <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6'>
+           {products?.slice(0, 4)?.map((product) => (
+             <Suspense key={product._id} fallback={<div>Loading...</div>}>
+               <ProductItems product={product} />
+             </Suspense>
+           ))}
+         </div>
 
         {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
           {products.slice(0, 4).map((product) => (

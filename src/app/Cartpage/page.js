@@ -37,7 +37,7 @@ const CartPage = () => {
   const [couponcode, setCouponCode] = useState(null);
   const [addressId, setAddressId] = useState(null);
   const [orderId, setOrderId] = useState(null);
-  
+  const [selectedCartItems, setSelectedCartItems] = useState([]);
 
 
   // const [userId, setUserId] = useState("");
@@ -54,6 +54,45 @@ const CartPage = () => {
   const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
 console.log(token,"outside")
+
+
+
+
+const handleCheckboxChange = async (cartId, isChecked) => {
+  // Update the selectedCartItems state based on whether the item is checked or unchecked
+  const updatedSelection = isChecked
+    ? [...selectedCartItems, cartId]
+    : selectedCartItems.filter((id) => id !== cartId);
+
+  setSelectedCartItems(updatedSelection);
+
+  // Determine if the item was selected or unselected
+  const selectedStatus = isChecked; // If checked, send true; if unchecked, send false
+
+  try {
+    // Make the API call with the appropriate `selected` status
+    const response = await axios.patch(
+      `${BASE_URL}/cart/selection/${cartId}`,
+      {
+        selected: selectedStatus, // Send the correct selected value
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Send the token in the request headers
+        },
+      }
+    );
+
+    console.log(response, `Cart item ${cartId} selection updated.`);
+    fetchCartDetails();
+    toast.success(response.data.message);
+  } catch (error) {
+    console.error("Error updating cart item selection:", error);
+    toast.error("Error updating cart item selection.");
+  }
+};
+
+
 
 
   const handleSelectChange = async (variantId, selectedPeriod) => {
@@ -431,7 +470,15 @@ const createPayment = async () => {
           My Cart <span className='cart-count'>{cartItems.length}</span>
         </h2>
         {cartItems?.map((item, index) => (
-  <div key={item._id || index} className="cart-item cursor-pointer">
+  <div key={item._id || index} className="cart-item cursor-pointer flex items-center">
+    {/* Red Checkbox with White Tick */}
+    <input
+      type="checkbox"
+      className="mr-3 w-5 h-5 accent-red-500 checked:bg-red-500 checked:border-red-500"
+      checked={item.selected} // Set checked based on item.selected value
+      onChange={(e) => handleCheckboxChange(item._id, e.target.checked)} // Pass `checked` state
+    />
+
     <Link
       href={{
         pathname: `/Products/${item.variant_id.title}`,
@@ -444,38 +491,35 @@ const createPayment = async () => {
         className="item-image"
       />
     </Link>
+
     <div className="item-details">
       <h3 className="item-name">{item.variant_id.title}</h3>
       <p className="item-price">
         ₹{item.unitPrice}/{item.rentalPeriod}
       </p>
+
       <div className="quantity-controls">
         <button
           className="quantity-btn"
-          onClick={() =>
-            decreaseQuantity(item.variant_id._id, item.quantity)
-          }
+          onClick={() => decreaseQuantity(item.variant_id._id, item.quantity)}
         >
           -
         </button>
         <span className="quantity">{item.quantity || 1}</span>
         <button
           className="quantity-btn"
-          onClick={() =>
-            increaseQuantity(item.variant_id._id, item.quantity)
-          }
+          onClick={() => increaseQuantity(item.variant_id._id, item.quantity)}
         >
           +
         </button>
+
         <select
           className="duration-select"
           value={
             selectedOptions[item.variant_id._id]?.period ||
             item?.variant_id?.rentalPrice?.[0]?.period
           }
-          onChange={(e) => {
-            handleSelectChange(item.variant_id._id, e.target.value);
-          }}
+          onChange={(e) => handleSelectChange(item.variant_id._id, e.target.value)}
         >
           {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
             <option key={rentalPrice._id} value={rentalPrice.period}>
@@ -485,23 +529,22 @@ const createPayment = async () => {
         </select>
         <p>Total: {item.lineTotal}</p>
       </div>
+
       <div className="product-right">
-        <button className="delete-btn" onClick={() => handleRemove(item._id,item.variant_id._id)}>
-          <img
-            src={deleteicon}
-            className="flex justify-center ml-20"
-          />
+        <button className="delete-btn" onClick={() => handleRemove(item._id, item.variant_id._id)}>
+          <img src={deleteicon} className="flex justify-center ml-20" />
         </button>
         <div className="flex gap-2">
           <img src={cube} />
-          <p className="stock-info">
-            {item.variant_id.stockQuantity} stock avail.
-          </p>
+          <p className="stock-info">{item.variant_id.stockQuantity} stock avail.</p>
         </div>
       </div>
     </div>
   </div>
 ))}
+
+
+
 
       </div>
 

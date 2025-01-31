@@ -6,6 +6,7 @@ import '../../styles/ProfileSettings.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const profile_avatar = "/Assets/profile_avatar.png";
+import { useRouter } from 'next/navigation';
 
 export default function ProfileSettings() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -38,6 +39,7 @@ export default function ProfileSettings() {
         console.log(response.data, "profiledata");
         // setProfile(response.data.profile.user);
         setProfile(response.data.profile)
+        setAvatar(response.data.profile.profilePic)
       } catch (error) {
         console.error(error);
         toast.error("Failed to fetch profile.");
@@ -71,11 +73,22 @@ export default function ProfileSettings() {
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setSelectedFile(file);
+    const files = event.target.files;
+  
+    if (files && files.length > 0) {
+      const file = files[0]; // Get the first file
+  
+      // Show preview
       const newAvatarUrl = URL.createObjectURL(file);
       setAvatar(newAvatarUrl);
+  
+      // Store the file object in profilePic
+      setProfile((prev) => ({
+        ...prev,
+        profilePic: file, // Store the File object directly
+      }));
+  
+      toast.success("Profile picture updated successfully!");
     }
   };
 
@@ -109,9 +122,17 @@ export default function ProfileSettings() {
 
 
   const handleSubmitProfile=async()=>{
+    const formData = new FormData();
+    formData.append("profilePic", profile.profilePic); // Attach file
+    formData.append("name", profile.user.name);
+    formData.append("email", profile.user.email);
+    formData.append("dateOfBirth", profile.dateOfBirth);
+    formData.append("gender", profile.gender);
     try {
-      const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, profile, {
-        headers: { Authorization: `Bearer ${token}` },
+      const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, formData, {
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}` },
       });
       console.log(response.data, "profile updated");
       setIsEditable(false);
@@ -122,13 +143,15 @@ export default function ProfileSettings() {
       toast.error("Failed to update profile.");
     }
   }
-
+  const router = useRouter();
 
   return (
     <div className="profile-settings">
       <ToastContainer/>
       <div className="item-header">
         <h2>Profile Settings</h2>
+    <a className="kyc-btn" onClick={() => router.push("/profile/business-information/Kyc")} >Personal KYC</a>
+
         <a href="#" className="edit-btn"   onClick={() => {
     if (isEditable) {
       handleSubmitProfile(); 
@@ -141,19 +164,19 @@ export default function ProfileSettings() {
       <div className="form">
         <div className="avatar-section">
           {/* Display the current or selected avatar */}
-          <img src={avatar} alt="Profile Avatar" />
-          <button className="edit-image" onChange={handleFileChange}>
+          <img src={avatar} alt="Profile Avatar" className="w-20 h-20 rounded-full border b-2" />
+          <button className="edit-image" onClick={handleButtonClick} >
             Edit Image
           </button>
           {/* Hidden file input */}
-          {/* <input
+          <input
             type="file"
             ref={fileInputRef}
-            // style={{ display: "none" }}
+            style={{ display: "none" }}
             accept="image/*"
             onChange={handleFileChange}
             className="input-group"
-          /> */}
+          />
         </div>
         <div className="avatar-section_frame">
           <div className="input_group_column">

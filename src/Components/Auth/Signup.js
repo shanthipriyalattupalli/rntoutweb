@@ -11,72 +11,97 @@ import { useRouter } from "next/navigation";
 const Rntout = "/Assets/Rntout_Logo.png";
 
 const Signup = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    role: "User",
-    email: "",
-    mobile: "",
-    password: "",
-    confirmPassword: "",
+  const [profile, setProfile] = useState({
+    user: {
+      name: "",
+      email: ""
+    },
+    dateOfBirth: "",
+    gender: "",
+    profilePic: ""
   });
+  console.log(profile,"profile")
   const [isLoading, setIsLoading] = useState(false); // For loading state
   const router = useRouter();
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+  const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
 
-  // Handle input changes
-  const handleInputChange = (e) => {
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const keys = name.split("."); // Split keys by dot notation
+    setProfile((prev) => {
+      let updatedProfile = { ...prev };
+      let temp = updatedProfile;
+      while (keys.length > 1) {
+        temp = temp[keys.shift()];
+      }
+      temp[keys[0]] = value; // Update the final key
+      return updatedProfile;
+    });
   };
 
   // Handle form submission
-  const handleCreateAccount = async () => {
-   
+  // const handleCreateAccount = async () => {
 
-    const { name, role, email, mobile, password, confirmPassword } = formData;
-    console.log(role,"role")
-    // Validation
-    if (!name || !role || !email || !mobile || !password || !confirmPassword) {
-      toast.error("All fields are required.");
-      return;
-    }
 
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match.");
-      return;
-    }
+  //   const { name, role, email, mobile, password, confirmPassword } = formData;
+  //   console.log(role, "role")
+  //   // Validation
+  //   if (!name || !role || !email || !mobile || !password || !confirmPassword) {
+  //     toast.error("All fields are required.");
+  //     return;
+  //   }
 
-    setIsLoading(true);
+  //   if (password !== confirmPassword) {
+  //     toast.error("Passwords do not match.");
+  //     return;
+  //   }
+
+  //   setIsLoading(true);
+  //   try {
+  //     console.log(role, "role123")
+  //     const response = await axios.post(`${BASE_URL}/users`, {
+  //       name,
+  //       role,
+  //       email,
+  //       mobile,
+  //       password,
+  //     });
+  //     console.log(response);
+  //     setIsLoading(false);
+
+  //     if (response.status === 201) {
+  //       toast.success(response.data.message || "Account created successfully!");
+  //       router.push("/Login");
+  //     } else {
+  //       toast.error(
+  //         response.data.error || "Failed to create account. Try again."
+  //       );
+  //     }
+  //   } catch (error) {
+  //     setIsLoading(false);
+  //     console.log(error, "error")
+  //     toast.error(
+  //       error.response?.data?.error ||
+  //       "Something went wrong. Please try again later."
+  //     );
+  //   }
+  // };
+
+
+  const handleSubmitProfile=async()=>{
     try {
-      console.log(role,"role123")
-      const response = await axios.post(`${BASE_URL}/users`, {
-        name,
-        role,
-        email,
-        mobile,
-        password,
+      const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, profile, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response);
-      setIsLoading(false);
-
-      if (response.status === 201) {
-        toast.success(response.data.message || "Account created successfully!");
-        router.push("/Login");
-      } else {
-        toast.error(
-          response.data.error || "Failed to create account. Try again."
-        );
-      }
+      console.log(response.data, "profile updated");
+      toast.success("Profile updated successfully!");
     } catch (error) {
-      setIsLoading(false);
-      console.log(error ,"error")
-      toast.error(
-        error.response?.data?.error ||
-          "Something went wrong. Please try again later."
-      );
+      console.error("Error updating profile:", error);
+      toast.error("Failed to update profile.");
     }
-  };
-
+  }
 
 
   return (
@@ -85,18 +110,18 @@ const Signup = () => {
       <div className='signup-container'>
 
         <div className='signup-card'>
-        <div className='login-first'>
-          <img src={Rntout} alt='RentOut Logo' className='login-logo' />
-          <h2 className='subtitle'>Sign up for RntOut</h2>
-        </div>
+          <div className='login-first'>
+            <img src={Rntout} alt='RentOut Logo' className='login-logo' />
+            <h2 className='subtitle'>Sign up for RntOut</h2>
+          </div>
           <p className='login-p1 m-0'>Name</p>
           <input
             type='text'
             placeholder='Enter First Name'
             className='input'
-            name='name'
-            value={formData.name}
-            onChange={handleInputChange}
+            name='user.name'
+            value={profile.user.name}
+            onChange={handleChange}
           />
           {/* <p className='login-p1 m-0'>Role</p>
           <input
@@ -112,40 +137,44 @@ const Signup = () => {
             type='email'
             placeholder='Enter Email Address'
             className='input'
-            name='email'
-            value={formData.email}
-            onChange={handleInputChange}
+            name='user.email'
+            value={profile.user.email}
+            onChange={handleChange}
           />
-          <p className='login-p1 m-0'>Mobile Number</p>
+          {/* <p className='login-p1 m-0'>Mobile Number</p>
           <input
             type='tel'
             placeholder='Enter Mobile Number'
             className='input'
             name='mobile'
-            value={formData.mobile}
-            onChange={handleInputChange}
-          />
-          <p className='login-p1 m-0'>Password</p>
-          <input
-            type='password'
-            placeholder='Enter Password'
+            value={profile.mobile}
+            onChange={handleChange}
+          /> */}
+          <p className='login-p1 m-0'>Gender</p>
+          <select
+            name='gender'
             className='input'
-            name='password'
-            value={formData.password}
-            onChange={handleInputChange}
-          />
-          <p className='login-p1 m-0'>Confirm Password</p>
+            value={profile.gender}
+            onChange={handleChange}
+          >
+            <option value='' disabled>Select Gender</option>
+            <option value='Male' name="gender">Male</option>
+            <option value='Female' name="gender">Female</option>
+            <option value='Other' name="gender">Other</option>
+          </select>
+
+          <p className='login-p1 m-0'>Date Of Birth</p>
           <input
-            type='password'
+            type='date'
             placeholder='Confirm Password'
             className='input'
-            name='confirmPassword'
-            value={formData.confirmPassword}
-            onChange={handleInputChange}
+            name='dateOfBirth'
+            value={profile.dateOfBirth}
+            onChange={handleChange}
           />
           <button
             className='button'
-            onClick={handleCreateAccount}
+            onClick={handleSubmitProfile}
             disabled={isLoading}
           >
             {isLoading ? "Creating..." : "Create Account"}

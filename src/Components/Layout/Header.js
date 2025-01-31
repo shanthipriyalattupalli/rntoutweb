@@ -40,8 +40,13 @@ function Header() {
   const longitude=(typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [location, setLocation] = useState("HYD - 500008");
+  const [location, setLocation] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // const [location, setLocation] = useState(null);
+  const [locationsList, setLocationsList] = useState([]);
+  const [address, setAddress] = useState({ suburb: "" });
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   const [modalShow, setModalShow] = React.useState(false);
@@ -53,71 +58,151 @@ function Header() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  useEffect(() => {
-    if (navigator.geolocation) {
+
+
+
+
+
+
+  const getLocationFromCoordinates = async (lat, lon) => {
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${MAP_API}`
+      );
+      // console.log(response);
+      const locationData = response.data.results;
+      console.log(locationData, "from the API");
+      if (locationData) {
+        const uniqueLocations = new Set(); // Use Set to store unique location names
+        let locations = [];
+        // Iterate through all results and get address components with both 'political' and 'locality' types
+        locationData.forEach(result => {
+          const matchingComponent = result.address_components.find(component =>
+            component.types.includes('locality') && component.types.includes('political')
+          );
+          if (matchingComponent && !uniqueLocations.has(matchingComponent.short_name)) {
+            uniqueLocations.add(matchingComponent.short_name); // Add to Set for uniqueness
+            locations.push(matchingComponent); // Add the matching component to the locations array
+          }
+        });
+        setLocationsList(locations); // Set the list of unique locations0
+        // If we have at least one location, set the first one as the default suburb
+        if (locations.length > 0) {
+          const suburb = locations[0]; // Use the first match for suburb
+          // console.log(suburb.short_name, "suburb");
+          setAddress({
+            suburb: suburb.short_name,
+          });
+        } else {
+          setError('Suburb not found.');
+        }
+      } else {
+        setError('Location data not found.');
+      }
+      setLoading(false);
+    } catch (error) {
+      setError('Failed to fetch location data.');
+      setLoading(false);
+    }
+  };
+
+
+  console.log(locationsList,"address")
+
+  const fetchLocation = () => {
+    if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        async (position) => {
           const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
           localStorage.setItem("latitude", latitude);
           localStorage.setItem("longitude", longitude);
+          await getLocationFromCoordinates(latitude, longitude);
         },
-        (error) => {
-          console.error("Error fetching location:", error);
-          setLocationError(error.message);
-          navigate("/");
+        (err) => {
+          setError('Unable to retrieve your location.');
+          setLoading(false);
         }
       );
     } else {
-      console.error("Geolocation is not supported by this browser.");
-      navigate("/");
+      setError('Geolocation is not supported by this browser.');
+      setLoading(false);
     }
-  }, []);
+  };
+
 
   useEffect(() => {
-    const fetchLocationName = async () => {
-      if (latitude && longitude) {
-        try {
-          const response = await axios.get(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${MAP_API}`
-          );
+    fetchLocation();
+  }, []);
   
-          // Check if results are present in the response
-          if (response.data.results && response.data.results.length > 0) {
-            const addressComponents = response.data.results[0].address_components;
-            const location=addressComponents[4].long_name
-            console.log(response.data.results,"address_components")
-console.log(location,"locaton")
-  //           const city = addressComponents.find((component) =>
-  //             component.types.includes('locality')
-  //         )?.long_name;
-  //         console.log(response.data.results[0].address_components,"address_components")
-  // console.log(city,"location name")
-            // Set the city if found
-            if (location) {
-              // setCity(city);
+
+
+
+//   useEffect(() => {
+//     if (navigator.geolocation) {
+//       navigator.geolocation.getCurrentPosition(
+//         (position) => {
+//           const { latitude, longitude } = position.coords;
+//           localStorage.setItem("latitude", latitude);
+//           localStorage.setItem("longitude", longitude);
+//         },
+//         (error) => {
+//           console.error("Error fetching location:", error);
+//           setLocationError(error.message);
+//           navigate("/");
+//         }
+//       );
+//     } else {
+//       console.error("Geolocation is not supported by this browser.");
+//       navigate("/");
+//     }
+//   }, []);
+
+//   useEffect(() => {
+//     const fetchLocationName = async () => {
+//       if (latitude && longitude) {
+//         try {
+//           const response = await axios.get(
+//             `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${MAP_API}`
+//           );
+  
+//           // Check if results are present in the response
+//           if (response.data.results && response.data.results.length > 0) {
+//             const addressComponents = response.data.results[0].address_components;
+//             const location=addressComponents[4].long_name
+//             console.log(response.data.results,"address_components")
+// console.log(location,"locaton")
+//   //           const city = addressComponents.find((component) =>
+//   //             component.types.includes('locality')
+//   //         )?.long_name;
+//   //         console.log(response.data.results[0].address_components,"address_components")
+//   // console.log(city,"location name")
+//             // Set the city if found
+//             if (location) {
+//               // setCity(city);
               
-              setLocationName(location)
-            } else {
-              console.log('City not found in the address components.');
-            }
+//               setLocationName(location)
+//             } else {
+//               console.log('City not found in the address components.');
+//             }
   
-            // Call the getPropertiesList function after setting the city
-            // getPropertiesList();
-          } else {
-            console.log('No results found for the provided coordinates.');
-          }
+//             // Call the getPropertiesList function after setting the city
+//             // getPropertiesList();
+//           } else {
+//             console.log('No results found for the provided coordinates.');
+//           }
   
-          // console.log(response.data, 'location name');
-        } catch (error) {
-          console.error('Error fetching location name:', error);
-        }
-      } else {
-        console.log('Latitude and/or Longitude are not defined.');
-      }
-    };
+//           // console.log(response.data, 'location name');
+//         } catch (error) {
+//           console.error('Error fetching location name:', error);
+//         }
+//       } else {
+//         console.log('Latitude and/or Longitude are not defined.');
+//       }
+//     };
   
-    fetchLocationName();
-  }, [latitude, longitude]);
+//     fetchLocationName();
+//   }, [latitude, longitude]);
   
 
   const toggleDropdown = () => {
@@ -165,7 +250,7 @@ console.log(location,"locaton")
           <Image src={locations} alt="location" width={20} height={20}></Image>
           <select>
             {/* <option value={location}>{location}</option> */}
-            <option value='HYD - 500008' className="font-poppins text-sm font-medium leading-5 text-center [text-underline-position:from-font] [text-decoration-skip-ink:none] text-blacky">{locationName}</option>
+            <option value='HYD - 500008' className="font-poppins text-sm font-medium leading-5 text-center [text-underline-position:from-font] [text-decoration-skip-ink:none] text-blacky">{address.suburb}</option>
             <option value='HYD - 500028'>HYD - 500028</option>
             <option value='HYD - 500032'>HYD - 500032</option>
             <option value='HYD - 500084'>HYD - 500084</option>
