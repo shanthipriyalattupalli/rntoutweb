@@ -41,17 +41,17 @@ const Vehicles = ({ products, categoryId }) => {
     }
   }, [currentSlide, isAutoplay, products.length]);
 
-  if (!products || products.length === 0) {
-    return (
-      <div className='container mx-auto p-4'>
-        <h1 className='text-2xl font-bold text-gray-800'>Vehicles</h1>
-        <p>No products available in the Vehicles category.</p>
-      </div>
-    );
-  }
+  // if (!products || products.length === 0) {
+  //   return (
+  //     <div className='container mx-auto p-4'>
+  //       <h1 className='text-2xl font-bold text-gray-800'>Vehicles</h1>
+  //       <p>No products available in the Vehicles category.</p>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div>
+   products.length>0 && <div>
       <div className='container mx-auto p-4'>
         <div className='flex justify-between items-center mb-4'>
           <h1 className='text-2xl font-bold text-gray-800'>

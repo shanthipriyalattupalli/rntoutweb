@@ -53,7 +53,7 @@ const Furniture = ({ products, categoryId }) => {
   }
 
   return (
-    <div>
+   products.length > 0 && <div>
       <div className='container mx-auto p-4'>
         <div className='flex justify-between items-center mb-4'>
           <h1 className='text-2xl font-bold text-gray-800'>

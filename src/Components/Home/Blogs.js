@@ -143,7 +143,7 @@ const Blog = () => {
                 key={index}
                 className='bg-white rounded-lg shadow-md border border-slate-200 rounded-lg overflow-hidden'
               >
-                <img src={blog.images} alt={blog.title} className='w-full' />
+                <img src={blog.images} alt={blog.title} className='w-full h-40' />
                 <div className='p-4'>
                   <h3 className='text-lg font-medium text-gray-800 mb-2'>
                     {blog.title}

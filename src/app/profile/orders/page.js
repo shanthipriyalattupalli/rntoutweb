@@ -126,19 +126,18 @@ export default function Orders() {
 
           </div>
           <div className="order-item-container">
-            {order.items.map((item) => (
+          {Array.isArray(order.subOrders) && order.subOrders.map((item) => (
 
               <div class="order-product" key={item._id}>
                 <img
-                  src={orderHistoryImage}
+                  src={item.variantId.images?.[0]}
                   alt="Dell 27 inch Monitor"
                   class="product-image"
                 />
 
                 <div class="product-info">
                   <h4>
-                    Dell 27 inch P2725H Monitor | Anti-Glare With 3H Hardness | 100Hz |
-                    5ms gray-to-gray (Fast mode)
+                 {item.variantId.title}
                   </h4>
                   <p>
                     <span>{item.price}</span> /{item.rentalPeriod} | Rented for: <span>3 months</span>
@@ -165,13 +164,15 @@ export default function Orders() {
             <p class="download-invoice">
               Total Amount: <span>{order.totalAmount}</span>
             </p>
-            <p className={`download-invoice progress ${order.deliveryStatus}`}>
+            {Array.isArray(order.subOrders) && order.subOrders.map((item) => (
+            <p className={`download-invoice progress ${item.deliveryStatus}`}>
               <span>
                 <FaTruck />
               </span>{" "}
-              {order.deliveryStatus}
+              {item.deliveryStatus}
             </p>
-      {order.paymentStatus === "pending" ?<p className={`download-invoice progress ${order.deliveryStatus}`}>
+            ))}
+      {order.paymentStatus === "pending" ?<p className={`download-invoice progress ${order.paymentStatus}`}>
               <span>
          <MdPayments/>
               </span>{" "}

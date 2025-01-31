@@ -11,13 +11,18 @@ import '../../../../styles/BusinessInformation2.css';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+const owner='/Assets/owner.svg'
+const Userprofile = "../../Assets/User-icon.svg";
+const card = "../../Assets/card-img1.svg";
+const card1 = "../../Assets/card-img2.svg";
+import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaBuilding, FaCreditCard } from "react-icons/fa";
 export default function BusinessInformation2() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
   //  const [userId, setUserId] = useState("");
   //   const [token, setToken] = useState("");
   const [isBuisness, setIsBuisness] = useState(false);
+  const [businessInfo,setBusinessInfo] = useState(false)
   const [businessId, setBusinessId] = useState();
    const [isEditable, setIsEditable] = useState(false);
   // useEffect(() => {
@@ -29,11 +34,15 @@ export default function BusinessInformation2() {
 
 
   const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const userName = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
+  const userEmail = (typeof window !== 'undefined') ? localStorage.getItem("userEmail") : null;
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [previewImages, setPreviewImages] = useState([]);
 
   const toggleEdit = () => {
-    setIsEditable(!isEditable);
+    // setIsBuisness(true)
+    setBusinessId(null)
+  setIsEditable(true)
   };
 
 
@@ -111,11 +120,14 @@ export default function BusinessInformation2() {
       };
       reader.readAsDataURL(file);
     });
-
-    setFormData((prevData) => ({
-      ...prevData,
-      bannerImages: files// Add the image URL as an object to the bannerImages array
-
+    if (!files.length) {
+      toast.error("No files selected");
+      return;
+    }
+    setFormData((prev) => ({ ...prev, bannerImages: [] }));
+    setFormData((prev) => ({
+      ...prev,
+      bannerImages: [...prev.bannerImages, ...files],
     }));
 
   };
@@ -195,11 +207,13 @@ const handlefetchBusinessInfo=async()=>{
       },
     })
     console.log(response.data.data, "business data")
+    console.log(response.data.data.bannerImages, "banner images in business")
     setBusinessId(response.data.data._id)
     setFormData(response.data.data)
-    if(response.data.data._id){
-      setIsBuisness(true)
-    }
+    // if(response.data.data._id){
+    
+    //   setBusinessInfo(true)
+    // }
   } catch (error) {
     console.error(error)
     
@@ -213,8 +227,87 @@ const handlefetchBusinessInfo=async()=>{
 
 
   return (
-    isBuisness && businessId ?
+    <>
+     {businessId ?
+    
+
+(<div>
+<div>
+  <h2 className='item-header'>
+    <div className='back-business' onClick={() => router.back()}>
+      {/* <IoMdArrowRoundBack style={{ marginRight: "12px" }} /> */}
+      Business Information
+    </div>
+    <a className="kyc-btn" onClick={() => router.push("/profile/business-information/Kyc")} >Business KYC ?</a>
+    <h3 className="cursor-pointer" onClick={toggleEdit}>Edit Details</h3>
+  </h2>
+  <div className=" flex justify-center">
+    <div className="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md">
+      {/* Owner Info */}
+      <div className="mb-6">
+        <h3 className="text-md font-semibold text-yellow-600">OWNER INFO</h3>
+        <div className="p-4 rounded-md">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <p className="flex flex-col">
+              <div className="flex gap-2">
+              <FaUser className="text-gray-500" /> <strong>Owner Name</strong>
+              </div>
+              <div className="text-[14px] font-normal leading-[20px] text-left">
+              {userName}
+              </div>
+              </p>
+
+            <p className="flex flex-col">
+            <div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong>Email:</strong>
+            </div> <div>{userEmail}</div></p>
+            <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong>  </div><div className="text-[14px] font-normal leading-[20px] text-left">+91 12345 67890</div></p>
+          </div>
+        </div>
+      </div>
+      {/* Bank Details */}
+      <div className="mb-6">
+        <h3 className="text-md font-semibold text-yellow-600">BANK DETAILS</h3>
+        <div className=" p-4 rounded-md">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Bank Name:</strong></div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.bankName}</div></p>
+            <p className="flex flex-col"><div className="flex gap-2"><FaCreditCard className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">IFSC Code:</strong> </div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.ifsc}</div></p>
+            <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Account Number:</strong></div><div className="text-[14px] font-normal leading-[20px] text-left"> ******123</div></p>
+          </div>
+          <p className="flex items-center gap-2 mt-2"><FaMapMarkerAlt className="text-gray-500" /> {formData.bankBranchAddress.full}</p>
+        </div>
+      </div>
+      {/* Business Info */}
+      <div className="mb-6">
+        <h3 className="text-md font-semibold text-yellow-600">BASIC INFO</h3>
+        <div className=" p-4 rounded-md">
+          <div className="flex flex-col gap-4 mb-4">
+            <img src={Userprofile} alt="Profile" className="w-16 h-16 rounded-full" />
+            <div className="flex gap-8">
+              <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500 h-6" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Business Name:</strong> </div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.businessName}</div></p>
+              <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500 h-6" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Store Name:</strong> </div><div className="text-[14px] font-normal leading-[20px] text-left">Codefacts Furniss Shop</div></p>
+              <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Mobile:</strong></div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.contactPhone}</div></p>
+              <p className="flex flex-col"><div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Email:</strong></div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.contactEmail}</div></p>
+            </div>
+          </div>
+          <p className="text-gray-700 text-[14px] font-normal leading-[20px] text-left">
+          {formData.storeDescription}
+          </p>
+        </div>
+      </div>
+      {/* Advertisement Banner */}
       <div>
+        <h3 className="text-md font-semibold text-yellow-600">ADVERTISEMENT BANNER</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <img src={card} alt="Ad 1" className="rounded-md shadow-md w-full" />
+          <img src={card1} alt="Ad 2" className="rounded-md shadow-md w-full" />
+          <img src={card} alt="Ad 3" className="rounded-md shadow-md w-full" />
+          <img src={card1} alt="Ad 4" className="rounded-md shadow-md w-full" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div> ):isEditable?(    <div>
         <ToastContainer />
         <h2 className='item-header'>
           <div className='back-business' onClick={() => router.back()}>
@@ -485,7 +578,8 @@ const handlefetchBusinessInfo=async()=>{
           </div>
         </div>
 
-      </div>
+      </div>)
+
 
       :
 
@@ -502,13 +596,14 @@ const handlefetchBusinessInfo=async()=>{
                 If you want to add your business and share the deets, just hit that <span>“Add Business”</span> button.
               </p>
             </div>
-            <button className='add-business-button' onClick={() => setIsBuisness(true)} >+ Add Business</button>
+            <button className='add-business-button' onClick={toggleEdit} >+ Add Business</button>
           </div>
         </div>
 
-      </div>
+      </div>}
 
-
+      
+</>
   );
 }
 

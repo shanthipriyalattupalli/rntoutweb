@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 // import "@/styles/OrderTrackingWithNavigate.css";
 import '../styles/OrderTrackingWithNavigate.css';
 import OrderItem from "@/Components/OrderItem";
@@ -36,34 +37,14 @@ const trackingSteps = [
   },
 ];
 
-const orderData = [
-  {
-    id: "1234567890",
-    date: "27/08/2024",
-    name: "Dell 27 inch P2725H Monitor | Anti-Glare With 3H Hardness | 100Hz | 5ms gray-to-gray (Fast mode)",
-    price: 1500,
-    rentedDuration: "3 months",
-    image: HistoryImage,
-  },
-  {
-    id: "0987654321",
-    date: "15/09/2024",
-    name: "Dell 24 inch P2425H Monitor | Full HD Display | 100Hz | 99% sRGB",
-    price: 1300,
-    rentedDuration: "2 months",
-    image: HistoryImage,
-  },
-  {
-    id: "5678901234",
-    date: "05/10/2024",
-    name: "Dell XPS 8940 Desktop | Intel Core i7 | 16GB RAM | 512GB SSD",
-    price: 5000,
-    rentedDuration: "6 months",
-    image: HistoryImage,
-  },
-];
 
-const OrderTrackingWithNavigate = () => {
+
+const OrderTrackingWithNavigate = ({orderId}) => {
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+
+  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const [orders, setOrders] = useState([]);
+
   const handleStepClick = (path) => {
     navigate(path); // Navigate to the corresponding path
   };
@@ -71,7 +52,7 @@ const OrderTrackingWithNavigate = () => {
   const calculateTotalPrice = (orders) => {
     return orders.reduce((total, item) => total + item.price, 0);
   };
-  const totalPrice = calculateTotalPrice(orderData);
+  // const totalPrice = calculateTotalPrice(orderData);
 
   const [rentData, setRentData] = useState({
     totalRent: 3818.0, // ₹/mo
@@ -95,13 +76,40 @@ const OrderTrackingWithNavigate = () => {
     return calculateTotalCosts() + calculateGST();
   };
 
+
+
+
+  const fetchOrderHistory = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/orders/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data, "fetch order history")
+      setOrders(response.data)
+
+
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  useEffect(() => {
+    if (token) {
+      fetchOrderHistory();
+    }
+
+  }, [token]);
+
   const router = useRouter();
   return (
     <div className='order-tracking-container'>
       <div className='order_item-frame'>
-        {orderData?.map((e, index) => (
-          <OrderItem key={e.id || index} hideHeader={true} orderData={e} />
-        ))}
+      
+          <OrderItem key={orders._id} orderData={orders}/>
+   
       </div>
 
       <div className='order_trackinf_section'>

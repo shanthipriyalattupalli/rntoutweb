@@ -4,66 +4,66 @@ import React from "react";
 import { CiStar } from "react-icons/ci";
 
 const OrderItem = ({ hideHeader, orderData }) => {
-  // Check if the order object has required data
-  if (!orderData || !orderData.id || !orderData.date) {
-    return null; // Render nothing if order data is missing
+  console.log(orderData, "orderData");
+
+  // Check if orderData has subOrders
+  if (!orderData || !orderData.subOrders || orderData.subOrders.length === 0) {
+    return <p>No orders found</p>; // Handle case where there are no sub-orders
   }
 
   return (
-    <div className='order-item'>
-      <div
-        className='order-header'
-        style={{ display: hideHeader ? "none" : "flex" }}
-      >
-        <span>ID: #{orderData.id}</span>
-        <span>Date: {orderData.date}</span>
-      </div>
-      <div class='order-product'>
-        <img
-          src={
-            orderData.image ||
-            "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"
-          } // Default image fallback
-          alt={orderData.name || "Product Image"}
-          className='product-image'
-        />
-        <div className='product-info'>
-          <h4>{orderData.name || "Product Name"}</h4>
-          <div className='product_info_detail_name'>
-            <p>
-              <span>₹{orderData.price || "0"}</span> /month | Rented for:{" "}
-              <span>{orderData.rentedDuration || "N/A"}</span>
-            </p>
-            {orderData.status === "completed" && (
-              <a href='#' className='review_cta'>
-                <span>
-                  <CiStar />
-                </span>
-                Write Product Review
-              </a>
-            )}
-          </div>
-          {/* Conditionally render feedback if available */}
-          {orderData.review && orderData.review.feedback && (
-            <div className='review-section-feedback'>
-              <h3>
-                <span>{5}</span> {orderData.review.title}
-              </h3>
-              <p>{orderData.review.feedback}</p>
-              <div className='review-images'>
-                {orderData?.review?.images?.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Review image ${index + 1}`}
-                  />
-                ))}
+    <>
+      {orderData.subOrders.map((item) => (
+        <div className="order-item" key={item._id}>
+          {/* Order Header */}
+
+
+          {/* Order Product */}
+          <div className="order-product">
+            <img
+              src={
+                item.variantId.images?.[0] ||
+                "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"
+              } // Default image fallback
+              alt={item.variantId.title || "Product Image"}
+              className="product-image"
+            />
+            <div className="product-info">
+              <h4>{item.variantId.title || "Product Name"}</h4>
+              <div className="product_info_detail_name">
+                <p>
+                  <span>₹{item.price || "0"}</span> / {item.rentalPeriod} | Rented for:{" "}
+                  <span>{item.quantity} item(s)</span>
+                </p>
+                {item.orderStatus === "completed" && (
+                  <a href="#" className="review_cta">
+                    <span>
+                      <CiStar />
+                    </span>
+                    Write Product Review
+                  </a>
+                )}
               </div>
+
+              {/* Conditionally render feedback if available */}
+              {item.review && item.review.feedback && (
+                <div className="review-section-feedback">
+                  <h3>
+                    <span>5</span> {item.review.title}
+                  </h3>
+                  <p>{item.review.feedback}</p>
+                  <div className="review-images">
+                    {item.review.images?.map((image, index) => (
+                      <img key={index} src={image} alt={`Review image ${index + 1}`} />
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
-      </div>
-    </div>
+      ))}
+    </>
   );
 };
 

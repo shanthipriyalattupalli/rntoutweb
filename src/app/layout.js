@@ -7,6 +7,7 @@ import Newsletter from "@/Components/Layout/Newsletter";
 import Navigation from "@/Components/Layout/Navigation";
 import HomeComponent from "../Pages/Home";
 import { ToastContainer, toast } from "react-toastify";
+import MobileApp from "@/Components/Home/MobileApp";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -38,6 +39,7 @@ export default function RootLayout({ children }) {
         <Header />
         <Navigation />
         {children}
+        <MobileApp/>
         <Newsletter />
       </body>
     </html>
