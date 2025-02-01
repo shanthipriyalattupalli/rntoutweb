@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 import axios from "axios";
 
 const Blog = () => {
@@ -12,7 +14,7 @@ const Blog = () => {
   // useEffect(() => {
   //   setToken(localStorage.getItem("userToken"));
   // }, []);
-
+  const router = useRouter();
   const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
 
@@ -142,6 +144,7 @@ const Blog = () => {
               <div
                 key={index}
                 className='bg-white rounded-lg shadow-md border border-slate-200 rounded-lg overflow-hidden'
+
               >
                 <img src={blog.images} alt={blog.title} className='w-full h-40' />
                 <div className='p-4'>
@@ -156,10 +159,11 @@ const Blog = () => {
                     {blog.description}
                   </p>
                   <button
-                    onClick={() => toggleDescription(index)}
+                      onClick={() => router.push(`/Blogs/${blog._id}`)}
                     className='text-blue-500 hover:text-blue-700 text-sm font-medium'
                   >
-                    {expanded[index] ? "Show Less" : "Read More"}
+                    {/* {expanded[index] ? "Show Less" : "Read More"} */}
+                    Read More
                   </button>
                 </div>
               </div>

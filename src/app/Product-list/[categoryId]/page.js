@@ -75,8 +75,6 @@ const ProductList = () => {
       const response = await axios.get(`${BASE_URL}/categories`);
       console.log(response?.data.categories, "Categories fetched");
       setCategories(response?.data.categories);
-  
-
       if (categoryId) {
         const currentCategory = response?.data.categories.find(
           (category) => category._id === categoryId
@@ -129,6 +127,7 @@ const ProductList = () => {
       );
       console.log(response.data, "Products by subcategoryId");
       setProduct(response.data);
+
     } catch (error) {
       console.error("Error fetching products by subcategoryId:", error);
     }
@@ -150,9 +149,23 @@ const ProductList = () => {
 
 
 
-  const handleSubcategoryId = (selectedSubcategoryId) => {
+  const handleSubcategoryId =async (selectedSubcategoryId) => {
     setSubcatgeoryID(selectedSubcategoryId);
     localStorage.setItem("subcategoryId", selectedSubcategoryId);
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/products/categoryProducts/?categoryId=${categoryId}&subCategoryId=${selectedSubcategoryId}`
+      );
+      console.log(response.data, "Products by subcategoryId");
+      setProduct(response.data);
+  
+      // Set the first product as active
+      if (response.data.length > 0) {
+        setActive(response.data[0]._id);
+      }
+    } catch (error) {
+      console.error("Error fetching products by subcategoryId:", error);
+    }
   };
   const handlePriceChange = (min, max) => {
     console.log("Updated Prices:", { min, max });
