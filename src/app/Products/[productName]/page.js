@@ -45,6 +45,7 @@ const quality='/Assets/quality.svg';
 const relocation='/Assets/relocation.svg';
 const maintenance='/Assets/maintenance.svg';
 const upgrading='/Assets/upgrading.svg';
+const sample = '/Assets/Sample.png';
 
 
 const ProductPage = () => {
@@ -397,7 +398,7 @@ const [isFavorite,setIsFavorite] = useState(false)
             {/* Ratings */}
             <div className='flex items-center space-x-2 cursor-pointer'>
               <img
-                src='/api/placeholder/24/24'
+                src={sample}
                 alt='Seller'
                 className='w-6 h-6 rounded-full'
               />

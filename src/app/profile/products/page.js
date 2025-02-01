@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+
 // import "@/styles/ProductInformation.css";
 import '../../../styles/ProductInformation.css';
 import { LuPencil } from "react-icons/lu";
@@ -14,6 +15,7 @@ import Link from "next/link";
 
 export default function Dashboard({ products }) {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+ 
 
   const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [userProducts,setUserProducts]=useState([])
@@ -83,7 +85,7 @@ useEffect(() => {
               <div className='action-menu'>
                 <button className='menu-button'>⋮</button>
                 <div className='dropdown-menu'>
-                  <p>
+                  <p   onClick={() => router.push("/profile/products/details")} >
                     <LuPencil />
                     Edit
                   </p>

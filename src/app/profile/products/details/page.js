@@ -12,6 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const MainContent = () => {
+  
   const [productDetails, setProductDetails] = useState([
     {
       id: Date.now(),
