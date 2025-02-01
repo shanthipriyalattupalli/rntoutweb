@@ -6,6 +6,9 @@ import axios from "axios";
 // import "@/styles/SellerProfile.css";
 import '../../styles/Sellerprofile.css'
 import { useRouter } from "next/navigation";
+const startfill='/Assets/star_fill.svg'
+const stars = "/Assets/stars.svg";
+const userProfile = '/Assets/userProfile.svg'
 
 // Lazy load components
 const Aboutus = lazy(() => import("@/Pages/Aboutus"));
@@ -79,25 +82,29 @@ const SellerCarouselProfile = () => {
       case "products":
         return (
           <Suspense fallback={<div>Loading Products...</div>}>
-            <div className='seller-tab-content'>
+            <div className="p-5">
+            {/* <div className='seller-tab-content'> */}
               <Products />
+            {/* </div> */}
             </div>
           </Suspense>
         );
       case "about":
         return (
           <Suspense fallback={<div>Loading About Us...</div>}>
-            <div>
+            <div className="p-5">
               <Aboutus />
             </div>
           </Suspense>
         );
       case "reviews":
         return (
+          <div className="px-16 py-5 bg-none">
           <div className='seller-tab-content'>
-           <div className="flex flex-col w-1/2 gap-2 border b-black-200 bg-white-500 p-10 rounded-lg text-center justify-center">
+            <h2 className="p-2 text-blue-500 font-semibold text-md">Ratings and Reviews</h2>
+           <div className="flex flex-col w-full gap-2 border b-black-200 bg-white-900 p-10 rounded-lg text-center justify-center">
              <h2 className="text-black-500 text-5xl font-bold ">4.7</h2>
-             <div className="flex gap-2 ml-48">
+             <div className="flex gap-2 text-center justify-center">
              <img src={startfill} alt="Rating stars"className="" />
              <img src={startfill} alt="Rating stars"className="" />
              <img src={startfill} alt="Rating stars"className="" />
@@ -105,7 +112,7 @@ const SellerCarouselProfile = () => {
              <img src={startfill} alt="Rating stars"className="" />
              </div>
              </div>
-             <div className="pt-3 w-1/2 justify-center text-center">
+             <div className="pt-3 w-full justify-center text-center">
              <button className="border b-orange-200 bg-orange-400 p-3 w-80 rounded-lg text-white font-semibold">write a review</button>
              </div>
    
@@ -113,24 +120,41 @@ const SellerCarouselProfile = () => {
          <h2 className='pb-4 pt-8 font-semibold text-black-700'>
            Community Feedback
          </h2>
+         <div className="flex gap-2 mb-4">
+          <input type="search" placeholder="Search Reviews" className="w-1/2 border b-grey-100 p-2 rounded-md"/>
+          <select className="border b-grey-100 p-2 rounded-md">
+            <option value="Top Reviews">Top Reviews</option>
+            <option value="Top Reviews">Top Reviews</option>
+            <option value="Top Reviews">Top Reviews</option>
+          </select>
+          <select className="border b-grey-100 p-2 rounded-md">
+            <option value="Top Reviews">All starts</option>
+            <option value="Top Reviews">All starts</option>
+            <option value="Top Reviews">All starts</option>
+          </select>
+          <select className="border b-grey-100 p-2 rounded-md">
+            <option value="Top Reviews">All Text and Image Reviews</option>
+            <option value="Top Reviews">All Text and Image Reviews</option>
+            <option value="Top Reviews">All Text and Image Reviews</option>
+          </select>
+         </div>
          <div>
-         {currentRatings.map((rating) => (
-           <div key={rating._id} className="flex flex-col gap-3">
-             <table className="flex flex-col gap-2 w-[610px] border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4">
+         {/* {currentRatings.map((rating) => ( */}
+           <div  className="flex flex-col gap-3">
+             <table className="flex flex-col gap-2 w-[610px]  text-sm p-4">
                <tbody>
                  <tr>
                    <div className="flex flex-col gap-2">
                      <div className="flex gap-3">
                        <p
-                         className={`flex gap-1 items-center px-2 rounded-full text-white 
-                         ${rating.rating >= 4 ? "bg-green-700" : rating.rating >= 2 ? "bg-orange-500" : "bg-red-500"}`}
+                         className={`flex gap-1 items-center px-2 bg-green-700  rounded-full text-white `}
                        >
-                         <img src={stars} alt="Rating stars" className="w-4 h-4" />
-                         <span className="ml-1">{rating.rating}</span>
+                         <img src={stars} alt="Rating stars" className="w-4 h-4 " />
+                         <span className="ml-1">4.5</span>
                        </p>
-                       <p className="text-[14px] font-medium leading-[20px] ">{rating.comment}</p>
+                       <p className="text-[14px] font-medium leading-[20px] ">Best chair at this budget</p>
                      </div>
-                     <p className="text-[14px] font-medium leading-[20px] ">{rating.comment}</p>
+                     <p className="text-[14px] font-medium leading-[20px] ">Chair quality is good it's value for money as it's a sale deal, back support and massager is best , fabric is also breathable</p>
                    </div>
                  </tr>
                </tbody>
@@ -138,11 +162,12 @@ const SellerCarouselProfile = () => {
              <div className="flex gap-2 p-2">
                <img src={userProfile} alt="User Profile" />
                <p className="flex gap-2 text-[14px] font-medium text-gray-500 text-left">
-                 {formatDistanceToNow(new Date(rating.createdAt), { addSuffix: true })}
+                Nikitha <span>. Just Now</span>
+                 {/* {formatDistanceToNow(new Date(rating.createdAt), { addSuffix: true })} */}
                </p>
              </div>
            </div>
-         ))}
+         {/* ))} */}
    
          {/* Pagination Controls */}
          <div className="flex mt-4 gap-2">
@@ -179,6 +204,7 @@ const SellerCarouselProfile = () => {
            </button>
          </div>
        </div>
+          </div>
           </div>
         );
       case "faq":

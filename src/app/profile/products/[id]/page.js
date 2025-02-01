@@ -192,7 +192,7 @@ console.log(productId,"productId")
             <a
               className='view-details-link'
               onClick={() => {
-                router.push("/profile/products/details");
+                router.push(`/Products/${productId}?id=${productId}`);
               }}
             >
               View all product details
@@ -258,15 +258,15 @@ console.log(productId,"productId")
               <div>
                 <div className='product-details-container'>
                   <div className='earning-and-ratings'>
-                    <div className='rating-summary'>
-                      <div className='average-rating'>
-                        <p className='pro-p4 m-0'>4.7</p>
-                        <div className='stars'>
-                          <img src={star2} width='128px' height='24px' alt='' />
+                    <div className='rating-summary text-center justify-center'>
+                      <div className='average-rating text-center justify-center ml-80'>
+                        <p className='pro-p4'>4.7</p>
+                        <div className='stars '>
+                          <img src={star2} width='128px' height='24px' alt='' className="ml-8"/>
                         </div>
-                        <p className='pro-p3'>Customer Rating (934,516)</p>
+                        <p className='pro-p3 ml-5'>Customer Rating (934,516)</p>
                       </div>
-
+{/* 
                       <div className='detailed-ratings'>
                         <div className='rating-bar'>
                           <img src={star3} width='88px' height='16px' alt='' />
@@ -318,7 +318,7 @@ console.log(productId,"productId")
                           </div>
                           <span className='rating-count'>(643)</span>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

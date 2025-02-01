@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 // import "@/styles/Cart.css";
 import '../../styles/Cart.css';
+import { FaReceipt } from "react-icons/fa";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 import axios from "axios";
 import Sidebar from "./Sidebar/page";
@@ -38,6 +40,7 @@ const CartPage = () => {
   const [addressId, setAddressId] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [selectedCartItems, setSelectedCartItems] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
 
   // const [userId, setUserId] = useState("");
@@ -629,12 +632,51 @@ const createPayment = async () => {
             products={cartItems}
           />
         </div>
-        <div className='summary-item address'>
-          <div className='address-content'>
-            <img src={costbreakup} />
-            <span>Rent Cost Breakup</span>
-            <i className='fas fa-chevron-right'></i>
+        <div className="mx-auto bg-white shadow-lg rounded-xl p-5 border mb-4">
+          {/* Header with Dropdown Toggle */}
+          <div
+            className="flex items-center justify-between  pb-2 cursor-pointer"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <div className="flex items-center space-x-2">
+              <FaReceipt className="text-pink-500" />
+              <h2 className="font-poppins text-sm font-medium leading-5 text-left">Rent Cost Breakup</h2>
+            </div>
+            {isOpen ? (
+              <IoIosArrowUp className="text-gray-500" />
+            ) : (
+              <IoIosArrowDown className="text-gray-500" />
+            )}
           </div>
+          {/* Cost Breakdown (Hidden by Default) */}
+          {isOpen && (
+            <div className="mt-4 space-y-2 text-gray-700">
+              <div className="flex justify-between">
+                <span>Total Rent</span>
+                <span className="font-medium">₹3,818.00</span>
+              </div>
+              <div className="flex justify-between text-green-500">
+                <span>Discounts</span>
+                <span className="font-medium">-₹916.32</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Delivery Charges</span>
+                <span className="font-medium">₹419.98</span>
+              </div>
+              <div className="flex justify-between border-t pt-2">
+                <span>Total Costs</span>
+                <span className="font-medium">₹4019</span>
+              </div>
+              <div className="flex justify-between">
+                <span>GST</span>
+                <span className="font-medium">₹512 (18%)</span>
+              </div>
+              <div className="flex justify-between border-t pt-3 font-bold text-lg">
+                <span>Rent Grand Total</span>
+                <span className="text-black">₹4540</span>
+              </div>
+            </div>
+          )}
         </div>
         <div className='summary-item'>
           <img src={delivery} /> <span>Delivery Estimate</span>
