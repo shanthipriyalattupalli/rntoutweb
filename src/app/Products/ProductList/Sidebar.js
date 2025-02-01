@@ -102,12 +102,12 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange,di
   //   console.log("Active Index Updated:", activeIndex);
   // }, [activeIndex]);
 
-  useEffect(() => {
-    if (subCategories.length > 0 && !activeIndex) {
-      setActiveIndex(subCategories[0]._id);
+  // useEffect(() => {
+  //   if (subCategories.length > 0 && !activeIndex) {
+  //     setActiveIndex(subCategories[0]._id);
 
-    }
-  }, [subCategories]);
+  //   }
+  // }, [subCategories]);
   const handleChange = (e) => {
     const { value, name } = e.target;
     if (name === "min") {

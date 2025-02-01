@@ -478,7 +478,7 @@ const MainContent = () => {
                 onChange={() => handleOptionChange(option._id)}
               />
               <span className='custom-radio'></span>
-              {option.productName}
+              {option.productName} 
             </label>
           ))
         ) : (

@@ -4,7 +4,8 @@
 
 .radio-button-group {
     display: flex;
-    gap: 20px;
+    /* gap: 20px; */
+    padding:14px 0px 10px 14px;
     align-items: center;
     border-bottom: 1px solid #0707071A;
 
@@ -17,6 +18,9 @@
     cursor: pointer;
     font-size: 14px;
     color: #333;
+    padding: 0px 10px 0px 10px;
+    justify-content: center;
+    border-right: 2px solid #0707071A;
 }
 
 .radio-option input[type="radio"] {
@@ -89,6 +93,7 @@
 .product-form {
     /* font-family: Arial, sans-serif; */
     color: #333;
+    padding: 20px;
 
 }
 
@@ -316,7 +321,7 @@ label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
+    padding: 10px 10px;
     background: #0707070D;
     border-bottom: 1px solid #0707071A;
 
@@ -382,7 +387,7 @@ label {
 
 .main-content {
     flex: 1;
-    padding: 20px;
+    /* padding: 20px; */
     border: 1px solid #0707071A;
 }
 
@@ -391,6 +396,7 @@ label {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding: 20px;
 }
 
 .product-details-card {
