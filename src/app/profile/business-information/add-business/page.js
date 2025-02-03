@@ -37,6 +37,7 @@ export default function BusinessInformation2() {
   const userName = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
   const userEmail = (typeof window !== 'undefined') ? localStorage.getItem("userEmail") : null;
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  
   const [previewImages, setPreviewImages] = useState([]);
 
   const toggleEdit = () => {
@@ -178,9 +179,10 @@ export default function BusinessInformation2() {
 
       console.log(response, "Business info created or updated");
       setIsEditable(false)
+      toast.success("Business information updated successfully");
       handlefetchBusinessInfo()
       // setFormData(initialFormData)
-      toast.success("Business information updated successfully");
+     
 
     } catch (error) {
       // Handle error response gracefully
@@ -260,7 +262,7 @@ const handlefetchBusinessInfo=async()=>{
             <p className="flex flex-col">
             <div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong>Email:</strong>
             </div> <div>{userEmail}</div></p>
-            <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong>  </div><div className="text-[14px] font-normal leading-[20px] text-left">+91 12345 67890</div></p>
+            <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong>  </div><div className="text-[14px] font-normal leading-[20px] text-left">8374801954</div></p>
           </div>
         </div>
       </div>

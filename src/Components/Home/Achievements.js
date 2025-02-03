@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image';
 import React from 'react';
-import acheivementImg from '../../../public/Assets/redchair-achieve.jpg';
+const acheivementImg = '/Assets/redchair-achieve.svg';
 
 const Achievements = () => {
   return (

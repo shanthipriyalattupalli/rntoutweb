@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState,useRef } from "react";
 import '../../../styles/productslist.css';
+import Reviews from '../../../Components/Reviews'
 import axios from "axios";
 // import { useRouter } from "next/router";
 import {
@@ -63,7 +64,8 @@ const ProductPage = () => {
   const [images, setImages] = useState([]);
   const [relatedItems, setRelatedItems] = useState([])
 const [isFavorite,setIsFavorite] = useState(false)
-  const [userRatings, setUserRatings] = useState([])
+  const [userRatings, setUserRatings] = useState([]);
+  const [isReview,setIsReview] = useState(false)
   const router = useRouter();
   const searchParams = useSearchParams();
   const productId = searchParams.get("id");
@@ -284,8 +286,8 @@ const [isFavorite,setIsFavorite] = useState(false)
     } catch (error) {
       console.error("Error adding product to favorites:", error);
       toast.error(
-        error.response?.data?.message ||
-        "Something went wrong. Please try again."
+        // error.response?.data?.message ||
+        "You must be log in to add favourites."
       );
     }
   }
@@ -694,8 +696,19 @@ const [isFavorite,setIsFavorite] = useState(false)
           </div>
           </div>
           <div className="pt-3 w-1/2 justify-center text-center">
-          <button className="border b-orange-200 bg-orange-400 p-3 w-80 rounded-lg text-white font-semibold">write a review</button>
+          <button className="border b-orange-200 bg-orange-400 p-3 w-80 rounded-lg text-white font-semibold" onClick={()=>setIsReview(true)}>write a review</button>
           </div>
+          {isReview && (
+                                      <div className="modal-overlay">
+                                      <div className="modal-content">
+                                        <button className="close-button" onClick={() => setIsReview(false)}>
+                                          ✕
+                                        </button>
+                                        <Reviews/>
+                                      </div>
+                                    </div>
+          
+          )}
 
       
       <h2 className='pb-4 pt-8 font-semibold text-black-700'>

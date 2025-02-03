@@ -24,7 +24,7 @@ const Login = ({setIsLoginOpen}) => {
   const router = useRouter();
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isOtpOpen, setIsOtpOpen] = useState(false);
-  const [isregisterOpen, setIsRegisterOpen] = useState(false);
+  // const [isregisterOpen, setIsRegisterOpen] = useState(false);
   // Handle OTP API integration
   const handleSendOtp = async () => {
     if (!mobileNumber || !/^\+?[0-9]{10,13}$/.test(mobileNumber)) {
@@ -230,11 +230,11 @@ const Login = ({setIsLoginOpen}) => {
             </button>
             <p className='footer-text mb-0'>
               Don't have any account?{" "}
-              <span className='link'   onClick={() => setIsRegisterOpen(true)}>
+              <span className='link'   >
                 Create account
               </span>
             </p>
-                        {isregisterOpen && (
+                        {/* {isregisterOpen && (
                           <div className="modal-overlay">
                             <div className="modal-content">
                               <button className="close-button" onClick={() => setIsRegisterOpen(false)}>
@@ -243,7 +243,7 @@ const Login = ({setIsLoginOpen}) => {
                               <Signup />
                             </div>
                           </div>
-                        )}
+                        )} */}
           </div>
         )}
       </div>

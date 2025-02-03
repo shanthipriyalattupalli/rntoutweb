@@ -97,11 +97,11 @@ const Newsletter = () => {
       </div>
 
       {/* Logo Section */}
-      <div className="w-full items-center">
+      <div className="w-96 ml-[600px] pt-8 items-center justify-center ">
         <img
           src={rentoutlogo}
           alt="rntout logo"
-          className="w-24 h-auto"
+          className="w-40 h-46"
         />
       </div>
 

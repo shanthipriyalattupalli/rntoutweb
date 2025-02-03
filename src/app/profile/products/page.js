@@ -85,7 +85,7 @@ useEffect(() => {
               <div className='action-menu'>
                 <button className='menu-button'>⋮</button>
                 <div className='dropdown-menu'>
-                  <p   onClick={() => router.push("/profile/products/details")} >
+                  <p   onClick={() => router.push(`/profile/products/details/${item._id}`)} >
                     <LuPencil />
                     Edit
                   </p>
