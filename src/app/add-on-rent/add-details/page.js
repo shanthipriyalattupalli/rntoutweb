@@ -298,7 +298,17 @@ const MainContent = () => {
       rentalAvailability: {
         ...prevData.rentalAvailability,
         startDate: date,
-        endDate:date // Update only the startDate
+    
+      },
+    }));
+  };
+  const handleEndDateChange = (date) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      rentalAvailability: {
+        ...prevData.rentalAvailability,
+        endDate: date,
+    
       },
     }));
   };
@@ -361,7 +371,7 @@ const MainContent = () => {
       if (response.data.results[0]) {
         setFormData((prevData) => ({
           ...prevData,
-          address: response.data.results[0].formatted_address,
+          pickupAddress: response.data.results[0].formatted_address,
         }));
       }
     } catch (error) {
@@ -394,8 +404,10 @@ const MainContent = () => {
         formDataToSend.append(`rentalPrice[${index}][price]`, item.price);
       });
 
-      formDataToSend.append('rentalAvailability[startDate]', formData.rentalAvailability.startDate);
-      formDataToSend.append('rentalAvailability[endDate]', formData.rentalAvailability.endDate);
+      formDataToSend.append(
+        'rentalAvailability',
+        JSON.stringify(formData.rentalAvailability),
+      );
       formDataToSend.append('seoTags', formData.seoTags);
       formDataToSend.append('isForSale', formData.isForSale);
       formDataToSend.append('salePrice', formData.salePrice);
@@ -600,9 +612,9 @@ const MainContent = () => {
           <div className='date-picker-wrapper'>
             <DatePicker
               selected={formData.rentalAvailability.endDate}
-              name='startDate'
+              name='endDate'
               value={formData.rentalAvailability.endDate}
-              onChange={(date) => handleDateChange(date)}
+              onChange={(date) => handleEndDateChange(date)}
               placeholderText='Select End date'
               className='date-picker-input'
               dateFormat='MMMM d, yyyy'

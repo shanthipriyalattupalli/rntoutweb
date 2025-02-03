@@ -8,7 +8,7 @@ import '../styles/orderReview.css';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { RiCloseLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
-const laptop='/Assets/laptop-1.jpg'
+const laptop = '/Assets/laptop-1.jpg'
 
 const HistoryImage = "/Assets/HistoryImage.png";
 
@@ -55,9 +55,8 @@ const OrderReview = () => {
     }
 
     const percentage = (rating / 10) * 100; // Convert rating to a percentage (1-10 scale)
-    return `linear-gradient(to right, #ff4d4d ${
-      100 - percentage
-    }%, #4caf50 ${percentage}%)`;
+    return `linear-gradient(to right, #ff4d4d ${100 - percentage
+      }%, #4caf50 ${percentage}%)`;
   };
 
   const router = useRouter();
@@ -118,10 +117,10 @@ const OrderReview = () => {
               </div>
             </div> */}
             <div>
-                <div className="flex gap-2">
-                    <img src={laptop} className="w-20 h-20"/>
-                    <p>Dell 27 inch P2725H Monitor | Anti-Glare With 3H Hardness | 100Hz | 5ms gray-to-gray (Fast mode)</p>
-                </div>
+              <div className="flex gap-2">
+                <img src={laptop} className="w-20 h-20" />
+                <p>Dell 27 inch P2725H Monitor | Anti-Glare With 3H Hardness | 100Hz | 5ms gray-to-gray (Fast mode)</p>
+              </div>
             </div>
 
             {/* Feedback Form */}
