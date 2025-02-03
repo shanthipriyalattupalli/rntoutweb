@@ -341,7 +341,7 @@ const ProductItem = ({ product }) => {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         > */}
-            {
+            {/* {
               rentalStartDate > new Date() ? ( // Compare raw Date objects
                 <button
                   className="notify-btn border-blue-500 border  text-blue-400 font-medium px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2"
@@ -349,7 +349,7 @@ const ProductItem = ({ product }) => {
                 >
                   <span className="text-sm">Notify Me Availability</span>
                 </button>
-              ) : (
+              ) : ( */}
                 <button
                   className={`${stockQuantity > 0
                       ? "cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
@@ -367,8 +367,8 @@ const ProductItem = ({ product }) => {
                   />
                   <span className="text-sm">Add to cart</span>
                 </button>
-              )
-            }
+              {/* ) */}
+            {/* } */}
 
           </div>
         ) : (

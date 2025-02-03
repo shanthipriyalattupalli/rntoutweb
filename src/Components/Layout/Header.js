@@ -248,15 +248,9 @@ function Header() {
         </div>
         <div className='relative ml-4 bg-white border border-gray-300 rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-gray-100'>
           <Image src={locations} alt="location" width={20} height={20}></Image>
-          <select>
-            {/* <option value={location}>{location}</option> */}
-            <option value='HYD - 500008' className="font-poppins text-sm font-medium leading-5 text-center [text-underline-position:from-font] [text-decoration-skip-ink:none] text-blacky">{address.suburb}</option>
-            <option value='HYD - 500028'>HYD - 500028</option>
-            <option value='HYD - 500032'>HYD - 500032</option>
-            <option value='HYD - 500084'>HYD - 500084</option>
-            <option value='BTM - 560074'>BTM - 560074</option>
-            <option value='BTM - 560086'>BTM - 560086</option>
-          </select>
+     
+            <span value='HYD - 500008' disabled className="font-poppins text-sm font-medium leading-5 text-center [text-underline-position:from-font] [text-decoration-skip-ink:none] text-blacky">{address.suburb}</span>
+
           {/* <button
             id='dropdownBtn'
             className='bg-white border border-gray-300 rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-gray-100'

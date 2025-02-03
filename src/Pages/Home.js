@@ -147,7 +147,7 @@ const Home = () => {
         products={getProductsByCategory(VACATION_EQUIPMENT_ID)}
         categoryId={VACATION_EQUIPMENT_ID}
       />
-      <PromotionalAd />
+      {/* <PromotionalAd /> */}
       <Vehicles
         products={getProductsByCategory(VEHICLES_ID)}
         categoryId={VEHICLES_ID}
@@ -156,7 +156,7 @@ const Home = () => {
         products={getProductsByCategory(PARTY_MATERIAL_ID)}
         categoryId={PARTY_MATERIAL_ID}
       />
-      <PromotionalAd />
+      {/* <PromotionalAd /> */}
       <SportsGym
         products={getProductsByCategory(SPORTS_GYM_ID)}
         categoryId={SPORTS_GYM_ID}

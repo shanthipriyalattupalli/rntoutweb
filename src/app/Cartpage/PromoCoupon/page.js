@@ -80,7 +80,7 @@ console.log(discountedPrice,"discountedPrice")
           <div className='container coupons-card' key={coupon._id}>
             <div className='delivery-content'>
               <div className='coupons-context'>
-                <span>{coupon.code}</span>
+                <span className="bg-gray-200 size-fit justify-center p-1 rounded-lg">{coupon.code}</span>
                 <p className="font-medium">Flat ₹100 cashback using NEWYEAR UPI</p>
                 <p className="font-normal text-xs">Cashback will be credited to CRED Balance. Rewards powered by CRED</p>
                 <p className="text-blue-500 text-xs">+ Terms & Conditions</p>

@@ -605,7 +605,7 @@ const createPayment = async () => {
         <div className="summary-item address" onClick={handleCouponToggle}>
         <div className="address-content">
           <img src={coupon} alt="Coupon Icon" />
-          <span>Promo Coupon</span>
+          <span>{couponcode?couponcode:"Promo Coupon"}</span>
           <i className="fas fa-chevron-right"></i>
         </div>
       </div>

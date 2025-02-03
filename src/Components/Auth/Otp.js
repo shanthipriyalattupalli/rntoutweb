@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Signup from "./Signup";
 
 const Rntout = "/Assets/Rntout_Logo.png";
 
@@ -16,6 +17,7 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
+    const [isregisterOpen, setIsRegisterOpen] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 //   const mobileNumber = searchParams.get("mobileNumber");
@@ -71,10 +73,11 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
       localStorage.setItem("userName", user.name);
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("role", user.role);
-      setIsOtpOpen(false);
-      
-      router.push("/");
-      window.location.reload();
+      // setIsOtpOpen(false);
+      setIsRegisterOpen(true);
+      // setIsOtpOpen(false);
+      // router.push("/");
+      // window.location.reload();
     } catch (error) {
       setIsLoading(false);
       setErrorMessage("Something went wrong. Please try again later.");
@@ -165,7 +168,16 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
         >
           {isLoading ? "Verifying..." : "Continue"}
         </button>
-
+        {isregisterOpen && (
+                          <div className="modal-overlay">
+                            <div className="modal-content">
+                              <button className="close-button" onClick={() => setIsRegisterOpen(false)}>
+                                ✕
+                              </button>
+                            <Signup/>
+                            </div>
+                          </div>
+                        )}
         <p className="otp-resend" onClick={handleSendOtp}>
           <span className="otp-resend-link">Resend OTP</span>
         </p>

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { CiStar } from "react-icons/ci";
+const laptop = "/Assets/laptop-2.jpg";
 
 const OrderItem = ({ hideHeader, orderData }) => {
   console.log(orderData, "orderData");
@@ -22,14 +23,15 @@ const OrderItem = ({ hideHeader, orderData }) => {
           <div className="order-product">
             <img
               src={
-                item.variantId.images?.[0] ||
-                "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"
+                laptop
+                // item.variantId.images?.[0] ||
+                // "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"
               } // Default image fallback
               alt={item.variantId.title || "Product Image"}
               className="product-image"
             />
             <div className="product-info">
-              <h4>{item.variantId.title || "Product Name"}</h4>
+              <h4>{item.variantId.title || "Apple 14 pro"}</h4>
               <div className="product_info_detail_name">
                 <p>
                   <span>₹{item.price || "0"}</span> / {item.rentalPeriod} | Rented for:{" "}

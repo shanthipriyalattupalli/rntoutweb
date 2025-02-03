@@ -95,8 +95,14 @@ const Signup = () => {
       const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, profile, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response.data, "profile updated");
+      console.log(response, "profile updated");
+      const user=response.data.user
+      const profiles=response.data.profile
       toast.success("Profile updated successfully!");
+      localStorage.setItem("gender", profiles.gender);
+  
+          router.push("/");
+      window.location.reload();
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error("Failed to update profile.");
@@ -177,10 +183,10 @@ const Signup = () => {
             onClick={handleSubmitProfile}
             disabled={isLoading}
           >
-            {isLoading ? "Creating..." : "Create Account"}
+            {isLoading ? "Creating..." : "Continue"}
           </button>
-          <p className='or-text'>or</p>
-          <button className='google-button'>
+          {/* <p className='or-text'>or</p> */}
+          {/* <button className='google-button'>
             <img
               src='https://img.icons8.com/color/48/000000/google-logo.png'
               alt='Google'
@@ -190,10 +196,10 @@ const Signup = () => {
           </button>
           <p className='footer-text mb-0'>
             Already have an account?{" "}
-            <span className='link' onClick={() => router.push("/login")}>
+            <span className='link' >
               Log In
             </span>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

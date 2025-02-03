@@ -150,7 +150,7 @@ export default function Orders() {
           </div>
 
           <div class="order-actions">
-            <a class="track-order" onClick={() => { router.push(`/profile/orders/${order._id}`) }}>
+            <a class="track-order cursor-pointer" onClick={() => { router.push(`/profile/orders/${order._id}`) }}>
               Track & View Order
             </a>
             <a href="#" class="cancel-order">

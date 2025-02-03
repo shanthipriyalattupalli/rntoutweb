@@ -268,7 +268,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange,di
 
                         {/* Display Selected Range */}
                         <div className="mt-4">
-                          <div>Selected Price Range: ₹{minPrice} - ₹{maxPrice}</div>
+                          {/* <div>Selected Price Range: ₹{minPrice} - ₹{maxPrice}</div> */}
                         </div>
                       </div>
 
@@ -344,7 +344,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange,di
                     )}
                   </div>
                 </div>
-                <div className='bt-2'>
+                {/* <div className='bt-2'>
                   <div className='px-6 pb-4'>
                     <div
                       className='flex items-center justify-between cursor-pointer'
@@ -412,7 +412,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange,di
                       </div>
                     )}
                   </div>
-                </div>
+                </div> */}
 
 
               </div>

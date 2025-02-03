@@ -4,11 +4,22 @@
 
 .radio-button-group {
     display: flex;
-    /* gap: 20px; */
-    padding:14px 0px 10px 14px;
-    align-items: center;
     border-bottom: 1px solid #0707071A;
+    padding: 10px;
 
+}
+.back-product22 h1{
+    margin-left:50px ;
+    color: #007BFF;
+}
+.item-header1 p{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    display: flex;
+    flex-direction: row;
+    /* gap: 20px;  */
 }
 
 .radio-option {
