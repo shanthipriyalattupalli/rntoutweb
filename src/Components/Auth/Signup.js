@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 const Rntout = "/Assets/Rntout_Logo.png";
 
-const Signup = () => {
+const Signup = ({setIsRegisterOpen}) => {
   const [profile, setProfile] = useState({
     user: {
       name: "",
@@ -110,6 +110,11 @@ const Signup = () => {
   }
 
 
+  const handleSkip=()=>{
+    router.push("/");
+    window.location.reload();
+  }
+
   return (
     <div>
       <ToastContainer position='top-right' autoClose={3000} />
@@ -185,6 +190,7 @@ const Signup = () => {
           >
             {isLoading ? "Creating..." : "Continue"}
           </button>
+          <button className="font-medium text-semibold text-md text-blue-300" onClick={()=>handleSkip()}>Skip</button>
           {/* <p className='or-text'>or</p> */}
           {/* <button className='google-button'>
             <img

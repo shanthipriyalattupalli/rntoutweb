@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 import { useRouter, useSearchParams } from 'next/navigation';
 import CategoryProducts from '@/Components/Home/CategoryProducts';
 import Breadcrumb from "@/Components/Breadcrumb/Breadcrumb";
+import ScrollToTop from "@/app/ScrollToTop";
 
 
 const ProductList = () => {
@@ -182,6 +183,7 @@ const ProductList = () => {
 
   return (
     <main className="min-h-screen py-6">
+      <ScrollToTop/>
       <div className="pl-24">
       <Breadcrumb categoryName={breadcrumbCategoryName} />
       </div>

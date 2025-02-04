@@ -174,7 +174,7 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
                               <button className="close-button" onClick={() => setIsRegisterOpen(false)}>
                                 ✕
                               </button>
-                            <Signup/>
+                            <Signup setIsRegisterOpen={setIsRegisterOpen}/>
                             </div>
                           </div>
                         )}

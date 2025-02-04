@@ -54,7 +54,7 @@ const Navigation = () => {
   const handleMouseLeave = () => {
     const id = setTimeout(() => {
       setActiveCategory(null); // Hide subcategories after 1000ms
-    }, 1000);
+    }, 300);
     setTimeoutId(id);
   };
 

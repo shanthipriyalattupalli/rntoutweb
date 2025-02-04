@@ -41,6 +41,7 @@ export default function RootLayout({ children }) {
         {children}
         <MobileApp/>
         <Newsletter />
+      
       </body>
     </html>
   );
