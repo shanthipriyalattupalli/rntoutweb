@@ -168,6 +168,7 @@
     flex-direction: row;
     gap: 16px;
     cursor: pointer;
+    align-items: center;
     
 }
 

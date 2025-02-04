@@ -47,14 +47,14 @@ const CategoryProducts = ({ products }) => {
       {products?.length > 0 && (
         <div className="container mx-auto py-16">
           <div className="flex justify-center">
-            <Link href="/Products">
+            {/* <Link href="/Products">
               <button
                 className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-full shadow-md focus:outline-none"
                 onClick={handleProducts}
               >
                 View all products
               </button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       )}

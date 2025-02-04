@@ -35,12 +35,13 @@ const CartPage = () => {
   const [selectedPrice, setSelectedPrice] = useState("");
   const [selectedPeriod, setSelectedPeriod] = useState("");
   const [selectedOptions, setSelectedOptions] = useState({});
-  const [discountedPrice, setDiscountedPrice] = useState(null);
+  const [discountedPrice, setDiscountedPrice] = useState(0);
   const [couponcode, setCouponCode] = useState(null);
   const [addressId, setAddressId] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [selectedCartItems, setSelectedCartItems] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [disValue, setDisValue] =useState(0)
 
 
   // const [userId, setUserId] = useState("");
@@ -442,9 +443,10 @@ const createPayment = async () => {
 
 
 
-  const handleDiscountedPrice = (newDiscountedPrice,couponcode) => {
+  const handleDiscountedPrice = (newDiscountedPrice,couponcode,discountValue) => {
     setDiscountedPrice(newDiscountedPrice);
-    setCouponCode(couponcode)
+    setCouponCode(couponcode);
+    setDisValue(discountValue);
   };
 
   const handleAddress=(addressId)=>{
@@ -653,27 +655,27 @@ const createPayment = async () => {
             <div className="mt-4 space-y-2 text-gray-700">
               <div className="flex justify-between">
                 <span>Total Rent</span>
-                <span className="font-medium">₹3,818.00</span>
+                <span className="font-medium">{totalPrice}</span>
               </div>
               <div className="flex justify-between text-green-500">
                 <span>Discounts</span>
-                <span className="font-medium">-₹916.32</span>
+                <span className="font-medium">{disValue}%</span>
               </div>
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <span>Delivery Charges</span>
                 <span className="font-medium">₹419.98</span>
-              </div>
+              </div> */}
               <div className="flex justify-between border-t pt-2">
                 <span>Total Costs</span>
-                <span className="font-medium">₹4019</span>
+                <span className="font-medium">{totalPrice}</span>
               </div>
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <span>GST</span>
                 <span className="font-medium">₹512 (18%)</span>
-              </div>
+              </div> */}
               <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
-                <span className="text-black">₹4540</span>
+                <span className="text-black">{totalPrice}</span>
               </div>
             </div>
           )}
