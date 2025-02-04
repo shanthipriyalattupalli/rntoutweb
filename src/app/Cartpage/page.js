@@ -667,7 +667,7 @@ const createPayment = async () => {
               </div> */}
               <div className="flex justify-between border-t pt-2">
                 <span>Total Costs</span>
-                <span className="font-medium">{totalPrice}</span>
+                <span className="font-medium">{discountedPrice?discountedPrice: totalPrice}</span>
               </div>
               {/* <div className="flex justify-between">
                 <span>GST</span>
@@ -675,7 +675,7 @@ const createPayment = async () => {
               </div> */}
               <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
-                <span className="text-black">{totalPrice}</span>
+                <span className="text-black">{discountedPrice?discountedPrice: totalPrice}</span>
               </div>
             </div>
           )}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import '../../../styles/productslist.css';
 import Reviews from '../../../Components/Reviews'
 import axios from "axios";
@@ -32,8 +32,8 @@ const AvailtyIcon = "/Assets/Icons/availability.png";
 const stars = "/Assets/stars.svg";
 const reviewimage = '/Assets/reviewimage.svg'
 const userProfile = '/Assets/userProfile.svg'
-const favorite="/Assets/favorite.svg"
-const favorited='/Assets/favoritedicon.svg'
+const favorite = "/Assets/favorite.svg"
+const favorited = '/Assets/favoritedicon.svg'
 const star2 = "/Assets/star2.png";
 const star3 = "/Assets/star3.png";
 const star4 = "/Assets/star4.png";
@@ -41,11 +41,11 @@ const star5 = "/Assets/star5.png";
 const star6 = "/Assets/star6.png";
 const star7 = "/Assets/star7.png";
 const left = '/Assets/leftarrow.svg';
-const startfill='/Assets/star_fill.svg'
-const quality='/Assets/quality.svg';
-const relocation='/Assets/relocation.svg';
-const maintenance='/Assets/maintenance.svg';
-const upgrading='/Assets/upgrading.svg';
+const startfill = '/Assets/star_fill.svg'
+const quality = '/Assets/quality.svg';
+const relocation = '/Assets/relocation.svg';
+const maintenance = '/Assets/maintenance.svg';
+const upgrading = '/Assets/upgrading.svg';
 const sample = '/Assets/Sample.png';
 
 
@@ -63,9 +63,9 @@ const ProductPage = () => {
   const [owner, setOwner] = useState({});
   const [images, setImages] = useState([]);
   const [relatedItems, setRelatedItems] = useState([])
-const [isFavorite,setIsFavorite] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false)
   const [userRatings, setUserRatings] = useState([]);
-  const [isReview,setIsReview] = useState(false)
+  const [isReview, setIsReview] = useState(false)
   const router = useRouter();
   const searchParams = useSearchParams();
   const productId = searchParams.get("id");
@@ -165,9 +165,9 @@ const [isFavorite,setIsFavorite] = useState(false)
   const formattedEndDate = formatDate(rentalAvailability?.endDate);
 
   const services = [
-    { icon:quality, label: "Finest-Quality" },
+    { icon: quality, label: "Finest-Quality" },
     { icon: relocation, label: "Free relocation" },
-    { icon:maintenance, label: "Free maintenance" },
+    { icon: maintenance, label: "Free maintenance" },
     { icon: upgrading, label: "Keep upgrading" },
   ];
 
@@ -291,10 +291,10 @@ const [isFavorite,setIsFavorite] = useState(false)
       );
     }
   }
-  
 
 
-  
+
+
   const handleRemoveFavorites = async () => {
     // setIsFavorite(false)
     try {
@@ -347,186 +347,186 @@ const [isFavorite,setIsFavorite] = useState(false)
 
   return (
     <>
-    <div className='max-w-7xl mx-auto px-4'>
-      <ToastContainer />
-      {/* Top Section */}
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-8 py-6'>
-        {/* Product Images */}
-        <div className='space-y-4'>
-          {/* Main Image */}
-          <div className='relative'>
-            <span className='absolute top-4 left-4 bg-blue-500 text-white px-3 py-1 rounded-md text-sm'>
-              NEW ARRIVALS
-            </span>
-        { isFavorite?  <span className='absolute top-4 right-4  text-white px-3 py-1 rounded-md text-sm cursor-pointer'  onClick={() => handleRemoveFavorites()}>
-             <img src={favorited}/>
-            </span>:  <span className='absolute top-4 right-4  text-white px-3 py-1 rounded-md text-sm cursor-pointer'  onClick={() => handleAddToFavorites()}>
-             <img src={favorite}/>
-            </span>}
-            <img
-              src={images[selectedImage]} // Dynamically bind the selected image
-              alt={`Product Image ${selectedImage + 1}`}
-              className='w-full h-[500px] rounded-lg shadow-lg'
-            />
-          </div>
-
-          {/* Thumbnails */}
-          <div className='grid grid-cols-6 gap-2'>
-            {images.map((image, index) => (
-              <button
-                key={index}
-                className={`border-2 rounded-lg overflow-hidden ${selectedImage === index ? "border-red-500" : "border-gray-200"
-                  }`}
-                onClick={() => setSelectedImage(index)} // Update the selected image
-              >
-                <img
-                  src={image}
-                  alt={`Thumbnail ${index + 1}`}
-                  className='w-full h-full object-cover'
-                />
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Product Details */}
-        <div className='space-y-6'>
-          <div className='space-y-2'>
-            <nav className='text-sm text-gray-500'>
-              Home/ Furniture/ DROGO Throne Ergonomic Gaming Chair
-            </nav>
-            <h1 className='text-2xl font-bold'>{product.title}</h1>
-
-            {/* Ratings */}
-            <div className='flex items-center space-x-2 cursor-pointer'>
+      <div className='max-w-7xl mx-auto px-4'>
+        <ToastContainer />
+        {/* Top Section */}
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-8 py-6'>
+          {/* Product Images */}
+          <div className='space-y-4'>
+            {/* Main Image */}
+            <div className='relative'>
+              <span className='absolute top-4 left-4 bg-blue-500 text-white px-3 py-1 rounded-md text-sm'>
+                NEW ARRIVALS
+              </span>
+              {isFavorite ? <span className='absolute top-4 right-4  text-white px-3 py-1 rounded-md text-sm cursor-pointer' onClick={() => handleRemoveFavorites()}>
+                <img src={favorited} />
+              </span> : <span className='absolute top-4 right-4  text-white px-3 py-1 rounded-md text-sm cursor-pointer' onClick={() => handleAddToFavorites()}>
+                <img src={favorite} />
+              </span>}
               <img
-                src={sample}
-                alt='Seller'
-                className='w-6 h-6 rounded-full'
+                src={images[selectedImage]} // Dynamically bind the selected image
+                alt={`Product Image ${selectedImage + 1}`}
+                className='w-full h-[500px] rounded-lg shadow-lg'
               />
-              {owner && (
-
-                <Link href='/SellerProfile'><span
-                  className='text-xs'
-                  onClick={handleSellerclick}
-                  key={owner._id}
-                >
-                  {owner.name}
-                </span>
-                </Link>
-              )}
-              <div className='flex items-center'>
-                <Star className='w-4 h-4 fill-yellow-400 text-yellow-400' />
-                <span className='ml-1 text-xs'>4.6</span>
-                <span className='text-gray-500 text-xs ml-1'>(41 reviews)</span>
-              </div>
             </div>
-          </div>
 
-          {/* Duration Selection */}
-          <div>
-            <h3 className='font-medium mb-3 text-sm'>SELECT DURATION</h3>
-            <div className='grid grid-cols-5 gap-3 bg-white'>
-              {rentalPrice.map((price) => (
+            {/* Thumbnails */}
+            <div className='grid grid-cols-6 gap-2'>
+              {images.map((image, index) => (
                 <button
-                  key={price._id}
-                  className={`p-3 rounded-lg border text-center ${selectedDuration === price.period
-                      ? "border-[#F48003] bg-[#FFF5EB]"
-                      : "border-gray-200"
+                  key={index}
+                  className={`border-2 rounded-lg overflow-hidden ${selectedImage === index ? "border-red-500" : "border-gray-200"
                     }`}
-                  onClick={() => handleselectedDuration(price.period)}
+                  onClick={() => setSelectedImage(index)} // Update the selected image
                 >
-                  <div className='text-xs'>{price.period}</div>
-                  <div className='font-bold'>₹{price.price}</div>
+                  <img
+                    src={image}
+                    alt={`Thumbnail ${index + 1}`}
+                    className='w-full h-full object-cover'
+                  />
                 </button>
               ))}
-              <button
-                className={`p-3 rounded-lg border text-center ${selectedcustomDuration === "Custom"
+            </div>
+          </div>
+
+          {/* Product Details */}
+          <div className='space-y-6'>
+            <div className='space-y-2'>
+              <nav className='text-sm text-gray-500'>
+                Home/ Furniture/ DROGO Throne Ergonomic Gaming Chair
+              </nav>
+              <h1 className='text-2xl font-bold'>{product.title}</h1>
+
+              {/* Ratings */}
+              <div className='flex items-center space-x-2 cursor-pointer'>
+                <img
+                  src={sample}
+                  alt='Seller'
+                  className='w-6 h-6 rounded-full'
+                />
+                {owner && (
+
+                  <Link href='/SellerProfile'><span
+                    className='text-xs'
+                    onClick={handleSellerclick}
+                    key={owner._id}
+                  >
+                    {owner.name}
+                  </span>
+                  </Link>
+                )}
+                <div className='flex items-center'>
+                  <Star className='w-4 h-4 fill-yellow-400 text-yellow-400' />
+                  <span className='ml-1 text-xs'>4.6</span>
+                  <span className='text-gray-500 text-xs ml-1'>(41 reviews)</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Duration Selection */}
+            <div>
+              <h3 className='font-medium mb-3 text-sm'>SELECT DURATION</h3>
+              <div className='grid grid-cols-5 gap-3 bg-white'>
+                {rentalPrice.map((price) => (
+                  <button
+                    key={price._id}
+                    className={`p-3 rounded-lg border text-center ${selectedDuration === price.period
+                      ? "border-[#F48003] bg-[#FFF5EB]"
+                      : "border-gray-200"
+                      }`}
+                    onClick={() => handleselectedDuration(price.period)}
+                  >
+                    <div className='text-xs'>{price.period}</div>
+                    <div className='font-bold'>₹{price.price}</div>
+                  </button>
+                ))}
+                <button
+                  className={`p-3 rounded-lg border text-center ${selectedcustomDuration === "Custom"
                     ? "border-[#F48003] bg-[#FFF5EB]"
                     : "border-gray-200"
-                  }`}
-                onClick={() => handleCustomSelection()}
-              >
-                <div className='text-xs'>Custom</div>
-                {/* <div className='font-bold'>₹{price.price}</div> */}
-              </button>
+                    }`}
+                  onClick={() => handleCustomSelection()}
+                >
+                  <div className='text-xs'>Custom</div>
+                  {/* <div className='font-bold'>₹{price.price}</div> */}
+                </button>
 
-            </div>
-          </div>
-
-          {selectedcustomDuration === "Custom" && <div className="w-2">
-            <div className="flex gap-20 text-center">
-              <div>
-                <span className="ml-2 text-gray-200 ">|</span>
-                <span>₹0</span>
-              </div>
-              <div>
-                <span className="ml-2 text-gray-200 ">|</span>
-                <span>30d</span>
-              </div>
-              <div>
-                <span className="ml-2 text-gray-200 ">|</span>
-                <span>60d</span>
-              </div>
-              <div>
-                <span className="ml-2 text-gray-200 ">|</span>
-                <span>90d</span>
-              </div>
-              <div>
-                <span className="ml-2 text-gray-200 ">|</span>
-                <span>180d</span>
-              </div>
-              <div>
-                <span className="ml-2 text-gray-200 ">|</span>
-                <span>360d</span>
               </div>
             </div>
-            <input
-              type="range"
-              id="price"
-              min="0"
-              max="360"
-              step="1"
-              value={priceRange}
-              onInput={handlePriceRange} // Trigger on input
-              className="w-[620px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
-              style={{
-                WebkitAppearance: "none",
-                MozAppearance: "none",
-                background: `linear-gradient(to right, #ef4444 0%,rgb(165, 162, 162) 0%)`, // Initial background
-              }}
-            />
 
-            <div className="price0">
-              {priceRange && `Selected Price: ₹${priceRange}`}
-            </div>
-          </div>}
-
-          {/* Quantity */}
-
-          {/* Availability */}
-
-          <div className='flex items-center space-x-4 text-sm'>
-{ product.stockQuantity >0 && <div className='flex items-center text-blue-600 bg-[#2F6FED1A] rounded-full p-1.5 text-xs font-normal'>
-              <img src={AvailIcon} alt='Available' className='mr-2 w-4 h-4' />
-   In stock
-            </div>}
-            <div className='text-orange-500 bg-blue-100 rounded-md p-1 text-xs   font-[400] text-xs'>
-              <img
-                src={AvailtyIcon}
-                alt='Availability'
-                className='mr-2 w-4 h-4 inline'
+            {selectedcustomDuration === "Custom" && <div className="w-2">
+              <div className="flex gap-20 text-center">
+                <div>
+                  <span className="ml-2 text-gray-200 ">|</span>
+                  <span>₹0</span>
+                </div>
+                <div>
+                  <span className="ml-2 text-gray-200 ">|</span>
+                  <span>30d</span>
+                </div>
+                <div>
+                  <span className="ml-2 text-gray-200 ">|</span>
+                  <span>60d</span>
+                </div>
+                <div>
+                  <span className="ml-2 text-gray-200 ">|</span>
+                  <span>90d</span>
+                </div>
+                <div>
+                  <span className="ml-2 text-gray-200 ">|</span>
+                  <span>180d</span>
+                </div>
+                <div>
+                  <span className="ml-2 text-gray-200 ">|</span>
+                  <span>360d</span>
+                </div>
+              </div>
+              <input
+                type="range"
+                id="price"
+                min="0"
+                max="360"
+                step="1"
+                value={priceRange}
+                onInput={handlePriceRange} // Trigger on input
+                className="w-[620px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
+                style={{
+                  WebkitAppearance: "none",
+                  MozAppearance: "none",
+                  background: `linear-gradient(to right, #ef4444 0%,rgb(165, 162, 162) 0%)`, // Initial background
+                }}
               />
-              Availability: {formattedStartDate} {formattedEndDate && `-`}{formattedEndDate && formattedEndDate}
+
+              <div className="price0">
+                {priceRange && `Selected Price: ₹${priceRange}`}
+              </div>
+            </div>}
+
+            {/* Quantity */}
+
+            {/* Availability */}
+
+            <div className='flex items-center space-x-4 text-sm'>
+              {product.stockQuantity > 0 && <div className='flex items-center text-blue-600 bg-[#2F6FED1A] rounded-full p-1.5 text-xs font-normal'>
+                <img src={AvailIcon} alt='Available' className='mr-2 w-4 h-4' />
+                In stock
+              </div>}
+              <div className='text-orange-500 bg-blue-100 rounded-md p-1 text-xs   font-[400] text-xs'>
+                <img
+                  src={AvailtyIcon}
+                  alt='Availability'
+                  className='mr-2 w-4 h-4 inline'
+                />
+                Availability: {formattedStartDate} {formattedEndDate && `-`}{formattedEndDate && formattedEndDate}
+              </div>
             </div>
-          </div>
-          <div className='flex items-center space-x-4'>
-            <div className='flex items-center border border-red-500 text-white font-[600] rounded-lg bg-[#FF2D55]'>
-              <button className='p-2 w-64' onClick={() => handleAddCart()}>
-                Add to cart
-              </button>
-            </div>
-            {/* <div className="flex items-center border border-red-500 rounded-full bg-red-50">
+            <div className='flex items-center space-x-4'>
+              <div className='flex items-center border border-red-500 text-white font-[600] rounded-lg bg-[#FF2D55]'>
+                <button className='p-2 w-64' onClick={() => handleAddCart()}>
+                  Add to cart
+                </button>
+              </div>
+              {/* <div className="flex items-center border border-red-500 rounded-full bg-red-50">
               <button
                 className="p-2"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -541,114 +541,124 @@ const [isFavorite,setIsFavorite] = useState(false)
                 <Plus className="w-4 h-4" />
               </button>
             </div> */}
-          </div>
-
-          {/* Delivery Info */}
-          <div className='flex items-center justify-around bg-white p-3 border border-slate-200 rounded-xl'>
-            <div className='flex items-center text-center  justify-center'>
-              <Truck className='w-5 h-5 mr-2' />
-              <span className=' text-sm text-[#070707CC] font-[600]'>
-                within 2 days
-              </span>
-            </div>|
-            <div className='flex items-center text-center  justify-center'>
-              <Truck className='w-5 h-5 mr-2' />
-              <span className=' text-sm text-[#070707CC] font-[600]'>
-                {formattedStartDate} {formattedEndDate === "NaN Invalid Date ‘aN"?"": "-"}{formattedEndDate === "NaN Invalid Date ‘aN"  ? "":formattedEndDate}
-              </span>
             </div>
-            <span>|</span>
-            <div className='flex items-center text-blue-600 text-[#070707CC] font-[600] text-sm'>
-              <span className='mr-2 '>✓</span>
-              As good as new
-            </div>
-          </div>
 
-          {/* Services */}
-          <div>
-            <h3 className='font-medium mb-3 text-sm'>SERVICES</h3>
-            <div className='grid grid-cols-4 gap-4'>
-              {services.map((service, index) => (
-                <div key={index} className='text-center border rounded-md py-4'>
-                  <div className='flex justify-center text-blue-600 mb-2'>
-                  <img src={service.icon}/>
+            {/* Delivery Info */}
+            <div className='flex items-center justify-around bg-white p-3 border border-slate-200 rounded-xl'>
+              <div className='flex items-center text-center  justify-center'>
+                <Truck className='w-5 h-5 mr-2' />
+                <span className=' text-sm text-[#070707CC] font-[600]'>
+                  within 2 days
+                </span>
+              </div>|
+              <div className='flex items-center text-center  justify-center'>
+                <Truck className='w-5 h-5 mr-2' />
+                <span className=' text-sm text-[#070707CC] font-[600]'>
+                  {formattedStartDate} {formattedEndDate === "NaN Invalid Date ‘aN" ? "" : "-"}{formattedEndDate === "NaN Invalid Date ‘aN" ? "" : formattedEndDate}
+                </span>
+              </div>
+              <span>|</span>
+              <div className='flex items-center text-blue-600 text-[#070707CC] font-[600] text-sm'>
+                <span className='mr-2 '>✓</span>
+                As good as new
+              </div>
+            </div>
+
+            {/* Services */}
+            <div>
+              <h3 className='font-medium mb-3 text-sm'>SERVICES</h3>
+              <div className='grid grid-cols-4 gap-4'>
+                {services.map((service, index) => (
+                  <div key={index} className='text-center border rounded-md py-4'>
+                    <div className='flex justify-center text-blue-600 mb-2'>
+                      <img src={service.icon} />
+                    </div>
+                    <div className='text-xs'>{service.label}</div>
                   </div>
-                  <div className='text-xs'>{service.label}</div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+    { productDetails.length >0 &&<div className='grid md:grid-cols-2 gap-8 py-6'>
+          {/* Left Side - Product Details and Other Details */}
+          <div className='space-y-6'>
+            {/* Product Details */}
+            <div className=''>
+              <table className='flex flex-col w-full text-sm border bg-white rounded-3xl p-4'>
+                <h2 className='text-lg font-semibold mb-3 text-[#2F6FED]'>
+                  Product Details
+                </h2>
+                <tbody>
+                  {productDetails.map((detail, index) => (
+                    <tr key={index} className=''>
+                      <td className='p-2 font-semibold'>{detail.label}</td>
+                      <td className='p-2 text-gray-600'>{detail.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Other Details */}
+            <div>
+              <table className='flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4'>
+                <h2 className='text-lg font-semibold mb-3 text-[#2F6FED]'>
+                  Other Details
+                </h2>
+                <tbody>
+                  {otherDetails?.map((detail, index) => (
+                    <tr key={index} className=''>
+                      <td className='p-2 font-semibold'>{detail.label}</td>
+                      <td className='p-2 text-gray-600'>{detail.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <table className='flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4'>
+                <h2 className='text-lg font-semibold mb-3 text-[#2F6FED]'>
+                  Product Description
+                </h2>
+                <tbody>
+  <p className="font-sm text-md text-gray-700 leading-relaxed">{product.description}</p>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Right Side - FAQ Section */}
+          <div>
+            <h2 className='text-lg font-semibold mb-3'>FAQ ABOUT THIS PRODUCT</h2>
+            <div className='border bg-white rounded-lg border-slate-200'>
+              {faqItems?.map((faq, index) => (
+                <div key={index} className='border-b'>
+                  <button
+                    className='flex items-center justify-between w-full p-2'
+                    onClick={() =>
+                      setExpandedFaq(expandedFaq === index ? null : index)
+                    }
+                  >
+                    <span className='text-sm font-medium'>{faq.question}</span>
+                    <ChevronDown
+                      className={`w-5 h-5 transition-transform duration-200 ${expandedFaq === index ? "transform rotate-180" : ""
+                        }`}
+                    />
+                  </button>
+                  {expandedFaq === index && (
+                    <div className='text-sm text-gray-600 px-3 py-2'>
+                      {faq.answer}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      </div>
+        </div>}
 
-      {/* Bottom Section */}
-      <div className='grid md:grid-cols-2 gap-8 py-6'>
-        {/* Left Side - Product Details and Other Details */}
-        <div className='space-y-6'>
-          {/* Product Details */}
-          <div className=''>
-            <table className='flex flex-col w-full text-sm border bg-white rounded-3xl p-4'>
-              <h2 className='text-lg font-semibold mb-3 text-[#2F6FED]'>
-                Product Details
-              </h2>
-              <tbody>
-                {productDetails.map((detail, index) => (
-                  <tr key={index} className=''>
-                    <td className='p-2 font-semibold'>{detail.label}</td>
-                    <td className='p-2 text-gray-600'>{detail.value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Other Details */}
-          <div>
-            <table className='flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4'>
-              <h2 className='text-lg font-semibold mb-3 text-[#2F6FED]'>
-                Other Details
-              </h2>
-              <tbody>
-                {otherDetails?.map((detail, index) => (
-                  <tr key={index} className=''>
-                    <td className='p-2 font-semibold'>{detail.label}</td>
-                    <td className='p-2 text-gray-600'>{detail.value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Right Side - FAQ Section */}
-        <div>
-          <h2 className='text-lg font-semibold mb-3'>FAQ ABOUT THIS PRODUCT</h2>
-          <div className='border bg-white rounded-lg border-slate-200'>
-            {faqItems?.map((faq, index) => (
-              <div key={index} className='border-b'>
-                <button
-                  className='flex items-center justify-between w-full p-2'
-                  onClick={() =>
-                    setExpandedFaq(expandedFaq === index ? null : index)
-                  }
-                >
-                  <span className='text-sm font-medium'>{faq.question}</span>
-                  <ChevronDown
-                    className={`w-5 h-5 transition-transform duration-200 ${expandedFaq === index ? "transform rotate-180" : ""
-                      }`}
-                  />
-                </button>
-                {expandedFaq === index && (
-                  <div className='text-sm text-gray-600 px-3 py-2'>
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    
         {/* Left Side - Product Details and Other Details */}
         {/* <div className='space-y-6'>
     
@@ -688,137 +698,136 @@ const [isFavorite,setIsFavorite] = useState(false)
         <div className="flex flex-col w-1/2 gap-2 border b-black-200 bg-white-500 p-10 rounded-lg text-center justify-center">
           <h2 className="text-black-500 text-5xl font-bold ">4.7</h2>
           <div className="flex gap-2 ml-48">
-          <img src={startfill} alt="Rating stars"className="" />
-          <img src={startfill} alt="Rating stars"className="" />
-          <img src={startfill} alt="Rating stars"className="" />
-          <img src={startfill} alt="Rating stars"className="" />
-          <img src={startfill} alt="Rating stars"className="" />
+            <img src={startfill} alt="Rating stars" className="" />
+            <img src={startfill} alt="Rating stars" className="" />
+            <img src={startfill} alt="Rating stars" className="" />
+            <img src={startfill} alt="Rating stars" className="" />
+            <img src={startfill} alt="Rating stars" className="" />
           </div>
+        </div>
+        <div className="pt-3 w-1/2 justify-center text-center">
+          <button className="border b-orange-200 bg-orange-400 p-3 w-80 rounded-lg text-white font-semibold" onClick={() => setIsReview(true)}>write a review</button>
+        </div>
+        {isReview && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <button className="close-button" onClick={() => setIsReview(false)}>
+                ✕
+              </button>
+              <Reviews />
+            </div>
           </div>
-          <div className="pt-3 w-1/2 justify-center text-center">
-          <button className="border b-orange-200 bg-orange-400 p-3 w-80 rounded-lg text-white font-semibold" onClick={()=>setIsReview(true)}>write a review</button>
-          </div>
-          {isReview && (
-                                      <div className="modal-overlay">
-                                      <div className="modal-content">
-                                        <button className="close-button" onClick={() => setIsReview(false)}>
-                                          ✕
-                                        </button>
-                                        <Reviews/>
-                                      </div>
-                                    </div>
-          
-          )}
 
-{   currentRatings.length>0 &&(
-  <>
-      <h2 className='pb-4 pt-8 font-semibold text-black-700'>
-        Community Feedback
-      </h2>
-      <div>
-      {currentRatings.map((rating) => (
-        <div key={rating._id} className="flex flex-col gap-3">
-          <table className="flex flex-col gap-2 w-[610px] border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4">
-            <tbody>
-              <tr>
-                <div className="flex flex-col gap-2">
-                  <div className="flex gap-3">
-                    <p
-                      className={`flex gap-1 items-center px-2 rounded-full text-white 
+        )}
+
+        {currentRatings.length > 0 && (
+          <>
+            <h2 className='pb-4 pt-8 font-semibold text-black-700'>
+              Community Feedback
+            </h2>
+            <div>
+              {currentRatings.map((rating) => (
+                <div key={rating._id} className="flex flex-col gap-3">
+                  <table className="flex flex-col gap-2 w-[610px] border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4">
+                    <tbody>
+                      <tr>
+                        <div className="flex flex-col gap-2">
+                          <div className="flex gap-3">
+                            <p
+                              className={`flex gap-1 items-center px-2 rounded-full text-white 
                       ${rating.rating >= 4 ? "bg-green-700" : rating.rating >= 2 ? "bg-orange-500" : "bg-red-500"}`}
-                    >
-                      <img src={stars} alt="Rating stars" className="w-4 h-4" />
-                      <span className="ml-1">{rating.rating}</span>
+                            >
+                              <img src={stars} alt="Rating stars" className="w-4 h-4" />
+                              <span className="ml-1">{rating.rating}</span>
+                            </p>
+                            <p className="text-[14px] font-medium leading-[20px] ">{rating.comment}</p>
+                          </div>
+                          <p className="text-[14px] font-medium leading-[20px] ">{rating.comment}</p>
+                        </div>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div className="flex gap-2 p-2">
+                    <img src={userProfile} alt="User Profile" />
+                    <p className="flex gap-2 text-[14px] font-medium text-gray-500 text-left">
+                      {formatDistanceToNow(new Date(rating.createdAt), { addSuffix: true })}
                     </p>
-                    <p className="text-[14px] font-medium leading-[20px] ">{rating.comment}</p>
                   </div>
-                  <p className="text-[14px] font-medium leading-[20px] ">{rating.comment}</p>
                 </div>
-              </tr>
-            </tbody>
-          </table>
-          <div className="flex gap-2 p-2">
-            <img src={userProfile} alt="User Profile" />
-            <p className="flex gap-2 text-[14px] font-medium text-gray-500 text-left">
-              {formatDistanceToNow(new Date(rating.createdAt), { addSuffix: true })}
-            </p>
+              ))}
+
+              {/* Pagination Controls */}
+              <div className="flex mt-4 gap-2">
+                {/* Previous Button */}
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                >
+                  Prev
+                </button>
+
+                {/* Page Numbers */}
+                {getPaginationNumbers().map((page, index) => (
+                  <button
+                    key={index}
+                    onClick={() => typeof page === "number" && setCurrentPage(page)}
+                    className={`px-3 py-1 border rounded-full ${currentPage === page ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+                      }`}
+                    disabled={page === "..."}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                {/* Next Button */}
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </>)}
+        {relatedItems.length > 3 && <div className="py-10">
+          <h2 className="font-medium text-xl">Related products</h2>
+          <div className="relative flex gap-5 pt-10">
+            <div
+              className="absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
+              onClick={() => swiperRef.current?.slidePrev()} // Navigate to the previous slide
+            >
+              <img src={left} alt="Previous" className="rotate-360" />
+            </div>
+            <div
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
+              onClick={() => swiperRef.current?.slideNext()}
+            >
+              <img src={left} alt="Next" className="rotate-180" />
+            </div>
+            <Swiper
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              spaceBetween={20}
+              slidesPerView={4}
+              navigation={false}
+              pagination={false}
+              // pagination={{ clickable: true }}
+              modules={[Navigation, Pagination]}
+              style={{ width: '100%' }}
+
+            >
+              {relatedItems.map((product) => (
+                <SwiperSlide key={product._id} className="flex justify-center">
+                  <ProductItem product={product} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
-        </div>
-      ))}
-
-      {/* Pagination Controls */}
-      <div className="flex mt-4 gap-2">
-        {/* Previous Button */}
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-        >
-          Prev
-        </button>
-
-        {/* Page Numbers */}
-        {getPaginationNumbers().map((page, index) => (
-          <button
-            key={index}
-            onClick={() => typeof page === "number" && setCurrentPage(page)}
-            className={`px-3 py-1 border rounded-full ${
-              currentPage === page ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
-            }`}
-            disabled={page === "..."}
-          >
-            {page}
-          </button>
-        ))}
-
-        {/* Next Button */}
-        <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-          className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-        >
-          Next
-        </button>
+        </div>}
       </div>
-    </div>
-    </>   )}
- {relatedItems.length >3 &&<div className="py-10">
-      <h2 className="font-medium text-xl">Related products</h2>
-      <div className="relative flex gap-5 pt-10">
-      <div
-          className="absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
-          onClick={() => swiperRef.current?.slidePrev()} // Navigate to the previous slide
-        >
-          <img src={left} alt="Previous" className="rotate-360" />
-        </div>
-        <div
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
-          onClick={() => swiperRef.current?.slideNext()} 
-        >
-          <img src={left} alt="Next" className="rotate-180" />
-        </div>
-<Swiper
- onSwiper={(swiper) => (swiperRef.current = swiper)} 
-  spaceBetween={20}
-  slidesPerView={4}
-  navigation={false} 
-  pagination={false}
-  // pagination={{ clickable: true }}
-  modules={[Navigation, Pagination]}
-  style={{width: '100%'}}
-  
->
-  {relatedItems.map((product) => (
-    <SwiperSlide key={product._id} className="flex justify-center">
-      <ProductItem product={product} />
-    </SwiperSlide>
-  ))}
-</Swiper>
-</div>
-      </div>}
-    </div>
 
-      </>
+    </>
   );
 };
 
