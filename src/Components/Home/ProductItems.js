@@ -74,7 +74,7 @@ const ProductItem = ({ product }) => {
     year: "numeric",
   });
   const formattedendDate = new Date(
-    rentalAvailability?.startDate
+    rentalAvailability?.endDate
   ).toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",
@@ -311,7 +311,7 @@ const ProductItem = ({ product }) => {
               />
               {rentalAvailability && (
                 <span className='text-gray-500 text-xs'>
-                  Availability: {formattedDate}
+                  Availability: {formattedDate}-{formattedendDate}
                 </span>
               )}
             </div>

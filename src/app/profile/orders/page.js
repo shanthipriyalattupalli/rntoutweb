@@ -164,14 +164,15 @@ export default function Orders() {
             <p class="download-invoice">
               Total Amount: <span>{order.totalAmount}</span>
             </p>
-            {Array.isArray(order.subOrders) && order.subOrders.map((item) => (
-            <p className={`download-invoice progress ${item.deliveryStatus}`}>
-              <span>
-                <FaTruck />
-              </span>{" "}
-              {item.deliveryStatus}
-            </p>
-            ))}
+            {Array.isArray(order.subOrders) && order.subOrders.length > 0 && (
+  <p className={`download-invoice progress ${order.subOrders[0].deliveryStatus}`}>
+    <span>
+      <FaTruck />
+    </span>{" "}
+    {order.subOrders[0].deliveryStatus}
+  </p>
+)}
+
       {order.paymentStatus === "pending" ?<p className={`download-invoice progress ${order.paymentStatus}`}>
               <span>
          <MdPayments/>

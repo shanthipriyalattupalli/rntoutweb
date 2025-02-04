@@ -803,6 +803,7 @@ const [isFavorite,setIsFavorite] = useState(false)
   pagination={false}
   // pagination={{ clickable: true }}
   modules={[Navigation, Pagination]}
+  style={{width: '100%'}}
   
 >
   {relatedItems.map((product) => (

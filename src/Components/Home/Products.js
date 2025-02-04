@@ -30,7 +30,7 @@ const Products = ({ products, categoryId }) => {
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3'>
         {/* Lazy load product items */}
         <Suspense fallback={<div>Loading...</div>}>
-          {products?.map((product) => (
+          {products?.slice(0,12)?.map((product) => (
             <ProductItems product={product} />
           ))}
         </Suspense>

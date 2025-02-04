@@ -23,9 +23,9 @@ const OrderItem = ({ hideHeader, orderData }) => {
           <div className="order-product">
             <img
               src={
-                laptop
-                // item.variantId.images?.[0] ||
-                // "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"
+                // laptop
+                item.variantId.images?.[0] ||
+                "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"
               } // Default image fallback
               alt={item.variantId.title || "Product Image"}
               className="product-image"

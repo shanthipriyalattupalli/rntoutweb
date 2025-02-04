@@ -176,7 +176,7 @@ const OrderTrackingWithNavigate = ({orderId}) => {
           <h3 class='section-title'>Rent Cost Breakup</h3>
           <div class='grid-container'>
             <div class='label'>Total Rent</div>
-            <div class='value'>₹ {rentData.totalRent}/mo</div>
+            <div class='value'>₹ {orders.totalAmount}/mo</div>
 
             <div class='label'>Discounts</div>
             <div class='value discount'>- {rentData.discounts}/mo</div>

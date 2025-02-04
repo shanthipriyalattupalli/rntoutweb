@@ -57,7 +57,7 @@ const handleApply = (couponId,couponcode ,maxDiscountAmount, minRentAmount, disc
 console.log(discountedPrice,"discountedPrice")
  
     toast.success(`Coupon applied successfully! You saved ₹${discount.toFixed(2)}.`);
-    onDiscountedPrice(discountedPrice,couponcode);
+    onDiscountedPrice(discountedPrice,couponcode,discountValue);
     console.log(`Final price after discount: ₹${discountedPrice.toFixed(2)}`);
   } else {
 
