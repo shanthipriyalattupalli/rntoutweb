@@ -42,19 +42,17 @@ const MainContent = () => {
 
   useEffect(() => {
     const handleStorageChange = () => {
-      setFormData({
-        ...formData,
-        categoryId: categoryId,
-        subCategoryId: subCategoryId
-      });
-    }
-
-
-
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        categoryId: localStorage.getItem("selectedcategoryId"), // Fetch latest value
+        subCategoryId: localStorage.getItem("selectedSubCategoryId"), // Fetch latest value
+      }));
+    };
+  
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
-
   }, []);
+  
 
   console.log(categoryId, subCategoryId, "fetchProducts ")
 

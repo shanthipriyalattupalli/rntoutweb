@@ -44,3 +44,13 @@ body {
   cursor:pointer;
   border-radius: 0 16px 0 0;
 }
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Hides scrollbar in Chrome, Safari */
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Hides scrollbar in IE, Edge */
+  scrollbar-width: none; /* Hides scrollbar in Firefox */
+}
+
