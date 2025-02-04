@@ -148,16 +148,17 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange,di
             <ul className="space-y-1">
               {subCategories?.map((subcategory) => (
                 <li key={subcategory._id}>
-                  <div
-                    onClick={() => handleClick(subcategory._id, subcategory.categoryId._id)}
-                    className={`flex justify-between text-gray-700 border rounded-lg hover:text-gray-900 cursor-pointer p-2 ${activeIndex === subcategory._id
-                      ? "bg-[#F0F5FF] text-black border-[#2F6FED]"
-                      : "bg-[#0707070D] text-black border-[#0707071A]"
-                      }`}
-                  >
-                    {subcategory.subCategoryName}
-                    <ChevronDownIcon className="w-5 h-5 text-gray-600" />
-                  </div>
+   <div
+  onClick={() => handleClick(subcategory._id, subcategory.categoryId._id)}
+  className={`flex justify-between items-center text-gray-700 border rounded-lg hover:text-gray-900 cursor-pointer p-2 ${activeIndex === subcategory._id
+    ? "bg-[#F0F5FF] text-black border-[#2F6FED]"
+    : "bg-[#0707070D] text-black border-[#0707071A]"
+    }`}
+>
+  <span className="truncate w-[80%]">{subcategory.subCategoryName}</span>
+  <ChevronDownIcon className="w-5 h-5 text-gray-600" />
+</div>
+
                 </li>
               ))}
             </ul>

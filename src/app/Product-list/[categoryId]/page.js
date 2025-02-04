@@ -185,31 +185,31 @@ const ProductList = () => {
       <div className="pl-24">
       <Breadcrumb categoryName={breadcrumbCategoryName} />
       </div>
-      <div className="container mx-auto ">
+      <div className="container mx-auto w-5xl">
         {/* <Categories categories={categories} /> */}
 
         <div className="flex">
 
           <Sidebar subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance}/>
 
-          <div className="flex flex-col gap-2 py-4 px-2 w-full  h-[auto] border border-slate-200 bg-white rounded-r-lg">
-            <div className="w-auto flex border rounded-lg justify-between">
-              {product.map((productItem) => (
-                <div
-                  key={productItem._id}
-                  className={`w-full text-center rounded-lg ${active === productItem._id ? 'bg-[#2F6FED]' : ''
-                    }`}
-                >
-                  <p
-                    className={`w-auto justify-center flex p-2 text-center rounded-lg ${active === productItem._id ? 'text-white border-[#2F6FED]' : ''
-                      }`}
-                    onClick={() => handleProductClick(productItem._id)}
-                  >
-                    {productItem.productName}
-                  </p>
-                </div>
-              ))}
-            </div>
+          <div className="w-full flex flex-col gap-2 py-4 px-2  h-[auto] border border-slate-200 bg-white rounded-r-lg overflow-hidden">
+          <div className="w-full  overflow-x-auto border rounded-lg scrollbar-hide">
+  <div className="flex w-max ">
+    {product.map((productItem) => (
+      <div
+        key={productItem._id}
+        className={`text-center rounded-lg px-4 py-2 cursor-pointer ${
+          active === productItem._id ? 'bg-[#2F6FED] text-white' : ''
+        }`}
+        onClick={() => handleProductClick(productItem._id)}
+      >
+        {productItem.productName}
+      </div>
+    ))}
+  </div>
+</div>
+
+
             {/* <Products/> */}
             <CategoryProducts products={products} />
           </div>

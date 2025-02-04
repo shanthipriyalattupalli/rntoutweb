@@ -42,19 +42,17 @@ const MainContent = () => {
 
   useEffect(() => {
     const handleStorageChange = () => {
-      setFormData({
-        ...formData,
-        categoryId: categoryId,
-        subCategoryId: subCategoryId
-      });
-    }
-
-
-
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        categoryId: localStorage.getItem("selectedcategoryId"), // Fetch latest value
+        subCategoryId: localStorage.getItem("selectedSubCategoryId"), // Fetch latest value
+      }));
+    };
+  
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
-
   }, []);
+  
 
   console.log(categoryId, subCategoryId, "fetchProducts ")
 
@@ -523,9 +521,9 @@ const MainContent = () => {
               <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
             </label>
             <select
-              name='description'
-              value={formData.description}
-              onChange={handleInputChange}
+              // name='description'
+              // value={formData.description}
+              // onChange={handleInputChange}
             >
               <option value=''>Select product quality</option>
               <option value='New'>New</option>
@@ -672,7 +670,10 @@ const MainContent = () => {
         </p>
       <div className="pt-6 flex flex-col">
         <label>Description</label>
-        <input type="text" placeholder="Enter product details" className="border p-4 rounded-2xl h-min"/>
+        <input type="text" placeholder="Enter product details" className="border p-4 rounded-2xl h-min"    
+           name='description'
+              value={formData.description}
+              onChange={handleInputChange}/>
       </div>
 
 
