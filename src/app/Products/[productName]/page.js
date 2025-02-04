@@ -710,7 +710,8 @@ const [isFavorite,setIsFavorite] = useState(false)
           
           )}
 
-      
+{   currentRatings.length>0 &&(
+  <>
       <h2 className='pb-4 pt-8 font-semibold text-black-700'>
         Community Feedback
       </h2>
@@ -780,7 +781,8 @@ const [isFavorite,setIsFavorite] = useState(false)
         </button>
       </div>
     </div>
- {relatedItems.length >0 &&<div className="py-10">
+    </>   )}
+ {relatedItems.length >3 &&<div className="py-10">
       <h2 className="font-medium text-xl">Related products</h2>
       <div className="relative flex gap-5 pt-10">
       <div
