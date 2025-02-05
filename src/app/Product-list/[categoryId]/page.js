@@ -50,6 +50,7 @@ const ProductList = () => {
           categoryId,
           subCategoryId: subcategoryId,
           productId: active,
+          search:"",
           latitude: latitude,
           longitude: longitude,
           distance:distance,

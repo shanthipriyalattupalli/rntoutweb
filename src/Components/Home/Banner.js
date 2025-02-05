@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { useRouter } from "next/navigation";
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 const banner1 = '/Assets/banner-1.png';
@@ -12,6 +13,7 @@ const banner2 = '/Assets/banner-2.png';
 const left = '/Assets/leftarrow.svg';
 
 const Banner = () => {
+    const router = useRouter();
   const swiperRef = useRef(null); // Create a ref to store the Swiper instance
 
   return (
@@ -54,7 +56,10 @@ const Banner = () => {
                 <p className="mt-8 text-lg">
                   Choose from our wide range of collections starting at just ₹199/month.
                 </p>
-                <button className="mt-4 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg">
+                <button className="mt-4 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg" 
+                    onClick={() => {
+                      router.push("/add-on-rent");
+                    }}>
                   Rent Now!
                 </button>
               </div>

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 // import "@/styles/OrderTrackingWithNavigate.css";
 import '../styles/OrderTrackingWithNavigate.css';
 import OrderItem from "@/Components/OrderItem";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 //import "@/styles/orderReview.css";
 import '../styles/orderReview.css';
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -59,10 +60,27 @@ const OrderReview = () => {
       }%, #4caf50 ${percentage}%)`;
   };
 
+  const [isOpen, setIsOpen] = useState(false);
+  // const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
+  const [headline, setHeadline] = useState("");
+  const [review, setReview] = useState("");
+  const product = {
+    name: "Dell 27 inch P2725H Monitor | Anti-Glare | 100Hz | 5ms",
+    image: laptop,
+  };
+  const handleRating = (rate) => {
+    setRating(rate);
+  };
+  const handleSubmit = () => {
+    console.log({ rating, headline, review });
+    setIsOpen(false); // Close modal after submission
+  };
+  
   const router = useRouter();
 
   return (
-    <div className='flex flex-col '>
+    <div className='flex flex-col px-10 pb-10'>
       {/* <h2 className='item-header' onClick={() => router.back()}>
         <div className='back-product'>
           <IoMdArrowRoundBack style={{ marginRight: "12px" }} /> Writing Review
@@ -77,113 +95,67 @@ const OrderReview = () => {
         </a>
       </h2> */}
       <h2 className="justify-center mt-8 text-center font-semibold text-lg">Ratings and Reviews</h2>
-      <div className='Orders_page_section'>
-        <div className='order-tracking-container'>
-          {/* <div className='order_item-frame'>
-            {orderData.map((e) => (
-              <OrderItem key={e.id} hideHeader={true} orderData={e} />
-            ))}
-          </div> */}
-
-          <div>
-            {/* <div className='order_overall_rating'>
-              <h6>Overall Rating</h6>
-              <div className='rating_frame'>
-                <div
-                  className='rating_scale'
-                  style={{
-                    background: getDynamicBackground(),
-                    transition: "background 0.3s ease-in-out",
-                  }}
-                >
-                  {[...Array(10)].map((_, index) => {
-                    const value = index + 1;
-                    return (
-                      <span
-                        key={value}
-                        className={`rating-btn ${
-                          rating === value ? "selected" : ""
-                        }`}
-                        onClick={() => handleRatingClick(value)}
-                      >
-                        <a href='#'>{value}</a>
-                      </span>
-                    );
-                  })}
-                </div>
-                <span className='rating-status'>
-                  {rating ? `You selected: ${rating}` : "Not Given Rating"}
-                </span>
+      <div className="flex items-center gap-4 border-b pb-4">
+              <img src={product.image} alt={product.name} className="w-12 h-12 rounded-lg object-cover" />
+              <p className="text-sm text-gray-700">{product.name}</p>
+            </div>
+            {/* Rating Section */}
+            <div className=" my-4">
+              <p className="font-poppins text-[14px] font-semibold leading-[18px] text-left"
+              >Overall Rating</p>
+              <div className="flex items-center  border-b p-4">
+              <div className="flex justify-center space-x-2 my-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    onMouseEnter={() => setHover(star)}
+                    onMouseLeave={() => setHover(0)}
+                    onClick={() => handleRating(star)}
+                  >
+                    {star <= (hover || rating) ? (
+                      <AiFillStar className="text-yellow-500 text-2xl" />
+                    ) : (
+                      <AiOutlineStar className="text-gray-400 text-2xl" />
+                    )}
+                  </button>
+                ))}
               </div>
-            </div> */}
+              <p className="text-sm text-gray-500 ml-auto">{rating === 0 ? "Not Given Rating" : `You rated ${rating} stars`}</p>
+              </div>
+            </div>
+            {/* Feedback Section */}
             <div>
-              <div className="flex gap-2">
-                <img src={laptop} className="w-20 h-20" />
-                <p>Dell 27 inch P2725H Monitor | Anti-Glare With 3H Hardness | 100Hz | 5ms gray-to-gray (Fast mode)</p>
-              </div>
+            <p className="font-poppins text-[14px] font-semibold leading-[18px] text-left mb-3"
+            >Write Feedback</p>
+              <label className="block text-sm text-gray-600 mb-1">Headline</label>
+              <input
+                type="text"
+                placeholder="What's most important to know?"
+                className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                value={headline}
+                onChange={(e) => setHeadline(e.target.value)}
+              />
+              <label className="block text-sm text-gray-600 mt-3 mb-1">Review</label>
+              <textarea
+                rows="3"
+                placeholder="What did you like or dislike? What did you use this product for?"
+                className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+              />
             </div>
-
-            {/* Feedback Form */}
-            <div className='feedback-form'>
-              {/* <h2>Write Feedback</h2> */}
-              <form>
-                <div className='form-group'>
-                  <label htmlFor='headline' className="pt-4">Overall Rating</label>
-                  <input
-                    type='text'
-                    id='headline'
-                    placeholder="What's most important to know?"
-                  />
-                </div>
-                <div className='form-group'>
-                  <label htmlFor='review'>Review</label>
-                  <textarea
-                    id='review'
-                    rows='4'
-                    placeholder='What did you like or dislike? What did you use this product for?'
-                  ></textarea>
-                </div>
-                <div className='form-group'>
-                  <label htmlFor='photo'>Add a photo</label>
-                  <div className='file-upload'>
-                    <input
-                      type='file'
-                      multiple
-                      id='photo'
-                      accept='.jpg, .jpeg, .png'
-                      onChange={handleFileChange}
-                    />
-                    <span className='upload-text'>
-                      <span>
-                        Drag your file(s) or{" "}
-                        <span className='browse'>browse</span>
-                      </span>
-                      <small>Image format will be JPEG, PNG, JPG</small>
-                    </span>
-                    <div className='image-previews'>
-                      {imagePreview?.map((preview, index) => (
-                        <div key={index} className='image-preview'>
-                          <img
-                            src={preview}
-                            alt={`Uploaded Preview ${index + 1}`}
-                          />
-                          <button
-                            type='button'
-                            className='remove-btn'
-                            onClick={() => removeImage(index)}
-                          >
-                            <RiCloseLine />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </form>
+            {/* Buttons */}
+            <div className="flex justify-between mt-4">
+              <button className="px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-100" onClick={() => setIsOpen(false)}>
+                Cancel
+              </button>
+              <button
+                className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                onClick={handleSubmit}
+              >
+                Submit
+              </button>
             </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

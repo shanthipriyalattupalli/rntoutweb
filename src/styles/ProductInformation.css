@@ -216,6 +216,12 @@ line-height: 18px; /* 150% */
   top:10px;
   right:10px;
 }
+.action-menu2 {
+  position: absolute;
+  display: inline-block;
+  top:10px;
+  left:10px;
+}
 
 .menu-button {
   background: none;
