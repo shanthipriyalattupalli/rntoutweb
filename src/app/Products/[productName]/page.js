@@ -29,9 +29,12 @@ import ProductItem from "@/Components/Home/ProductItems";
 const productimg = "/Assets/pi-1.png";
 const AvailIcon = "/Assets/Icons/ava-stock.png";
 const AvailtyIcon = "/Assets/Icons/availability.png";
+const truck="/Assets/truck.svg"
+const estimation="/Assets/estimation.svg"
 const stars = "/Assets/stars.svg";
 const reviewimage = '/Assets/reviewimage.svg'
 const userProfile = '/Assets/userProfile.svg'
+const stock='/Assets/stock.svg';
 const favorite = "/Assets/favorite.svg"
 const favorited = '/Assets/favoritedicon.svg'
 const star2 = "/Assets/star2.png";
@@ -506,7 +509,7 @@ const ProductPage = () => {
 
             {/* Availability */}
 
-            <div className='flex items-center space-x-4 text-sm'>
+            {/* <div className='flex items-center space-x-4 text-sm'>
               {product.stockQuantity > 0 && <div className='flex items-center text-blue-600 bg-[#2F6FED1A] rounded-full p-1.5 text-xs font-normal'>
                 <img src={AvailIcon} alt='Available' className='mr-2 w-4 h-4' />
                 In stock
@@ -519,7 +522,7 @@ const ProductPage = () => {
                 />
                 Availability: {formattedStartDate} {formattedEndDate && `-`}{formattedEndDate && formattedEndDate}
               </div>
-            </div>
+            </div> */}
             <div className='flex items-center space-x-4'>
               <div className='flex items-center border border-red-500 text-white font-[600] rounded-lg bg-[#FF2D55]'>
                 <button className='p-2 w-64' onClick={() => handleAddCart()}>
@@ -545,23 +548,31 @@ const ProductPage = () => {
 
             {/* Delivery Info */}
             <div className='flex items-center justify-around bg-white p-3 border border-slate-200 rounded-xl'>
-              <div className='flex items-center text-center  justify-center'>
-                <Truck className='w-5 h-5 mr-2' />
+              <div className='flex gap-2 items-center text-center  justify-center'>
+                {/* <Truck className='w-5 h-5 mr-2' /> */}
+                <img src={truck}/>
                 <span className=' text-sm text-[#070707CC] font-[600]'>
                   within 2 days
                 </span>
               </div>|
-              <div className='flex items-center text-center  justify-center'>
-                <Truck className='w-5 h-5 mr-2' />
+              <div className='flex gap-2 items-center text-center  justify-center'>
+                {/* <Truck className='w-5 h-5 mr-2' /> */}
+                <img src={estimation}/>
                 <span className=' text-sm text-[#070707CC] font-[600]'>
                   {formattedStartDate} {formattedEndDate === "NaN Invalid Date ‘aN" ? "" : "-"}{formattedEndDate === "NaN Invalid Date ‘aN" ? "" : formattedEndDate}
                 </span>
               </div>
               <span>|</span>
-              <div className='flex items-center text-blue-600 text-[#070707CC] font-[600] text-sm'>
-                <span className='mr-2 '>✓</span>
-                As good as new
-              </div>
+       {product.stockQuantity > 0 ? <div className='flex gap-2 items-center text-blue-600 text-[#070707CC] font-[600] text-sm'>
+                {/* <span className='mr-2 '>✓</span> */}
+                <img src={stock}/>
+                In stock
+              </div>:
+              <div className='flex gap-2 items-center text-red-500 text-[#070707CC] font-[600] text-sm'>
+                {/* <span className='mr-2 '>✓</span> */}
+                <img src={stock}/>
+                Out of stock
+              </div>}
             </div>
 
             {/* Services */}

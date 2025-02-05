@@ -12,7 +12,7 @@ const Photo = "/Assets/Photo.png";
 const locations='/Assets/location_fill.svg'
 const nearby='/Assets/nearby.svg'
 const cart='/Assets/cart.svg'
-
+const cartitems='/Assets/cartitems.svg'
 
 
 function Header() {
@@ -31,6 +31,8 @@ function Header() {
   //   setName(name);
   //   setToken(token)
   // }, []);
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+
   const [locationError, setLocationError] = useState(null);
   const [locationName, setLocationName] = useState("");
   const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
@@ -43,10 +45,13 @@ function Header() {
   const [location, setLocation] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // const [location, setLocation] = useState(null);
+  const [variants, setVariants] = useState([]);
+  const [cartItems,setCartItems] = useState(0);
   const [locationsList, setLocationsList] = useState([]);
   const [address, setAddress] = useState({ suburb: "" });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const router = useRouter();
 
   const [modalShow, setModalShow] = React.useState(false);
@@ -136,6 +141,19 @@ function Header() {
   }, []);
   
 
+// useEffect(()=>{
+//   const cart = (typeof window !== 'undefined') ? localStorage.getItem("cart") : null;
+//   console.log(cart,"cartitems")
+//   setCartItems(cart);
+//   const updateCartCount = (event) => {
+//     setCartCount(event.detail);
+//   };
+//   window.addEventListener("cartUpdated", updateCartCount);
+//   return () => {
+//     window.removeEventListener("cartUpdated", updateCartCount);
+//   };
+// },[])
+
 
 
 //   useEffect(() => {
@@ -214,9 +232,9 @@ function Header() {
     setIsDropdownOpen(false);
   };
 
-  const handleSearchInputChange = (event) => {
-    const searchTerm = event.target.value;
-  };
+  // const handleSearchInputChange = (event) => {
+  //   const searchTerm = event.target.value;
+  // };
 
   const handleNavigate = () => {
     router.push("/Login");
@@ -231,6 +249,45 @@ function Header() {
     router.push("/Login"); // Redirect to login page on logout
   };
 
+  const fetchCartDetails = async () => {
+    console.log("out fetching cart");
+    try {
+      const response = await axios.get(`${BASE_URL}/cart/${userId}`);
+console.log(response,"response in cart")
+setCartItems(response.data.cartItems);
+    } catch (error) {
+      console.error("Error fetching cart details:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCartDetails();
+  }, [userId]);
+
+
+
+  const handleSearchInputChange = async (searchTerm) => {
+   
+      try {
+        const response = await axios.get(`${BASE_URL}/variants/filter`, {
+          params: {
+            search: searchTerm,  
+          },
+        });
+        console.log(response, "response in search");
+        setVariants(response.data.data);
+        setShowSuggestions(true);
+      } catch (error) {
+        console.error("Error fetching variants:", error);
+      }
+    
+  };
+
+
+  const handleVariantClick=(variantId)=>{
+    
+  }
+
   return (
     <header className='flex items-center justify-between px-20 py-4 bg-white shadow-md'>
       <div className='flex items-center'>
@@ -244,7 +301,20 @@ function Header() {
       </div>
       <div className='flex items-center'>
         <div className='relative ml-4'>
-          <SearchInput onChange={handleSearchInputChange}/>
+          <SearchInput onChange={(e) => handleSearchInputChange(e.target.value)}/>
+          {showSuggestions && variants.length > 0 && (
+        <ul className="absolute left-0 w-full bg-white border rounded shadow mt-2 max-h-60 overflow-y-auto z-40">
+          {variants.map((variant) => (
+            <li
+              key={variant.id}
+              onClick={() => handleVariantClick(variant.id)}
+              className="p-2 cursor-pointer hover:bg-gray-200"
+            >
+              {variant.title}
+            </li>
+          ))}
+        </ul>
+      )}
         </div>
         <div className='relative ml-4 bg-white border border-gray-300 rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-gray-100'>
           <Image src={locations} alt="location" width={20} height={20}></Image>
@@ -322,7 +392,15 @@ function Header() {
             router.push("/Cartpage");
           }}
         >
-          <button className='bg-white border border-gray-300 rounded-lg p-2 hover:bg-gray-100'>
+   { cartItems.length >0 ?
+   <>
+    <Image src={cartitems} width={35} height={30} alt="cartitems" className="relative"/>
+    <span className="absolute top-2 ml-6 border border-white-900 bg-red-500 rounded-full w-6 h-6 text-md font-semibold text-white flex items-center justify-center">
+  {cartItems.length}
+</span>
+
+    </> 
+   :      <button className='bg-white border border-gray-300 rounded-lg p-2 hover:bg-gray-100'>
             {/* <svg
               className='h-6 w-6 text-gray-600'
               fill='none'
@@ -338,14 +416,16 @@ function Header() {
               ></path>
             </svg> */}
             <Image src={cart} width={20}height={20} alt="cart"/>
-          </button>
+            
+          </button>}
+         
         </div>
 
         {name || token ? (
           <button
             className='flex items-center justify-center gap-2 px-6 py-2 rounded-full text-white text-base font-medium shadow-lg 
 bg-[linear-gradient(90deg,_#FEAC5E_0%,_#C779D0_50%,_#4BC0C8_100%)] hover:scale-105 hover:shadow-xl hover:from-red-600 hover:via-rose-600 hover:to-red-800 
-  transition-transform duration-300 ml-10'
+  transition-transform duration-300 ml-5'
             onClick={() => {
               router.push("/add-on-rent");
             }}

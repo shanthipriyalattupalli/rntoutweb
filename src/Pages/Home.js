@@ -32,7 +32,7 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [categoryId, setCategoryId] = useState("");
   const [subcategories, setSubcategories] = useState([]);
-
+  const categoryIds = (typeof window !== 'undefined') ? localStorage.getItem("categoryId") : null;
   const fetchcategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/categories`);
@@ -68,13 +68,49 @@ const Home = () => {
     }
   }, [categoryId]);
 
+
+  const fetchProduct = async () => {
+    console.log(categoryIds,"fetchingproduct");
+    if (!categoryIds) {
+      console.log("Missing required parameters: categoryId, subcategoryId, or active.");
+      return;
+    }
+
+    try {
+      // Correctly construct the request URL with params
+      const response = await axios.get(`${BASE_URL}/variants/filter`, {
+        params: {
+          categoryIds,
+          // subCategoryId: subcategoryId,
+          // productId: active,
+          // latitude: latitude,
+          // longitude: longitude,
+          // distance:distance,
+          // minPrice: minPrice,
+          // maxPrice: maxPrice,
+        },
+      });
+
+      // Log and set the products state
+      console.log("Product fetch responsee:", response?.data.data);
+      setProducts(response?.data.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchProduct();
+  }, [categoryIds]);
+
   // const [categoryId, setCategoryId] = useState("");
 
   // useEffect(() => {
   //   const categoryId = localStorage.getItem("categoryId");
   //   setCategoryId(categoryId);
   // }, []);
- const categoryIds = (typeof window !== 'undefined') ? localStorage.getItem("categoryId") : null;
+
 
  console.log(categoryIds,"categoriesid");
   // Fetch all product variants

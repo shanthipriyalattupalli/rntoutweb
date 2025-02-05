@@ -287,6 +287,8 @@ const handleCouponToggle = ()=>{
         return acc;
       }, {});
       setQuantities(initialQuantities);
+      localStorage.setItem("cart", response.data.cartItems.length);
+      window.dispatchEvent(new CustomEvent("cartUpdated", { detail: cart.length }));
     } catch (error) {
       console.error("Error fetching cart details:", error);
     }
@@ -532,16 +534,18 @@ const createPayment = async () => {
             </option>
           ))}
         </select>
-        <p>Total: {item.lineTotal}</p>
+        {/* <p>Total: {item.lineTotal}</p> */}
       </div>
 
       <div className="product-right">
         <button className="delete-btn" onClick={() => handleRemove(item._id, item.variant_id._id)}>
-          <img src={deleteicon} className="flex justify-center ml-20" />
+          <img src={deleteicon} className="flex align-left" />
         </button>
         <div className="flex gap-2">
           <img src={cube} />
-          <p className="stock-info">{item.variant_id.stockQuantity} stock avail.</p>
+          {/* <p className="stock-info">{item.variant_id.stockQuantity} stock avail.</p> */}
+          <p className="stock-info">In stock</p>
+
         </div>
       </div>
     </div>
@@ -582,6 +586,7 @@ const createPayment = async () => {
 
         <div className='summary-address'>
           <div className='summary-item address'>
+            <div className="flex gap-60">
             <div className='address-content'>
               <img src={payment} />
               <span>Payable Amount</span>
@@ -589,6 +594,7 @@ const createPayment = async () => {
             <div>
               {" "}
               <span className='amount'>₹{totalPrice}</span>
+            </div>
             </div>
             <button className='pay-btn' onClick={createPayment}>
               Pay ₹{discountedPrice?discountedPrice: totalPrice}
@@ -620,7 +626,7 @@ const createPayment = async () => {
           onDiscountedPrice={handleDiscountedPrice}
         />
       )}
-        <div>
+        {/* <div>
           <div className='summary-item address' onClick={handleSidebarToggle}>
             <div className='address-content'>
               <img src={insurance} alt='Insurance' />
@@ -633,7 +639,7 @@ const createPayment = async () => {
             onClose={handleSidebarToggle}
             products={cartItems}
           />
-        </div>
+        </div> */}
         <div className="mx-auto bg-white shadow-lg rounded-xl p-5 border mb-4">
           {/* Header with Dropdown Toggle */}
           <div
@@ -680,10 +686,10 @@ const createPayment = async () => {
             </div>
           )}
         </div>
-        <div className='summary-item'>
+        {/* <div className='summary-item'>
           <img src={delivery} /> <span>Delivery Estimate</span>
           <span>27 Sep - 29 Sep to 500008</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );
