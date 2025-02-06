@@ -1,4 +1,4 @@
-"use client"; // For client-side rendering in Next.js App Router
+// "use client"; // For client-side rendering in Next.js App Router
 
 import React from "react";
 import { useRouter } from "next/navigation";

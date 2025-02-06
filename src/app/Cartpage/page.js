@@ -99,67 +99,68 @@ const handleCheckboxChange = async (cartId, isChecked) => {
 
 
 
-  const handleSelectChange = async (variantId, selectedPeriod) => {
-    const selectedRental = cartItems
-      .find((item) => item.variant_id._id === variantId)
-      ?.variant_id?.rentalPrice.find(
-        (rental) => rental.period === selectedPeriod
-      );
-  
-    if (!selectedRental) {
-      toast.error("Selected rental period is invalid");
-      return;
-    }
-  
-    try {
-      // Update the selectedOptions state
-      setSelectedOptions((prevOptions) => {
-        const updatedOptions = {
-          ...prevOptions,
-          [variantId]: { ...prevOptions[variantId], period: selectedPeriod },
-        };
-  
-        // Save to localStorage for persistence
-        localStorage.setItem("selectedOptions", JSON.stringify(updatedOptions));
-  
-        return updatedOptions;
-      });
-  
-      // Send the selected period and quantity to `handleAddToCart`
-      await handleAddToCart(
-        variantId,
-        quantities[variantId],
-        selectedRental.period
-      );
-  
-      fetchCartDetails();
-    } catch (error) {
-      console.error("Error updating rental period:", error);
-      toast.error("Failed to update rental period.");
-    }
-  };
+const handleSelectChange = async (variantId, selectedPeriod) => {
+  const selectedRental = cartItems
+    .find((item) => item.variant_id._id === variantId)
+    ?.variant_id?.rentalPrice.find((rental) => rental.period === selectedPeriod);
+
+  if (!selectedRental) {
+    toast.error("Selected rental period is invalid");
+    return;
+  }
+
+  try {
+    setSelectedOptions((prevOptions) => {
+      const updatedOptions = {
+        ...prevOptions,
+        [variantId]: { period: selectedPeriod },
+      };
+
+      localStorage.setItem("selectedOptions", JSON.stringify(updatedOptions));
+      return updatedOptions;
+    });
+
+    await handleAddToCart(variantId, quantities[variantId], selectedRental.period);
+    fetchCartDetails();
+  } catch (error) {
+    console.error("Error updating rental period:", error);
+    toast.error("Failed to update rental period.");
+  }
+};
+
+
   useEffect(() => {
-    if (cartItems?.length) {
-      const updatedOptions = { ...selectedOptions };
-      cartItems.forEach((item) => {
-        if (!updatedOptions[item.variant_id._id]) {
-          updatedOptions[item.variant_id._id] = { 
-            period: item?.variant_id?.rentalPrice?.[0]?.period 
-          };
-        }
-      });
-      setSelectedOptions(updatedOptions);
+    if (cartItems.length > 0) {
+      const initialSelectedOptions = cartItems.reduce((acc, item) => {
+        acc[item.variant_id._id] = { period: item.rentalPeriod };
+        return acc;
+      }, {});
+      setSelectedOptions(initialSelectedOptions);
     }
   }, [cartItems]);
+  
+  // useEffect(() => {
+  //   if (cartItems?.length) {
+  //     const updatedOptions = { ...selectedOptions };
+  //     // cartItems.forEach((item) => {
+  //     //   if (!updatedOptions[item.variant_id._id]) {
+  //     //     updatedOptions[item.variant_id._id] = { 
+  //     //       period: item?.variant_id?.rentalPrice?.[0]?.period 
+  //     //     };
+  //     //   }
+  //     // });
+  //     setSelectedOptions(updatedOptions);
+  //   }
+  // }, [cartItems]);
   const storedOptions=(typeof window !== 'undefined') ? localStorage.getItem("selectedOptions") : null;
 
   // Retrieve persisted selected options on component load
-  useEffect(() => {
-    // const storedOptions = localStorage.getItem("selectedOptions");
-    if (storedOptions) {
-      setSelectedOptions(JSON.parse(storedOptions));
-    }
-  }, []);
+  // useEffect(() => {
+  //   // const storedOptions = localStorage.getItem("selectedOptions");
+  //   if (storedOptions) {
+  //     setSelectedOptions(JSON.parse(storedOptions));
+  //   }
+  // }, []);
   
 
   console.log(quantities, "quantituessd");
@@ -521,19 +522,20 @@ const createPayment = async () => {
         </button>
 
         <select
-          className="duration-select"
-          value={
-            selectedOptions[item.variant_id._id]?.period ||
-            item?.variant_id?.rentalPrice?.[0]?.period
-          }
-          onChange={(e) => handleSelectChange(item.variant_id._id, e.target.value)}
-        >
-          {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
-            <option key={rentalPrice._id} value={rentalPrice.period}>
-              {rentalPrice.period}
-            </option>
-          ))}
-        </select>
+  className="duration-select"
+  value={selectedOptions[item.variant_id._id]?.period || item.rentalPeriod}
+  onChange={(e) => handleSelectChange(item.variant_id._id, e.target.value)}
+>
+  <option key={item._id} value={item.rentalPeriod}>
+    {item.rentalPeriod}
+  </option>
+  {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
+    <option key={rentalPrice._id} value={rentalPrice.period}>
+      {rentalPrice.period}
+    </option>
+  ))}
+</select>
+
         {/* <p>Total: {item.lineTotal}</p> */}
       </div>
 
