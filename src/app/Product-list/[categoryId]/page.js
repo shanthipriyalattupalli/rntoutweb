@@ -36,6 +36,7 @@ const ProductList = () => {
   console.log("categoryId from params:", categoryId);
   console.log(categoryId, subcategoryId, active, "activeindex productsbnhjb nmhbjn m")
 
+  const distances = (typeof window !== 'undefined') ? localStorage.getItem("selectedDistance") : null
 
   const fetchProducts = async () => {
     if (!categoryId || !subcategoryId || !active) {

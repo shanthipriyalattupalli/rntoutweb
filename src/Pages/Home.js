@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-// import "@/styles/Home.css";
+import axios from "axios";
 import '../styles/Home.css';
 import Banner from "../Components/Home/Banner";
 import CategoryList from "../Components/Home/CategoryList";
@@ -22,191 +22,96 @@ import CityExplorer from "../Components/Home/CityExplorer";
 import Achievements from "../Components/Home/Achievements";
 import Blogs from "../Components/Home/Blogs";
 import Testimonials from "../Components/Home/Testimonials";
-import MobileApp from "../Components/Home/MobileApp";
-import axios from "axios";
-import { ToastContainer } from "react-toastify";
 
 const Home = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  const [products, setProducts] = useState([]);
+
   const [categories, setCategories] = useState([]);
-  const [categoryId, setCategoryId] = useState("");
-  const [subcategories, setSubcategories] = useState([]);
+  const [categoryProducts, setCategoryProducts] = useState({});
   const categoryIds = (typeof window !== 'undefined') ? localStorage.getItem("categoryId") : null;
-  const fetchcategories = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/categories`);
-      console.log(response.data.categories, "categories");
-      setCategories(response.data.categories);
-      if (response?.data?.length > 0) {
-        setCategoryId(response.data[0]._id); // Set categoryId to the first category
-      }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
+  const latitude=(typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
+  const longitude=(typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
+  const distance = (typeof window !== 'undefined') ? localStorage.getItem("selectedDistance") : null
+
+  // Define category IDs
+  const CATEGORY_IDS = {
+    IT_INFRASTRUCTURE: "67483b5c3b62da6a9bed56fd",
+    FURNITURE: "67483b8c3b62da6a9bed5700",
+    MEDICAL_EQUIPMENT: "67483b9b3b62da6a9bed5703",
+    VACATION_EQUIPMENT: "67483bac3b62da6a9bed5706",
+    VEHICLES: "67483bc73b62da6a9bed5709",
+    PARTY_MATERIAL: "67483bd53b62da6a9bed570c",
+    SPORTS_GYM: "67483be13b62da6a9bed570f",
+    HOUSEHOLD_KITCHEN: "67483bed3b62da6a9bed5712",
   };
 
+  // Fetch categories
   useEffect(() => {
-    fetchcategories();
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/categories`);
+        setCategories(response.data.categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
   }, []);
 
-  const fetchSubcategories = async () => {
+  // Function to fetch products for a specific category
+  const fetchProductsByCategory = async (categoryId) => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/subcategories/categories/${categoryId}`
-      );
-      console.log(response.data, "subcategories");
-      setSubcategories(response.data);
-    } catch (error) {
-      console.error("Error fetching subcategories:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (categoryId) {
-      fetchSubcategories();
-    }
-  }, [categoryId]);
-
-
-  const fetchProduct = async () => {
-    console.log(categoryIds,"fetchingproduct");
-    if (!categoryIds) {
-      console.log("Missing required parameters: categoryId, subcategoryId, or active.");
-      return;
-    }
-
-    try {
-      // Correctly construct the request URL with params
       const response = await axios.get(`${BASE_URL}/variants/filter`, {
         params: {
-          categoryIds,
-          // subCategoryId: subcategoryId,
-          // productId: active,
-          // latitude: latitude,
-          // longitude: longitude,
-          // distance:distance,
+          categoryId:categoryId,
+          search:"",
+          latitude: latitude,
+          longitude: longitude,
+          distance:distance,
           // minPrice: minPrice,
           // maxPrice: maxPrice,
         },
       });
 
-      // Log and set the products state
-      console.log("Product fetch responsee:", response?.data.data);
-      setProducts(response?.data.data);
+      setCategoryProducts(prevState => ({
+        ...prevState,
+        [categoryId]: response.data.data,
+      }));
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error(`Error fetching products for category ${categoryId}:`, error);
     }
   };
 
-
+  // Fetch products for all categories
   useEffect(() => {
-    fetchProduct();
-  }, [categoryIds]);
-
-  // const [categoryId, setCategoryId] = useState("");
-
-  // useEffect(() => {
-  //   const categoryId = localStorage.getItem("categoryId");
-  //   setCategoryId(categoryId);
-  // }, []);
-
-
- console.log(categoryIds,"categoriesid");
-  // Fetch all product variants
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/variants/product-variants`);
-      console.log(response, "fetchproductstfgvhb");
-      setProducts(response.data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProducts();
+    Object.values(CATEGORY_IDS).forEach(categoryId => {
+      fetchProductsByCategory(categoryId);
+    });
   }, []);
-
-  const getProductsByCategory = (categoryId) => {
-    console.log(
-      "Getting products by category",
-      products.filter((product) => product.categoryId._id === categoryId)
-    );
-    console.log("caategoryid", categoryId);
-    return products.filter((product) => product.categoryId._id === categoryId);
-  };
-
-  const getToptrendingProducts = () => {
-    console.log(
-      "Getting products by category",
-      products.filter((product) => product.categoryId._id === categoryIds)
-    );
-    console.log("caategoryid", categoryIds);
-    return products.filter((product) => product.categoryId._id === categoryIds);
-  };
-
-  const IT_INFRASTRUCTURE_ID = "67483b5c3b62da6a9bed56fd";
-  const FURNITURE_ID = "67483b8c3b62da6a9bed5700";
-  const MEDICAL_EQUIPMENT_ID = "67483b9b3b62da6a9bed5703";
-  const VACATION_EQUIPMENT_ID = "67483bac3b62da6a9bed5706";
-  const VEHICLES_ID = "67483bc73b62da6a9bed5709";
-  const PARTY_MATERIAL_ID = "67483bd53b62da6a9bed570c";
-  const SPORTS_GYM_ID = "67483be13b62da6a9bed570f";
-  const HOUSEHOLD_KITCHEN_ID = "67483bed3b62da6a9bed5712";
 
   return (
     <main className='bg-slate-50 tmp-bg'>
       <Banner />
       <CategoryList categories={categories} />
       <ProductGrid categories={categories} />
-      <Products
-        products={getToptrendingProducts(categoryIds)}
-        categoryId={categoryIds}
-      />
+      <Products products={categoryProducts[categoryIds] || []} categoryId={categoryIds} />
       <CuratedCollections />
-      {/* Pass filtered products to each component */}
-      <ITInfrastructure
-        products={getProductsByCategory(IT_INFRASTRUCTURE_ID)}
-        categoryId={IT_INFRASTRUCTURE_ID}
-      />
-      <Furniture
-        products={getProductsByCategory(FURNITURE_ID)}
-        categoryId={FURNITURE_ID}
-      />
+
+      <ITInfrastructure products={categoryProducts[CATEGORY_IDS.IT_INFRASTRUCTURE] || []} categoryId={CATEGORY_IDS.IT_INFRASTRUCTURE} />
+      <Furniture products={categoryProducts[CATEGORY_IDS.FURNITURE] || []} categoryId={CATEGORY_IDS.FURNITURE} />
       <PromotionalAd />
-      <MedicalEquipment
-        products={getProductsByCategory(MEDICAL_EQUIPMENT_ID)}
-        categoryId={MEDICAL_EQUIPMENT_ID}
-      />
-      <VacationEquipment
-        products={getProductsByCategory(VACATION_EQUIPMENT_ID)}
-        categoryId={VACATION_EQUIPMENT_ID}
-      />
-      {/* <PromotionalAd /> */}
-      <Vehicles
-        products={getProductsByCategory(VEHICLES_ID)}
-        categoryId={VEHICLES_ID}
-      />
-      <PartyMaterial
-        products={getProductsByCategory(PARTY_MATERIAL_ID)}
-        categoryId={PARTY_MATERIAL_ID}
-      />
-      {/* <PromotionalAd /> */}
-      <SportsGym
-        products={getProductsByCategory(SPORTS_GYM_ID)}
-        categoryId={SPORTS_GYM_ID}
-      />
-      <HouseholdKitchen
-        products={getProductsByCategory(HOUSEHOLD_KITCHEN_ID)}
-        categoryId={HOUSEHOLD_KITCHEN_ID}
-      />
+      <MedicalEquipment products={categoryProducts[CATEGORY_IDS.MEDICAL_EQUIPMENT] || []} categoryId={CATEGORY_IDS.MEDICAL_EQUIPMENT} />
+      <VacationEquipment products={categoryProducts[CATEGORY_IDS.VACATION_EQUIPMENT] || []} categoryId={CATEGORY_IDS.VACATION_EQUIPMENT} />
+      <Vehicles products={categoryProducts[CATEGORY_IDS.VEHICLES] || []} categoryId={CATEGORY_IDS.VEHICLES} />
+      <PartyMaterial products={categoryProducts[CATEGORY_IDS.PARTY_MATERIAL] || []} categoryId={CATEGORY_IDS.PARTY_MATERIAL} />
+      <SportsGym products={categoryProducts[CATEGORY_IDS.SPORTS_GYM] || []} categoryId={CATEGORY_IDS.SPORTS_GYM} />
+      <HouseholdKitchen products={categoryProducts[CATEGORY_IDS.HOUSEHOLD_KITCHEN] || []} categoryId={CATEGORY_IDS.HOUSEHOLD_KITCHEN} />
+
       <Services />
       <CityExplorer />
       <Achievements />
       <Blogs />
       <Testimonials />
-      {/* <MobileApp /> */}
     </main>
   );
 };

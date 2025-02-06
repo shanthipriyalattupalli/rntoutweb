@@ -5,14 +5,14 @@ import Image from "next/image";
 import axios from "axios";
 import SearchInput from "../SearchInput";
 import { useRouter } from "next/navigation";
-import {MAP_API} from '../../services/GMap'
+import { MAP_API } from '../../services/GMap'
 import Login from "../Auth/Login";
 const logo = "/Assets/Rntout_Logo.png";
 const Photo = "/Assets/Photo.png";
-const locations='/Assets/location_fill.svg'
-const nearby='/Assets/nearby.svg'
-const cart='/Assets/cart.svg'
-const cartitems='/Assets/cartitems.svg'
+const locations = '/Assets/location_fill.svg'
+const nearby = '/Assets/nearby.svg'
+const cart = '/Assets/cart.svg'
+const cartitems = '/Assets/cartitems.svg'
 
 
 function Header() {
@@ -35,18 +35,19 @@ function Header() {
 
   const [locationError, setLocationError] = useState(null);
   const [locationName, setLocationName] = useState("");
-  const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
-  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
-  const name=(typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
-  const latitude=(typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
-  const longitude=(typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
+  const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const name = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
+  const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
+  const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [location, setLocation] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // const [location, setLocation] = useState(null);
   const [variants, setVariants] = useState([]);
-  const [cartItems,setCartItems] = useState(0);
+  const [selectedDistance, setSelectedDistance] = useState("");
+  const [cartItems, setCartItems] = useState(0);
   const [locationsList, setLocationsList] = useState([]);
   const [address, setAddress] = useState({ suburb: "" });
   const [error, setError] = useState(null);
@@ -64,7 +65,12 @@ function Header() {
     setIsModalOpen(false);
   };
 
-
+  useEffect(() => {
+    const storedDistance = (typeof window !== 'undefined') ? localStorage.getItem("selectedDistance") : null
+    if (storedDistance) {
+      setSelectedDistance(storedDistance);
+    }
+  }, []);
 
 
 
@@ -112,7 +118,7 @@ function Header() {
   };
 
 
-  console.log(locationsList,"address")
+  console.log(locationsList, "address")
 
   const fetchLocation = () => {
     if ("geolocation" in navigator) {
@@ -139,89 +145,89 @@ function Header() {
   useEffect(() => {
     fetchLocation();
   }, []);
-  
-
-// useEffect(()=>{
-//   const cart = (typeof window !== 'undefined') ? localStorage.getItem("cart") : null;
-//   console.log(cart,"cartitems")
-//   setCartItems(cart);
-//   const updateCartCount = (event) => {
-//     setCartCount(event.detail);
-//   };
-//   window.addEventListener("cartUpdated", updateCartCount);
-//   return () => {
-//     window.removeEventListener("cartUpdated", updateCartCount);
-//   };
-// },[])
 
 
+  // useEffect(()=>{
+  //   const cart = (typeof window !== 'undefined') ? localStorage.getItem("cart") : null;
+  //   console.log(cart,"cartitems")
+  //   setCartItems(cart);
+  //   const updateCartCount = (event) => {
+  //     setCartCount(event.detail);
+  //   };
+  //   window.addEventListener("cartUpdated", updateCartCount);
+  //   return () => {
+  //     window.removeEventListener("cartUpdated", updateCartCount);
+  //   };
+  // },[])
 
-//   useEffect(() => {
-//     if (navigator.geolocation) {
-//       navigator.geolocation.getCurrentPosition(
-//         (position) => {
-//           const { latitude, longitude } = position.coords;
-//           localStorage.setItem("latitude", latitude);
-//           localStorage.setItem("longitude", longitude);
-//         },
-//         (error) => {
-//           console.error("Error fetching location:", error);
-//           setLocationError(error.message);
-//           navigate("/");
-//         }
-//       );
-//     } else {
-//       console.error("Geolocation is not supported by this browser.");
-//       navigate("/");
-//     }
-//   }, []);
 
-//   useEffect(() => {
-//     const fetchLocationName = async () => {
-//       if (latitude && longitude) {
-//         try {
-//           const response = await axios.get(
-//             `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${MAP_API}`
-//           );
-  
-//           // Check if results are present in the response
-//           if (response.data.results && response.data.results.length > 0) {
-//             const addressComponents = response.data.results[0].address_components;
-//             const location=addressComponents[4].long_name
-//             console.log(response.data.results,"address_components")
-// console.log(location,"locaton")
-//   //           const city = addressComponents.find((component) =>
-//   //             component.types.includes('locality')
-//   //         )?.long_name;
-//   //         console.log(response.data.results[0].address_components,"address_components")
-//   // console.log(city,"location name")
-//             // Set the city if found
-//             if (location) {
-//               // setCity(city);
-              
-//               setLocationName(location)
-//             } else {
-//               console.log('City not found in the address components.');
-//             }
-  
-//             // Call the getPropertiesList function after setting the city
-//             // getPropertiesList();
-//           } else {
-//             console.log('No results found for the provided coordinates.');
-//           }
-  
-//           // console.log(response.data, 'location name');
-//         } catch (error) {
-//           console.error('Error fetching location name:', error);
-//         }
-//       } else {
-//         console.log('Latitude and/or Longitude are not defined.');
-//       }
-//     };
-  
-//     fetchLocationName();
-//   }, [latitude, longitude]);
-  
+
+  //   useEffect(() => {
+  //     if (navigator.geolocation) {
+  //       navigator.geolocation.getCurrentPosition(
+  //         (position) => {
+  //           const { latitude, longitude } = position.coords;
+  //           localStorage.setItem("latitude", latitude);
+  //           localStorage.setItem("longitude", longitude);
+  //         },
+  //         (error) => {
+  //           console.error("Error fetching location:", error);
+  //           setLocationError(error.message);
+  //           navigate("/");
+  //         }
+  //       );
+  //     } else {
+  //       console.error("Geolocation is not supported by this browser.");
+  //       navigate("/");
+  //     }
+  //   }, []);
+
+  //   useEffect(() => {
+  //     const fetchLocationName = async () => {
+  //       if (latitude && longitude) {
+  //         try {
+  //           const response = await axios.get(
+  //             `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${MAP_API}`
+  //           );
+
+  //           // Check if results are present in the response
+  //           if (response.data.results && response.data.results.length > 0) {
+  //             const addressComponents = response.data.results[0].address_components;
+  //             const location=addressComponents[4].long_name
+  //             console.log(response.data.results,"address_components")
+  // console.log(location,"locaton")
+  //   //           const city = addressComponents.find((component) =>
+  //   //             component.types.includes('locality')
+  //   //         )?.long_name;
+  //   //         console.log(response.data.results[0].address_components,"address_components")
+  //   // console.log(city,"location name")
+  //             // Set the city if found
+  //             if (location) {
+  //               // setCity(city);
+
+  //               setLocationName(location)
+  //             } else {
+  //               console.log('City not found in the address components.');
+  //             }
+
+  //             // Call the getPropertiesList function after setting the city
+  //             // getPropertiesList();
+  //           } else {
+  //             console.log('No results found for the provided coordinates.');
+  //           }
+
+  //           // console.log(response.data, 'location name');
+  //         } catch (error) {
+  //           console.error('Error fetching location name:', error);
+  //         }
+  //       } else {
+  //         console.log('Latitude and/or Longitude are not defined.');
+  //       }
+  //     };
+
+  //     fetchLocationName();
+  //   }, [latitude, longitude]);
+
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -253,8 +259,8 @@ function Header() {
     console.log("out fetching cart");
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
-console.log(response,"response in cart")
-setCartItems(response.data.cartItems);
+      console.log(response, "response in cart")
+      setCartItems(response.data.cartItems);
     } catch (error) {
       console.error("Error fetching cart details:", error);
     }
@@ -267,26 +273,34 @@ setCartItems(response.data.cartItems);
 
 
   const handleSearchInputChange = async (searchTerm) => {
-   
-      try {
-        const response = await axios.get(`${BASE_URL}/variants/filter`, {
-          params: {
-            search: searchTerm,  
-          },
-        });
-        console.log(response, "response in search");
-        setVariants(response.data.data);
-        setShowSuggestions(true);
-      } catch (error) {
-        console.error("Error fetching variants:", error);
-      }
-    
+
+    try {
+      const response = await axios.get(`${BASE_URL}/variants/filter`, {
+        params: {
+          search: searchTerm,
+        },
+      });
+      console.log(response, "response in search");
+      setVariants(response.data.data);
+      setShowSuggestions(true);
+    } catch (error) {
+      console.error("Error fetching variants:", error);
+    }
+
   };
 
 
-  const handleVariantClick=(variantId)=>{
-    
+  const handleVariantClick = () => {
+    router.push('/Products')
   }
+
+  const handleDistanceChange = (e) => {
+    const distance = e.target.value;
+    console.log(distance, "distance..")
+    setSelectedDistance(distance);
+    localStorage.setItem("selectedDistance", distance);
+    window.location.reload();
+  };
 
   return (
     <header className='flex items-center justify-between px-20 py-4 bg-white shadow-md'>
@@ -301,25 +315,28 @@ setCartItems(response.data.cartItems);
       </div>
       <div className='flex items-center'>
         <div className='relative ml-4'>
-          <SearchInput onChange={(e) => handleSearchInputChange(e.target.value)}/>
+          <SearchInput onChange={(e) => handleSearchInputChange(e.target.value)} />
           {showSuggestions && variants.length > 0 && (
-        <ul className="absolute left-0 w-full bg-white border rounded shadow mt-2 max-h-60 overflow-y-auto z-40">
-          {variants.map((variant) => (
-            <li
-              key={variant.id}
-              onClick={() => handleVariantClick(variant.id)}
-              className="p-2 cursor-pointer hover:bg-gray-200"
-            >
-              {variant.title}
-            </li>
-          ))}
-        </ul>
-      )}
+            <ul className="absolute left-0 w-full h-auto bg-white border rounded shadow mt-2 z-40">
+              {variants.slice(0, 10).map((variant) => (
+                <Link href={{ pathname: `/Products/${variant.title}`, query: { id: variant._id } }} key={variant._id}>
+                  <li
+                    key={variant._id}
+                    // onClick={() => handleVariantClick(variant.id)}
+                    className="p-2 cursor-pointer hover:bg-gray-200"
+                  >
+                    {variant.title}
+                  </li>
+                </Link>
+              ))}
+
+            </ul>
+          )}
         </div>
         <div className='relative ml-4 bg-white border border-gray-300 rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-gray-100'>
           <Image src={locations} alt="location" width={20} height={20}></Image>
-     
-            <span value='HYD - 500008' disabled className="font-poppins text-sm font-medium leading-5 text-center [text-underline-position:from-font] [text-decoration-skip-ink:none] text-blacky">{address.suburb}</span>
+
+          <span value='HYD - 500008' disabled className="font-poppins text-sm font-medium leading-5 text-center [text-underline-position:from-font] [text-decoration-skip-ink:none] text-blacky">{address.suburb}</span>
 
           {/* <button
             id='dropdownBtn'
@@ -376,14 +393,14 @@ setCartItems(response.data.cartItems);
         </div>
         <div className='relative ml-4 bg-white border border-gray-300 rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-gray-100'>
           <Image src={nearby} alt="location" width={20} height={20}></Image>
-          <select>
+          <select value={selectedDistance} onChange={handleDistanceChange}>
             {/* <option value={location}>{location}</option> */}
-            <option value='HYD - 500008'>20 km</option>
-            <option value='HYD - 500028'>30 km</option>
-            <option value='HYD - 500032'>40 km</option>
-            <option value='HYD - 500084'>50 km</option>
-            <option value='BTM - 560074'>60 km</option>
-            <option value='BTM - 560086'>100 km</option>
+            <option value='20'>20 km</option>
+            <option value='30'>30 km</option>
+            <option value='40'>40 km</option>
+            <option value='50'>50 km</option>
+            <option value='60'>60 km</option>
+            <option value='100'>100 km</option>
           </select>
         </div>
         <div
@@ -392,16 +409,16 @@ setCartItems(response.data.cartItems);
             router.push("/Cartpage");
           }}
         >
-   { cartItems.length >0 ?
-   <>
-    <Image src={cartitems} width={35} height={30} alt="cartitems" className="relative"/>
-    <span className="absolute top-2 ml-6 border border-white-900 bg-red-500 rounded-full w-6 h-6 text-md font-semibold text-white flex items-center justify-center">
-  {cartItems.length}
-</span>
+          {cartItems.length > 0 ?
+            <>
+              <Image src={cartitems} width={35} height={30} alt="cartitems" className="relative" />
+              <span className="absolute top-2 ml-6 border border-white-900 bg-red-500 rounded-full w-6 h-6 text-md font-semibold text-white flex items-center justify-center">
+                {cartItems.length}
+              </span>
 
-    </> 
-   :      <button className='bg-white border border-gray-300 rounded-lg p-2 hover:bg-gray-100'>
-            {/* <svg
+            </>
+            : <button className='bg-white border border-gray-300 rounded-lg p-2 hover:bg-gray-100'>
+              {/* <svg
               className='h-6 w-6 text-gray-600'
               fill='none'
               stroke='currentColor'
@@ -415,10 +432,10 @@ setCartItems(response.data.cartItems);
                 d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z'
               ></path>
             </svg> */}
-            <Image src={cart} width={20}height={20} alt="cart"/>
-            
-          </button>}
-         
+              <Image src={cart} width={20} height={20} alt="cart" />
+
+            </button>}
+
         </div>
 
         {name || token ? (
@@ -436,32 +453,32 @@ bg-[linear-gradient(90deg,_#FEAC5E_0%,_#C779D0_50%,_#4BC0C8_100%)] hover:scale-1
 
         <nav className='navbar'>
           {name || token ? (
-                  <div
-                  onClick={() => router.push("/profile")} // Redirect to profile page
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    border: "1px solid #E1E6EF",
-                    borderRadius: "44px",
-                    overflow: "hidden",
-                    padding: "0 10px 0 0",
-                    cursor: "pointer",
-                    marginLeft: "20px",
-                  }}
-                >
-                  <img
-                    src={Photo}
-                    alt='user'
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                    }}
-                  />
-                  <p style={{ margin: 0 }}>{name}</p>
-                  {/* <button
+            <div
+              onClick={() => router.push("/profile")} // Redirect to profile page
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                border: "1px solid #E1E6EF",
+                borderRadius: "44px",
+                overflow: "hidden",
+                padding: "0 10px 0 0",
+                cursor: "pointer",
+                marginLeft: "20px",
+              }}
+            >
+              <img
+                src={Photo}
+                alt='user'
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
+              />
+              <p style={{ margin: 0 }}>{name}</p>
+              {/* <button
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent triggering profile page redirect
                   handleLogout();
@@ -477,28 +494,28 @@ bg-[linear-gradient(90deg,_#FEAC5E_0%,_#C779D0_50%,_#4BC0C8_100%)] hover:scale-1
               >
                 Logout
               </button> */}
-                </div>
-  
+            </div>
+
           ) : (
             <div className="app-container">
-            <button
-              className="ml-5 bg-[#FF2D55] hover:bg-[#e6264c] text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300"
-              onClick={() => setIsLoginOpen(true)}
-            >
-              Sign In / Sign Up
-            </button>
-      
-            {isLoginOpen && (
-              <div className="modal-overlay">
-                <div className="modal-content">
-                  <button className="close-button" onClick={() => setIsLoginOpen(false)}>
-                    ✕
-                  </button>
-                  <Login setIsLoginOpen={setIsLoginOpen}/>
+              <button
+                className="ml-5 bg-[#FF2D55] hover:bg-[#e6264c] text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300"
+                onClick={() => setIsLoginOpen(true)}
+              >
+                Sign In / Sign Up
+              </button>
+
+              {isLoginOpen && (
+                <div className="modal-overlay">
+                  <div className="modal-content">
+                    <button className="close-button" onClick={() => setIsLoginOpen(false)}>
+                      ✕
+                    </button>
+                    <Login setIsLoginOpen={setIsLoginOpen} />
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
           )}
         </nav>
 
