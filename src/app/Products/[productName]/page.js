@@ -725,7 +725,7 @@ const ProductPage = () => {
               <button className="close-button" onClick={() => setIsReview(false)}>
                 ✕
               </button>
-              <Reviews />
+              <Reviews product={product}/>
             </div>
           </div>
 

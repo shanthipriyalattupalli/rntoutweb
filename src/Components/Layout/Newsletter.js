@@ -7,7 +7,9 @@ const twitter = '/Assets/twitter.svg'
 const instagram = '/Assets/instagram.svg'
 const youtube = '/Assets/youtub.svg'
 const rentoutlogo = '/Assets/rentoutlogo.svg'
+import { useRouter } from "next/navigation"; 
 const Newsletter = () => {
+  const router = useRouter();
   return (
     <div className="bg-black pt-12 px-24">
       <div className="md:flex md:justify-between">
@@ -78,8 +80,8 @@ const Newsletter = () => {
           </div>
           <div>
             <h4 className="text-lg font-medium text-white mb-4">Information</h4>
-            <ul className="text-gray-400 text-sm space-y-2">
-              <li>FAQ</li>
+            <ul className="text-gray-400 text-sm space-y-2 cursor-pointer">
+              <li onClick={() => router.push("/Faq")} >FAQ</li>
               <li>Blog</li>
               <li>Support</li>
             </ul>
