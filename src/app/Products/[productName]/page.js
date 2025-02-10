@@ -443,7 +443,7 @@ const ProductPage = () => {
                     <div className='font-bold'>₹{price.price}</div>
                   </button>
                 ))}
-                <button
+                {/* <button
                   className={`p-3 rounded-lg border text-center ${selectedcustomDuration === "Custom"
                     ? "border-[#F48003] bg-[#FFF5EB]"
                     : "border-gray-200"
@@ -451,13 +451,12 @@ const ProductPage = () => {
                   onClick={() => handleCustomSelection()}
                 >
                   <div className='text-xs'>Custom</div>
-                  {/* <div className='font-bold'>₹{price.price}</div> */}
-                </button>
+                </button> */}
 
               </div>
             </div>
 
-            {selectedcustomDuration === "Custom" && <div className="w-2">
+            {/* {selectedcustomDuration === "Custom" && <div className="w-2">
               <div className="flex gap-20 text-center">
                 <div>
                   <span className="ml-2 text-gray-200 ">|</span>
@@ -503,7 +502,7 @@ const ProductPage = () => {
               <div className="price0">
                 {priceRange && `Selected Price: ₹${priceRange}`}
               </div>
-            </div>}
+            </div>} */}
 
             {/* Quantity */}
 

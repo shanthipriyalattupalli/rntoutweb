@@ -38,7 +38,7 @@ useEffect(() => {
       setAddresses(response.data.profile.addresses);
     } catch (error) {
       console.error(error);
-      toast.error("Failed to fetch addresses.");
+      // toast.error("Failed to fetch addresses.");
     }
   };
 

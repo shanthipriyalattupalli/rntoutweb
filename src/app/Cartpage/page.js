@@ -359,6 +359,7 @@ const CartPage = () => {
   };
 
   const handleContinueClick = async (orderId, amount) => {
+    console.log(orderId,"order id in checkout")
     try {
       const payload = {
         orderId: orderId,
@@ -374,6 +375,7 @@ const CartPage = () => {
 
       // Axios response data is already parsed
       if (response.data.order && response.data.order.id) {
+        console.log(response.data.order.id,"order in paymentinitate")
         setDisplayRazorpay(true);
         setRazorpayOrderId(response.data.order.id);
       } else {
@@ -407,7 +409,7 @@ const CartPage = () => {
   const handlePayment = async (status, orderDetails) => {
     if (status === "succeeded") {
       setDisplayRazorpay(false);
-      await handleContinueClick(orderDetails);
+      // await handleContinueClick(orderDetails);
       setFormData(initialFormData);
     } else if (status === "cancelled") {
       setDisplayRazorpay(false);
@@ -614,7 +616,7 @@ const CartPage = () => {
         <div className="mx-auto bg-white shadow-lg rounded-xl p-5 border mb-4">
           {/* Header with Dropdown Toggle */}
           <div
-            className="flex items-center justify-between  pb-2 cursor-pointer"
+            className="flex items-center justify-between cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
           >
             <div className="flex items-center space-x-2">

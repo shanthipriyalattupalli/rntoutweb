@@ -180,8 +180,11 @@ export default function Orders() {
               {order.paymentStatus}
             </p>
             :
-            <p class="download-invoice">
-              Delivered on: <span>27/08/2024</span>
+            <p class={`download-invoice progress ${order.paymentStatus}`}>
+                        <span>
+         <MdPayments/>
+              </span>{" "}
+              {order.paymentStatus}
             </p>}
           </div>
         </div>
