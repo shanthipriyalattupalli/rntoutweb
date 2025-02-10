@@ -198,7 +198,7 @@ const ProductList = () => {
 
           <div className="w-full flex flex-col gap-2 py-4 px-2  h-[auto] border border-slate-200 bg-white rounded-r-lg overflow-hidden">
           <div className="w-full  overflow-x-auto border rounded-lg scrollbar-hide">
-  <div className="flex w-max ">
+  <div className="flex w-max">
     {product.map((productItem) => (
       <div
         key={productItem._id}

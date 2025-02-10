@@ -273,20 +273,23 @@ function Header() {
 
 
   const handleSearchInputChange = async (searchTerm) => {
-
-    try {
-      const response = await axios.get(`${BASE_URL}/variants/filter`, {
-        params: {
-          search: searchTerm,
-        },
-      });
-      console.log(response, "response in search");
-      setVariants(response.data.data);
-      setShowSuggestions(true);
-    } catch (error) {
-      console.error("Error fetching variants:", error);
+    if (searchTerm.length > 3) {
+      try {
+        const response = await axios.get(`${BASE_URL}/variants/filter`, {
+          params: {
+            search: searchTerm,
+          },
+        });
+        console.log(response, "response in search");
+        setVariants(response.data.data);
+        setShowSuggestions(true);
+      } catch (error) {
+        console.error("Error fetching variants:", error);
+      }
+    } else {
+      setVariants([]); // Clear variants if searchTerm is less than 3
+      setShowSuggestions(false);
     }
-
   };
 
 

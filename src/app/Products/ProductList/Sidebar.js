@@ -12,7 +12,7 @@ import Image from "next/image";
 // import { useParams } from 'next/navigation';
 const downArrow = "/Assets/down_line.png";
 
-const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange,distance }) => {
+const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, distance }) => {
   console.log(subCategories, "subcategories in sidebar menu");
   const [activeIndex, setActiveIndex] = useState(null);
   const [priceRange, setPriceRange] = useState(0); // Current slider value
@@ -148,16 +148,16 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange,di
             <ul className="space-y-1">
               {subCategories?.map((subcategory) => (
                 <li key={subcategory._id}>
-   <div
-  onClick={() => handleClick(subcategory._id, subcategory.categoryId._id)}
-  className={`flex justify-between items-center text-gray-700 border rounded-lg hover:text-gray-900 cursor-pointer p-2 ${activeIndex === subcategory._id
-    ? "bg-[#F0F5FF] text-black border-[#2F6FED]"
-    : "bg-[#0707070D] text-black border-[#0707071A]"
-    }`}
->
-  <span className="truncate w-[80%]">{subcategory.subCategoryName}</span>
-  <ChevronDownIcon className="w-5 h-5 text-gray-600" />
-</div>
+                  <div
+                    onClick={() => handleClick(subcategory._id, subcategory.categoryId._id)}
+                    className={`flex justify-between items-center text-gray-700 border rounded-lg hover:text-gray-900 cursor-pointer p-2 ${activeIndex === subcategory._id
+                      ? "bg-[#F0F5FF] text-black border-[#2F6FED]"
+                      : "bg-[#0707070D] text-black border-[#0707071A]"
+                      }`}
+                  >
+                    <span className="truncate w-[80%]">{subcategory.subCategoryName}</span>
+                    <ChevronDownIcon className="w-5 h-5 text-gray-600" />
+                  </div>
 
                 </li>
               ))}
@@ -318,7 +318,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange,di
                             <span className="ml-2 text-gray-200 ">|</span>
                             <span >5km</span>
                           </div>
-                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left"> 
+                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
                             <span className="ml-2 text-gray-200 ">|</span>
                             <span>10km</span>
                           </div>
