@@ -1,39 +1,28 @@
-/* .about-us-container {
+.about-card1{
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
-    background-color: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    height:667px;
-    padding: 16px;
-    gap: 16px;
-    border-radius: none ;
-    border: none;
-    
-} */
-
+   
+}
+.about-card1-left{
+    padding: 20px;
+    border-top: 1px solid #dbe4f1;
+}
 .about-title {
     font-size: 24px;
     font-weight: bold;
     color: #0056b3;
-    margin-bottom: 16px;
-}
-
-.about-card {
-    background-color: #ffffff;
-    padding: 20px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    border-radius: 0px 8px 0px 0px;
-    border: 1px solid #d0dce7;
-
+    height: 44px;
+    padding: 4px 16px;
+    background: #F0F5FF;
+    border-bottom: 1px solid #0707071A;
 }
 
 .about-card-title {
     font-size: 18px;
     font-weight: bold;
     color: #333333;
-    margin-bottom: 12px;
-    border-top: 1px solid #dbe4f1;
+
 }
 
 .about-card-text {

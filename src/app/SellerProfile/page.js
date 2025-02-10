@@ -257,7 +257,7 @@ const SellerCarouselProfile = () => {
               RntOut Enterprise{" "}
               <span className='seller-verified'>&#x2714;</span>
             </h1>
-            <p>
+            {/* <p>
               <span className='seller-contact-item'>📞 +91 12345 67890</span> |{" "}
               <span className='seller-contact-item'>
                 ✉️ rntout.enterprise@gmail.com
@@ -267,7 +267,7 @@ const SellerCarouselProfile = () => {
                 📍 3-6-288/3, Sri Siva Rama Towers, King Koti, Hyderabad,
                 Telangana, India 500029
               </span>
-            </p>
+            </p> */}
           </div>
         </div>
 
