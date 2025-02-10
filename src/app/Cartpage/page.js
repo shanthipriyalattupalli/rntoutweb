@@ -29,7 +29,7 @@ const CartPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAddressSidebarOpen, setIsAddressSidebarOpen] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
-  const [isCoupon,setIsCoupon]=useState(false)
+  const [isCoupon, setIsCoupon] = useState(false)
   const [quantities, setQuantities] = useState({});
   const [displayRazorpay, setDisplayRazorpay] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState("");
@@ -41,8 +41,8 @@ const CartPage = () => {
   const [orderId, setOrderId] = useState(null);
   const [selectedCartItems, setSelectedCartItems] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [disValue, setDisValue] =useState(0)
-
+  const [disValue, setDisValue] = useState(0)
+  const [razorpayOrderId, setRazorpayOrderId] = useState()
 
   // const [userId, setUserId] = useState("");
   // const [token, setToken] = useState("");
@@ -53,80 +53,76 @@ const CartPage = () => {
   //   setUserId(userId);
   //   setToken(token);
   // }, []);
-  const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
 
-  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
-
-console.log(token,"outside")
+  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
 
 
+  const handleCheckboxChange = async (cartId, isChecked) => {
+    // Update the selectedCartItems state based on whether the item is checked or unchecked
+    const updatedSelection = isChecked
+      ? [...selectedCartItems, cartId]
+      : selectedCartItems.filter((id) => id !== cartId);
 
-const handleCheckboxChange = async (cartId, isChecked) => {
-  // Update the selectedCartItems state based on whether the item is checked or unchecked
-  const updatedSelection = isChecked
-    ? [...selectedCartItems, cartId]
-    : selectedCartItems.filter((id) => id !== cartId);
+    setSelectedCartItems(updatedSelection);
 
-  setSelectedCartItems(updatedSelection);
+    // Determine if the item was selected or unselected
+    const selectedStatus = isChecked; // If checked, send true; if unchecked, send false
 
-  // Determine if the item was selected or unselected
-  const selectedStatus = isChecked; // If checked, send true; if unchecked, send false
-
-  try {
-    // Make the API call with the appropriate `selected` status
-    const response = await axios.patch(
-      `${BASE_URL}/cart/selection/${cartId}`,
-      {
-        selected: selectedStatus, // Send the correct selected value
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // Send the token in the request headers
+    try {
+      // Make the API call with the appropriate `selected` status
+      const response = await axios.patch(
+        `${BASE_URL}/cart/selection/${cartId}`,
+        {
+          selected: selectedStatus, // Send the correct selected value
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Send the token in the request headers
+          },
+        }
+      );
 
-    console.log(response, `Cart item ${cartId} selection updated.`);
-    fetchCartDetails();
-    toast.success(response.data.message);
-  } catch (error) {
-    console.error("Error updating cart item selection:", error);
-    toast.error("Error updating cart item selection.");
-  }
-};
+      fetchCartDetails();
+      toast.success(response.data.message);
+    } catch (error) {
+      console.error("Error updating cart item selection:", error);
+      toast.error("Error updating cart item selection.");
+    }
+  };
 
 
 
 
-const handleSelectChange = async (variantId, selectedPeriod) => {
-  const selectedRental = cartItems
-    .find((item) => item.variant_id._id === variantId)
-    ?.variant_id?.rentalPrice.find((rental) => rental.period === selectedPeriod);
+  const handleSelectChange = async (variantId, selectedPeriod) => {
+    const selectedRental = cartItems
+      .find((item) => item.variant_id._id === variantId)
+      ?.variant_id?.rentalPrice.find((rental) => rental.period === selectedPeriod);
 
-  if (!selectedRental) {
-    toast.error("Selected rental period is invalid");
-    return;
-  }
+    if (!selectedRental) {
+      toast.error("Selected rental period is invalid");
+      return;
+    }
 
-  try {
-    setSelectedOptions((prevOptions) => {
-      const updatedOptions = {
-        ...prevOptions,
-        [variantId]: { period: selectedPeriod },
-      };
+    try {
+      setSelectedOptions((prevOptions) => {
+        const updatedOptions = {
+          ...prevOptions,
+          [variantId]: { period: selectedPeriod },
+        };
 
-      localStorage.setItem("selectedOptions", JSON.stringify(updatedOptions));
-      return updatedOptions;
-    });
+        localStorage.setItem("selectedOptions", JSON.stringify(updatedOptions));
+        return updatedOptions;
+      });
 
-    await handleAddToCart(variantId, quantities[variantId], selectedRental.period);
-    fetchCartDetails();
-  } catch (error) {
-    console.error("Error updating rental period:", error);
-    toast.error("Failed to update rental period.");
-  }
-};
+      await handleAddToCart(variantId, quantities[variantId], selectedRental.period);
+      fetchCartDetails();
+    } catch (error) {
+      console.error("Error updating rental period:", error);
+      toast.error("Failed to update rental period.");
+    }
+  };
 
 
   useEffect(() => {
@@ -138,7 +134,7 @@ const handleSelectChange = async (variantId, selectedPeriod) => {
       setSelectedOptions(initialSelectedOptions);
     }
   }, [cartItems]);
-  
+
   // useEffect(() => {
   //   if (cartItems?.length) {
   //     const updatedOptions = { ...selectedOptions };
@@ -152,7 +148,7 @@ const handleSelectChange = async (variantId, selectedPeriod) => {
   //     setSelectedOptions(updatedOptions);
   //   }
   // }, [cartItems]);
-  const storedOptions=(typeof window !== 'undefined') ? localStorage.getItem("selectedOptions") : null;
+  const storedOptions = (typeof window !== 'undefined') ? localStorage.getItem("selectedOptions") : null;
 
   // Retrieve persisted selected options on component load
   // useEffect(() => {
@@ -161,9 +157,8 @@ const handleSelectChange = async (variantId, selectedPeriod) => {
   //     setSelectedOptions(JSON.parse(storedOptions));
   //   }
   // }, []);
-  
 
-  console.log(quantities, "quantituessd");
+
   // useEffect(() => {
   //     const initialOptions = {};
   //     cartItems.forEach((item) => {
@@ -181,27 +176,25 @@ const handleSelectChange = async (variantId, selectedPeriod) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-const handleCouponToggle = ()=>{
-  setIsCoupon(!isCoupon)
-}
+  const handleCouponToggle = () => {
+    setIsCoupon(!isCoupon)
+  }
 
   const handleAddressToggle = () => {
     setIsAddressSidebarOpen(!isAddressSidebarOpen);
   };
 
   const increaseQuantity = async (variantId) => {
-    const newQuantity =  + 1;
-  
+    const newQuantity = + 1;
+
     // Get the selected rental period for this variant
     const selectedRentalPeriod = selectedOptions[variantId]?.period;
-    console.log(selectedRentalPeriod,"selectedRentalPeriod")
-    console.log(selectedOptions,"selectedOptions")
-  
+
     if (!selectedRentalPeriod) {
       toast.error("Please select a rental period before updating the quantity.");
       return;
     }
-  
+
     try {
       await handleAddToCart(variantId, newQuantity, selectedRentalPeriod);
       setQuantities((prevQuantities) => ({
@@ -215,23 +208,23 @@ const handleCouponToggle = ()=>{
       toast.error(error.response.data.message);
     }
   };
-  
+
   const decreaseQuantity = async (variantId) => {
-    const newQuantity =  - 1;
-  
+    const newQuantity = - 1;
+
     // if (newQuantity < 1) {
     //   toast.error("Quantity cannot be less than 1.");
     //   return;
     // }
-  
+
     // Get the selected rental period for this variant
     const selectedRentalPeriod = selectedOptions[variantId]?.period;
-  
+
     if (!selectedRentalPeriod) {
       toast.error("Please select a rental period before updating the quantity.");
       return;
     }
-  
+
     try {
       await handleAddToCart(variantId, newQuantity, selectedRentalPeriod);
       setQuantities((prevQuantities) => ({
@@ -242,11 +235,10 @@ const handleCouponToggle = ()=>{
       fetchCartDetails();
     } catch (error) {
       console.error("Error decreasing quantity:", error);
-   
+
     }
   };
-  
-  console.log(selectedOptions, "selectedperiod");
+
   const handleAddToCart = async (variantId, quantity, rentalPeriod) => {
     try {
       const payload = {
@@ -255,13 +247,11 @@ const handleCouponToggle = ()=>{
         quantity,
         rentalPeriod,
       };
-      console.log(payload, "payload in cart");
       const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response ,"cart console")
       toast.success(
         response.data.message || "Rental period updated successfully."
       );
@@ -277,12 +267,9 @@ const handleCouponToggle = ()=>{
   };
 
   const fetchCartDetails = async () => {
-    console.log("out fetching cart");
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
       setCartItems(response.data.cartItems, "cartItems");
-      console.log(response.data.cartItems, "cartItems");
-
       const initialQuantities = response.data.cartItems.reduce((acc, item) => {
         acc[item.variant_id._id] = item.quantity || 1;
         return acc;
@@ -300,18 +287,15 @@ const handleCouponToggle = ()=>{
   }, [userId]);
 
   const handleRemove = async (cartId, variantId) => {
-    console.log(cartId, "removeid");
     try {
-      console.log(cartId, "variantId remove");
       const response = await axios.delete(`${BASE_URL}/cart/remove/${cartId}`);
-      console.log(response.data, "deleted");
       setSelectedOptions((prevOptions) => {
         const updatedOptions = { ...prevOptions };
-        delete updatedOptions[variantId]; 
-        localStorage.setItem("selectedOptions", JSON.stringify(updatedOptions)); 
+        delete updatedOptions[variantId];
+        localStorage.setItem("selectedOptions", JSON.stringify(updatedOptions));
         return updatedOptions;
       });
-  
+
       fetchCartDetails();
       toast.success(response.data.message || "Removed successfully");
     } catch (error) {
@@ -319,124 +303,110 @@ const handleCouponToggle = ()=>{
       console.error("Error removing item from cart:", error);
     }
   };
-console.log(selectedAddress?._id,"selectedid")
 
 
-const handlePaymentStatus=async(orderDetails)=>{
-  console.log("payment")
-  console.log(orderDetails,"orderDetails")
-  try {
-    const payload={
-      orderId:orderId,
-      paymentId:orderDetails.paymentId
+
+  const handlePaymentStatus = async (orderDetails) => {
+    try {
+      const payload = {
+        orderId: orderId,
+        paymentId: orderDetails.paymentId
+      }
+      const response = await axios.post(`${BASE_URL}/payments/status`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      toast.error(error.message || "Error status payment.");
+      console.error("Error status payment:", error);
+
     }
-    const response = await axios.post(`${BASE_URL}/payments/status`, payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(response,"status response")
-  } catch (error) {
-    toast.error(error.message || "Error status payment.");
-    console.error("Error status payment:", error);
-    
   }
-}
 
 
 
-const handleOrderCheckout = async () => {
-  try {
-    const payload = {
-      userId: String(userId),
-      couponCode: String(couponcode),
-      addressId: String(selectedAddress._id),
-    };
-    console.log(payload, "Payload for checkout");
+  const handleOrderCheckout = async () => {
+    try {
+      const payload = {
+        userId: String(userId),
+        couponCode: String(couponcode),
+        addressId: String(selectedAddress._id),
+      };
 
-    // API call for order checkout
-    const response = await axios.post(`${BASE_URL}/orders/checkout`, payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+      // API call for order checkout
+      const response = await axios.post(`${BASE_URL}/orders/checkout`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const { orderId, finalAmount } = response.data;
 
-    console.log(response.data, "Order data");
-    const { orderId, finalAmount } = response.data;
+      // If orderId is present, proceed to initiate payment
+      if (orderId) {
+        setOrderId(orderId); // Save orderId for future use
+        await handleContinueClick(orderId, finalAmount);
+      }
 
-    // If orderId is present, proceed to initiate payment
-    if (orderId) {
-      setOrderId(orderId); // Save orderId for future use
-      await handleContinueClick(orderId, finalAmount);
+      // Display success toast for order placement
+      toast.success("Order placed successfully!");
+    } catch (error) {
+      // Extract and display error message safely
+      const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";
+      toast.warn(errorMessage);
+      console.error("Error during order checkout:", errorMessage);
+    }
+  };
+
+  const handleContinueClick = async (orderId, amount) => {
+    try {
+      const payload = {
+        orderId: orderId,
+        amount: amount,
+      };
+
+      // API call to initiate payment
+      const response = await axios.post(`${BASE_URL}/payments/initiate`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Axios response data is already parsed
+      if (response.data.order && response.data.order.id) {
+        setDisplayRazorpay(true);
+        setRazorpayOrderId(response.data.order.id);
+      } else {
+        console.error('Payment initiation failed:', response.data.error);
+      }
+
+    } catch (error) {
+      // Extract and display error message safely
+      const errorMessage = error.response?.data?.error || "Error initiating payment.";
+      toast.error(errorMessage);
+      console.error("Error initiating payment:", errorMessage);
+    }
+  };
+
+
+
+  const createPayment = async () => {
+    if (!userId) {
+      toast.error("Please login to proceed with payment.");
+      return;
     }
 
-    // Display success toast for order placement
-    toast.success("Order placed successfully!");
-  } catch (error) {
-    // Extract and display error message safely
-    const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";
-    toast.warn(errorMessage);
-    console.error("Error during order checkout:", errorMessage);
-  }
-};
+    if (!selectedAddress) {
+      toast.error("Please select an address before proceeding with checkout.");
+      return;
+    }
 
-const handleContinueClick = async (orderId, amount) => {
-  // console.log("Initiating payment");
-  console.log(orderId, amount, "Order Details");
+    await handleOrderCheckout();
+  };
 
-  try {
-    const payload = {
-      orderId: orderId,
-      amount: amount, // Use finalAmount from the previous API response
-    };
-
-    // API call to initiate payment
-    const response = await axios.post(`${BASE_URL}/payments/initiate`, payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    console.log(response.data, "Payment response");
-   setDisplayRazorpay(true)
-  } catch (error) {
-    // Extract and display error message safely
-    const errorMessage = error.response?.data?.error || "Error initiating payment.";
-    toast.error(errorMessage);
-    console.error("Error initiating payment:", errorMessage);
-  }
-};
-
-
-
-const createPayment = async () => {
-  if (!userId) {
-    toast.error("Please login to proceed with payment.");
-    return;
-  }
-
-  if (!selectedAddress) {
-    toast.error("Please select an address before proceeding with checkout.");
-    return;
-  }
-
- await handleOrderCheckout();
-
-
-
-};
-
-
-  
-  
-  const handlePayment = async(status, orderDetails) => {
-    console.log(orderDetails,"orderdetails")
+  const handlePayment = async (status, orderDetails) => {
     if (status === "succeeded") {
       setDisplayRazorpay(false);
-      console.log(
-        displayRazorpay,
-        "after setting to false (immediate, before state update)"
-      );
       await handleContinueClick(orderDetails);
       setFormData(initialFormData);
     } else if (status === "cancelled") {
@@ -446,13 +416,13 @@ const createPayment = async () => {
 
 
 
-  const handleDiscountedPrice = (newDiscountedPrice,couponcode,discountValue) => {
+  const handleDiscountedPrice = (newDiscountedPrice, couponcode, discountValue) => {
     setDiscountedPrice(newDiscountedPrice);
     setCouponCode(couponcode);
     setDisValue(discountValue);
   };
 
-  const handleAddress=(addressId)=>{
+  const handleAddress = (addressId) => {
     setAddressId(addressId);
   }
 
@@ -467,9 +437,6 @@ const createPayment = async () => {
   );
 
 
-  console.log(discountedPrice,"totalokjj")
-  console.log(selectedAddress,"selectedaddress")
-
   return (
     <div className='cart-page'>
       <ToastContainer />
@@ -478,81 +445,81 @@ const createPayment = async () => {
           My Cart <span className='cart-count'>{cartItems.length}</span>
         </h2>
         {cartItems?.map((item, index) => (
-  <div key={item._id || index} className="cart-item cursor-pointer flex items-center">
-    {/* Red Checkbox with White Tick */}
-    <input
-      type="checkbox"
-      className="mr-3 w-5 h-5 accent-red-500 checked:bg-red-500 checked:border-red-500"
-      checked={item.selected} // Set checked based on item.selected value
-      onChange={(e) => handleCheckboxChange(item._id, e.target.checked)} // Pass `checked` state
-    />
+          <div key={item._id || index} className="cart-item cursor-pointer flex items-center">
+            {/* Red Checkbox with White Tick */}
+            <input
+              type="checkbox"
+              className="mr-3 w-5 h-5 accent-red-500 checked:bg-red-500 checked:border-red-500"
+              checked={item.selected} // Set checked based on item.selected value
+              onChange={(e) => handleCheckboxChange(item._id, e.target.checked)} // Pass `checked` state
+            />
 
-    <Link
-      href={{
-        pathname: `/Products/${item.variant_id.title}`,
-        query: { id: item.variant_id._id },
-      }}
-    >
-      <img
-        src={item.variant_id.images[0]}
-        alt="Product"
-        className="item-image"
-      />
-    </Link>
+            <Link
+              href={{
+                pathname: `/Products/${item.variant_id.title}`,
+                query: { id: item.variant_id._id },
+              }}
+            >
+              <img
+                src={item.variant_id.images[0]}
+                alt="Product"
+                className="item-image"
+              />
+            </Link>
 
-    <div className="item-details">
-      <h3 className="item-name">{item.variant_id.title}</h3>
-      <p className="item-price">
-        ₹{item.unitPrice}/{item.rentalPeriod}
-      </p>
+            <div className="item-details">
+              <h3 className="item-name">{item.variant_id.title}</h3>
+              <p className="item-price">
+                ₹{item.unitPrice}/{item.rentalPeriod}
+              </p>
 
-      <div className="quantity-controls">
-        <button
-          className="quantity-btn"
-          onClick={() => decreaseQuantity(item.variant_id._id, item.quantity)}
-        >
-          -
-        </button>
-        <span className="quantity">{item.quantity || 1}</span>
-        <button
-          className="quantity-btn"
-          onClick={() => increaseQuantity(item.variant_id._id, item.quantity)}
-        >
-          +
-        </button>
+              <div className="quantity-controls">
+                <button
+                  className="quantity-btn"
+                  onClick={() => decreaseQuantity(item.variant_id._id, item.quantity)}
+                >
+                  -
+                </button>
+                <span className="quantity">{item.quantity || 1}</span>
+                <button
+                  className="quantity-btn"
+                  onClick={() => increaseQuantity(item.variant_id._id, item.quantity)}
+                >
+                  +
+                </button>
 
-        <select
-  className="duration-select"
-  value={selectedOptions[item.variant_id._id]?.period || item.rentalPeriod}
-  onChange={(e) => handleSelectChange(item.variant_id._id, e.target.value)}
->
-  <option key={item._id} value={item.rentalPeriod}>
-    {item.rentalPeriod}
-  </option>
-  {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
-    <option key={rentalPrice._id} value={rentalPrice.period}>
-      {rentalPrice.period}
-    </option>
-  ))}
-</select>
+                <select
+                  className="duration-select"
+                  value={selectedOptions[item.variant_id._id]?.period || item.rentalPeriod}
+                  onChange={(e) => handleSelectChange(item.variant_id._id, e.target.value)}
+                >
+                  <option key={item._id} value={item.rentalPeriod}>
+                    {item.rentalPeriod}
+                  </option>
+                  {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
+                    <option key={rentalPrice._id} value={rentalPrice.period}>
+                      {rentalPrice.period}
+                    </option>
+                  ))}
+                </select>
 
-        {/* <p>Total: {item.lineTotal}</p> */}
-      </div>
+                {/* <p>Total: {item.lineTotal}</p> */}
+              </div>
 
-      <div className="product-right">
-        <button className="delete-btn" onClick={() => handleRemove(item._id, item.variant_id._id)}>
-          <img src={deleteicon} className="flex align-left" />
-        </button>
-        <div className="flex gap-2">
-          <img src={cube} />
-          {/* <p className="stock-info">{item.variant_id.stockQuantity} stock avail.</p> */}
-          <p className="stock-info">In stock</p>
+              <div className="product-right">
+                <button className="delete-btn" onClick={() => handleRemove(item._id, item.variant_id._id)}>
+                  <img src={deleteicon} className="flex align-left" />
+                </button>
+                <div className="flex gap-2">
+                  <img src={cube} />
+                  {/* <p className="stock-info">{item.variant_id.stockQuantity} stock avail.</p> */}
+                  <p className="stock-info">In stock</p>
 
-        </div>
-      </div>
-    </div>
-  </div>
-))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
 
 
 
@@ -571,7 +538,7 @@ const createPayment = async () => {
               <div className='address-context'>
                 <h4>{selectedAddress.name}</h4>
                 <p>|</p>
-                <p>{selectedAddress.mobile}</p> 
+                <p>{selectedAddress.mobile}</p>
                 <span>{selectedAddress.type}</span>
               </div>
               <p>{selectedAddress.flatOrHouseNo},{selectedAddress.street},{selectedAddress.city},{selectedAddress.state},{selectedAddress.country},({selectedAddress.zip})</p>
@@ -589,21 +556,23 @@ const createPayment = async () => {
         <div className='summary-address'>
           <div className='summary-item address'>
             <div className="flex gap-60">
-            <div className='address-content'>
-              <img src={payment} />
-              <span>Payable Amount</span>
-            </div>
-            <div>
-              {" "}
-              <span className='amount'>₹{totalPrice}</span>
-            </div>
+              <div className='address-content'>
+                <img src={payment} />
+                <span>Payable Amount</span>
+              </div>
+              <div>
+                {" "}
+                <span className='amount'>₹{totalPrice}</span>
+              </div>
             </div>
             <button className='pay-btn' onClick={createPayment}>
-              Pay ₹{discountedPrice?discountedPrice: totalPrice}
+              Pay ₹{discountedPrice ? discountedPrice : totalPrice}
             </button>
             {displayRazorpay && (
               <RenderRazorpay
-                amount={discountedPrice?discountedPrice* 100: totalPrice * 100}
+                orderId={orderId}
+                razorpayOrderId={razorpayOrderId}
+                amount={discountedPrice ? discountedPrice * 100 : totalPrice * 100}
                 currency={"INR"}
                 keyId={apiKey}
                 handlePayment={handlePayment}
@@ -613,21 +582,21 @@ const createPayment = async () => {
           </div>
         </div>
         <div className="summary-item address" onClick={handleCouponToggle}>
-        <div className="address-content">
-          <img src={coupon} alt="Coupon Icon" />
-          <span>{couponcode?couponcode:"Promo Coupon"}</span>
-          <i className="fas fa-chevron-right"></i>
+          <div className="address-content">
+            <img src={coupon} alt="Coupon Icon" />
+            <span>{couponcode ? couponcode : "Promo Coupon"}</span>
+            <i className="fas fa-chevron-right"></i>
+          </div>
         </div>
-      </div>
 
-      {isCoupon && (
-        <PromoCoupon
-          isOpen={isCoupon}
-          onClose={handleCouponToggle} // Properly pass the toggle function
-          totalPrice={totalPrice}
-          onDiscountedPrice={handleDiscountedPrice}
-        />
-      )}
+        {isCoupon && (
+          <PromoCoupon
+            isOpen={isCoupon}
+            onClose={handleCouponToggle} // Properly pass the toggle function
+            totalPrice={totalPrice}
+            onDiscountedPrice={handleDiscountedPrice}
+          />
+        )}
         {/* <div>
           <div className='summary-item address' onClick={handleSidebarToggle}>
             <div className='address-content'>
@@ -675,7 +644,7 @@ const createPayment = async () => {
               </div> */}
               <div className="flex justify-between border-t pt-2">
                 <span>Total Costs</span>
-                <span className="font-medium">{discountedPrice?discountedPrice: totalPrice}</span>
+                <span className="font-medium">{discountedPrice ? discountedPrice : totalPrice}</span>
               </div>
               {/* <div className="flex justify-between">
                 <span>GST</span>
@@ -683,7 +652,7 @@ const createPayment = async () => {
               </div> */}
               <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
-                <span className="text-black">{discountedPrice?discountedPrice: totalPrice}</span>
+                <span className="text-black">{discountedPrice ? discountedPrice : totalPrice}</span>
               </div>
             </div>
           )}
