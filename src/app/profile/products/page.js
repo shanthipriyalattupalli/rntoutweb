@@ -105,8 +105,8 @@ useEffect(() => {
               </div>
               <div className="action-menu2">
             {item.
-isApproved?<span className="px-2 bg-blue-500 font-semibold text-md rounded-full">Approved</span>:
-<span className="px-2 py-1 bg-orange-400 font-semibold text-md rounded-full">In Review</span>}
+isApproved?<span className="px-2 py-1 bg-green-700 font-xl text-sm text-white rounded-full">Approved</span>:
+<span className="px-2 py-1 bg-orange-400 font-xl text-md text-white rounded-full">In Review</span>}
 
                 </div>
               <Link href={{ pathname: `/Products/${item._id}`, query: { id: item._id } }} key={item._id}>

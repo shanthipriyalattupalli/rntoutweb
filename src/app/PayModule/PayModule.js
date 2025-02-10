@@ -1,6 +1,9 @@
 
 "use client";
+import axios from "axios";
+const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 import { useEffect, useRef } from 'react';
+
 const loadScript = (src ) => new Promise((resolve) => {
   const script = document.createElement('script');
   script.src = src;
@@ -14,30 +17,58 @@ const loadScript = (src ) => new Promise((resolve) => {
   };
   document.body.appendChild(script);
 });
-const RenderRazorpay = ({ orderId, keyId, keySecret, currency, amount, handlePayment ,name}) => {
+const RenderRazorpay = ({ orderId,razorpayOrderId, keyId, currency, amount, handlePayment ,name}) => {
   const paymentId = useRef(null);
   const paymentMethod = useRef(null);
-  console.log(keyId,currency,amount,handlePayment,"payment")
+
   const options = {
     key: keyId,
     amount,
     currency,
      name,
-    // order_id: orderId,
-    handler: (response) => {
-      console.log(response,"response in razorpay")
-      const paymentId = response.razorpay_payment_id;
-      if (response) {
-        handlePayment('succeeded', {
-        //   orderId,
-          paymentId,
-          signature: response.razorpay_signature,
-        });
-      } else {
-        handlePayment('failed', {
-        //   orderId,
-          paymentId: response.razorpay_payment_id,
-        });
+     order_id: razorpayOrderId,
+    handler: async (response) => {1
+      console.log('Razorpay Handler Response:', response);
+      if (response.razorpay_payment_id) {
+        try {
+          const token = localStorage.getItem('userToken'); 
+          const result = await axios.post(`${BASE_URL}/payments/status`, {
+            orderId,
+            razorpayOrderId,
+            paymentId: response.razorpay_payment_id,
+            signature: response.razorpay_signature
+          }, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          });
+
+          if (result.data.transactionStatus === 'completed') {
+            handlePayment('succeeded', {
+              orderId,
+              razorpayOrderId,
+              paymentId: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+            });
+            alert("successfully payment completed ")
+            // window.location.href = '/payment-success';
+          } else {
+            handlePayment('failed', {
+              razorpayOrderId,
+              paymentId: response.razorpay_payment_id
+            });
+            alert(" payment failed ---- ")
+            // window.location.href = '/payment-failed';
+          }
+        } catch (error) {
+          console.error('Payment verification error:', error);
+          handlePayment('failed', {
+            orderId,
+            error: error.response?.data?.message || 'Payment verification failed'
+          });
+          alert("Payment verification error ---- ")
+          // window.location.href = '/payment-failed';
+        }
       }
     },
     modal: {

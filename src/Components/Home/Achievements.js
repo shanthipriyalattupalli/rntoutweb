@@ -1,4 +1,4 @@
-"use client"
+
 import Image from 'next/image';
 import React from 'react';
 const acheivementImg = '/Assets/redchair-achieve.svg';
