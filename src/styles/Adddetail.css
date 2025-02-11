@@ -125,8 +125,8 @@
     line-height: 18px;
     text-align: left;
     color: #ff7a00;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    /* margin-top: 20px; */
+    /* margin-bottom: 10px; */
 
 }
 
@@ -544,6 +544,7 @@ label {
 }
 
 .date-picker-container {
+    width: 100%;
     display: flex;
     flex-direction: row;
     gap: 8px;
@@ -573,24 +574,21 @@ text-decoration: none;
 }
 
 .date-picker-wrapper {
-    width: 100%;
-    position: relative;
+    /* width: 30%; */
+    position: absolute;
     display: flex;
+    
+    justify-content: center;
     align-items: center;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 8px 12px;
+    border-radius: 14px;
+    padding: 12px;
     background-color: #fff;
     cursor: pointer;
 }
 
 .date-picker-input {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    color: #333;
-    padding: 8px 0;
+width: 100%;
 
 }
 
@@ -605,10 +603,13 @@ text-decoration: none;
     margin-bottom: 60px;
 }
 .calendar-icon {
+    position: relative;
+left: 34%;
+bottom: -6px;
     font-size: 18px;
     color: #333;
     cursor: pointer;
-    margin-left: auto;
+    /* margin-left: auto; */
 }
 
 .calendar-icon:hover {

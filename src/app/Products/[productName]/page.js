@@ -244,9 +244,9 @@ const ProductPage = () => {
     }
   };
 
-  const handleSellerclick = () => {
+  const handleSellerclick = (ownerId) => {
     if (owner && owner._id) {
-      router.push(`/SellerProfile?id=${owner._id}`);
+      router.push(`/SellerProfile/${ownerId}`);
     } else {
       toast.error("Seller information is missing.");
     }
@@ -402,16 +402,20 @@ const ProductPage = () => {
 
               {/* Ratings */}
               <div className='flex items-center space-x-2 cursor-pointer'>
+              {owner && (
+                      <Link href={`/SellerProfile/${owner._id}`}>
                 <img
                   src={sample}
                   alt='Seller'
                   className='w-6 h-6 rounded-full'
                 />
+                </Link>
+              )}
                 {owner && (
 
-                  <Link href='/SellerProfile'><span
+                  <Link href={`/SellerProfile/${owner._id}`}><span
                     className='text-xs'
-                    onClick={handleSellerclick}
+                    onClick={()=>handleSellerclick(owner._id)}
                     key={owner._id}
                   >
                     {owner.name}

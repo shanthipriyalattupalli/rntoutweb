@@ -325,6 +325,8 @@ function Header() {
                 <Link href={{ pathname: `/Products/${variant.title}`, query: { id: variant._id } }} key={variant._id}>
                   <li
                     key={variant._id}
+                    onClick={() => setShowSuggestions(false)} 
+
                     // onClick={() => handleVariantClick(variant.id)}
                     className="p-2 cursor-pointer hover:bg-gray-200"
                   >
@@ -332,7 +334,6 @@ function Header() {
                   </li>
                 </Link>
               ))}
-
             </ul>
           )}
         </div>

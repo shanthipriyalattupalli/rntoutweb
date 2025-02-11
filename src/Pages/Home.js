@@ -108,7 +108,7 @@ const Home = () => {
       <HouseholdKitchen products={categoryProducts[CATEGORY_IDS.HOUSEHOLD_KITCHEN] || []} categoryId={CATEGORY_IDS.HOUSEHOLD_KITCHEN} />
 
       <Services />
-      <CityExplorer />
+      {/* <CityExplorer /> */}
       <Achievements />
       <Blogs />
       <Testimonials />

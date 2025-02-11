@@ -1,15 +1,22 @@
 .order_overall_rating {
   display: inline-flex;
   flex-direction: column;
-  height: 118px;
-  padding: 16px 0px 16px 0px;
-  padding-bottom: 0;
+  width: 100% !important;
+  /* height: 118px; */
+  /* padding: 16px 0px 16px 0px; */
+  /* padding-bottom: 0; */
   gap: 16px;
   
-  background: #FFFFFF;
+  /* background: #FFFFFF; */
 
 }
-
+.order_overall{
+  width: 100%;
+ 
+}
+.Orders_page_section{
+  background: rgba(7, 7, 7, 0.05);
+}
 .order_overall_rating>h6 {
   height: 18px;
   display: inline-flex;
@@ -83,6 +90,8 @@
   /* max-width: 600px; */
   /* margin: 40px auto; */
   background: #fff;
+  margin-top: 10px;
+  padding: 20px;
   border-radius: 8px;
 }
 

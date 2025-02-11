@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { HiLocationMarker } from "react-icons/hi";
 // import "@/styles/OrderTrackingWithNavigate.css";
 import '../styles/OrderTrackingWithNavigate.css';
 import OrderItem from "@/Components/OrderItem";
@@ -9,6 +10,7 @@ import { PiClockClockwiseBold } from "react-icons/pi";
 import { AiFillShop } from "react-icons/ai";
 const payment_icon = "/Assets/payment_icon.png";
 const HistoryImage = "/Assets/HistoryImage.png";
+const shipping = "/Assets/shipping.svg";
 
 const trackingSteps = [
   {
@@ -39,12 +41,12 @@ const trackingSteps = [
 
 
 
-const OrderTrackingWithNavigate = ({orderId}) => {
+const OrderTrackingWithNavigate = ({ orderId }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [orders, setOrders] = useState([]);
-
+const [subOrders, setSubOrders] = useState([]);
   const handleStepClick = (path) => {
     navigate(path); // Navigate to the corresponding path
   };
@@ -88,7 +90,7 @@ const OrderTrackingWithNavigate = ({orderId}) => {
       });
       console.log(response.data, "fetch order history")
       setOrders(response.data)
-
+      setSubOrders
 
 
     } catch (error) {
@@ -103,58 +105,67 @@ const OrderTrackingWithNavigate = ({orderId}) => {
 
   }, [token]);
 
+  const formattedDate = new Date(orders.createdAt).toLocaleString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
+
   const router = useRouter();
   return (
     <div className='order-tracking-container'>
       <div className='order_item-frame'>
-      
-          <OrderItem key={orders._id} orderData={orders}/>
-   
+
+        <OrderItem key={orders._id} orderData={orders} />
+
       </div>
 
       <div className='order_trackinf_section'>
-        <h3>Order Tracking</h3>
-        <div className='tracking-steps'>
-          {trackingSteps?.map((step, index) => (
-            <div
-              key={index}
-              className='tracking-step'
-              onClick={() => handleStepClick(step.path)}
-              style={{ cursor: step.isActive ? "pointer" : "default" }} // Only allow navigation for active steps
-            >
-              <div className='tracking_steps_main'>
-                {/* Step Information */}
-                <div className='step-info'>
-                  <p className={`step-label ${step.isActive ? "active" : ""}`}>
-                    {step.label}
-                  </p>
-                  {/* Step Indicator */}
-                  <div
-                    className={`step-indicator ${
-                      step.isActive ? "active" : ""
-                    }`}
-                  >
-                    {step.isActive ? (
-                      <span className='step-circle filled'></span>
-                    ) : (
-                      <span className='step-circle'></span>
-                    )}
+        <div className="bg-white p-4">
+          <h3>Order Tracking</h3>
+          <div className='tracking-steps'>
+            {trackingSteps?.map((step, index) => (
+              <div
+                key={index}
+                className='tracking-step'
+                onClick={() => handleStepClick(step.path)}
+                style={{ cursor: step.isActive ? "pointer" : "default" }} // Only allow navigation for active steps
+              >
+                <div className='tracking_steps_main'>
+                  {/* Step Information */}
+                  <div className='step-info'>
+                    <p className={`step-label ${step.isActive ? "active" : ""}`}>
+                      {step.label}
+                    </p>
+                    {/* Step Indicator */}
+                    <div
+                      className={`step-indicator ${step.isActive ? "active" : ""
+                        }`}
+                    >
+                      {step.isActive ? (
+                        <span className='step-circle filled'></span>
+                      ) : (
+                        <span className='step-circle'></span>
+                      )}
+                    </div>
+                    <p className={`step-date ${step.isActive ? "active" : ""}`}>
+                      {step.date}
+                    </p>
                   </div>
-                  <p className={`step-date ${step.isActive ? "active" : ""}`}>
-                    {step.date}
-                  </p>
                 </div>
+                {/* Step Divider */}
+                {index < trackingSteps.length - 1 && (
+                  <div
+                    className={`step-divider ${trackingSteps[index + 1].isActive ? "active" : ""
+                      }`}
+                  ></div>
+                )}
               </div>
-              {/* Step Divider */}
-              {index < trackingSteps.length - 1 && (
-                <div
-                  className={`step-divider ${
-                    trackingSteps[index + 1].isActive ? "active" : ""
-                  }`}
-                ></div>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
         {/* payment status */}
         <div class='payment-section'>
@@ -165,12 +176,24 @@ const OrderTrackingWithNavigate = ({orderId}) => {
             </span>
             <div class='payment-details'>
               <div className='payment-details_completed'>
-                <h4>Payment completed</h4>
-                <p>25 Sep 2024, 12:10 PM</p>
+                <h4>Payment {orders.paymentStatus}</h4>
+                <p>{formattedDate}</p>
               </div>
             </div>
           </div>
-          <div class='payment-date'>25 Sep 2024, 12:10 PM</div>
+          <div class='payment-date'>{formattedDate}</div>
+        </div>
+        <div className='shipping_address_sec'>
+            <span class='icon'>
+              <img src={shipping} alt='Icon' />
+            </span>
+     
+          <div class='payment-details'>
+            <div className='payment-details_completed'>
+              <h4 className="font-semibold text-lg">Shipping Address</h4>
+              <p>{formattedDate}</p>
+            </div>
+          </div>
         </div>
         <div class='rent-cost-breakup'>
           <h3 class='section-title'>Rent Cost Breakup</h3>

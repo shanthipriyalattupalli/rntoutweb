@@ -22,6 +22,7 @@ const coupon = "/Assets/coupon.svg";
 const insurance = "/Assets/insurance.svg";
 const costbreakup = "/Assets/costbreakup.svg";
 const delivery = "/Assets/delivery.svg";
+const emptycart="/Assets/emptycart.svg";
 
 const CartPage = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -446,7 +447,10 @@ const CartPage = () => {
         <h2 className='cart-title'>
           My Cart <span className='cart-count'>{cartItems.length}</span>
         </h2>
-        {cartItems?.map((item, index) => (
+        {cartItems.length >0 ?
+        
+        
+        cartItems?.map((item, index) => (
           <div key={item._id || index} className="cart-item cursor-pointer flex items-center">
             {/* Red Checkbox with White Tick */}
             <input
@@ -521,7 +525,15 @@ const CartPage = () => {
               </div>
             </div>
           </div>
-        ))}
+        )):<>
+<div className="flex flex-col justify-center items-center h-3/4">
+  <img src={emptycart} className="w-auto h-auto" />
+  <h1 className="text-lg font-semibold">Empty Orders</h1>
+  <span>you haven’t place any order, to place order <span className="text-md font-semibold">"Browse Products" </span>button.</span>
+</div>
+
+        </>
+      }
 
 
 
