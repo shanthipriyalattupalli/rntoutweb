@@ -19,12 +19,13 @@ const ProductList = () => {
   const [product,setProduct] = useState([])
   const [subCategories,setSubcategories] = useState([]);
   const params = useParams();
-  const subcategoryId=(typeof window !== 'undefined') ? localStorage.getItem("subcategoryId") : null;
+  const categoryId = params.categoryId; // Extract categoryId directly from params
+  console.log("categoryId from params:", categoryId);
+  const subcategoryId=(typeof window !== 'undefined') ? localStorage.getItem(`subcategoryId_${categoryId}`) : null;
   console.log(subcategoryId,"subcategoryid selected")
   // const subcategoryId=params.subcategoryId
   console.log("subcategoryId from params:", subcategoryId);
-  const categoryId = params.categoryId; // Extract categoryId directly from params
-  console.log("categoryId from params:", categoryId);
+
   console.log(categoryId,subcategoryId,active,"activeindex productsbnhjb nmhbjn m")
   const fetchProducts = async () => {
     if (!categoryId || !subcategoryId || !active) {

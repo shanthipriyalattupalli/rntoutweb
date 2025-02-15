@@ -37,7 +37,7 @@ const CartPage = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("");
   const [selectedOptions, setSelectedOptions] = useState({});
   const [discountedPrice, setDiscountedPrice] = useState(0);
-  const [couponcode, setCouponCode] = useState(null);
+  const [couponcode, setCouponCode] = useState("");
   const [addressId, setAddressId] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [selectedCartItems, setSelectedCartItems] = useState([]);
@@ -61,26 +61,23 @@ const CartPage = () => {
 
 
   const handleCheckboxChange = async (cartId, isChecked) => {
-    // Update the selectedCartItems state based on whether the item is checked or unchecked
     const updatedSelection = isChecked
       ? [...selectedCartItems, cartId]
       : selectedCartItems.filter((id) => id !== cartId);
 
     setSelectedCartItems(updatedSelection);
-
-    // Determine if the item was selected or unselected
-    const selectedStatus = isChecked; // If checked, send true; if unchecked, send false
+    const selectedStatus = isChecked;
 
     try {
-      // Make the API call with the appropriate `selected` status
+ 
       const response = await axios.patch(
         `${BASE_URL}/cart/selection/${cartId}`,
         {
-          selected: selectedStatus, // Send the correct selected value
+          selected: selectedStatus, 
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Send the token in the request headers
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -334,6 +331,7 @@ const CartPage = () => {
         couponCode: String(couponcode),
         addressId: String(selectedAddress._id),
       };
+      console.log(payload,"payload");
 
       // API call for order checkout
       const response = await axios.post(`${BASE_URL}/orders/checkout`, payload, {
@@ -355,7 +353,7 @@ const CartPage = () => {
       // Extract and display error message safely
       const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";
       toast.warn(errorMessage);
-      console.error("Error during order checkout:", errorMessage);
+      console.error("Error during order checkout:", error.response?.data);
     }
   };
 
@@ -452,12 +450,11 @@ const CartPage = () => {
         
         cartItems?.map((item, index) => (
           <div key={item._id || index} className="cart-item cursor-pointer flex items-center">
-            {/* Red Checkbox with White Tick */}
             <input
               type="checkbox"
               className="mr-3 w-5 h-5 accent-red-500 checked:bg-red-500 checked:border-red-500"
-              checked={item.selected} // Set checked based on item.selected value
-              onChange={(e) => handleCheckboxChange(item._id, e.target.checked)} // Pass `checked` state
+              checked={item.selected} 
+              onChange={(e) => handleCheckboxChange(item._id, e.target.checked)} 
             />
 
             <Link
@@ -596,12 +593,27 @@ const CartPage = () => {
           </div>
         </div>
         <div className="summary-item address" onClick={handleCouponToggle}>
-          <div className="address-content">
-            <img src={coupon} alt="Coupon Icon" />
-            <span>{couponcode ? couponcode : "Promo Coupon"}</span>
-            <i className="fas fa-chevron-right"></i>
-          </div>
-        </div>
+  <div className="address-content">
+    <img src={coupon} alt="Coupon Icon" />
+    <span>{couponcode ? couponcode : "Promo Coupon"}</span>
+
+    {/* Show remove button only when a coupon is applied */}
+    {couponcode && (
+      <button 
+        className="remove-coupon-btn"
+        onClick={(e) => {
+          e.stopPropagation(); // Prevent sidebar from opening
+          setCouponCode("");
+          setDiscountedPrice(null);
+        }}
+      >
+        ✖
+      </button>
+    )}
+
+    <i className="fas fa-chevron-right"></i>
+  </div>
+</div>
 
         {isCoupon && (
           <PromoCoupon

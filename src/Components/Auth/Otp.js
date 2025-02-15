@@ -18,9 +18,12 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
     const [isregisterOpen, setIsRegisterOpen] = useState(false);
+    const [profile,setProfile]=useState(null)
   const router = useRouter();
   const searchParams = useSearchParams();
 //   const mobileNumber = searchParams.get("mobileNumber");
+const userName = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
+const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
 
   console.log(mobileNumber, "mobile num in otp");
 
@@ -42,6 +45,10 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
     console.log(otp, "Updated otp state");
   }, [otp]);
 
+
+
+
+
   const handleBackspace = (index, value) => {
     if (!value && index > 0) {
       document.getElementById(`otp-${index - 1}`).focus();
@@ -55,35 +62,40 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
       setErrorMessage("Please enter a valid 4-digit OTP.");
       return;
     }
-
+  
     setErrorMessage("");
     setIsLoading(true);
-
+  
     try {
       const response = await axios.post(`${BASE_URL}/users/verify-otp`, {
         otp: String(otpCode),
         phoneNumber: mobileNumber,
       });
+  
       console.log(response.data, "data in otp");
       setIsLoading(false);
       let user = response.data.user;
       toast.success(response.data.message || "OTP verified successfully!");
+  
       localStorage.setItem("userToken", response.data.token);
       localStorage.setItem("userId", user.id);
-      localStorage.setItem("userName", user.name);
+      localStorage.setItem("userName", user.name || "");  // Ensuring it's never null
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("role", user.role);
-      // setIsOtpOpen(false);
-      setIsRegisterOpen(true);
-      // setIsOtpOpen(false);
-      // router.push("/");
-      // window.location.reload();
+  
+      if (!user.name || user.name === "undefined" || user.name === "null") {
+        setIsRegisterOpen(true);
+      } else {
+        setIsRegisterOpen(false);
+        router.push("/");
+        window.location.reload();
+      }
     } catch (error) {
       setIsLoading(false);
       setErrorMessage("Something went wrong. Please try again later.");
     }
   };
-
+  
 
   const handleSendOtp = async () => {
     if (!mobileNumber || !/^\+?[0-9]{10,13}$/.test(mobileNumber)) {
@@ -168,7 +180,7 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
         >
           {isLoading ? "Verifying..." : "Continue"}
         </button>
-        {isregisterOpen && (
+        {isregisterOpen &&(
                           <div className="modal-overlay">
                             <div className="modal-content">
                               <button className="close-button" onClick={() => setIsRegisterOpen(false)}>

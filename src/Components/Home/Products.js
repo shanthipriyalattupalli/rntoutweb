@@ -25,29 +25,33 @@ const Products = ({ products, categoryId }) => {
   };
 
   return (
-    <div className='container mx-auto p-2'>
-      <ToastContainer/>
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3'>
-        {/* Lazy load product items */}
-        <Suspense fallback={<div>Loading...</div>}>
-          {products.map((product) => (
-            <ProductItems product={product} />
-          ))}
-        </Suspense>
-      </div>
-      <div className='container mx-auto py-16'>
-        <div className='flex justify-center'>
-          <Link href={`/Product-list/${categoryId}`}>
-            <button
-              className='bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-[16px] shadow-md focus:outline-none'
-              onClick={handleProducts}
-            >
-              View all products
-            </button>
-          </Link>
-        </div>
-      </div>
+<div className='container mx-auto max-w-screen-xl p-2 sm:p-4 md:px-4 lg:px-4 xl:px-4'>
+  <ToastContainer />
+
+  {/* Product Grid */}
+  <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 mt-3'>
+    <Suspense fallback={<div>Loading...</div>}>
+      {products.map((product) => (
+        <ProductItems key={product._id} product={product} />
+      ))}
+    </Suspense>
+  </div>
+
+  {/* View All Button Section */}
+  <div className='container mx-auto py-12 sm:py-14 md:py-16'>
+    <div className='flex justify-center'>
+      <Link href={`/Product-list/${categoryId}`}>
+        <button
+          className='bg-red-500 hover:bg-red-600 text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg sm:rounded-xl shadow-md focus:outline-none transition duration-300 ease-in-out'
+          onClick={handleProducts}
+        >
+          View all products
+        </button>
+      </Link>
     </div>
+  </div>
+</div>
+
   );
 };
 

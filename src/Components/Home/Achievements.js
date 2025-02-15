@@ -25,7 +25,7 @@ const Achievements = () => {
             Our Achievements
           </h1>
           <p className="text-gray-600 text-sm md:text-md lg:text-lg mb-8">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          "Celebrating Our Milestones – Trusted by Thousands, Powered by Quality Rentals!" 🎉🚀
           </p>
 
 

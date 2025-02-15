@@ -26,14 +26,15 @@ const ProductList = () => {
   const [distance,setDistance] = useState();
   const [breadcrumbCategoryName, setBreadcrumbCategoryName] = useState("");
   const params = useParams();
-  const subcategoryId = (typeof window !== 'undefined') ? localStorage.getItem("subcategoryId") : null;
+  const categoryId = params.categoryId; // Extract categoryId directly from params
+  console.log("categoryId from params:", categoryId);
+  const subcategoryId=(typeof window !== 'undefined') ? localStorage.getItem(`subcategoryId_${categoryId}`) : null;
   const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
   const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
   console.log(subcategoryId, "subcategoryid selected in category")
   // const subcategoryId=params.subcategoryId
   console.log("subcategoryId from params:", subcategoryId);
-  const categoryId = params.categoryId; // Extract categoryId directly from params
-  console.log("categoryId from params:", categoryId);
+
   console.log(categoryId, subcategoryId, active, "activeindex productsbnhjb nmhbjn m")
 
   const distances = (typeof window !== 'undefined') ? localStorage.getItem("selectedDistance") : null
@@ -97,26 +98,33 @@ const ProductList = () => {
   const getProductsByCategory = (categoryId, subcategoryId) => {
     return products.filter((product) => product.categoryId?._id === categoryId && product.subCategoryId?._id === subcategoryId && product.productId._id === active);
   };
-
   const fetchSubCategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`);
       console.log(response.data, "Subcategories by category");
       const fetchedSubCategories = response.data;
-
+  
       setSubcategories(fetchedSubCategories);
-
-      // Set the first subcategory as default
-      if (fetchedSubCategories.length > 0 && !subCategoryID) {
-        const defaultSubcategoryId = fetchedSubCategories[0]._id;
-        setSubcatgeoryID(defaultSubcategoryId);
-        localStorage.setItem("subcategoryId", defaultSubcategoryId);
+  
+      // Check if a subcategory ID exists in localStorage for the selected category
+      const storedSubcategoryId = localStorage.getItem(`subcategoryId_${categoryId}`);
+  
+      if (fetchedSubCategories.length > 0) {
+        if (storedSubcategoryId) {
+          // Use the stored subcategory ID
+          setSubcatgeoryID(storedSubcategoryId);
+        } else {
+          // Set the first subcategory as default and store it in localStorage
+          const defaultSubcategoryId = fetchedSubCategories[0]._id;
+          setSubcatgeoryID(defaultSubcategoryId);
+          localStorage.setItem(`subcategoryId_${categoryId}`, defaultSubcategoryId);
+        }
       }
     } catch (error) {
       console.error("Error fetching subcategories:", error);
     }
   };
-
+  
   useEffect(() => {
     fetchSubCategories();
   }, [categoryId]);
@@ -154,7 +162,7 @@ const ProductList = () => {
 
   const handleSubcategoryId =async (selectedSubcategoryId) => {
     setSubcatgeoryID(selectedSubcategoryId);
-    localStorage.setItem("subcategoryId", selectedSubcategoryId);
+   localStorage.setItem(`subcategoryId_${categoryId}`, selectedSubcategoryId);
     try {
       const response = await axios.get(
         `${BASE_URL}/products/categoryProducts/?categoryId=${categoryId}&subCategoryId=${selectedSubcategoryId}`
@@ -184,7 +192,7 @@ const ProductList = () => {
  }
 
   return (
-    <main className="min-h-screen py-6">
+    <main className="min-h-screen py-6 w-full mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5">
       <ScrollToTop/>
       <div className="pl-24">
       <Breadcrumb categoryName={breadcrumbCategoryName} />

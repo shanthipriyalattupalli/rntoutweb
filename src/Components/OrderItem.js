@@ -38,7 +38,7 @@ const OrderItem = ({ hideHeader, orderData }) => {
                   <span>{item.quantity} item(s)</span>
                 </p>|
                 {item.orderStatus === "placed" && (
-                  <a href={`/profile/orders/orderreview/${item?.variantId?._id}`} className="review_cta">
+                  <a href={`/profile/orders/orderreview/${item._id}`} className="review_cta">
                     <span>
                       <CiStar />
                     </span>

@@ -92,7 +92,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
 
     setActiveIndex(subcategoryId === activeIndex ? null : subcategoryId);
     subcategoryID(subcategoryId);
-    localStorage.setItem("subcategoryId", subcategoryId);
+    localStorage.setItem(`subcategoryId_${categoryId}`, subcategoryId);
 
     // router.push(`/Product-list/${categoryId}/${subcategoryId}`);
     // setActiveIndex(subcategoryId);

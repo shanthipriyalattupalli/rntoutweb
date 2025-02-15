@@ -51,68 +51,49 @@ const Vehicles = ({ products, categoryId }) => {
   // }
 
   return (
-   products.length>0 && <div>
-      <div className='container mx-auto p-4'>
-        <div className='flex justify-between items-center mb-4'>
-          <h1 className='text-2xl font-bold text-gray-800'>
-            Vehicles{" "}
-            <span className='text-white font-normal p-1 px-2 bg-teal-700 text-xs ml-2 rounded-lg'>
-              {products.length} Products
-            </span>
-          </h1>
-          <a
-            href={`/Product-list/${categoryId}`}
-            className='text-blue-500 hover:text-blue-700 text-sm font-medium'
-          >
-            View all{" "}
-            <svg
-              className='w-4 h-4 inline-block ml-1'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M9 5l7 7-7 7'
-              ></path>
-            </svg>
-          </a>
-        </div>
-
-        {/* Carousel */}
-        {/* {products.length > 5 && (
-          <div className='carousel flex items-center justify-center space-x-4'>
-            <button
-              onClick={prevSlide}
-              className='text-white bg-blue-500 p-2 rounded-full'
-            >
-              Prev
-            </button>
-            <Suspense fallback={<div>Loading...</div>}>
-              <ProductItems product={products[currentSlide]} />
-            </Suspense>
-            <button
-              onClick={nextSlide}
-              className='text-white bg-blue-500 p-2 rounded-full'
-            >
-              Next
-            </button>
-          </div>
-        )} */}
-
-        {/* Product Grid */}
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6'>
-          {products?.slice(0, 4)?.map((product) => (
-            <Suspense key={product.id} fallback={<div>Loading...</div>}>
-              <ProductItems product={product} />
-            </Suspense>
-          ))}
-        </div>
-      </div>
+   products.length>0 && 
+<div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+  <div className="container mx-auto p-4 md:p-6">
+    {/* Heading Section */}
+    <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
+      <h1 className="text-lg sm:text-xl md:text-2xl xl:text-3xl font-bold text-gray-800 text-center sm:text-left">
+        Vehicles{" "}
+        <span className="text-white font-normal p-1 px-2 bg-teal-700 text-xs ml-2 rounded-lg">
+          {products.length} Products
+        </span>
+      </h1>
+      <a
+        href={`/Product-list/${categoryId}`}
+        className="text-blue-500 hover:text-blue-700 text-sm font-medium flex items-center mt-2 sm:mt-0"
+      >
+        View all{" "}
+        <svg
+          className="w-4 h-4 inline-block ml-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M9 5l7 7-7 7"
+          ></path>
+        </svg>
+      </a>
     </div>
+
+    {/* Product Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mt-6">
+      {products?.slice(0, 4)?.map((product) => (
+        <Suspense key={product._id} fallback={<div>Loading...</div>}>
+          <ProductItems product={product} />
+        </Suspense>
+      ))}
+    </div>
+  </div>
+</div>
   );
 };
 

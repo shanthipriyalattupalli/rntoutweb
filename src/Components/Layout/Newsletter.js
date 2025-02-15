@@ -125,11 +125,11 @@ const Newsletter = () => {
 
       {/* Logo Section */}
       <div className="w-96 ml-[600px] pt-8 items-center justify-center ">
-        <img
+        {/* <img
           src={rentoutlogo}
           alt="rntout logo"
           className="w-40 h-46"
-        />
+        /> */}
       </div>
 
       {/* Footer Links */}

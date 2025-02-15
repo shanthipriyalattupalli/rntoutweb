@@ -4,6 +4,7 @@ import React, { useEffect, useState, Suspense, lazy } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import axios from "axios";
 // import "@/styles/SellerProfile.css";
+import SellerProfile from '../../Components/Seller/SellerProducts'
 import '../../styles/Sellerprofile.css'
 import { useRouter } from "next/navigation";
 const startfill='/Assets/star_fill.svg'
@@ -84,7 +85,8 @@ const SellerCarouselProfile = () => {
           <Suspense fallback={<div>Loading Products...</div>}>
             <div className="p-5">
             {/* <div className='seller-tab-content'> */}
-              <Products />
+              {/* <Products /> */}
+              <SellerProfile/>
             {/* </div> */}
             </div>
           </Suspense>

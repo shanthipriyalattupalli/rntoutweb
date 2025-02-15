@@ -91,7 +91,7 @@ const CuratedCollections = () => {
       : currentCollections;
 
   return (
-    <div className='container mx-auto py-8'>
+    <div className='container mx-auto py-2 w-full mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5'>
       <h1 className='text-3xl font-bold text-gray-800 text-center mb-6'>
         Curated Rental Collections
       </h1>

@@ -12,23 +12,23 @@ import '../../../styles/productlist.css';
 // const party ='/Assets/party.svg';
 // const sport='Assets/sport.svg';
 // const household='Assets/household.svg'; 
-const Submenu = ({ categories }) => {
+const Submenu = ({ categories, setCategoryId,categoryId }) => {
   let category = categories;
   console.log(categories, "category in submenu...............................");
   const router = useRouter();
-  const params = useParams(); // Get the categoryId from the route params
-  const [activeMenu, setActiveMenu] = useState(null);
+  // const params = useParams(); // Get the categoryId from the route params
+  // const [activeMenu, setActiveMenu] = useState(null);
 
-  useEffect(() => {
-    if (params?.categoryId) {
-      setActiveMenu(params.categoryId); // Set active menu from the route
-    }
-  }, [params?.categoryId]);
+  // useEffect(() => {
+  //   if (params?.categoryId) {
+  //     setActiveMenu(params.categoryId); // Set active menu from the route
+  //   }
+  // }, [params?.categoryId]);
 
-  const handleMenuClick = (categoryId) => {
-    setActiveMenu(categoryId);
-    router.push(`/Product-list/${categoryId}`); // Navigate to ProductList with categoryId
-  };
+  // const handleMenuClick = (categoryId) => {
+  //   setActiveMenu(categoryId);
+  //   router.push(`/Product-list/${categoryId}`); // Navigate to ProductList with categoryId
+  // };
 
   const images = [
     "/Assets/it.svg",
@@ -42,29 +42,27 @@ const Submenu = ({ categories }) => {
   ];
 
   return (
-    <div className='container mx-auto flex mt-4 pt-4'>
-      <nav className='flex flex-row gap-4 overflow-x-auto'>
-        {categories?.map((category,index) => (
-          <button
-            key={category._id}
-            onClick={() => handleMenuClick(category._id)}
-            className={`flex items-center gap-1 px-1 py-1 border-t border-l border-r rounded-t-lg ${
-              activeMenu === category._id
-                ? "bg-white text-red-500"
-                : "bg-slate-200"
-            } hover:bg-white transition-colors duration-300`}
-          >
-              {images[index] && (
-              <img 
-              src={images[index]} 
-              alt={`${category.categoryName} icon`} 
-              className={`w-6 h-6 ${
-                activeMenu === category._id ? "filter-red" : ""
-              }`} 
-            />
-            )} <span className='text-sm font-xs'>{category.categoryName}</span>
-          </button>
-        ))}
+    <div className='container flex '>
+      <nav className='flex flex-row gap-4 overflow-x-auto border-b-2'>
+      {categories?.map((category, index) => (
+  <button
+    key={category._id}
+    onClick={() => setCategoryId(category._id)}
+    className={`flex items-center gap-1 px-1 py-1 border-t border-l border-r rounded-t-lg ${
+      categoryId === category._id ? "bg-white text-red-500 border-red-400" : "bg-slate-200"
+    } hover:bg-white transition-colors duration-300`}
+  >
+    {images[index] && (
+      <img 
+        src={images[index]} 
+        alt={`${category.categoryName} icon`} 
+        className={`w-6 h-6 ${categoryId === category._id ? "filter-red" : ""}`} 
+      />
+    )}
+    <span className="text-sm font-xs">{category.categoryName}</span>
+  </button>
+))}
+
       </nav>
     </div>
   );

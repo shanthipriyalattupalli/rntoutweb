@@ -262,7 +262,7 @@ function Header() {
       console.log(response, "response in cart")
       setCartItems(response.data.cartItems);
     } catch (error) {
-      console.error("Error fetching cart details:", error);
+      console.log("Error fetching cart details:", error);
     }
   };
 
@@ -306,238 +306,120 @@ function Header() {
   };
 
   return (
-    <header className='flex items-center justify-between px-20 py-4 bg-white shadow-md'>
-      <div className='flex items-center'>
-        <Link href='/'>
-          <img
-            src={logo}
-            alt='RNT Out Logo'
-            className='h-10'
-          />
-        </Link>
-      </div>
-      <div className='flex items-center'>
-        <div className='relative ml-4'>
-          <SearchInput onChange={(e) => handleSearchInputChange(e.target.value)} />
-          {showSuggestions && variants.length > 0 && (
-            <ul className="absolute left-0 w-full h-auto bg-white border rounded shadow mt-2 z-40">
-              {variants.slice(0, 10).map((variant) => (
-                <Link href={{ pathname: `/Products/${variant.title}`, query: { id: variant._id } }} key={variant._id}>
-                  <li
-                    key={variant._id}
-                    onClick={() => setShowSuggestions(false)} 
+<header className="flex items-center justify-between px-6 md:px-10 lg:px-20 py-3 bg-white shadow-md">
+  {/* Left Section - Logo */}
+  <div className="flex items-center">
+    <Link href="/">
+      <img src={logo} alt="RNT Out Logo" className="h-8 sm:h-10" />
+    </Link>
+  </div>
 
-                    // onClick={() => handleVariantClick(variant.id)}
-                    className="p-2 cursor-pointer hover:bg-gray-200"
-                  >
-                    {variant.title}
-                  </li>
-                </Link>
-              ))}
-            </ul>
-          )}
-        </div>
-        <div className='relative ml-4 bg-white border border-gray-300 rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-gray-100'>
-          <Image src={locations} alt="location" width={20} height={20}></Image>
-
-          <span value='HYD - 500008' disabled className="font-poppins text-sm font-medium leading-5 text-center [text-underline-position:from-font] [text-decoration-skip-ink:none] text-blacky">{address.suburb}</span>
-
-          {/* <button
-            id='dropdownBtn'
-            className='bg-white border border-gray-300 rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-gray-100'
-            onClick={toggleDropdown}
+  {/* Center Section - Search Input */}
+  <div className="hidden md:flex items-center relative w-full max-w-xs md:max-w-md lg:max-w-lg">
+    <SearchInput onChange={(e) => handleSearchInputChange(e.target.value)} />
+    {showSuggestions && variants.length > 0 && (
+      <ul className="absolute left-0 w-full bg-white border rounded shadow mt-2 z-40">
+        {variants.slice(0, 10).map((variant) => (
+          <Link
+            href={{ pathname: `/Products/${variant.title}`, query: { id: variant._id } }}
+            key={variant._id}
           >
-            <span className='text-gray-700'>{location}</span>
-            <svg
-              className='h-5 w-5 text-gray-400'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-              xmlns='http://www.w3.org/2000/svg'
+            <li
+              key={variant._id}
+              onClick={() => setShowSuggestions(false)}
+              className="p-2 cursor-pointer hover:bg-gray-200"
             >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M19 9l-7 7-7-7'
-              ></path>
-            </svg>
-          </button> */}
-          {/* {isDropdownOpen && (
-            <div
-              id='dropdownMenu'
-              className='absolute origin-top-right right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100'
-            >
-              <div
-                className='py-1'
-                role='menu'
-                aria-orientation='vertical'
-                aria-labelledby='options-menu'
-              >
-                {[
-                  "HYD - 500008",
-                  "HYD - 500028",
-                  "HYD - 500032",
-                  "HYD - 500084",
-                ].map((loc) => (
-                  <a
-                    key={loc}
-                    href='#'
-                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
-                    role='menuitem'
-                    onClick={() => handleLocationChange(loc)}
-                  >
-                    {loc}
-                  </a>
-                ))}
-              </div>
+              {variant.title}
+            </li>
+          </Link>
+        ))}
+      </ul>
+    )}
+  </div>
 
-            </div>
-          )} */}
-        </div>
-        <div className='relative ml-4 bg-white border border-gray-300 rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-gray-100'>
-          <Image src={nearby} alt="location" width={20} height={20}></Image>
-          <select value={selectedDistance} onChange={handleDistanceChange}>
-            {/* <option value={location}>{location}</option> */}
-            <option value='20'>20 km</option>
-            <option value='30'>30 km</option>
-            <option value='40'>40 km</option>
-            <option value='50'>50 km</option>
-            <option value='60'>60 km</option>
-            <option value='100'>100 km</option>
-          </select>
-        </div>
+  {/* Right Section - Location, Distance, Cart, Profile, and Buttons */}
+  <div className="flex items-center gap-3 md:gap-4">
+    {/* Location */}
+    <div className="hidden sm:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100">
+      <Image src={locations} alt="location" width={18} height={18} />
+      <span className="text-sm font-medium text-blacky">{address.suburb}</span>
+    </div>
+
+    {/* Distance Selection */}
+    <div className="hidden sm:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100">
+      <Image src={nearby} alt="location" width={18} height={18} />
+      <select className="bg-transparent text-sm" value={selectedDistance} onChange={handleDistanceChange}>
+        <option value="20">20 km</option>
+        <option value="30">30 km</option>
+        <option value="40">40 km</option>
+        <option value="50">50 km</option>
+        <option value="60">60 km</option>
+        <option value="100">100 km</option>
+      </select>
+    </div>
+
+    {/* Cart Button */}
+    <div className="relative" onClick={() => router.push("/Cartpage")}>
+      {cartItems.length > 0 ? (
+        <>
+          <Image src={cartitems} width={28} height={28} alt="cart" />
+          <span className="absolute -top-2 -right-2 bg-red-500 rounded-full w-5 h-5 text-xs font-semibold text-white flex items-center justify-center">
+            {cartItems.length}
+          </span>
+        </>
+      ) : (
+        <button className="bg-white border border-gray-300 rounded-lg p-2 hover:bg-gray-100">
+          <Image src={cart} width={18} height={18} alt="cart" />
+        </button>
+      )}
+    </div>
+
+    {/* Rent Button */}
+    {name || token ? (
+      <button
+        className="hidden sm:flex items-center gap-2 px-5 py-2 rounded-full text-white font-medium shadow-lg bg-gradient-to-r from-orange-400 via-purple-500 to-teal-500 hover:scale-105 transition-transform duration-300"
+        onClick={() => router.push("/add-on-rent")}
+      >
+        <span className="text-lg">+</span> Rent
+      </button>
+    ) : null}
+
+    {/* Profile & Sign In/Sign Up */}
+    <nav>
+      {name || token ? (
         <div
-          className='ml-6'
-          onClick={() => {
-            router.push("/Cartpage");
-          }}
+          onClick={() => router.push("/profile")}
+          className="flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 cursor-pointer"
         >
-          {cartItems.length > 0 ?
-            <>
-              <Image src={cartitems} width={35} height={30} alt="cartitems" className="relative" />
-              <span className="absolute top-2 ml-6 border border-white-900 bg-red-500 rounded-full w-6 h-6 text-md font-semibold text-white flex items-center justify-center">
-                {cartItems.length}
-              </span>
-
-            </>
-            : <button className='bg-white border border-gray-300 rounded-lg p-2 hover:bg-gray-100'>
-              {/* <svg
-              className='h-6 w-6 text-gray-600'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z'
-              ></path>
-            </svg> */}
-              <Image src={cart} width={20} height={20} alt="cart" />
-
-            </button>}
-
+          <img src={Photo} alt="user" className="w-8 h-8 rounded-full object-cover" />
+          <p className="text-sm">{name}</p>
         </div>
+      ) : (
+<button
+  className="ml-2 sm:ml-5 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 sm:px-6 rounded-full shadow-md transition duration-300 flex items-center justify-center"
+  onClick={() => setIsLoginOpen(true)}
+>
+  {/* Show 'Login' on mobile */}
+  <span className="sm:hidden">Login</span>
 
-        {name || token ? (
-          <button
-            className='flex items-center justify-center gap-2 px-6 py-2 rounded-full text-white text-base font-medium shadow-lg 
-bg-[linear-gradient(90deg,_#FEAC5E_0%,_#C779D0_50%,_#4BC0C8_100%)] hover:scale-105 hover:shadow-xl hover:from-red-600 hover:via-rose-600 hover:to-red-800 
-  transition-transform duration-300 ml-5'
-            onClick={() => {
-              router.push("/add-on-rent");
-            }}
-          >
-            <span className='text-base'>+</span> Rent
-          </button>
-        ) : null}
-
-        <nav className='navbar'>
-          {name || token ? (
-            <div
-              onClick={() => router.push("/profile")} // Redirect to profile page
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                border: "1px solid #E1E6EF",
-                borderRadius: "44px",
-                overflow: "hidden",
-                padding: "0 10px 0 0",
-                cursor: "pointer",
-                marginLeft: "20px",
-              }}
-            >
-              <img
-                src={Photo}
-                alt='user'
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                }}
-              />
-              <p style={{ margin: 0 }}>{name}</p>
-              {/* <button
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent triggering profile page redirect
-                  handleLogout();
-                }}
-                style={{
-                  marginLeft: "10px",
-                  background: "transparent",
-                  border: "none",
-                  color: "#007BFF",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                }}
-              >
-                Logout
-              </button> */}
-            </div>
-
-          ) : (
-            <div className="app-container">
-              <button
-                className="ml-5 bg-[#FF2D55] hover:bg-[#e6264c] text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300"
-                onClick={() => setIsLoginOpen(true)}
-              >
-                Sign In / Sign Up
-              </button>
-
-              {isLoginOpen && (
+  {/* Show 'Sign In / Sign Up' on larger screens */}
+  <span className="hidden sm:block">Sign In / Sign Up</span>
+</button>    
+      )}
+                 {isLoginOpen && (
                 <div className="modal-overlay">
                   <div className="modal-content">
                     <button className="close-button" onClick={() => setIsLoginOpen(false)}>
                       ✕
                     </button>
-                    <Login setIsLoginOpen={setIsLoginOpen} />
+                    <Login setIsLoginOpen={setIsLoginOpen}/>
                   </div>
                 </div>
               )}
-            </div>
-          )}
-        </nav>
+    </nav>
+  </div>
+</header>
 
-        {/* <button className="ml-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" onClick={handleNavigate}>
-          Sign In / Sign Up
-        </button> */}
-        {/* {!name ?
-         <button className="ml-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" onClick={() => {router.push('/Login')}}>
-         Sign In / Sign Up
-       </button>
-        <button className='nav-login' style={{color:"black"}} onClick={() => {router.push('/Login')}}> Login</button>
-          : (<div onClick={() => { router.push('/') }} style={{ display: "flex", alignItems: "center", gap: "10px", border: "1px solid #E1E6EF", borderRadius: "44px", overflow: "hidden", padding: "0 04px 0 0" }}>
-            <img src={Photo} alt='user' />
-            <p style={{ margin: 0 }}>nithin</p>
-          </div>)
-        } */}
-      </div>
-    </header>
   );
 }
 

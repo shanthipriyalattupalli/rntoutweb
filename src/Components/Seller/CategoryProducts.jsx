@@ -14,7 +14,7 @@ const pro5 = "/Assets/laptop-5.jpg";
 const noproducts = "/Assets/noproducts.svg";
 
 // Dynamically import the ProductItems component for lazy loading
-const ProductItems = dynamic(() => import("./ProductItems"), {
+const ProductItems = dynamic(() => import("../Home/ProductItems"), {
   suspense: true,
 });
 
@@ -27,10 +27,10 @@ const CategoryProducts = ({ products }) => {
   };
 
   return (
-    <div className="container mx-auto pl-6">
+    <div className="container mx-auto">
       <ToastContainer />
       {products?.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
 
           <Suspense fallback={<div>Loading...</div>}>
             {products.map((product) => (

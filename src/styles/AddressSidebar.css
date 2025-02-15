@@ -57,6 +57,9 @@
 }
 
 .delivery-to {
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
     color: #2F6FED;
 }
 
@@ -78,8 +81,8 @@
 .address-card {
     display: flex;
     flex-direction: column;
-    width: 370px;
-    height: 150px;
+    width: 410px;
+    height: 130px;
     padding: 16px;
     border-radius: 12px;
     border: 1px solid #0707071A;
@@ -117,12 +120,17 @@ background: rgba(7, 7, 7, 0.1);
 .address-button {
     width: 100%;
     padding: 12px;
-    background: #2F6FED;
-    border: 1px solid #2F6FED;
+    background: rgba(255, 45, 85, 1);
+    border: 1px solid rgba(255, 45, 85, 1);
+    box-shadow: 0px 1px 0px 1px var(--OverlaysWhiteAlpha10) inset;
+
+box-shadow: 0px 6px 4px -4px var(--OverlaysWhiteAlpha8) inset;
+
+box-shadow: 0px -1px 0.5px 1px var(--OverlaysBlackAlpha8) inset;
+
     color: #fff;
     font-weight: bold;
-    border: none;
-    border-radius: 4px;
+    border-radius: 12px;
     cursor: pointer;
     margin-top: 20px;
     
