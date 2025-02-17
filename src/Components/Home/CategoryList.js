@@ -1,4 +1,4 @@
-// "use client"; // For client-side rendering in Next.js App Router
+"use client"; // For client-side rendering in Next.js App Router
 
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -51,9 +51,23 @@ const CategoryList = ({ products = [], categories }) => {
         },
       },
       {
-        breakpoint: 480,
+        breakpoint: 425,
         settings: {
           slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 375,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 320,
+        settings: {
+          slidesToShow: 1,
           slidesToScroll: 1,
         },
       },
@@ -62,8 +76,10 @@ const CategoryList = ({ products = [], categories }) => {
 
   return (
     <div className='bg-white'>
-      <div className='h-52'>
-      <h1 className="text-2xl font-bold px-24 pb-6">Rent Furniture & Appliances</h1>
+      <div className='h-auto px-4 md:px-10 lg:px-24'>
+        <h1 className="text-xl sm:text-2xl font-bold pb-4 text-center sm:text-left">
+          Rent Furniture & Appliances
+        </h1>
         {categories?.length > 8 ? (
           <Slider {...settings}>
             {categories?.map((category, index) => (
@@ -76,7 +92,7 @@ const CategoryList = ({ products = [], categories }) => {
                   style={{
                     backgroundColor: bgColors[index % bgColors.length],
                     borderRadius: "20px",
-                    width: "148px",
+                    width: "140px",
                     height: "100px",
                     margin: "0 auto",
                   }}
@@ -86,7 +102,6 @@ const CategoryList = ({ products = [], categories }) => {
                     alt={category.categoryName}
                     width={48}
                     height={48}
-                    layout="responsive"
                     className='w-12 h-12'
                   />
                   <span className='text-center pt-2'>
@@ -97,7 +112,7 @@ const CategoryList = ({ products = [], categories }) => {
             ))}
           </Slider>
         ) : (
-          <div className='flex flex-wrap justify-center gap-3'>
+          <div className='flex flex-wrap justify-center gap-2 sm:gap-3'>
             {categories?.map((category, index) => (
               <div
                 key={category._id}
@@ -108,7 +123,7 @@ const CategoryList = ({ products = [], categories }) => {
                 style={{
                   backgroundColor: bgColors[index % bgColors.length],
                   borderRadius: "20px",
-                  width: "148px",
+                  width: "140px",
                   height: "100px",
                 }}
               >

@@ -29,12 +29,12 @@ import ProductItem from "@/Components/Home/ProductItems";
 const productimg = "/Assets/pi-1.png";
 const AvailIcon = "/Assets/Icons/ava-stock.png";
 const AvailtyIcon = "/Assets/Icons/availability.png";
-const truck="/Assets/truck.svg"
-const estimation="/Assets/estimation.svg"
+const truck = "/Assets/truck.svg"
+const estimation = "/Assets/estimation.svg"
 const stars = "/Assets/stars.svg";
 const reviewimage = '/Assets/reviewimage.svg'
 const userProfile = '/Assets/userProfile.svg'
-const stock='/Assets/stock.svg';
+const stock = '/Assets/stock.svg';
 const favorite = "/Assets/favorite.svg"
 const favorited = '/Assets/favoritedicon.svg'
 const star2 = "/Assets/star2.png";
@@ -402,20 +402,20 @@ const ProductPage = () => {
 
               {/* Ratings */}
               <div className='flex items-center space-x-2 cursor-pointer'>
-              {owner && (
-                      <Link href={`/SellerProfile/${owner._id}`}>
-                <img
-                  src={sample}
-                  alt='Seller'
-                  className='w-6 h-6 rounded-full'
-                />
-                </Link>
-              )}
+                {owner && (
+                  <Link href={`/SellerProfile/${owner._id}`}>
+                    <img
+                      src={sample}
+                      alt='Seller'
+                      className='w-6 h-6 rounded-full'
+                    />
+                  </Link>
+                )}
                 {owner && (
 
                   <Link href={`/SellerProfile/${owner._id}`}><span
                     className='text-xs'
-                    onClick={()=>handleSellerclick(owner._id)}
+                    onClick={() => handleSellerclick(owner._id)}
                     key={owner._id}
                   >
                     {owner.name}
@@ -553,29 +553,29 @@ const ProductPage = () => {
             <div className='flex items-center justify-around bg-white p-3 border border-slate-200 rounded-xl'>
               <div className='flex gap-2 items-center text-center  justify-center'>
                 {/* <Truck className='w-5 h-5 mr-2' /> */}
-                <img src={truck}/>
+                <img src={truck} />
                 <span className=' text-sm text-[#070707CC] font-[600]'>
                   within 2 days
                 </span>
               </div>|
               <div className='flex gap-2 items-center text-center  justify-center'>
                 {/* <Truck className='w-5 h-5 mr-2' /> */}
-                <img src={estimation}/>
+                <img src={estimation} />
                 <span className=' text-sm text-[#070707CC] font-[600]'>
                   {formattedStartDate} {formattedEndDate === "NaN Invalid Date ‘aN" ? "" : "-"}{formattedEndDate === "NaN Invalid Date ‘aN" ? "" : formattedEndDate}
                 </span>
               </div>
               <span>|</span>
-       {product.stockQuantity > 0 ? <div className='flex gap-2 items-center text-blue-600 text-[#070707CC] font-[600] text-sm'>
+              {product.stockQuantity > 0 ? <div className='flex gap-2 items-center text-blue-600 text-[#070707CC] font-[600] text-sm'>
                 {/* <span className='mr-2 '>✓</span> */}
-                <img src={stock}/>
+                <img src={stock} />
                 In stock
-              </div>:
-              <div className='flex gap-2 items-center text-red-500 text-[#070707CC] font-[600] text-sm'>
-                {/* <span className='mr-2 '>✓</span> */}
-                <img src={stock}/>
-                Out of stock
-              </div>}
+              </div> :
+                <div className='flex gap-2 items-center text-red-500 text-[#070707CC] font-[600] text-sm'>
+                  {/* <span className='mr-2 '>✓</span> */}
+                  <img src={stock} />
+                  Out of stock
+                </div>}
             </div>
 
             {/* Services */}
@@ -596,7 +596,7 @@ const ProductPage = () => {
         </div>
 
         {/* Bottom Section */}
-    { productDetails.length >0 &&<div className='grid md:grid-cols-2 gap-8 py-6'>
+        {productDetails.length > 0 && <div className='grid md:grid-cols-2 gap-8 py-6'>
           {/* Left Side - Product Details and Other Details */}
           <div className='space-y-6'>
             {/* Product Details */}
@@ -638,7 +638,7 @@ const ProductPage = () => {
                   Product Description
                 </h2>
                 <tbody>
-  <p className="font-sm text-md text-gray-700 leading-relaxed">{product.description}</p>
+                  <p className="font-sm text-md text-gray-700 leading-relaxed">{product.description}</p>
                 </tbody>
               </table>
             </div>
@@ -709,16 +709,17 @@ const ProductPage = () => {
             </table>
           </div>
         </div> */}
-        <div className="flex flex-col w-1/2 gap-2 border b-black-200 bg-white-500 p-10 rounded-lg text-center justify-center">
-          <h2 className="text-black-500 text-5xl font-bold ">4.7</h2>
-          <div className="flex gap-2 ml-48">
-            <img src={startfill} alt="Rating stars" className="" />
-            <img src={startfill} alt="Rating stars" className="" />
-            <img src={startfill} alt="Rating stars" className="" />
-            <img src={startfill} alt="Rating stars" className="" />
-            <img src={startfill} alt="Rating stars" className="" />
+        <div className="flex flex-col w-full md:w-1/2 gap-2 border b-black-200 bg-white-500 p-6 md:p-10 rounded-lg text-center justify-center">
+          <h2 className="text-black-500 text-5xl md:text-5xl font-bold">4.7</h2>
+          <div className="flex gap-2 justify-center ">
+            <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
+            <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
+            <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
+            <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
+            <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
           </div>
         </div>
+
         <div className="pt-3 w-1/2 justify-center text-center">
           <button className="border b-orange-200 bg-orange-400 p-3 w-80 rounded-lg text-white font-semibold" onClick={() => setIsReview(true)}>write a review</button>
         </div>
@@ -728,7 +729,7 @@ const ProductPage = () => {
               <button className="close-button" onClick={() => setIsReview(false)}>
                 ✕
               </button>
-              <Reviews product={product}/>
+              <Reviews product={product} />
             </div>
           </div>
 
