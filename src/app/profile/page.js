@@ -146,115 +146,226 @@ export default function ProfileSettings() {
   const router = useRouter();
 
   return (
-    <div className="profile-settings">
-      <ToastContainer/>
-      <div className="item-header">
-        <h2>Profile Settings</h2>
-    <a className="kyc-btn" onClick={() => router.push("/profile/business-information/Kyc")} >Personal KYC</a>
+  //   <div className="profile-settings">
+  //     <ToastContainer/>
+  //     <div className="item-header">
+  //       <h2>Profile Settings</h2>
+  //   <a className="kyc-btn" onClick={() => router.push("/profile/business-information/Kyc")} >Personal KYC</a>
 
-        <a href="#" className="edit-btn"   onClick={() => {
-    if (isEditable) {
-      handleSubmitProfile(); 
-    }
-    toggleEdit(); 
-  }}>
-          {isEditable ? 'Save' : 'Edit'}
-        </a>
+  //       <a href="#" className="edit-btn"   onClick={() => {
+  //   if (isEditable) {
+  //     handleSubmitProfile(); 
+  //   }
+  //   toggleEdit(); 
+  // }}>
+  //         {isEditable ? 'Save' : 'Edit'}
+  //       </a>
+  //     </div>
+  //     <div className="form">
+  //       <div className="avatar-section">
+  //         {/* Display the current or selected avatar */}
+  //         <img src={avatar} alt="Profile Avatar" className="w-20 h-20 rounded-full border b-2" />
+  //         <button className="edit-image" onClick={handleButtonClick} >
+  //           Edit Image
+  //         </button>
+  //         {/* Hidden file input */}
+  //         <input
+  //           type="file"
+  //           ref={fileInputRef}
+  //           style={{ display: "none" }}
+  //           accept="image/*"
+  //           onChange={handleFileChange}
+  //           className="input-group"
+  //         />
+  //       </div>
+  //       <div className="avatar-section_frame">
+  //         <div className="input_group_column">
+  //           <div className="input-group">
+  //             <label>Name</label>
+  //             <input
+  //               type="text"
+  //               name="user.name"
+  //               value={profile.user.name}
+  //               onChange={handleChange}
+  //               placeholder="Enter your name"
+  //               disabled={!isEditable}
+  //             />
+  //           </div>
+  //         </div>
+  //         <div className="input_group_column">
+  //           <div className="input-group">
+  //             <label>Email Address</label>
+  //             <input
+  //               type="email"
+  //               name="user.email"
+  //               value={profile.user.email}
+  //               onChange={handleChange}
+  //               placeholder="Enter your email"
+  //               disabled={!isEditable}
+  //             />
+  //           </div>
+  //         </div>
+  //         <div className="gender-section">
+  //           <label>Gender</label>
+  //           <div className="gender_frame_line">
+  //             <div>
+  //               <input
+  //                 type="radio"
+  //                 name="gender"
+  //                 value="Male"
+  //                 checked={profile.gender === "Male"}
+  //                 onChange={handleChange}
+  //                 disabled={!isEditable}
+  //               /> Male
+  //             </div>
+  //             <div>
+  //               <input
+  //                 type="radio"
+  //                 name="gender"
+  //                 value="Female"
+  //                 checked={profile.gender === "Female"}
+  //                 onChange={handleChange}
+  //                 disabled={!isEditable}
+  //               /> Female
+  //             </div>
+  //             <div>
+  //               <input
+  //                 type="radio"
+  //                 name="gender"
+  //                 value="Other"
+  //                 checked={profile.gender === "Other"}
+  //                 onChange={handleChange}
+  //                 disabled={!isEditable}
+  //               /> Other
+  //             </div>
+  //           </div>
+  //         </div>
+
+  //         <div className="input-group">
+  //           <label>Date of Birth</label>
+  //           <input
+  //             type="date"
+  //             name="dateOfBirth"
+  //             value={profile.dateOfBirth}
+  //             onChange={handleChange}
+  //             disabled={!isEditable}
+  //           />
+  //         </div>
+
+  //       </div>
+  //     </div>
+  //     {/* <button onClick={handleUploadProfile}>Upload Profile Picture</button> */}
+  //   </div>
+
+  <div className="profile-settings w-full max-w-5xl mx-auto bg-white ">
+  <ToastContainer />
+  
+  <div className="item-header">
+    <h2>Profile Settings</h2>
+    
+    <div className="flex items-center space-x-4">
+      <a className="text-green-600 font-medium text-sm cursor-pointer" onClick={() => router.push("/profile/business-information/Kyc")}>
+        Personal KYC
+      </a>
+      
+      <a className="text-blue-600 font-medium text-sm cursor-pointer" onClick={() => {
+        if (isEditable) {
+          handleSubmitProfile();
+        }
+        toggleEdit();
+      }}>
+        {isEditable ? "Save" : "Edit"}
+      </a>
+    </div>
+  </div>
+
+  <div className="flex flex-col space-y-6  p-4 md:p-6 lg:p-8">
+    {/* Avatar Section */}
+    <div className="flex items-center space-x-6">
+      <img src={avatar} alt="Profile Avatar" className="w-20 h-20 rounded-full border-2" />
+      
+      <div>
+        <button className="bg-gray-200 px-4 py-2 rounded-md text-sm hover:bg-gray-300" onClick={handleButtonClick}>
+          Edit Image
+        </button>
+
+        {/* Hidden File Input */}
+        <input
+          type="file"
+          ref={fileInputRef}
+          className="hidden"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
       </div>
-      <div className="form">
-        <div className="avatar-section">
-          {/* Display the current or selected avatar */}
-          <img src={avatar} alt="Profile Avatar" className="w-20 h-20 rounded-full border b-2" />
-          <button className="edit-image" onClick={handleButtonClick} >
-            Edit Image
-          </button>
-          {/* Hidden file input */}
-          <input
-            type="file"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            accept="image/*"
-            onChange={handleFileChange}
-            className="input-group"
-          />
-        </div>
-        <div className="avatar-section_frame">
-          <div className="input_group_column">
-            <div className="input-group">
-              <label>Name</label>
-              <input
-                type="text"
-                name="user.name"
-                value={profile.user.name}
-                onChange={handleChange}
-                placeholder="Enter your name"
-                disabled={!isEditable}
-              />
-            </div>
-          </div>
-          <div className="input_group_column">
-            <div className="input-group">
-              <label>Email Address</label>
-              <input
-                type="email"
-                name="user.email"
-                value={profile.user.email}
-                onChange={handleChange}
-                placeholder="Enter your email"
-                disabled={!isEditable}
-              />
-            </div>
-          </div>
-          <div className="gender-section">
-            <label>Gender</label>
-            <div className="gender_frame_line">
-              <div>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Male"
-                  checked={profile.gender === "Male"}
-                  onChange={handleChange}
-                  disabled={!isEditable}
-                /> Male
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Female"
-                  checked={profile.gender === "Female"}
-                  onChange={handleChange}
-                  disabled={!isEditable}
-                /> Female
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Other"
-                  checked={profile.gender === "Other"}
-                  onChange={handleChange}
-                  disabled={!isEditable}
-                /> Other
-              </div>
-            </div>
-          </div>
+    </div>
 
-          <div className="input-group">
-            <label>Date of Birth</label>
+    {/* Profile Information Section */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Name Input */}
+      <div className="flex flex-col">
+        <label className="text-sm font-semibold">Name</label>
+        <input
+          type="text"
+          name="user.name"
+          value={profile.user.name}
+          onChange={handleChange}
+          placeholder="Enter your name"
+          disabled={!isEditable}
+          className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        />
+      </div>
+
+      {/* Email Input */}
+      <div className="flex flex-col">
+        <label className="text-sm font-semibold">Email Address</label>
+        <input
+          type="email"
+          name="user.email"
+          value={profile.user.email}
+          onChange={handleChange}
+          placeholder="Enter your email"
+          disabled={!isEditable}
+          className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        />
+      </div>
+    </div>
+
+    {/* Gender Section */}
+    <div className="flex flex-col">
+      <label className="text-sm font-semibold">Gender</label>
+      <div className="flex space-x-4">
+        {["Male", "Female", "Other"].map((gender) => (
+          <label key={gender} className="flex items-center space-x-2">
             <input
-              type="date"
-              name="dateOfBirth"
-              value={profile.dateOfBirth}
+              type="radio"
+              name="gender"
+              value={gender}
+              checked={profile.gender === gender}
               onChange={handleChange}
               disabled={!isEditable}
+              className="cursor-pointer"
             />
-          </div>
-
-        </div>
+            <span>{gender}</span>
+          </label>
+        ))}
       </div>
-      {/* <button onClick={handleUploadProfile}>Upload Profile Picture</button> */}
     </div>
+
+    {/* Date of Birth */}
+    <div className="flex flex-col">
+      <label className="text-sm font-semibold">Date of Birth</label>
+      <input
+        type="date"
+        name="dateOfBirth"
+        value={profile.dateOfBirth}
+        onChange={handleChange}
+        disabled={!isEditable}
+        className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+      />
+    </div>
+  </div>
+</div>
+
   );
 }

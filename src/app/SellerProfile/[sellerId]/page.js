@@ -280,16 +280,16 @@ const SellerCarouselProfile = () => {
             </h1>
             <p>
               {/* <span className='seller-contact-item'>📞{sellerDetails.name}</span> |{" "} */}
-              <span className='seller-contact-item'>{sellerDetails?.businessInfo?.businessName}</span> |{" "}
+              <span className='seller-contact-item'>{sellerDetails?.businessInfo?.storeName}</span> {" "}
 
-              <span className='seller-contact-item'>
+              {/* <span className='seller-contact-item'>
                 ✉️ rntout.enterprise@gmail.com
               </span>{" "}
               |{" "}
               <span className='seller-contact-item'>
                 📍 3-6-288/3, Sri Siva Rama Towers, King Koti, Hyderabad,
                 Telangana, India 500029
-              </span>
+              </span> */}
             </p>
           </div>
         </div>
@@ -304,7 +304,7 @@ const SellerCarouselProfile = () => {
             </a>
           </p>
           <p className='seller-business-name'>
-            <strong>Business Name:</strong> Yueyang Guangzhou Import and Export
+            <strong>Business Name : </strong>{sellerDetails?.businessInfo?.businessName}
             Co Ltd
           </p>
         </div>
