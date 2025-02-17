@@ -53,7 +53,7 @@ const Testimonials = () => {
 
   return (
     <div className="mt-4">
-      <div className="max-w-7xl mx-auto px-4 py-8 md:py-16">
+      <div className="px-4 py-8 md:py-16 2xl:px-16 xl:px-16">
         <div className="text-center mb-6 md:mb-12">
           <p className="text-red-600 text-xs sm:text-sm font-semibold mb-1 sm:mb-2">
             OVER 1.5 LAC HAPPY CUSTOMERS

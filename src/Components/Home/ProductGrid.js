@@ -31,8 +31,8 @@ const CategorySection = ({ categories }) => {
   };
 
   return (
-    <div className="bg-white pt-6">
-      <div className="container flex flex-col gap-2 mx-auto px-4 text-center">
+    <div className="bg-white pt-8">
+      <div className="flex flex-col gap-2  px-4 text-center">
         <h1 className="text-3xl font-bold text-gray-800">
           Our Top Trending Products
         </h1>
@@ -42,12 +42,12 @@ const CategorySection = ({ categories }) => {
       </div>
 
       <div className="bg-white-100 py-6">
-        <div className="container mx-auto flex flex-wrap justify-center gap-1">
+        <div className="flex flex-wrap justify-center gap-2">
           {categories?.map((category) => (
             <button
               key={category._id}
               onClick={() => handleCategoryClick(category._id)}
-              className={`flex items-center py-1 text-sm px-1 rounded-lg transition duration-300 ${
+              className={`flex items-center py-1  text-sm px-1 rounded-lg transition duration-300 ${
                 selectedCategory === category._id
                   ? "bg-[#F0F5FF] border border-[#2F6FED] text-blue-700" // Selected background
                   : "bg-white text-gray-800 border border-slate-300 hover:bg-blue-100"
@@ -62,7 +62,7 @@ const CategorySection = ({ categories }) => {
               <Image
                 src={category.image || "/default-icon.png"} // Use category-specific icon or a default
                 alt={`${category.categoryName} icon`}
-                className="h-4 w-4 mr-2"
+                className="h-5 w-5 mr-2"
                 width={16}
                 height={16}
               />

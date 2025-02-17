@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios"
+import { useParams } from "next/navigation";
 import {
     FaQuestionCircle, FaClipboardList, FaTruck, FaUserCircle, FaShieldAlt, FaCreditCard, FaFileContract, FaLock, FaEdit, FaMoneyBillWave, FaShoppingCart, FaFileInvoiceDollar,
     FaBoxes, FaIdCard, FaEllipsisH, FaReceipt, FaGift, FaSyncAlt, FaUndoAlt
@@ -143,7 +144,9 @@ const FaqPage = () => {
 
     const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL
     const [categories, setCategories] = useState([]);
-    const FaqId=parms
+      const params = useParams();
+    const FaqId=params.FaqId
+    console.log(FaqId,"faqId")
     // const fetchFaqCategories = async () => {
     //     try {
     //         const response = await axios.get(`${BASE_URL}/faq/categories`);

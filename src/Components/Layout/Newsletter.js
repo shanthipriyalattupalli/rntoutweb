@@ -31,7 +31,7 @@ const Newsletter = () => {
   }, []);
 
   return (
-    <div className="bg-black pt-12 px-24">
+    <div className="bg-black pt-12 px-24 xl:px-16">
       <div className="md:flex md:justify-between">
         {/* Newsletter Subscription Section */}
         <div className="md:w-1/2 mb-8 md:mb-0">

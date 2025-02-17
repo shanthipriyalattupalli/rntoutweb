@@ -6,7 +6,7 @@ const acheivementImg = '/Assets/redchair-achieve.svg';
 const Achievements = () => {
   return (
     <div className="mt-12">
-      <div className="relative container mx-auto px-4 rounded-lg border border-slate-200 overflow-hidden">
+      <div className="relative 2xl:px-10 px-4 rounded-lg border border-slate-200 overflow-hidden">
         
 
         <div className="w-1/2 absolute right-0 top-0">
@@ -20,7 +20,7 @@ const Achievements = () => {
         </div>
 
 
-        <div className="w-1/2 h-full bg-slate-50 p-10">
+        <div className="w-1/2 h-full p-10">
           <h1 className="text-xl md:text-3xl lg:text-4xl font-bold mb-4 text-black">
             Our Achievements
           </h1>

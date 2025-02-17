@@ -162,11 +162,11 @@ const ProductItem = ({ product }) => {
     currentDate.getTime() - startDate.getTime() === 7 * 24 * 60 * 60 * 1000;
   return (
 
-    <div>
+    <>
       {/* <ToastContainer /> */}
       <style>{customStyles}</style>
 
-      <div className='w-min-auto bg-white rounded-lg border border-slate-200'
+      <div className='bg-white rounded-lg border border-slate-200 '
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
         <div className="relative rounded-lg">
@@ -402,7 +402,7 @@ const ProductItem = ({ product }) => {
           </div>
         )}
       </div>
-    </div>
+    </>
 
   );
 };

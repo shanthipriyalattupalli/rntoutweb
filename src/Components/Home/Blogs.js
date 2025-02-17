@@ -105,15 +105,15 @@ const Blog = () => {
   console.log(currentBlogs, "Blogs");
   return (
     <div className='mt-8'>
-      <div className='container mx-auto w-full mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5'>
+      <div className='mx-auto w-full mx-auto 2xl:px-10  px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5'>
         {/* Header Section */}
         <div className='flex justify-between items-center mt-20 mb-4'>
-          <h1 className='text-3xl font-bold text-gray-800'>
+          <h1 className='text-3xl font-bold text-gray-800 xl:px-16'>
             Our Exclusive Blogs
           </h1>
           <a
             href='#'
-            className='text-blue-500 hover:text-blue-700 text-sm font-medium'
+            className='text-blue-500 hover:text-blue-700 text-sm font-medium xl:pl-16'
           >
             View all blogs{" "}
             <svg
@@ -139,14 +139,14 @@ const Blog = () => {
         {/* Carousel Section */}
         <div className='relative'>
           {/* Carousel Content */}
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:px-10 gap-6'>
             {currentBlogs?.map((blog, index) => (
               <div
                 key={index}
-                className='bg-white rounded-lg shadow-md border border-slate-200 rounded-lg overflow-hidden'
+                className='bg-white rounded-lg shadow-md border border-slate-200  rounded-lg overflow-hidden'
 
               >
-                <img src={blog.images} alt={blog.title} className='w-full h-40' />
+                <img src={blog.images} alt={blog.title} className='w-full h-40 2xl:h-[350px]' />
                 <div className='p-4'>
                   <h3 className='text-lg font-medium text-gray-800 mb-2'>
                     {blog.title}

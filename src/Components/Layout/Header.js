@@ -310,7 +310,7 @@ function Header() {
   {/* Left Section - Logo */}
   <div className="flex items-center">
     <Link href="/">
-      <img src={logo} alt="RNT Out Logo" className="h-8 sm:h-10 border-none" />
+      <img src={logo} alt="RNT Out Logo" className="h-8 sm:h-10 border-none border-0" />
     </Link>
   </div>
 

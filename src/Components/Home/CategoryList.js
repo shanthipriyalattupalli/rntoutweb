@@ -75,8 +75,8 @@ const CategoryList = ({ products = [], categories }) => {
   };
 
   return (
-    <div className='bg-white'>
-      <div className='h-auto px-4 md:px-10 lg:px-24'>
+    <div className='bg-white py-4'>
+      <div className='h-auto  md:px-10 lg:px-24'>
         <h1 className="text-xl sm:text-2xl font-bold pb-4 text-center sm:text-left">
           Rent Furniture & Appliances
         </h1>
@@ -86,7 +86,7 @@ const CategoryList = ({ products = [], categories }) => {
               <div key={category._id}>
                 <div
                   className={classNames(
-                    "text-sm font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer p-2"
+                    "text-sm font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer"
                   )}
                   onClick={() => handleCategoryClick(category._id)}
                   style={{
@@ -112,19 +112,19 @@ const CategoryList = ({ products = [], categories }) => {
             ))}
           </Slider>
         ) : (
-          <div className='flex flex-wrap justify-center gap-2 sm:gap-3'>
+          <div className='flex flex-wrap justify-center xl:gap-6 sm:gap-3'>
             {categories?.map((category, index) => (
               <div
                 key={category._id}
                 className={classNames(
-                  "text-xs font-semibold pt-3 border border-[rgba(7,7,7,0.05)] rounded-lg flex flex-col items-center transition duration-300 cursor-pointer p-2"
+                  "text-xs font-semibold pt-3 border border-[rgba(7,7,7,0.05)] rounded-lg flex flex-col items-center transition duration-300 cursor-pointer lg:w-[130px] lg:h-[100px] 2xl:w-[300px]"
                 )}
                 onClick={() => handleCategoryClick(category._id)}
                 style={{
                   backgroundColor: bgColors[index % bgColors.length],
                   borderRadius: "20px",
-                  width: "140px",
-                  height: "100px",
+                  // width: "150px",
+                  // height: "100px",
                 }}
               >
                 <Image
@@ -134,9 +134,10 @@ const CategoryList = ({ products = [], categories }) => {
                   height={48}
                   className='w-12 h-12'
                 />
-                <span className='text-center pt-2'>
-                  {category.categoryName}
-                </span>
+         <span className='text-center pt-2 truncate w-24'>
+  {category.categoryName}
+</span>
+                
               </div>
             ))}
           </div>

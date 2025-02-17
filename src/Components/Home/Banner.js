@@ -17,7 +17,7 @@ const Banner = ({banners}) => {
   const swiperRef = useRef(null); // Create a ref to store the Swiper instance
 
   return (
-    <div className="w-full  bg-slate-50">
+    <div className="w-full">
 {banners.map((banner,index)=>(
  <div className="relative px-20 py-10" key={index}>
  {/* Custom Navigation Buttons */}

@@ -145,7 +145,7 @@ useEffect(() => {
 
   console.log(banner[0]?.image,"banners")
   return (
-    <main className='bg-slate-50 tmp-bg'>
+    <main className='tmp-bg'>
       <Banner banners={banners}/>
       <CategoryList categories={categories} />
       <ProductGrid categories={categories} />
