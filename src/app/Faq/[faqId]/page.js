@@ -6,7 +6,6 @@ import {
     FaQuestionCircle, FaClipboardList, FaTruck, FaUserCircle, FaShieldAlt, FaCreditCard, FaFileContract, FaLock, FaEdit, FaMoneyBillWave, FaShoppingCart, FaFileInvoiceDollar,
     FaBoxes, FaIdCard, FaEllipsisH, FaReceipt, FaGift, FaSyncAlt, FaUndoAlt
 } from "react-icons/fa";
-import { useRouter } from "next/navigation";
 
 const categories = [
     {
@@ -141,10 +140,10 @@ const categories = [
 
 
 const FaqPage = () => {
-      const router = useRouter();
 
     const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL
-    const [categories, setCategories] = useState([])
+    const [categories, setCategories] = useState([]);
+    const FaqId=parms
     // const fetchFaqCategories = async () => {
     //     try {
     //         const response = await axios.get(`${BASE_URL}/faq/categories`);
@@ -193,7 +192,6 @@ const FaqPage = () => {
                     <div
                         key={index}
                         className="border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition duration-300 cursor-pointer"
-                        onClick={()=>router.push(`/Faq/${category._id}`)}
                     >
                         <div className="flex items-center space-x-3 mb-4">
                             <div className="bg-green-600 p-2 rounded-lg flex justify-center items-center">

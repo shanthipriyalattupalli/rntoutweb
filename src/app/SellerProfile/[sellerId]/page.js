@@ -4,8 +4,8 @@ import React, { useEffect, useState, Suspense, lazy } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import axios from "axios";
 // import "@/styles/SellerProfile.css";
-import SellerProfile from '../../Components/Seller/SellerProducts'
-import '../../styles/Sellerprofile.css'
+import SellerProfile from '../../../Components/Seller/SellerProducts'
+import '../../../styles/Sellerprofile.css'
 import { useRouter } from "next/navigation";
 const startfill='/Assets/star_fill.svg'
 const stars = "/Assets/stars.svg";
@@ -17,10 +17,29 @@ const Fqa = lazy(() => import("@/Pages/Fqa"));
 const Products = lazy(() => import("@/app/Products/page"));
 
 const SellerCarouselProfile = () => {
-  /* const searchParams = useSearchParams();
-  const sellerId = searchParams.get("id"); */
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const params = useParams();
-  const sellerId = params.id;
+  const sellerId = params.sellerId;
+  console.log(sellerId,"sellerid");
+  const [sellerDetails, setSellerDetails] = useState([]);
+  const [products,setproducts]=useState([])
+
+  const fetchSellerById = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/business-info/sellerInfo?ownerId=${sellerId}`);
+
+      const data = response.data.data;
+      console.log(data, "fetch seller by sellerid");
+      setSellerDetails(data)
+      setproducts(data.variants)
+    } catch (error) {
+      console.error("Error fetching seller:", error);
+    }
+  };
+  useEffect(() => {
+    fetchSellerById();
+  }, [sellerId]);
+
 
   const slides = [
     { id: 1, image: "/Assets/sofa.svg" },
@@ -86,7 +105,7 @@ const SellerCarouselProfile = () => {
             <div className="p-5">
             {/* <div className='seller-tab-content'> */}
               {/* <Products /> */}
-              <SellerProfile/>
+              <SellerProfile products={products}/>
             {/* </div> */}
             </div>
           </Suspense>
@@ -114,9 +133,9 @@ const SellerCarouselProfile = () => {
              <img src={startfill} alt="Rating stars"className="" />
              </div>
              </div>
-             <div className="pt-3 w-full justify-center text-center">
+             {/* <div className="pt-3 w-full justify-center text-center">
              <button className="border b-orange-200 bg-orange-400 p-3 w-80 rounded-lg text-white font-semibold">write a review</button>
-             </div>
+             </div> */}
    
          
          <h2 className='pb-4 pt-8 font-semibold text-black-700'>
@@ -259,8 +278,10 @@ const SellerCarouselProfile = () => {
               RntOut Enterprise{" "}
               <span className='seller-verified'>&#x2714;</span>
             </h1>
-            {/* <p>
-              <span className='seller-contact-item'>📞 +91 12345 67890</span> |{" "}
+            <p>
+              {/* <span className='seller-contact-item'>📞{sellerDetails.name}</span> |{" "} */}
+              <span className='seller-contact-item'>{sellerDetails?.businessInfo?.businessName}</span> |{" "}
+
               <span className='seller-contact-item'>
                 ✉️ rntout.enterprise@gmail.com
               </span>{" "}
@@ -269,7 +290,7 @@ const SellerCarouselProfile = () => {
                 📍 3-6-288/3, Sri Siva Rama Towers, King Koti, Hyderabad,
                 Telangana, India 500029
               </span>
-            </p> */}
+            </p>
           </div>
         </div>
 
@@ -277,12 +298,7 @@ const SellerCarouselProfile = () => {
         <div className='seller-about-us'>
           <h2>About Us</h2>
           <p>
-            Fantaslook focusing on garment production and sales, vigorously
-            develop cross-border e-commerce platform to sell clothing, the
-            company mainly sells all kinds of women's clothing, the annual sales
-            are on the rise, the variety of clothing is more and more, women's
-            shirts, tops, dresses, miniskirts, home wear, sportswear, etc.
-            Fantaslook was founded in.{" "}
+      {sellerDetails?.businessInfo?.storeDescription}{" "}
             <a href='#' className='seller-read-more'>
               read more...
             </a>
@@ -312,12 +328,12 @@ const SellerCarouselProfile = () => {
           >
             Products
           </button>
-          <button
+          {/* <button
             className={`seller-tab ${activeTab === "reviews" ? "active" : ""}`}
             onClick={() => setActiveTab("reviews")}
           >
             Rating & Reviews
-          </button>
+          </button> */}
           <button
             className={`seller-tab ${activeTab === "about" ? "active" : ""}`}
             onClick={() => setActiveTab("about")}

@@ -8,15 +8,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const edit = "/Assets/editicon.svg";
+const emptyaddress = "/Assets/emptyaddress.svg";
 
-const AddressSidebar = ({ isOpen, onClose, onAddressSelect,addressId }) => {
+const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selected, setSelected] = useState(null);
   const [addresses, setAddresses] = useState([]);
   const [editingAddressId, setEditingAddressId] = useState(null);
-  const latitude=(typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
-  const longitude=(typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
+  const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
+  const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
+  const [activeModalIndex, setActiveModalIndex] = useState(null);
   // const [token, setToken] = useState("");
 
   // useEffect(() => {
@@ -24,28 +26,28 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect,addressId }) => {
   //   setToken(token);
   // }, []);
 
-  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
 
-useEffect(() => {
-  const fetchAddress = async () => {
-    console.log(token, "token");
-    try {
-      const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(response.data.profile.addresses, "addresses");
-      setAddresses(response.data.profile.addresses);
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to fetch addresses.");
+
+    const fetchAddress = async () => {
+      console.log(token, "token");
+      try {
+        const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log(response.data.profile.addresses, "addresses");
+        setAddresses(response.data.profile.addresses);
+      } catch (error) {
+        console.error(error);
+        // toast.error("Failed to fetch addresses.");
+      }
+    };
+    useEffect(() => {
+    if (token) {
+      fetchAddress();
     }
-  };
-
-  if (token) {
-    fetchAddress();
-  }
-}, [token]);
+  }, [token]);
 
   const initialFormData = {
     type: "",
@@ -107,12 +109,13 @@ useEffect(() => {
         }
       );
       console.log(response.data, "successful");
-toast.success(response.data.message)
+      toast.success(response.data.message)
       setFormData(initialFormData); // Reset the form
       setIsAddAddress(false); // Return to address list view
+      fetchAddress();
     } catch (error) {
       console.error("Error saving address:", error);
-  toast.error(error.response.data.message)
+      toast.error(error.response.data.message)
     }
   };
 
@@ -122,7 +125,7 @@ toast.success(response.data.message)
       toast.error("No address selected for updating.");
       return;
     }
-  
+
     // Prepare the payload
     const payload = {
       addressId: editingAddressId,
@@ -143,9 +146,9 @@ toast.success(response.data.message)
         lng: longitude
       },
     };
-  
+
     console.log("Update Payload:", payload);
-  
+
     try {
       const token =
         typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
@@ -153,7 +156,7 @@ toast.success(response.data.message)
         toast.error("User token is missing.");
         return;
       }
-  
+
       const response = await axios.put(
         `${BASE_URL}/profile/update-address`,
         payload,
@@ -163,7 +166,7 @@ toast.success(response.data.message)
           },
         }
       );
-  
+
       if (response.status === 200) {
         toast.success("Address updated successfully!");
         // Reset the form and state after successful update
@@ -182,28 +185,39 @@ toast.success(response.data.message)
       }
     }
   };
-  
 
-  const Address = [
-    {
-      name: "Rohan Johnson",
-      mobile: "+91 1234 56789",
-      address:
-        "C/14, Vijay Apts, Old Agra Road, Naupada,next To Aradhana, Thane (w), Mumbai, Maharashtra, India - 400602",
-    },
-    {
-      name: "Rohan",
-      mobile: "+91 1234 56789",
-      address:
-        "C/14, Vijay Apts, Old Agra Road, Naupada,next To Aradhana, Thane (w), Mumbai, Maharashtra, India - 400602",
-    },
-    {
-      name: "Johnson",
-      mobile: "+91 1234 56789",
-      address:
-        "C/14, Vijay Apts, Old Agra Road, Naupada,next To Aradhana, Thane (w), Mumbai, Maharashtra, India - 400602",
-    },
-  ];
+  const handleDeleteAddress = async (addressId) => {
+
+    // console.log("Update Payload:", payload);
+
+    try {
+      const token =
+        typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
+      if (!token) {
+        toast.error("User token is missing.");
+        return;
+      }
+
+      const response = await axios.delete(
+        `${BASE_URL}/profile/delete-address`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params:{
+            addressId: addressId
+          }
+        }
+      );
+ console.log("Delete Address:", response)
+        toast.success("Address deleted successfully!");
+  fetchAddress();
+
+    } catch (error) {
+      console.error("Error updating address:", error);
+    }
+  };
+
 
   return (
     <div className='sidebar-overlay' onClick={onClose}>
@@ -212,7 +226,7 @@ toast.success(response.data.message)
         {isAddAddress ? (
           <div>
             <div className='sidebar-header'>
-              <h2>Add New Address</h2>
+              <h2 onClick={() => setIsAddAddress(false)}>Add New Address</h2>
               <button onClick={onClose} className='close-button'>
                 &times;
               </button>
@@ -222,9 +236,8 @@ toast.success(response.data.message)
                 {["Home", "Office", "Hotel", "Others"].map((item) => (
                   <span
                     key={item}
-                    className={`form-select-item ${
-                      selected === item ? "selected" : ""
-                    }`}
+                    className={`form-select-item ${selected === item ? "selected" : ""
+                      }`}
                     onClick={() => handleSelect(item)}
                   >
                     {item}
@@ -307,53 +320,91 @@ toast.success(response.data.message)
                   onChange={handleInputChange}
                 />
               </div>
-      { editingAddressId?     <button className='address-button' onClick={handleUpdateAddress}>
+              {editingAddressId ? <button className='address-button' onClick={handleUpdateAddress}>
                 update Address
-              </button>:    
-               <button className='address-button' onClick={handleSaveAddress}>
-                Save Address
-              </button>
-           }
+              </button> :
+                <button className='address-button' onClick={handleSaveAddress}>
+                  Save Address
+                </button>
+              }
             </div>
           </div>
         ) : (
           <div>
-            <div className='sidebar-header'>
-              <h2>Select Location</h2>
-              <button onClick={onClose} className='close-button'>
+            <div className="sidebar-header">
+              <h2 className="font-semibold font-md">Select Location</h2>
+              <button onClick={onClose} className="close-button">
                 &times;
               </button>
             </div>
-            {addresses?.map((address, index) => (
-              <div
-                key={index}
-                className='container address-card'
+<div className="flex flex-col gap-4">
+            {addresses.length > 0 ? (
+              addresses.map((address, index) => (
+                <div key={index} className="container address-card">
+                  <div className="delivery-content">
+                    <div className="delivery-context">
+                      <h5 className="delivery-to">DELIVERS TO</h5>
+                      <span>{address.type}</span>
+                    </div>
 
-              >
-                <div className='delivery-content'>
-                  <div className='delivery-context'>
-                    <h5 className='delivery-to'>DELIVERS TO</h5>
-                    <span>{address.type}</span>
+                    {/* Edit Icon with Modal */}
+                    <div className="relative inline-block">
+                      <img
+                        src={edit}
+                        alt="edit"
+                        className="w-6 h-6 cursor-pointer"
+                        onClick={() => setActiveModalIndex(activeModalIndex === index ? null : index)}
+                      />
+
+                      {activeModalIndex === index && (
+                        <div className="absolute right-0 mt-2 w-32 bg-white border shadow-lg rounded-md p-2 z-50">
+                          <button
+                            className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200"
+                            onClick={() => handleEditAddress(address)}
+                          >
+                            ✏️ Edit
+                          </button>
+                          <button
+                            className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200 text-red-600"
+                            onClick={() =>handleDeleteAddress(address._id)}
+                          >
+                            🗑️ Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div className='address-edit' onClick={() => handleEditAddress(address)}>
-  <img src={edit} alt='edit' />
-</div>
+
+                  <div
+                    className="address-context"
+                    onClick={() => {
+                      onAddressSelect(address);
+                      onClose();
+                    }}
+                  >
+                    <h4>{address.name}</h4>
+                    <p>|</p>
+                    <p>{address.mobile}</p>
+                  </div>
+
+                  <div>
+                    <p>
+                      {address.flatOrHouseNo}, {address.street}, {address.city}, {address.state},{" "}
+                      {address.country}
+                    </p>
+                    <p>({address.zip})</p>
+                  </div>
                 </div>
-                <div className='address-context'                 onClick={() => {
-                  onAddressSelect(address);
-                  onClose();
-                }}>
-                  <h4>{address.name}</h4>
-                  <p>|</p>
-                  <p>{address.mobile}</p>
-                </div>
-                <div>
-                  <p>{address.flatOrHouseNo},{address.street},{address.city},{address.state},{address.country}</p>
-                  <p>({address.zip})</p>
-                </div>
+              ))
+            ) : (
+              <div className="flex flex-col justify-center text-center ">
+                <img src={emptyaddress} alt="No Address Found" />
+                <h1 className="font-semibold text-lg">No address added</h1>
               </div>
-            ))}
-            <button className='address-button' onClick={handleAddAddress}>
+            )}
+            </div>
+
+            <button className="address-button" onClick={handleAddAddress}>
               Add New Address
             </button>
           </div>

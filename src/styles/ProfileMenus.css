@@ -22,7 +22,7 @@
     min-height: 616px;
     border: 1px solid #0707071A;
     /* border-left: none; */
-    border-radius: 0px 16px 16px 0px;
+    border-radius: 0px 16px 16px 16px;
     overflow: hidden;
     
 }

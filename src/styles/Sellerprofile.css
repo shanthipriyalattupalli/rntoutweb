@@ -177,7 +177,7 @@
     justify-content: space-between;
     margin-top: 20px;
     border-bottom: 1px solid #ddd;
-    padding: 10px 40px;
+    padding: 0px 40px;
 }
 
 .seller-tab {
@@ -192,13 +192,18 @@
 }
 
 .seller-tab.active {
-    border-bottom: 2px solid #f5a623;
-    font-weight: bold;
-    color: #f5a623;
+    width: 20%;
+    border-bottom: 2px solid  rgba(255, 45, 85, 1);;
+    font-weight: 500;
+    font-size: 16px;
+    /* line-height: 24px; */
+    /* color: #f5a623; */
+    color: rgba(255, 45, 85, 1);
+
 }
 
 .seller-tab:hover {
-    color: #f5a623;
+    color:rgba(255, 45, 85, 1);
 }
 
 /* Tab Content */

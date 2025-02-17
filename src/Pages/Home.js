@@ -28,6 +28,9 @@ const Home = () => {
 
   const [categories, setCategories] = useState([]);
   const [categoryProducts, setCategoryProducts] = useState({});
+  const [banners,setBanners]=useState([])
+  const [banner,setBanner]=useState([])
+
   const categoryIds = (typeof window !== 'undefined') ? localStorage.getItem("categoryId") : null;
   const latitude=(typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
   const longitude=(typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
@@ -89,9 +92,61 @@ const Home = () => {
     });
   }, []);
 
+  const fetchBanners = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/banners`, {
+        params: {
+          device_type:"website",
+          banner_type:"landing_page_banner",
+          theme_type: "light",
+          status: "inactive",
+          // minPrice: minPrice,
+          // maxPrice: maxPrice,
+        },
+      });
+      console.log(response.data.data,"response of banners")
+      setBanners(response.data.data)
+    } catch (error) {
+      console.error(`Error fetching products for category :`, error);
+    }
+  };
+ 
+useEffect(() => {
+  console.log("Fetching Banner...");
+  fetchBanners();
+}, []);
+
+  const fetchBanner = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/banners`, {
+        params: {
+          device_type:"website",
+          banner_type:"festival_banner",
+          theme_type: "light",
+          // status: "inactive",
+          // minPrice: minPrice,
+          // maxPrice: maxPrice,
+        },
+      });
+      console.log(response.data.data,"response of banner")
+      if (response.data && response.data.data) {
+        setBanner(response.data.data); // Ensure you're setting the array
+      }
+    } catch (error) {
+      console.error(`Error fetching products for category :`, error);
+    }
+  };
+  useEffect(() => {
+    console.log("Fetching Banners...");
+    fetchBanner();
+  }, []);
+
+
+
+  console.log(banner[0]?.image,"banners")
   return (
     <main className='bg-slate-50 tmp-bg'>
-      <Banner />
+      <Banner banners={banners}/>
       <CategoryList categories={categories} />
       <ProductGrid categories={categories} />
       <Products products={categoryProducts[categoryIds] || []} categoryId={categoryIds} />
@@ -99,16 +154,17 @@ const Home = () => {
 
       <ITInfrastructure products={categoryProducts[CATEGORY_IDS.IT_INFRASTRUCTURE] || []} categoryId={CATEGORY_IDS.IT_INFRASTRUCTURE} />
       <Furniture products={categoryProducts[CATEGORY_IDS.FURNITURE] || []} categoryId={CATEGORY_IDS.FURNITURE} />
-      <PromotionalAd />
+      <PromotionalAd banner={banner[0]} />
       <MedicalEquipment products={categoryProducts[CATEGORY_IDS.MEDICAL_EQUIPMENT] || []} categoryId={CATEGORY_IDS.MEDICAL_EQUIPMENT} />
       <VacationEquipment products={categoryProducts[CATEGORY_IDS.VACATION_EQUIPMENT] || []} categoryId={CATEGORY_IDS.VACATION_EQUIPMENT} />
+      <PromotionalAd banner={banner[1]} />
       <Vehicles products={categoryProducts[CATEGORY_IDS.VEHICLES] || []} categoryId={CATEGORY_IDS.VEHICLES} />
       <PartyMaterial products={categoryProducts[CATEGORY_IDS.PARTY_MATERIAL] || []} categoryId={CATEGORY_IDS.PARTY_MATERIAL} />
       <SportsGym products={categoryProducts[CATEGORY_IDS.SPORTS_GYM] || []} categoryId={CATEGORY_IDS.SPORTS_GYM} />
       <HouseholdKitchen products={categoryProducts[CATEGORY_IDS.HOUSEHOLD_KITCHEN] || []} categoryId={CATEGORY_IDS.HOUSEHOLD_KITCHEN} />
 
       <Services />
-      <CityExplorer />
+      {/* <CityExplorer /> */}
       <Achievements />
       <Blogs />
       <Testimonials />

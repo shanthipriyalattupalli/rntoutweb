@@ -47,6 +47,8 @@
 /* Close button */
 .close-button {
   position: absolute;
+  background: rgba(7, 7, 7, 0.1);
+  border-radius: 50%;
   top: 10px;
   right: 5%;
   font-size: 20px;

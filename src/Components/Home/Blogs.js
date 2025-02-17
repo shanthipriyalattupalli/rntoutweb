@@ -105,7 +105,7 @@ const Blog = () => {
   console.log(currentBlogs, "Blogs");
   return (
     <div className='mt-8'>
-      <div className='container mx-auto'>
+      <div className='container mx-auto w-full mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5'>
         {/* Header Section */}
         <div className='flex justify-between items-center mt-20 mb-4'>
           <h1 className='text-3xl font-bold text-gray-800'>

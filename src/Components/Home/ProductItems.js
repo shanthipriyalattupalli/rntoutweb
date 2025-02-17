@@ -166,7 +166,7 @@ const ProductItem = ({ product }) => {
       {/* <ToastContainer /> */}
       <style>{customStyles}</style>
 
-      <div className='w-[300px] bg-white rounded-lg border border-slate-200'
+      <div className='w-min-auto bg-white rounded-lg border border-slate-200'
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
         <div className="relative rounded-lg">
@@ -251,14 +251,14 @@ const ProductItem = ({ product }) => {
             <div className="absolute top-[159px]  z-10 flex items-center justify-center w-full">
               {isView ? (
                 <span
-                  className="bg-white text-black w-54 text-center rounded-full border-2 p-1"
+                  className="bg-white text-black w-54 text-center rounded-full border-2 p-1 cursor-pointer"
                   onClick={handleclick}
                 >
                   View all details
                 </span>
               ) : (
                 <span
-                  className="bg-white text-black w-54 text-center rounded-full border-2 p-1"
+                  className="bg-white text-black w-54 text-center rounded-full border-2 p-1 cursor-pointer"
                   onClick={handleBack}
                 >
                   Back to details

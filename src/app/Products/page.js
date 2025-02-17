@@ -48,7 +48,7 @@ const ProductListPage = () => {
         "response in categ....................."
       );
       setCategories(response.data.categories)(
-        response?.data.map((category) => {
+        response?.data?.map((category) => {
           console.log(category._id, "categorydivhdjvbcaj");
           setCategoryId(category._id);
           return category._id;

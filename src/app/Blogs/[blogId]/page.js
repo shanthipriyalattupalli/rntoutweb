@@ -33,6 +33,25 @@ const BlogPage = () => {
       fetchBlogs();
     }, [blogId]);
 
+
+    const fetchBlog = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/blogs`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response.data.blogs, "blogs");
+        setBlogs(response.data.blogs);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchBlog();
+    }, []);
+
     console.log(blogs,"blogs...")
   return (
     <div className=" min-h-screen p-6 flex justify-center w-full">

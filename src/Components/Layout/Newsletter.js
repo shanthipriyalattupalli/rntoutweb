@@ -1,6 +1,8 @@
 "use client"
 
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 const codefacts = '/Assets/codefacts.svg'
 const facebook = '/Assets/face book.svg'
 const twitter = '/Assets/twitter.svg'
@@ -9,7 +11,25 @@ const youtube = '/Assets/youtub.svg'
 const rentoutlogo = '/Assets/rentoutlogo.svg'
 import { useRouter } from "next/navigation"; 
 const Newsletter = () => {
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+
+    const [categories, setCategories] = useState([]);
+  
   const router = useRouter();
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/categories`);
+      console.log(response.data.categories, "response in categ.....................");
+      setCategories(response.data.categories || []);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   return (
     <div className="bg-black pt-12 px-24">
       <div className="md:flex md:justify-between">
@@ -70,29 +90,34 @@ const Newsletter = () => {
           <div>
             <h4 className="text-lg font-medium text-white mb-4">Product</h4>
             <ul className="text-gray-400 text-sm space-y-2">
-              <li>Employee database</li>
+              {categories.map((category)=>(
+                <li key={category._id}>
+                  <a href={`/Product-list/${category._id}`} className="text-gray-400 hover:text-gray-600 text-sm">{category.categoryName}</a>
+                </li>
+              ))}
+              {/* <li>Employee database</li>
               <li>Payroll</li>
               <li>Absences</li>
               <li>Time tracking</li>
               <li>Shift planner</li>
-              <li>Recruiting</li>
+              <li>Recruiting</li> */}
             </ul>
           </div>
           <div>
             <h4 className="text-lg font-medium text-white mb-4">Information</h4>
             <ul className="text-gray-400 text-sm space-y-2 cursor-pointer">
               <li onClick={() => router.push("/Faq")} >FAQ</li>
-              <li>Blog</li>
-              <li>Support</li>
+              <li onClick={()=>router.push("/Blogs/67599401ddd3533ef08c6a3b")}>Blog</li>
+              {/* <li>Support</li> */}
             </ul>
           </div>
           <div>
             <h4 className="text-lg font-medium text-white mb-4">Company</h4>
             <ul className="text-gray-400 text-sm space-y-2">
-              <li>About us</li>
-              <li>Careers</li>
-              <li>Contact us</li>
-              <li>Lift Media</li>
+              <li onClick={() => router.push("/profile/aboutus")} className="cursor-pointer">About us</li>
+              {/* <li>Careers</li> */}
+              {/* <li>Contact us</li> */}
+              {/* <li>Lift Media</li> */}
             </ul>
           </div>
         </div>
@@ -100,11 +125,11 @@ const Newsletter = () => {
 
       {/* Logo Section */}
       <div className="w-96 ml-[600px] pt-8 items-center justify-center ">
-        <img
+        {/* <img
           src={rentoutlogo}
           alt="rntout logo"
           className="w-40 h-46"
-        />
+        /> */}
       </div>
 
       {/* Footer Links */}

@@ -22,6 +22,7 @@ const coupon = "/Assets/coupon.svg";
 const insurance = "/Assets/insurance.svg";
 const costbreakup = "/Assets/costbreakup.svg";
 const delivery = "/Assets/delivery.svg";
+const emptycart="/Assets/emptycart.svg";
 
 const CartPage = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -36,7 +37,7 @@ const CartPage = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("");
   const [selectedOptions, setSelectedOptions] = useState({});
   const [discountedPrice, setDiscountedPrice] = useState(0);
-  const [couponcode, setCouponCode] = useState(null);
+  const [couponcode, setCouponCode] = useState("");
   const [addressId, setAddressId] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [selectedCartItems, setSelectedCartItems] = useState([]);
@@ -60,26 +61,23 @@ const CartPage = () => {
 
 
   const handleCheckboxChange = async (cartId, isChecked) => {
-    // Update the selectedCartItems state based on whether the item is checked or unchecked
     const updatedSelection = isChecked
       ? [...selectedCartItems, cartId]
       : selectedCartItems.filter((id) => id !== cartId);
 
     setSelectedCartItems(updatedSelection);
-
-    // Determine if the item was selected or unselected
-    const selectedStatus = isChecked; // If checked, send true; if unchecked, send false
+    const selectedStatus = isChecked;
 
     try {
-      // Make the API call with the appropriate `selected` status
+ 
       const response = await axios.patch(
         `${BASE_URL}/cart/selection/${cartId}`,
         {
-          selected: selectedStatus, // Send the correct selected value
+          selected: selectedStatus, 
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Send the token in the request headers
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -333,6 +331,7 @@ const CartPage = () => {
         couponCode: String(couponcode),
         addressId: String(selectedAddress._id),
       };
+      console.log(payload,"payload");
 
       // API call for order checkout
       const response = await axios.post(`${BASE_URL}/orders/checkout`, payload, {
@@ -354,11 +353,12 @@ const CartPage = () => {
       // Extract and display error message safely
       const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";
       toast.warn(errorMessage);
-      console.error("Error during order checkout:", errorMessage);
+      console.error("Error during order checkout:", error.response?.data);
     }
   };
 
   const handleContinueClick = async (orderId, amount) => {
+    console.log(orderId,"order id in checkout")
     try {
       const payload = {
         orderId: orderId,
@@ -374,6 +374,7 @@ const CartPage = () => {
 
       // Axios response data is already parsed
       if (response.data.order && response.data.order.id) {
+        console.log(response.data.order.id,"order in paymentinitate")
         setDisplayRazorpay(true);
         setRazorpayOrderId(response.data.order.id);
       } else {
@@ -407,7 +408,7 @@ const CartPage = () => {
   const handlePayment = async (status, orderDetails) => {
     if (status === "succeeded") {
       setDisplayRazorpay(false);
-      await handleContinueClick(orderDetails);
+      // await handleContinueClick(orderDetails);
       setFormData(initialFormData);
     } else if (status === "cancelled") {
       setDisplayRazorpay(false);
@@ -444,14 +445,16 @@ const CartPage = () => {
         <h2 className='cart-title'>
           My Cart <span className='cart-count'>{cartItems.length}</span>
         </h2>
-        {cartItems?.map((item, index) => (
+        {cartItems.length >0 ?
+        
+        
+        cartItems?.map((item, index) => (
           <div key={item._id || index} className="cart-item cursor-pointer flex items-center">
-            {/* Red Checkbox with White Tick */}
             <input
               type="checkbox"
               className="mr-3 w-5 h-5 accent-red-500 checked:bg-red-500 checked:border-red-500"
-              checked={item.selected} // Set checked based on item.selected value
-              onChange={(e) => handleCheckboxChange(item._id, e.target.checked)} // Pass `checked` state
+              checked={item.selected} 
+              onChange={(e) => handleCheckboxChange(item._id, e.target.checked)} 
             />
 
             <Link
@@ -519,7 +522,15 @@ const CartPage = () => {
               </div>
             </div>
           </div>
-        ))}
+        )):<>
+<div className="flex flex-col justify-center items-center h-3/4">
+  <img src={emptycart} className="w-auto h-auto" />
+  <h1 className="text-lg font-semibold">Empty Orders</h1>
+  <span>you haven’t place any order, to place order <span className="text-md font-semibold">"Browse Products" </span>button.</span>
+</div>
+
+        </>
+      }
 
 
 
@@ -582,12 +593,27 @@ const CartPage = () => {
           </div>
         </div>
         <div className="summary-item address" onClick={handleCouponToggle}>
-          <div className="address-content">
-            <img src={coupon} alt="Coupon Icon" />
-            <span>{couponcode ? couponcode : "Promo Coupon"}</span>
-            <i className="fas fa-chevron-right"></i>
-          </div>
-        </div>
+  <div className="address-content">
+    <img src={coupon} alt="Coupon Icon" />
+    <span>{couponcode ? couponcode : "Promo Coupon"}</span>
+
+    {/* Show remove button only when a coupon is applied */}
+    {couponcode && (
+      <button 
+        className="remove-coupon-btn"
+        onClick={(e) => {
+          e.stopPropagation(); // Prevent sidebar from opening
+          setCouponCode("");
+          setDiscountedPrice(null);
+        }}
+      >
+        ✖
+      </button>
+    )}
+
+    <i className="fas fa-chevron-right"></i>
+  </div>
+</div>
 
         {isCoupon && (
           <PromoCoupon
@@ -614,7 +640,7 @@ const CartPage = () => {
         <div className="mx-auto bg-white shadow-lg rounded-xl p-5 border mb-4">
           {/* Header with Dropdown Toggle */}
           <div
-            className="flex items-center justify-between  pb-2 cursor-pointer"
+            className="flex items-center justify-between cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
           >
             <div className="flex items-center space-x-2">

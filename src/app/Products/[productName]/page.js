@@ -244,9 +244,9 @@ const ProductPage = () => {
     }
   };
 
-  const handleSellerclick = () => {
+  const handleSellerclick = (ownerId) => {
     if (owner && owner._id) {
-      router.push(`/SellerProfile?id=${owner._id}`);
+      router.push(`/SellerProfile/${ownerId}`);
     } else {
       toast.error("Seller information is missing.");
     }
@@ -402,16 +402,20 @@ const ProductPage = () => {
 
               {/* Ratings */}
               <div className='flex items-center space-x-2 cursor-pointer'>
+              {owner && (
+                      <Link href={`/SellerProfile/${owner._id}`}>
                 <img
                   src={sample}
                   alt='Seller'
                   className='w-6 h-6 rounded-full'
                 />
+                </Link>
+              )}
                 {owner && (
 
-                  <Link href='/SellerProfile'><span
+                  <Link href={`/SellerProfile/${owner._id}`}><span
                     className='text-xs'
-                    onClick={handleSellerclick}
+                    onClick={()=>handleSellerclick(owner._id)}
                     key={owner._id}
                   >
                     {owner.name}
@@ -443,7 +447,7 @@ const ProductPage = () => {
                     <div className='font-bold'>₹{price.price}</div>
                   </button>
                 ))}
-                <button
+                {/* <button
                   className={`p-3 rounded-lg border text-center ${selectedcustomDuration === "Custom"
                     ? "border-[#F48003] bg-[#FFF5EB]"
                     : "border-gray-200"
@@ -451,13 +455,12 @@ const ProductPage = () => {
                   onClick={() => handleCustomSelection()}
                 >
                   <div className='text-xs'>Custom</div>
-                  {/* <div className='font-bold'>₹{price.price}</div> */}
-                </button>
+                </button> */}
 
               </div>
             </div>
 
-            {selectedcustomDuration === "Custom" && <div className="w-2">
+            {/* {selectedcustomDuration === "Custom" && <div className="w-2">
               <div className="flex gap-20 text-center">
                 <div>
                   <span className="ml-2 text-gray-200 ">|</span>
@@ -503,7 +506,7 @@ const ProductPage = () => {
               <div className="price0">
                 {priceRange && `Selected Price: ₹${priceRange}`}
               </div>
-            </div>}
+            </div>} */}
 
             {/* Quantity */}
 

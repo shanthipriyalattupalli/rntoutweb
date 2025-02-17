@@ -1,6 +1,7 @@
 // components/MainContent.js
 "use client";
 import React, { useState, useRef, useEffect } from "react";
+// import ReactQuill from "react-quill";
 import axios from "axios";
 // import "@/styles/Adddetail.css";
 import '../../../styles/Adddetail.css';
@@ -469,7 +470,6 @@ const MainContent = () => {
 
   console.log(productDetails, "productDetails");
   console.log(formData.itemDetails, "formdata itemDetails");
-
   console.log({ categoryId, subCategoryId }, "ouytrtdfgcvb");
 
   console.log(formData, "formData");
@@ -591,30 +591,30 @@ const MainContent = () => {
           </label>
         <div className='date-picker-container'>
           <div className="w-full">
-          <label>Product Availability (start date)</label>
-          <div className='date-picker-wrapper'>
+          <label>Product Availability  <span className="text-gray-400">(Start)</span></label>
+          <div className='date-picker-input'>
             <DatePicker
               selected={formData.rentalAvailability.startDate}
               name='startDate'
               value={formData.rentalAvailability.startDate}
               onChange={(date) => handleDateChange(date)}
               placeholderText='Select start date'
-              className='date-picker-input'
+              className='date-picker-wrapper'
               dateFormat='MMMM d, yyyy'
             />
             <FaRegCalendarAlt className='calendar-icon' />
           </div>
           </div>
           <div className="w-full">
-          <label>Product Availability (start date)</label>
-          <div className='date-picker-wrapper'>
+          <label>Product Availability <span className="text-gray-400">(end)</span></label>
+          <div className='date-picker-input'>
             <DatePicker
               selected={formData.rentalAvailability.endDate}
               name='endDate'
               value={formData.rentalAvailability.endDate}
               onChange={(date) => handleEndDateChange(date)}
               placeholderText='Select End date'
-              className='date-picker-input'
+              className='date-picker-wrapper'
               dateFormat='MMMM d, yyyy'
             />
             <FaRegCalendarAlt className='calendar-icon' />
@@ -622,7 +622,7 @@ const MainContent = () => {
           </div>
         </div>
         </div>
-        <div>
+        <div className="mt-12">
   <label>Location</label>
   <div className="relative">
     <input 
@@ -668,13 +668,23 @@ const MainContent = () => {
           {/* {errors.address && <p style={{ color: "red" }}>{errors.address}</p>} */}
 
         </p>
-      <div className="pt-6 flex flex-col">
-        <label>Description</label>
-        <input type="text" placeholder="Enter product details" className="border p-4 rounded-2xl h-min"    
-           name='description'
-              value={formData.description}
-              onChange={handleInputChange}/>
-      </div>
+        <div className="mt-3 flex flex-col relative">
+  <label className="left-3 text-gray-500 text-sm bg-white">Description</label>
+  <textarea 
+    placeholder="Enter product details" 
+    className="border rounded-2xl h-40 p-3 pt-6 focus:border-red-500 focus:ring-blue-500 focus:outline-none font-medium text-red-500"
+    name="description"
+    value={formData.description}
+    onChange={handleInputChange}
+    // style={{
+    //   background: 'linear-gradient(0deg, #FFEBEB 0%, #FFF 100%)',
+    // }}
+  />
+</div>
+
+
+
+
 
 
         <div className='form-section4'>

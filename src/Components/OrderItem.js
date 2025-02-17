@@ -36,9 +36,9 @@ const OrderItem = ({ hideHeader, orderData }) => {
                 <p>
                   <span>₹{item.price || "0"}</span> / {item.rentalPeriod} | Rented for:{" "}
                   <span>{item.quantity} item(s)</span>
-                </p>
-                {item.orderStatus === "completed" && (
-                  <a href="#" className="review_cta">
+                </p>|
+                {item.orderStatus === "placed" && (
+                  <a href={`/profile/orders/orderreview/${item._id}`} className="review_cta">
                     <span>
                       <CiStar />
                     </span>

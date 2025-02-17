@@ -37,7 +37,7 @@ const CategorySection = ({ categories }) => {
           Our Top Trending Products
         </h1>
         <p className="text-gray-600">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        "Explore Our Most Popular Rental Picks – Trusted, Affordable, and Ready for You!" 🚀
         </p>
       </div>
 

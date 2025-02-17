@@ -1,5 +1,5 @@
 .shipping_address_sec {
-    display: inline-flex;
+    /* display: inline-flex; */
     min-height: 98px;
     padding: 16px 0px 16px 0px;
     gap: 16px;
@@ -26,6 +26,7 @@
     color: #070707;
 
 }
+
 .address_detail > p {
     font-size: 13px;
     font-weight: 400;

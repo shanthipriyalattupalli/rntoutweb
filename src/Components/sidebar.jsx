@@ -49,35 +49,29 @@ const buttonsData = [
   },
   {
     id: 8,
-    title: "General Settings",
-    icon: <GrSettingsOption />,
-    route: "/profile/settings",
-  },
-  {
-    id: 9,
     title: "Help & Support",
     icon: <IoIosHelpCircleOutline />,
     route: "/profile/support",
   },
   {
-    id: 10,
+    id: 9,
     title: "About us",
     icon: <IoMdInformationCircleOutline />,
     route: "/profile/aboutus",
   },
   {
-    id: 11,
+    id: 10,
     title: "Terms and conditions",
     icon: <GrNotes />,
     route: "/profile/terms-and-conditions",
   },
   {
-    id: 12,
+    id: 11,
     title: "Privacy Policy",
     icon: <BsShieldCheck />,
     route: "/profile/privacy-policy",
   },
-  { id: 13, title: "Log Out", icon: <MdOutlineLogout />, route: "/" },
+  { id: 12, title: "Log Out", icon: <MdOutlineLogout />, route: "/" },
 ];
 
 function Sidebar() {
