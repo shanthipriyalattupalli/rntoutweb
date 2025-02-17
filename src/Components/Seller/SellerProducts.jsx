@@ -32,8 +32,17 @@ const ProductListPage = ({ products }) => {
 
   // Filter products by categoryId
   const getProductsByCategory = () => {
-    return products.filter((product) => product.categoryId?._id === categoryId);
-  };
+    console.log("categoryId from params:", categoryId);
+    console.log("Products array:", products);
+
+    return products.filter((product) => {
+        console.log("Product categoryId:", product.categoryId); // Log each product's categoryId
+        console.log("Product categoryId._id:", product.categoryId?._id); // Log _id if available
+
+        return product.categoryId?._id === categoryId;
+    });
+};
+
 
   return (
     <main className="min-h-screen">

@@ -538,7 +538,7 @@ const CartPage = () => {
       </div>
 
       <div className='summary-section'>
-        <div className='summary-item address' onClick={handleAddressToggle}>
+      <div className='summary-item address' onClick={handleAddressToggle}>
           <div className='address-content'>
             <img src={location} />
             <span>Select Address</span>
@@ -566,12 +566,12 @@ const CartPage = () => {
 
         <div className='summary-address'>
           <div className='summary-item address'>
-            <div className="flex gap-60">
+            <div className="flex gap-50">
               <div className='address-content'>
                 <img src={payment} />
                 <span>Payable Amount</span>
               </div>
-              <div>
+              <div className="md:ml-4">
                 {" "}
                 <span className='amount'>₹{totalPrice}</span>
               </div>

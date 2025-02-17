@@ -340,3 +340,4 @@ const SellerCarouselProfile = () => {
 };
 
 export default SellerCarouselProfile;
+

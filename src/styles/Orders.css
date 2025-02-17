@@ -205,3 +205,56 @@
         display: none;
     }
    }
+
+
+   @media (min-width: 480px) and (max-width: 767px) {
+    .Orders_page_section {
+        width: 90%;
+    }
+
+    .order-actions {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+/* Tablets - 768px to 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .Orders_page_section {
+        width: 85%;
+    }
+
+    .order-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 0px;
+    }
+
+    .order-actions a {
+        flex: 1;
+        min-width: 140px;
+        text-align: center;
+    }
+}
+
+/* Laptops - 1025px to 1440px */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    .Orders_page_section {
+        max-width: 1200px;
+    }
+
+    .order-actions {
+        justify-content: space-between;
+    }
+}
+
+/* Large Screens - 1441px and above */
+@media (min-width: 1441px) {
+    .Orders_page_section {
+        max-width: 1440px;
+    }
+
+    .order-actions {
+        justify-content: space-between;
+    }
+}

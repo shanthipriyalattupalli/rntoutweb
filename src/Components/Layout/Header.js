@@ -310,12 +310,12 @@ function Header() {
   {/* Left Section - Logo */}
   <div className="flex items-center">
     <Link href="/">
-      <img src={logo} alt="RNT Out Logo" className="h-8 sm:h-10" />
+      <img src={logo} alt="RNT Out Logo" className="h-8 sm:h-10 border-none" />
     </Link>
   </div>
 
   {/* Center Section - Search Input */}
-  <div className="hidden md:flex items-center relative w-full max-w-xs md:max-w-md lg:max-w-lg">
+  <div className="hidden sm:flex items-center relative w-full max-w-xs ml-4">
     <SearchInput onChange={(e) => handleSearchInputChange(e.target.value)} />
     {showSuggestions && variants.length > 0 && (
       <ul className="absolute left-0 w-full bg-white border rounded shadow mt-2 z-40">
@@ -362,22 +362,21 @@ function Header() {
     <div className="relative" onClick={() => router.push("/Cartpage")}>
       {cartItems.length > 0 ? (
         <>
-          <Image src={cartitems} width={28} height={28} alt="cart" />
-          <span className="absolute -top-2 -right-2 bg-red-500 rounded-full w-5 h-5 text-xs font-semibold text-white flex items-center justify-center">
+          <Image src={cartitems} width={28} height={28} alt="cart"  className="min-w-[28px] min-h-[28px]"/>
+          <span className="absolute -top-2 -top-2 -right-2  bg-red-500 rounded-full w-5 h-5 text-xs font-semibold text-white flex items-center justify-center">
             {cartItems.length}
           </span>
         </>
       ) : (
         <button className="bg-white border border-gray-300 rounded-lg p-2 hover:bg-gray-100">
-          <Image src={cart} width={18} height={18} alt="cart" />
+       <Image src={cartitems} width={28} height={28} alt="cart" className="min-w-[28px] min-h-[28px]" />
         </button>
       )}
     </div>
-
     {/* Rent Button */}
     {name || token ? (
       <button
-        className="hidden sm:flex items-center gap-2 px-5 py-2 rounded-full text-white font-medium shadow-lg bg-gradient-to-r from-orange-400 via-purple-500 to-teal-500 hover:scale-105 transition-transform duration-300"
+        className="sm:flex items-center gap-2 px-5 py-2 rounded-full text-white font-medium shadow-lg bg-gradient-to-r from-orange-400 via-purple-500 to-teal-500 hover:scale-105 transition-transform duration-300"
         onClick={() => router.push("/add-on-rent")}
       >
         <span className="text-lg">+</span> Rent
@@ -392,7 +391,7 @@ function Header() {
           className="flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 cursor-pointer"
         >
           <img src={Photo} alt="user" className="w-8 h-8 rounded-full object-cover" />
-          <p className="text-sm">{name}</p>
+          <p className="hidden sm:flex hidden md:flex text-sm">{name}</p>
         </div>
       ) : (
 <button
