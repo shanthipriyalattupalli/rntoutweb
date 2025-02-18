@@ -49,7 +49,7 @@ const CategorySection = ({ categories }) => {
               onClick={() => handleCategoryClick(category._id)}
               className={`flex items-center py-1  text-sm px-1 rounded-lg transition duration-300 ${
                 selectedCategory === category._id
-                  ? "bg-[#F0F5FF] border border-[#2F6FED] text-blue-700" // Selected background
+                  ? "bg-[#F0F5FF] border border-[#2F6FED] text-blue-700"
                   : "bg-white text-gray-800 border border-slate-300 hover:bg-blue-100"
               }`}
               style={{
@@ -60,7 +60,7 @@ const CategorySection = ({ categories }) => {
               }}
             >
               <Image
-                src={category.image || "/default-icon.png"} // Use category-specific icon or a default
+                src={category.image || "/default-icon.png"} 
                 alt={`${category.categoryName} icon`}
                 className="h-5 w-5 mr-2"
                 width={16}

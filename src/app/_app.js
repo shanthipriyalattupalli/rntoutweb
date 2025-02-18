@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   return (
     <>
-    <ScrollToTop/>
+    {/* <ScrollToTop/> */}
       <Component {...pageProps} />
     </>
   );

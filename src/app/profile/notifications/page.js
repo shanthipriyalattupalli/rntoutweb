@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 // import "@/styles/Notifications.css";
+import axios from "axios";
 import '../../../styles/Notifications.css';
 const chair = "/Assets/chair.png";
 import { FaEllipsisV } from "react-icons/fa";
@@ -75,9 +76,23 @@ const initialNotifications = [
 ];
 
 const Notifications = () => {
-  const [notifications, setNotifications] = useState(initialNotifications);
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+  const [notifications, setNotifications] = useState([]);
   const [selectedNotificationId, setSelectedNotificationId] = useState(null);
+  const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
 
+  const fetchNotications=async()=>{
+    try {
+      const response = await axios.get(`${BASE_URL}/notifications/user/${userId}`)
+      console.log(response.data,"notifications");
+      setNotifications(response.data);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  }
+  useEffect(() => {
+    fetchNotications();
+  }, []);
   // Function to delete a notification by ID
   const handleDelete = (id) => {
     setNotifications(
@@ -97,27 +112,27 @@ const Notifications = () => {
       <div className='notifications-container'>
         {notifications?.map((notification, index) => (
           <div
-            key={notification.id}
+            key={notification._id}
             className={`notification-item ${
               index % 2 === 0 ? "highlight" : ""
             }`}
           >
             <div className='notification-icon'>
-              <img src={notification.icon} alt='Notification Icon' />
+              <img src={notification.icon} alt='' />
             </div>
             <div className='notification-content'>
               <h3>{notification.title}</h3>
               <p>{notification.message}</p>
             </div>
             <div className='notification-meta'>
-              <span className='time'>{notification.time}</span>
+              <span className='time'>{notification.sentAt}</span>
               <FaEllipsisV
                 className='options-icon'
-                onClick={() => toggleOptions(notification.id)}
+                onClick={() => toggleOptions(notification._id)}
               />
-              {selectedNotificationId === notification.id && (
+              {selectedNotificationId === notification._id && (
                 <div className='delete-option'>
-                  <button onClick={() => handleDelete(notification.id)}>
+                  <button onClick={() => handleDelete(notification._id)}>
                     Delete
                   </button>
                 </div>

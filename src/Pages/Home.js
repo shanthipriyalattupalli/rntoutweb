@@ -99,7 +99,7 @@ const Home = () => {
           device_type:"website",
           banner_type:"landing_page_banner",
           theme_type: "light",
-          status: "inactive",
+          // status: "inactive",
           // minPrice: minPrice,
           // maxPrice: maxPrice,
         },

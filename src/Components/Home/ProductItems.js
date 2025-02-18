@@ -166,7 +166,7 @@ const ProductItem = ({ product }) => {
       {/* <ToastContainer /> */}
       <style>{customStyles}</style>
 
-      <div className='bg-white rounded-lg border border-slate-200 '
+      <div className='2xl:w-full bg-white rounded-lg border border-slate-200 '
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
         <div className="relative rounded-lg">
