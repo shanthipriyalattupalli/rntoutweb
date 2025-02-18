@@ -318,7 +318,7 @@ function Header() {
   <div className="hidden sm:flex items-center relative w-full max-w-xs ml-4">
     <SearchInput onChange={(e) => handleSearchInputChange(e.target.value)} />
     {showSuggestions && variants.length > 0 && (
-      <ul className="absolute left-0 w-full bg-white border rounded shadow mt-2 z-40">
+      <ul className="absolute left-0 w-full bg-white border rounded shadow mt-[32rem] z-40">
         {variants.slice(0, 10).map((variant) => (
           <Link
             href={{ pathname: `/Products/${variant.title}`, query: { id: variant._id } }}
