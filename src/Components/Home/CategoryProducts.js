@@ -27,7 +27,7 @@ const CategoryProducts = ({ products }) => {
   };
 
   return (
-    <div className="xl:px-10 pl-6">
+    <div className="">
       <ToastContainer />
       {products?.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 2xl:gap-6 gap-2 mt-3">

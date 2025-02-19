@@ -63,6 +63,11 @@
     gap: 12px;
     
 }
+.order-product{
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
 .Orders_page_section .product-image {
     width: 56px;
     height: 56px;
@@ -169,10 +174,15 @@
   
   .progress.completed {
     color: #08875D;  /* Set to any color representing completed status */
+
   }
   
   .progress.pending {
     color: #F48003; /* Set to any color representing in-progress status */
+
+  }
+  .progress.canceled{
+    color: #E02D3C;  /* Set to any color representing canceled status */
   }
   .profiel_header{
     display: flex;

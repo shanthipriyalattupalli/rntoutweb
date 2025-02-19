@@ -3,7 +3,7 @@ import React, {useEffect, useState } from "react";
 // import "@/styles/Cart.css";
 import '../../../styles/Cart.css';
 import axios from "axios";
-import AddressSidebar from "../AddressSidebar/page"
+import AddressSidebar from "../AddressSidebar/AddressSidebar"
 import "@/styles/Address.css";
 import { FaEllipsisV } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
@@ -33,6 +33,8 @@ export default function ManageAddresses() {
     const [isAddressSidebarOpen, setIsAddressSidebarOpen] = useState(false);
   const [addresses, setAddresses] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState(null);
+      const [addressId, setAddressId] = useState(null);
+    
     // const [token, setToken] = useState("");
   
     // useEffect(() => {
@@ -92,6 +94,10 @@ const initialFormData = {
     setAddresses(addresses.filter((address) => address.id !== id));
   };
 
+  const handleAddress = (addressId) => {
+    setAddressId(addressId);
+  }
+
   return (
     <>
       <h2 className='item-header'>Manage Addresses</h2>
@@ -126,6 +132,7 @@ const initialFormData = {
           isOpen={isAddressSidebarOpen}
           onClose={handleAddressToggle}
           onAddressSelect={setSelectedAddress}
+          addressId={handleAddress}
         />
       </div>
     </>

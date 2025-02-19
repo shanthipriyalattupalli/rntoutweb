@@ -75,8 +75,8 @@ const CategoryList = ({ products = [], categories }) => {
   };
 
   return (
-    <div className='bg-white py-4'>
-      <div className='h-auto  md:px-10 lg:px-24'>
+    <div className='bg-white py-4 flex flex-col'>
+      <div className='h-auto sm:px-8 md:px-10 lg:px-24 xl:px-20'>
         <h1 className="text-xl sm:text-2xl font-bold pb-4 text-center sm:text-left">
           Rent Furniture & Appliances
         </h1>
@@ -112,35 +112,31 @@ const CategoryList = ({ products = [], categories }) => {
             ))}
           </Slider>
         ) : (
-          <div className='flex flex-wrap justify-center xl:gap-6 sm:gap-3'>
-            {categories?.map((category, index) => (
-              <div
-                key={category._id}
-                className={classNames(
-                  "text-xs font-semibold pt-3 border border-[rgba(7,7,7,0.05)] rounded-lg flex flex-col items-center transition duration-300 cursor-pointer lg:w-[130px] lg:h-[100px] 2xl:w-[300px]"
-                )}
-                onClick={() => handleCategoryClick(category._id)}
-                style={{
-                  backgroundColor: bgColors[index % bgColors.length],
-                  borderRadius: "20px",
-                  // width: "150px",
-                  // height: "100px",
-                }}
-              >
-                <Image
-                  src={category.image}
-                  alt={category.categoryName}
-                  width={48}
-                  height={48}
-                  className='w-12 h-12'
-                />
-         <span className='text-center pt-2 truncate w-24'>
-  {category.categoryName}
-</span>
-                
-              </div>
-            ))}
-          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 mt-4 px-20">
+          {categories?.map((category, index) => (
+            <div
+              key={category._id}
+              className="text-xs font-semibold pt-3 border border-[rgba(7,7,7,0.05)] rounded-lg flex flex-col items-center transition duration-300 cursor-pointer w-full h-[100px]"
+              onClick={() => handleCategoryClick(category._id)}
+              style={{
+                backgroundColor: bgColors[index % bgColors.length],
+                borderRadius: "20px",
+              }}
+            >
+              <Image
+                src={category.image}
+                alt={category.categoryName}
+                width={48}
+                height={48}
+                className="w-12 h-12"
+              />
+              <span className="text-center pt-2 truncate w-24">
+                {category.categoryName}
+              </span>
+            </div>
+          ))}
+        </div>
+        
         )}
       </div>
     </div>

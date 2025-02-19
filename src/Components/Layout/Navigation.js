@@ -86,7 +86,7 @@ const Navigation = () => {
 
   return (
     <nav className="px-4 sm:px-20 bg-white border border-slate-200 relative z-20">
-      <div className="max-w-16xl mx-auto relative">
+      <div className="mx-auto relative">
         <div className="flex items-center h-12 gap-3 overflow-x-auto xl:overflow-visible whitespace-nowrap scrollbar-hide relative">
           {categories?.map((category) => (
             <div

@@ -112,7 +112,7 @@ const Furniture = ({ products, categoryId }) => {
     </div>
 
     {/* Product Grid */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4  2xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 mt-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4  2xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 mt-6">
       {products?.slice(0, numProducts)?.map((product) => (
         <Suspense key={product._id} fallback={<div>Loading...</div>}>
           <ProductItems product={product} />

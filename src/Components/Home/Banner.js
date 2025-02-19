@@ -19,7 +19,7 @@ const Banner = ({banners}) => {
   return (
     <div className="w-full">
 {banners.map((banner,index)=>(
- <div className="relative px-20 py-10" key={index}>
+ <div className="relative px-[80px] py-10" key={index}>
  {/* Custom Navigation Buttons */}
  <div
    className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"

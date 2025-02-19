@@ -81,7 +81,7 @@
 .address-card {
     display: flex;
     flex-direction: column;
-    width: 410px;
+    width: auto;
     height: 130px;
     padding: 16px;
     border-radius: 12px;

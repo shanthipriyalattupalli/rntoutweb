@@ -71,6 +71,7 @@ export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
   const statusClass = "Completed" ? "completed" : "in-progress";
+  const [trackingStatuses, setTrackingStatuses] = useState([]);
 
   const router = useRouter();
 
@@ -84,8 +85,7 @@ export default function Orders() {
       });
       console.log(response.data, "fetch order history")
       setOrders(response.data)
-
-
+console.log(response.data,"suborders in order history")
 
     } catch (error) {
       console.error('Error:', error);
@@ -99,6 +99,27 @@ export default function Orders() {
 
   }, [token]);
 
+
+
+  useEffect(() => {
+    if (orders.length > 0) {
+      setTrackingStatuses(getTrackingStatus());
+    }
+  }, [orders]);
+  
+  const getTrackingStatus = () => {
+    return orders.map(order => {
+      const statuses = order.subOrders.map(subOrder => subOrder.deliveryStatus);
+    
+      if (statuses.includes("pending")) return "pending";
+      if (statuses.includes("accepted")) return "accepted";
+      if (statuses.includes("in-transit")) return "in-transit";
+      if (statuses.every(status => status === "delivered")) return "delivered";
+      if (statuses.includes("canceled")) return "canceled";
+      
+      return "pending"; // Default case
+    });
+  };
 
   return (
 
@@ -116,7 +137,7 @@ export default function Orders() {
 
       </div>
 
-      {orders.map((order) => (
+      {orders.map((order,index) => (
         <div class="order-item" key={order._id}>
           <div className="order-header">
             <span>ID: #{`1234567890`}</span>
@@ -129,12 +150,13 @@ export default function Orders() {
           {Array.isArray(order.subOrders) && order.subOrders.map((item) => (
 
               <div class="order-product" key={item._id}>
+                <div>
                 <img
                   src={item.variantId.images?.[0]}
                   alt="Dell 27 inch Monitor"
                   class="product-image"
                 />
-
+</div>
                 <div class="product-info">
                   <h4>
                  {item.variantId.title}
@@ -165,13 +187,16 @@ export default function Orders() {
               Total Amount: <span>{order.totalAmount}</span>
             </p>
             {Array.isArray(order.subOrders) && order.subOrders.length > 0 && (
-  <p className={`download-invoice progress ${order.subOrders[0].deliveryStatus}`}>
-    <span>
-      <FaTruck />
-    </span>{" "}
-    {order.subOrders[0].deliveryStatus}
-  </p>
-)}
+      <div className="suborders-status">
+        <p className={`download-invoice progress d-flex gap-5 ${trackingStatuses[index]}`}>
+          <span>
+            <FaTruck />
+          </span>{" "}
+          {trackingStatuses[index]}
+        </p>
+      </div>
+    )}
+
 
       {order.paymentStatus === "pending" ?<p className={`download-invoice progress ${order.paymentStatus}`}>
               <span>

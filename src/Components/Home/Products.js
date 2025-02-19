@@ -25,11 +25,11 @@ const Products = ({ products, categoryId }) => {
   };
 
   return (
-<div className='2xl:px-16 p-2 sm:p-4 md:px-4 lg:px-4 xl:px-16'>
+<div className='2xl:px-[80px] px-2 sm:px-8 md:px-10 lg:px-24 xl:px-20'>
   <ToastContainer />
 
   {/* Product Grid */}
-  <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4  2xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 lg:gap-8 mt-3'>
+  <div className='grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-2 sm:gap-4 md:gap-6 2xl:gap-10 gap-3   mt-3'>
     <Suspense fallback={<div>Loading...</div>}>
       {products.map((product) => (
         <ProductItems key={product._id} product={product} />

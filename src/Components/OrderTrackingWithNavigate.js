@@ -117,27 +117,30 @@ const [subOrders, setSubOrders] = useState([]);
 
 
   const steps = [
-    { label: "Order Confirmed", date: "6th Nov 2024", icon: "✔" },
-    { label: "Order Packed", date: "6th Nov 2024", icon: "📦" },
-    { label: "Delivered", date: "7th Nov 2024", icon: "🚚" },
-    // { label: "Delivered", date: "7th Nov 2024", icon: "✅" },
+    { label: "Order Placed", date: "6th Nov 2024", icon: "✔" },
+    { label: "Order Confirmed", date: "6th Nov 2024", icon: "📦" },
+    { label: "Shipped", date: "7th Nov 2024", icon: "🚚" },
+    { label: "Delivered", date: "7th Nov 2024", icon: "✅" },
   ];
 
   const trackingSteps = [ "Order Confirmed", "Order Packed", "Out for Delivery"];
 
   const getTrackingStatus = () => {
-    const statuses = subOrders.map(suborder => suborder.deliveryStatus);
-
-    if (statuses.includes("pending")) {
-        return "pending";
+    const statuses = subOrders.map(suborder => suborder.orderStatus);
+console.log(statuses,"ordertracking status")
+    if (statuses.includes("placed")) {
+        return "placed";
     }
-    if (statuses.includes("in-transit")) {
-        return "in-transit";
+    if (statuses.includes("confirmed")) {
+        return "confirmed";
     }
+    if (statuses.includes("shipped")) {
+      return "shipped";
+  }
     if (statuses.every(status => status === "delivered")) {
         return "delivered";
     }
-    return "pending";
+    return "placed";
   };
 
 
@@ -146,12 +149,14 @@ const trackingStatus = getTrackingStatus(subOrders);
 // Determine the active step based on tracking status
 const getCurrentStep = () => {
   switch (trackingStatus) {
-    case "pending":
+    case "placed":
       return 0;
-    case "in-transit":
+    case "confirmed":
       return 1;
-    case "delivered":
+    case "shipped":
       return 2;
+      case "delivered":
+        return 3;
     default:
       return 0;
   }
@@ -197,7 +202,7 @@ const currentStep = getCurrentStep();
       {/* Connecting Dotted Line (Only between steps) */}
       {index < steps.length - 1 && (
         <div
-          className={`absolute top-1/2 left-full transform -translate-y-1/2 w-[370px] h-0.5 border-t-2 border-dashed ${
+          className={`absolute top-1/2 left-full transform -translate-y-1/2 w-[240px] h-0.5 border-t-2 border-dashed ${
             index < currentStep ? "border-blue-500" : "border-gray-300"
           }`}
         ></div>

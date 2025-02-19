@@ -166,10 +166,10 @@ const ProductItem = ({ product }) => {
       {/* <ToastContainer /> */}
       <style>{customStyles}</style>
 
-      <div className='2xl:w-full bg-white rounded-lg border border-slate-200 '
+      <div className='2xl:w-full xl:w-[308px] xl:h-[436px] bg-white rounded-lg border border-slate-200'
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
-        <div className="relative rounded-lg">
+        <div className="relative rounded-xl">
           <div className="border-b-2 border-bottom-color: rgb(209 213 219 / var(--tw-border-opacity, 1))">
             {isHovered ? (
               <>
@@ -201,9 +201,9 @@ const ProductItem = ({ product }) => {
                         <Image
                           src={img}
                           alt={`${title} - ${index + 1}`}
-                          className="w-full h-44 object-cover rounded-lg"
-                          width={500}
-                          height={300}
+                          className="w-full h-[220px] object-cover rounded-lg"
+                          width={308}
+                          height={220}
                         />
                       </Link>
                     </SwiperSlide>
@@ -216,9 +216,9 @@ const ProductItem = ({ product }) => {
                 <Image
                   src={images[0]}
                   alt={title}
-                  className="w-full h-44 object-cover rounded-lg"
-                  width={500}
-                  height={300}
+                  className="w-full h-[220px] object-cover rounded-lg"
+                  width={308}
+                  height={220}
                 />
               </Link>
             )}
@@ -248,7 +248,7 @@ const ProductItem = ({ product }) => {
             </div>
 
             {/* View All Details Button */}
-            <div className="absolute top-[159px]  z-10 flex items-center justify-center w-full">
+            <div className="absolute top-[200px]  z-10 flex items-center justify-center w-full">
               {isView ? (
                 <span
                   className="bg-white text-black w-54 text-center rounded-full border-2 p-1 cursor-pointer"
@@ -295,9 +295,10 @@ const ProductItem = ({ product }) => {
                 width={16}
                 height={16}
               />
-              <span className='text-gray-500 text-xs'>
-                Free Delivery for: 5 km
-              </span>
+     <span className="text-gray-500 text-xs">
+  <span className="hidden sm:inline">Free Delivery for: </span>5 km
+</span>
+
             </div>
 
             {/* Availability */}
@@ -310,8 +311,8 @@ const ProductItem = ({ product }) => {
                 height={16}
               />
               {rentalAvailability && (
-                <span className='text-gray-500 text-xs'>
-                  Availability: {formattedDate}-{formattedendDate}
+                <span className='text-gray-500 text-xs truncate w-full'>
+                <span className="hidden sm:inline">Availability:</span> {formattedDate}-{formattedendDate}
                 </span>
               )}
             </div>

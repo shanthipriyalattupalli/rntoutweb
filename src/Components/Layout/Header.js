@@ -306,19 +306,19 @@ function Header() {
   };
 
   return (
-<header className="mx-auto sm:w-full w-full flex items-center justify-between px-4 sm:px-6 md:px-10 lg:px-20 py-3 bg-white shadow-md">
+<header className="flex items-center justify-between px-6 md:px-10 lg:px-20 py-3 bg-white shadow-md">
   {/* Left Section - Logo */}
   <div className="flex items-center">
     <Link href="/">
-      <img src={logo} alt="RNT Out Logo" className="h-8 sm:h-10 sm:w-[100px] w-full border-none" />
+      <img src={logo} alt="RNT Out Logo" className="h-8 sm:h-10 border-none border-0" />
     </Link>
   </div>
 
   {/* Center Section - Search Input */}
-  <div className="hidden sm:flex sm:ml-8 items-center relative w-full max-w-sm lg:max-w-md">
+  <div className="hidden sm:flex items-center relative w-full max-w-xs ml-4">
     <SearchInput onChange={(e) => handleSearchInputChange(e.target.value)} />
     {showSuggestions && variants.length > 0 && (
-      <ul className="absolute left-0 w-full bg-white border rounded shadow mt-2 z-40">
+      <ul className="absolute left-0 w-full bg-white border rounded shadow mt-[32rem] z-40">
         {variants.slice(0, 10).map((variant) => (
           <Link
             href={{ pathname: `/Products/${variant.title}`, query: { id: variant._id } }}
@@ -338,17 +338,17 @@ function Header() {
   </div>
 
   {/* Right Section - Location, Distance, Cart, Profile, and Buttons */}
-  <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+  <div className="flex items-center gap-3 md:gap-4">
     {/* Location */}
-    <div className="hidden md:flex sm:w-[150px] items-center bg-white border border-gray-300 rounded-lg px-2 sm:px-3 py-2 hover:bg-gray-100">
-      <Image src={locations} alt="location" width={16} height={16} />
-      <span className="text-xs sm:text-sm font-medium">{address.suburb}</span>
+    <div className="hidden sm:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100">
+      <Image src={locations} alt="location" width={18} height={18} />
+      <span className="text-sm font-medium text-blacky">{address.suburb}</span>
     </div>
 
     {/* Distance Selection */}
-    <div className="hidden md:flex items-center bg-white border border-gray-300 rounded-lg px-2 sm:px-3 py-2 hover:bg-gray-100">
-      <Image src={nearby} alt="location" width={16} height={16} />
-      <select className="bg-transparent text-xs sm:text-sm" value={selectedDistance} onChange={handleDistanceChange}>
+    <div className="hidden sm:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100">
+      <Image src={nearby} alt="location" width={18} height={18} />
+      <select className="bg-transparent text-sm" value={selectedDistance} onChange={handleDistanceChange}>
         <option value="20">20 km</option>
         <option value="30">30 km</option>
         <option value="40">40 km</option>
@@ -362,22 +362,21 @@ function Header() {
     <div className="relative" onClick={() => router.push("/Cartpage")}>
       {cartItems.length > 0 ? (
         <>
-          <Image src={cartitems} width={24} height={24} alt="cart" className="min-w-[24px] min-h-[24px]" />
-          <span className="absolute -top-1 -right-2 bg-red-500 rounded-full w-4 h-4 text-xs font-semibold text-white flex items-center justify-center">
+          <Image src={cartitems} width={28} height={28} alt="cart"  className="min-w-[28px] min-h-[28px]"/>
+          <span className="absolute -top-2 -top-2 -right-2  bg-red-500 rounded-full w-5 h-5 text-xs font-semibold text-white flex items-center justify-center">
             {cartItems.length}
           </span>
         </>
       ) : (
         <button className="bg-white border border-gray-300 rounded-lg p-2 hover:bg-gray-100">
-          <Image src={cartitems} width={24} height={24} alt="cart" className="min-w-[24px] min-h-[24px]" />
+       <Image src={cartitems} width={28} height={28} alt="cart" className="min-w-[28px] min-h-[28px]" />
         </button>
       )}
     </div>
-
     {/* Rent Button */}
     {name || token ? (
       <button
-        className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full text-white font-medium shadow-lg bg-gradient-to-r from-orange-400 via-purple-500 to-teal-500 hover:scale-105 transition-transform duration-300"
+        className="sm:flex items-center gap-2 px-5 py-2 rounded-full text-white font-medium shadow-lg bg-gradient-to-r from-orange-400 via-purple-500 to-teal-500 hover:scale-105 transition-transform duration-300"
         onClick={() => router.push("/add-on-rent")}
       >
         <span className="text-lg">+</span> Rent
@@ -391,34 +390,34 @@ function Header() {
           onClick={() => router.push("/profile")}
           className="flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 cursor-pointer"
         >
-          <img src={Photo} alt="user" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover" />
-          <p className="hidden md:flex text-sm">{name}</p>
+          <img src={Photo} alt="user" className="w-8 h-8 rounded-full object-cover" />
+          <p className="hidden sm:flex hidden md:flex text-sm">{name}</p>
         </div>
       ) : (
-        <button
-          className="ml-2 sm:ml-5 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 sm:px-2 sm:w-40 rounded-full shadow-md transition duration-300 flex items-center justify-center"
-          onClick={() => setIsLoginOpen(true)}
-        >
-          {/* Show 'Login' on mobile */}
-          <span className="sm:hidden">Login</span>
+<button
+  className="ml-2 sm:ml-5 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 sm:px-6 rounded-full shadow-md transition duration-300 flex items-center justify-center"
+  onClick={() => setIsLoginOpen(true)}
+>
+  {/* Show 'Login' on mobile */}
+  <span className="sm:hidden">Login</span>
 
-          {/* Show 'Sign In / Sign Up' on larger screens */}
-          <span className="hidden sm:block">Sign In / Sign Up</span>
-        </button>
+  {/* Show 'Sign In / Sign Up' on larger screens */}
+  <span className="hidden sm:block">Sign In / Sign Up</span>
+</button>    
       )}
-
-      {isLoginOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button className="close-button" onClick={() => setIsLoginOpen(false)}>✕</button>
-            <Login setIsLoginOpen={setIsLoginOpen} />
-          </div>
-        </div>
-      )}
+                 {isLoginOpen && (
+                <div className="modal-overlay">
+                  <div className="modal-content">
+                    <button className="close-button" onClick={() => setIsLoginOpen(false)}>
+                      ✕
+                    </button>
+                    <Login setIsLoginOpen={setIsLoginOpen}/>
+                  </div>
+                </div>
+              )}
     </nav>
   </div>
 </header>
-
 
   );
 }
