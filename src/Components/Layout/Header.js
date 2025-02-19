@@ -40,7 +40,7 @@ function Header() {
   const name = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
   const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
   const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
-
+  const [profilePic, setProfilePic] = useState(Photo);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [location, setLocation] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -64,6 +64,22 @@ function Header() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+
+  useEffect(() => {
+    const handleProfileUpdate = (event) => {
+      setProfilePic(event.detail.profilePic);
+    };
+  
+    window.addEventListener("profileUpdated", handleProfileUpdate);
+  
+    return () => {
+   
+      window.removeEventListener("profileUpdated", handleProfileUpdate);
+    };
+  }, []);
+
+
 
   useEffect(() => {
     const storedDistance = (typeof window !== 'undefined') ? localStorage.getItem("selectedDistance") : null
@@ -147,86 +163,6 @@ function Header() {
   }, []);
 
 
-  // useEffect(()=>{
-  //   const cart = (typeof window !== 'undefined') ? localStorage.getItem("cart") : null;
-  //   console.log(cart,"cartitems")
-  //   setCartItems(cart);
-  //   const updateCartCount = (event) => {
-  //     setCartCount(event.detail);
-  //   };
-  //   window.addEventListener("cartUpdated", updateCartCount);
-  //   return () => {
-  //     window.removeEventListener("cartUpdated", updateCartCount);
-  //   };
-  // },[])
-
-
-
-  //   useEffect(() => {
-  //     if (navigator.geolocation) {
-  //       navigator.geolocation.getCurrentPosition(
-  //         (position) => {
-  //           const { latitude, longitude } = position.coords;
-  //           localStorage.setItem("latitude", latitude);
-  //           localStorage.setItem("longitude", longitude);
-  //         },
-  //         (error) => {
-  //           console.error("Error fetching location:", error);
-  //           setLocationError(error.message);
-  //           navigate("/");
-  //         }
-  //       );
-  //     } else {
-  //       console.error("Geolocation is not supported by this browser.");
-  //       navigate("/");
-  //     }
-  //   }, []);
-
-  //   useEffect(() => {
-  //     const fetchLocationName = async () => {
-  //       if (latitude && longitude) {
-  //         try {
-  //           const response = await axios.get(
-  //             `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${MAP_API}`
-  //           );
-
-  //           // Check if results are present in the response
-  //           if (response.data.results && response.data.results.length > 0) {
-  //             const addressComponents = response.data.results[0].address_components;
-  //             const location=addressComponents[4].long_name
-  //             console.log(response.data.results,"address_components")
-  // console.log(location,"locaton")
-  //   //           const city = addressComponents.find((component) =>
-  //   //             component.types.includes('locality')
-  //   //         )?.long_name;
-  //   //         console.log(response.data.results[0].address_components,"address_components")
-  //   // console.log(city,"location name")
-  //             // Set the city if found
-  //             if (location) {
-  //               // setCity(city);
-
-  //               setLocationName(location)
-  //             } else {
-  //               console.log('City not found in the address components.');
-  //             }
-
-  //             // Call the getPropertiesList function after setting the city
-  //             // getPropertiesList();
-  //           } else {
-  //             console.log('No results found for the provided coordinates.');
-  //           }
-
-  //           // console.log(response.data, 'location name');
-  //         } catch (error) {
-  //           console.error('Error fetching location name:', error);
-  //         }
-  //       } else {
-  //         console.log('Latitude and/or Longitude are not defined.');
-  //       }
-  //     };
-
-  //     fetchLocationName();
-  //   }, [latitude, longitude]);
 
 
   const toggleDropdown = () => {
@@ -238,9 +174,7 @@ function Header() {
     setIsDropdownOpen(false);
   };
 
-  // const handleSearchInputChange = (event) => {
-  //   const searchTerm = event.target.value;
-  // };
+
 
   const handleNavigate = () => {
     router.push("/Login");
@@ -340,7 +274,7 @@ function Header() {
   {/* Right Section - Location, Distance, Cart, Profile, and Buttons */}
   <div className="flex items-center gap-3 md:gap-4">
     {/* Location */}
-    <div className="hidden sm:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100">
+    <div className="hidden sm:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 gap-2">
       <Image src={locations} alt="location" width={18} height={18} />
       <span className="text-sm font-medium text-blacky">{address.suburb}</span>
     </div>
@@ -390,7 +324,7 @@ function Header() {
           onClick={() => router.push("/profile")}
           className="flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 cursor-pointer"
         >
-          <img src={Photo} alt="user" className="w-8 h-8 rounded-full object-cover" />
+          <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" />
           <p className="hidden sm:flex hidden md:flex text-sm">{name}</p>
         </div>
       ) : (

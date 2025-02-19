@@ -12,7 +12,6 @@ import CategoryProducts from '@/Components/Home/CategoryProducts';
 import Breadcrumb from "@/Components/Breadcrumb/Breadcrumb";
 import ScrollToTop from "@/app/ScrollToTop";
 
-
 const ProductList = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [categories, setCategories] = useState([]);
@@ -24,6 +23,9 @@ const ProductList = () => {
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
   const [distance,setDistance] = useState();
+  console.log(distance,"distance")
+  const [rating,setRating]=useState();
+  console.log(rating,"ratings in product list")
   const [breadcrumbCategoryName, setBreadcrumbCategoryName] = useState("");
   const params = useParams();
   const categoryId = params.categoryId; // Extract categoryId directly from params
@@ -58,6 +60,7 @@ const ProductList = () => {
           distance:distance,
           minPrice: minPrice,
           maxPrice: maxPrice,
+          rating:rating,
         },
       });
 
@@ -190,6 +193,30 @@ const ProductList = () => {
    setDistance(distance)
    // Use the value as needed
  }
+const handleRating=(rating)=>{
+   console.log("Updated Rating:", rating);
+   // Use the value as needed
+   setRating(rating)
+ 
+}
+
+ useEffect(() => {
+  const productContainer = document.getElementById("product-container");
+
+  if (productContainer) {
+    const handleWheelScroll = (event) => {
+      if (event.deltaY !== 0) {
+        event.preventDefault();
+        productContainer.scrollLeft += event.deltaY;
+      }
+    };
+
+    productContainer.addEventListener("wheel", handleWheelScroll);
+
+    return () => productContainer.removeEventListener("wheel", handleWheelScroll);
+  }
+}, []);
+
 
   return (
     <main className="min-h-screen py-6 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5">
@@ -200,12 +227,14 @@ const ProductList = () => {
       <div className="mx-auto lg:px-16">
         {/* <Categories categories={categories} /> */}
 
-        <div className="flex">
+        <div className="flex flex-col sm:flex-row">
 
-          <Sidebar subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance}/>
 
-          <div className="w-full flex flex-col gap-2 py-4 px-2  h-[auto] border border-slate-200 bg-white rounded-r-lg overflow-hidden">
-          <div className="w-full  overflow-x-auto border rounded-lg scrollbar-hide">
+          <Sidebar subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} rating={handleRating}/>
+
+          <div className="w-full flex flex-col gap-2 py-4 h-[auto] border border-slate-200  bg-white rounded-r-lg overflow-hidden">
+            <div className="px-4 border-b-2 pb-4">
+          <div id="product-container" className="w-full overflow-x-auto border rounded-lg scrollbar-hide">
   <div className="flex w-max">
     {product.map((productItem) => (
       <div
@@ -220,11 +249,13 @@ const ProductList = () => {
     ))}
   </div>
 </div>
+</div>
+
 
 
             {/* <Products/> */}
             <CategoryProducts products={products} />
-          </div>
+            </div>
         </div>
       </div>
     </main>

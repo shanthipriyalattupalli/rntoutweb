@@ -4,7 +4,7 @@ import React from "react";
 import { CiStar } from "react-icons/ci";
 const laptop = "/Assets/laptop-2.jpg";
 
-const OrderItem = ({ hideHeader, orderData }) => {
+const OrderItem = ({ hideHeader, orderData,onShowTracking  }) => {
   console.log(orderData, "orderData");
 
   // Check if orderData has subOrders
@@ -45,7 +45,14 @@ const OrderItem = ({ hideHeader, orderData }) => {
                     Write Product Review
                   </a>
                 )}
+                    <button
+                className="text-blue-500 font-semibold px-4 rounded"
+                onClick={() => onShowTracking(item)}
+              >
+                Show Tracking
+              </button>
               </div>
+          
 
               {/* Conditionally render feedback if available */}
               {item.review && item.review.feedback && (

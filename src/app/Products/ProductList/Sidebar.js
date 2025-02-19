@@ -12,10 +12,11 @@ import Image from "next/image";
 // import { useParams } from 'next/navigation';
 const downArrow = "/Assets/down_line.png";
 
-const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, distance }) => {
+const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, distance, rating }) => {
   console.log(subCategories, "subcategories in sidebar menu");
   const [activeIndex, setActiveIndex] = useState(null);
   const [priceRange, setPriceRange] = useState(0); // Current slider value
+  const [ratings,setRating]= useState(0)
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(2000);
   const [discount, setDiscount] = useState(null);
@@ -26,6 +27,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
   const [isPriceOpen, setIsPriceOpen] = useState(true);
   const [isDiscountOpen, setIsDiscountOpen] = useState(false);
   const [isDeliveryByOpen, setIsDeliveryByOpen] = useState(false);
+  const [isRatingOpen, setIsRatingOpen] = useState(false);
   const [isDurationOpen, setIsDurationOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -75,6 +77,9 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
 
   const handleDeliveryByToggle = () => {
     setIsDeliveryByOpen((prevState) => !prevState);
+  };
+  const handleRatingByToggle = () => {
+    setIsRatingOpen((prevState) => !prevState);
   };
 
   const handleDurationToggle = () => {
@@ -129,8 +134,15 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
     distance(distances);
   }
 
+  const handleRating = (e) => {
+    const newRating = e.target.value;
+    setRating(newRating);
+    rating(newRating); 
+  };
+  
+
   return (
-    <div className='w-80'>
+    <div className="w-full sm:w-80">
       <div className='border rounded-tl-lg'>
         <div className='mb-6 px-6 pt-4'>
           <div
@@ -243,25 +255,13 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
 
                         {/* Price Labels */}
                         <div className="price-values3">
-                          <div>
-                            <span className="text-gray-200 ">|</span>
+                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
+                          <span className="ml-2 text-gray-200 ">|</span>
                             <span>₹0</span>
                           </div>
-                          <div>
-                            <span className="text-gray-200 ">|</span>
-                            <span>₹500</span>
-                          </div>
-                          <div>
-                            <span className="text-gray-200 ">|</span>
-                            <span>₹1k</span>
-                          </div>
-                          <div>
-                            <span className="text-gray-200 ">|</span>
-                            <span>₹1.5k</span>
-                          </div>
-                          <div>
-                            <span className="text-gray-200 ">|</span>
-                            <span>₹2k+</span>
+                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
+                          <span className="ml-2 text-gray-200 ">|</span>
+                            <span>₹2000</span>
                           </div>
                         </div>
 
@@ -276,6 +276,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                     </div>
                   )}
                 </div>
+
                 <div className='bt-2'>
                   <div className='px-6 pb-4'>
                     <div
@@ -335,9 +336,9 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                             <span>25+km</span>
                           </div>
                         </div >
-                        <div className="price0">
+                        {/* <div className="price0">
                           {priceRange && priceRange}
-                        </div>
+                        </div> */}
 
 
 
@@ -345,31 +346,31 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                     )}
                   </div>
                 </div>
-                {/* <div className='bt-2'>
+                <div className='bt-2'>
                   <div className='px-6 pb-4'>
                     <div
                       className='flex items-center justify-between cursor-pointer'
-                      onClick={handleDeliveryByToggle}
+                      onClick={handleRatingByToggle}
                     >
-                      <h3 className='text-md font-bold mb-2'>Delivery By</h3>
-                      {isDeliveryByOpen ? (
+                      <h3 className='text-md font-bold mb-2'>Rating</h3>
+                      {isRatingOpen ? (
                         <ChevronDownIcon className='w-5 h-5 text-gray-600' />
                       ) : (
                         <ChevronRightIcon className='w-5 h-5 text-gray-600' />
                       )}
                     </div>
-                    {isDeliveryByOpen && (
+                    {isRatingOpen && (
 
 
                       <div className="w-2">
                         <input
                           type="range"
-                          id="price"
+                          id="rating"
                           min="0"
-                          max="25"
+                          max="5"
                           step="1"
-                          value={priceRange}
-                          onChange={(e) => handlePriceRange(e)}
+                          value={ratings}
+                          onChange={(e) => handleRating(e)}
                           // onChange={(e) => setPriceRange(e.target.value)} 
                           className="w-[200px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
                           style={{
@@ -378,34 +379,22 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                           }}
                         />
 
-                        <div className="price-values2">
-                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
-                            <span className="ml-2 text-gray-200 ">|</span>
-                            <span>0km</span>
-                          </div>
-                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
-                            <span className="ml-2 text-gray-200 ">|</span>
-                            <span >5km</span>
-                          </div>
-                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left"> 
-                            <span className="ml-2 text-gray-200 ">|</span>
-                            <span>10km</span>
-                          </div>
-                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
-                            <span className="ml-2 text-gray-200 ">|</span>
-                            <span>15km</span>
-                          </div>
-                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
-                            <span className="ml-2 text-gray-200 ">|</span>
-                            <span>20km</span>
-                          </div>
-                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
-                            <span className="ml-2 text-gray-200 ">|</span>
-                            <span>25+km</span>
-                          </div>
-                        </div >
+<div className="price-values4">
+  {[1, 2, 3, 4, 5].map((num) => (
+    <div key={num} className="flex flex-col text-xs font-normal leading-[18px] text-left">
+      <span className="ml-2 text-gray-200">|</span>
+      <span className="flex items-center gap-1">
+        {num} 
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.158 3.554a1 1 0 00.95.69h3.75c.969 0 1.371 1.24.588 1.81l-3.033 2.213a1 1 0 00-.364 1.118l1.158 3.554c.3.921-.755 1.688-1.54 1.118l-3.033-2.213a1 1 0 00-1.176 0L5.037 16.99c-.784.57-1.839-.197-1.54-1.118l1.158-3.554a1 1 0 00-.364-1.118L1.258 9.004c-.784-.57-.38-1.81.588-1.81h3.75a1 1 0 00.95-.69l1.158-3.554z" />
+        </svg>
+      </span>
+    </div>
+  ))}
+</div>
+
                         <div className="price0">
-                          {priceRange && priceRange}
+                          {ratings && ratings}
                         </div>
 
 
@@ -413,7 +402,8 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                       </div>
                     )}
                   </div>
-                </div> */}
+                </div>
+         
 
 
               </div>
@@ -421,171 +411,6 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
 
           </div>
         </div>
-
-
-
-        {/* <div className='border-b-2'>
-          <div className='px-6 pb-4'>
-            <div
-              className='flex items-center justify-between cursor-pointer'
-              onClick={handleDiscountToggle}
-            >
-              <h3 className='text-md font-bold mb-2'>Discount</h3>
-              {isDiscountOpen ? (
-                <ChevronDownIcon className='w-5 h-5 text-gray-600' />
-              ) : (
-                <ChevronRightIcon className='w-5 h-5 text-gray-600' />
-              )}
-            </div>
-            {isDiscountOpen && (
-              // <div className='space-y-1'>
-              //   <label className='flex items-center'>
-              //     <input
-              //       type='radio'
-              //       name='discount'
-              //       value=''
-              //       checked={discount === null}
-              //       onChange={handleDiscountChange}
-              //       className='mr-2'
-              //     />
-              //     Clear all
-              //   </label>
-              //   <label className='flex items-center'>
-              //     <input
-              //       type='radio'
-              //       name='discount'
-              //       value='900'
-              //       checked={discount === "900"}
-              //       onChange={handleDiscountChange}
-              //       className='mr-2'
-              //     />
-              //     ₹900
-              //   </label>
-              //   <label className='flex items-center'>
-              //     <input
-              //       type='radio'
-              //       name='discount'
-              //       value='1000'
-              //       checked={discount === "1000"}
-              //       onChange={handleDiscountChange}
-              //       className='mr-2'
-              //     />
-              //     ₹1000
-              //   </label>
-              // </div>
-              <div className="w-2">
-              <input
-    type="range"
-    id="price"
-    min="0"
-    max="15000"
-    step="1000"
-    value={priceRange}
-    onChange={(e) => setPriceRange(e.target.value)} 
-      className="w-[200px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
-      style={{
-        WebkitAppearance: 'none', 
-        MozAppearance: 'none',
-      }}
-  />
-  <div className="price-values3">
-    <div>
-      <span className="ml-2 text-gray-200 ">|</span>
-    <span>₹0</span>
-    </div>
-    <div>
-      <span className="ml-2 text-gray-200 ">|</span>
-    <span>₹500</span>
-    </div>
-    <div>
-      <span className="ml-2 text-gray-200 ">|</span>
-    <span>₹1k</span>
-    </div>
-    <div>
-      <span className="ml-2 text-gray-200 ">|</span>
-    <span>₹1.5k</span>
-    </div>
-    <div>
-      <span className="ml-2 text-gray-200 ">|</span>
-    <span>₹2k+</span>
-    </div>
-  </div>
-  <div className="price0">
-    {priceRange && `Selected Price: ₹${priceRange}`}
-  </div>
-     
-  
-  
-                </div>
-            )}
-          </div>
-        </div> */}
-
-
-
-        {/* <div className='border-b-2'>
-          <div className='px-6 pb-4'>
-            <div
-              className='flex items-center justify-between cursor-pointer'
-              onClick={handleDurationToggle}
-            >
-              <h3 className='text-md font-bold mb-2'>Duration</h3>
-              {isDurationOpen ? (
-                <ChevronDownIcon className='w-5 h-5 text-gray-600' />
-              ) : (
-                <ChevronRightIcon className='w-5 h-5 text-gray-600' />
-              )}
-            </div>
-            {isDurationOpen && (
-              <div className='space-y-1'>
-                <label className='flex items-center'>
-                  <input
-                    type='radio'
-                    name='duration'
-                    value=''
-                    checked={duration === null}
-                    onChange={handleDurationChange}
-                    className='mr-2'
-                  />
-                  Clear all
-                </label>
-                <label className='flex items-center'>
-                  <input
-                    type='radio'
-                    name='duration'
-                    value='1 day'
-                    checked={duration === "1 day"}
-                    onChange={handleDurationChange}
-                    className='mr-2'
-                  />
-                  1 day
-                </label>
-                <label className='flex items-center'>
-                  <input
-                    type='radio'
-                    name='duration'
-                    value='3 days'
-                    checked={duration === "3 days"}
-                    onChange={handleDurationChange}
-                    className='mr-2'
-                  />
-                  3 days
-                </label>
-                <label className='flex items-center'>
-                  <input
-                    type='radio'
-                    name='duration'
-                    value='1 week'
-                    checked={duration === "1 week"}
-                    onChange={handleDurationChange}
-                    className='mr-2'
-                  />
-                  1 week
-                </label>
-              </div>
-            )}
-          </div>
-        </div> */}
       </div>
     </div>
   );

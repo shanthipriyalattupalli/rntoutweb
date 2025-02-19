@@ -13,13 +13,9 @@ const LazyImage = ({ src, alt }) => {
 const FurnishAd = ({banner}) => {
   console.log(banner,"banner in promotional add")
   return (
-    <div className="mt-8 mb-8">
-{/* {banner?.map((banners,index)=>( */}
-  <div className="relative">
-    <div className=''>
-    <img src={banner?.image} alt="Promotional Banner" className='w-full h-[500px] object-cover' />
-  </div>
-  <div className="absolute top-1/4 left-28 text-center text-white w-full md:w-3/4 lg:w-1/2">
+<div className="mt-8 mb-8 flex flex-col md:flex-row items-center relative">
+  {/* Text Section */}
+  <div className="w-full md:w-1/2 px-8 md:px-16 lg:px-24 z-10">
     <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-red-500">
       Be free when you furnish.
     </h1>
@@ -34,9 +30,21 @@ const FurnishAd = ({banner}) => {
       Because being home is being free.
     </p>
   </div>
+
+  {/* Image Section with Gradient */}
+  <div className="w-full md:w-1/2 relative">
+    {/* Gradient Overlay */}
+    <div className="absolute bg-gradient-to-l from-transparent to-white"></div>
+    
+    <img
+      src={banner?.image}
+      alt="Promotional Banner"
+      className="w-full h-[400px] object-cover"
+    />
+  </div>
 </div>
-  {/* ))    }   */}
-    </div>
+
+
   );
 };
 

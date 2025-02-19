@@ -12,6 +12,7 @@ const pro3 = "/Assets/laptop-3.jpg";
 const pro4 = "/Assets/laptop-4.jpg";
 const pro5 = "/Assets/laptop-5.jpg";
 const noproducts = "/Assets/noproducts.svg";
+const emptyproducts = "/Assets/emptyproducts.svg";
 
 // Dynamically import the ProductItems component for lazy loading
 const ProductItems = dynamic(() => import("./ProductItems"), {
@@ -27,10 +28,10 @@ const CategoryProducts = ({ products }) => {
   };
 
   return (
-    <div className="">
+  <>
       <ToastContainer />
       {products?.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 2xl:gap-6 gap-2 mt-3">
+        <div className="w-full flex px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6  mt-3">
 
           <Suspense fallback={<div>Loading...</div>}>
             {products.map((product) => (
@@ -39,10 +40,19 @@ const CategoryProducts = ({ products }) => {
           </Suspense>
 
         </div>) : (
-        <div className="flex flex-col text-justify justify-center w-80 ml-80">
-          <img src={noproducts} alt="No products available" className="w-full" />
-          <span className="pl-14 pt-10 font-medium text-xl">No Rental Items found</span>
-        </div>
+          <div className="flex flex-col items-center justify-center w-80 mx-auto h-[500px] text-center">
+  <img 
+    src={emptyproducts} 
+    alt="No products available" 
+    className="w-full animate-float" 
+  />
+  <span className="pt-10 font-medium text-xl">No Rental Items found</span>
+  <span className="font-poppins font-normal text-[12px] leading-[18px] tracking-normal text-center text-[rgba(7,7,7,0.8)]">
+    No product found in this category so meanwhile you can explore our other categories.
+  </span>
+</div>
+
+
       )}
       {products?.length > 0 && (
         <div className="container mx-auto py-16">
@@ -58,7 +68,7 @@ const CategoryProducts = ({ products }) => {
           </div>
         </div>
       )}
-    </div>
+ </>
   );
 };
 

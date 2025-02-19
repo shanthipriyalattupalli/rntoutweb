@@ -193,7 +193,7 @@ const FaqPage = () => {
                     <div
                         key={index}
                         className="border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition duration-300 cursor-pointer"
-                        onClick={()=>router.push(`/Faq/${category._id}`)}
+                        onClick={()=>router.push(`/Faq/${category?.category?._id}`)}
                     >
                         <div className="flex items-center space-x-3 mb-4">
                             <div className="bg-green-600 p-2 rounded-lg flex justify-center items-center">

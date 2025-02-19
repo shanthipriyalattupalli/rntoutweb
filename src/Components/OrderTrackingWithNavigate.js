@@ -47,6 +47,7 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [orders, setOrders] = useState([]);
 const [subOrders, setSubOrders] = useState([]);
+const [selectedSubOrder, setSelectedSubOrder] = useState(null);
   const handleStepClick = (path) => {
     navigate(path); // Navigate to the corresponding path
   };
@@ -121,95 +122,113 @@ const [subOrders, setSubOrders] = useState([]);
     { label: "Order Confirmed", date: "6th Nov 2024", icon: "📦" },
     { label: "Shipped", date: "7th Nov 2024", icon: "🚚" },
     { label: "Delivered", date: "7th Nov 2024", icon: "✅" },
+    { label: "Canceled", date: "7th Nov 2024", icon: "❌" },
   ];
-
+  
   const trackingSteps = [ "Order Confirmed", "Order Packed", "Out for Delivery"];
 
-  const getTrackingStatus = () => {
-    const statuses = subOrders.map(suborder => suborder.orderStatus);
-console.log(statuses,"ordertracking status")
-    if (statuses.includes("placed")) {
-        return "placed";
-    }
-    if (statuses.includes("confirmed")) {
-        return "confirmed";
-    }
-    if (statuses.includes("shipped")) {
-      return "shipped";
-  }
-    if (statuses.every(status => status === "delivered")) {
-        return "delivered";
-    }
-    return "placed";
-  };
-
-
-const trackingStatus = getTrackingStatus(subOrders);
-
-// Determine the active step based on tracking status
-const getCurrentStep = () => {
-  switch (trackingStatus) {
-    case "placed":
-      return 0;
-    case "confirmed":
-      return 1;
-    case "shipped":
-      return 2;
+  const getCurrentStep = (orderStatus) => {
+    switch (orderStatus) {
+      case "placed":
+        return 0;
+      case "confirmed":
+        return 1;
+      case "shipped":
+        return 2;
       case "delivered":
         return 3;
-    default:
-      return 0;
-  }
-};
-
-const currentStep = getCurrentStep();
+      case "canceled":
+        return 4; // Canceled step
+      default:
+        return 0;
+    }
+  };
+  
   const router = useRouter();
+
+  const handleShowTracking = (subOrder) => {
+    setSelectedSubOrder(subOrder);
+  };
   return (
     <div className='order-tracking-container'>
       <div className='order_item-frame'>
 
-        <OrderItem key={orders._id} orderData={orders} />
+        <OrderItem key={orders._id} orderData={orders}  onShowTracking={handleShowTracking} />
 
       </div>
 
       <div className='order_trackinf_section'>
-        <div className="bg-white p-4">
-          <h3>Order Tracking</h3>
+        <div className="bg-white py-4">
+          <h3 className="px-10 font-semibold text-lg">Order Tracking</h3>
 
-          <div className="w-full flex items-center justify-between p-4 relative">
-          {steps.map((step, index) => (
-  <div key={index} className="flex flex-col items-center relative">
-    {/* Step Label */}
-    <div
-      className={`w-40 h-14 flex items-center justify-center ${
-        index <= currentStep ? "text-blue-500" : "text-gray-300"
-      }`}
-    >
-      {step.label}
-    </div>
+          <div className="w-full flex items-center justify-between  relative">
+          <div>
+          {selectedSubOrder ? (
+  <div className="w-full flex items-center justify-between py-6 relative">
+    <div className="flex items-center space-x-6">
+      {steps.map((step, index) => {
+        const currentStep = getCurrentStep(selectedSubOrder.orderStatus);
+        const isCompleted = index <= currentStep;
+        const isDelivered = selectedSubOrder.orderStatus === "delivered";
+        const isCanceled = selectedSubOrder.orderStatus === "canceled";
 
-    {/* Step Circle Wrapper */}
-    <div className="relative flex items-center">
-      {/* Step Circle */}
-      <div
-        className={`w-14 h-14 flex items-center justify-center rounded-full border-2 z-10 ${
-          index <= currentStep ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-gray-100"
-        }`}
-      >
-        {step.icon}
-      </div>
+        return (
+          <div key={index} className="flex flex-col items-center relative">
+            {/* Step Label */}
+            <div
+              className={`w-48 text-center ${
+                isCanceled && index === currentStep
+                  ? "text-red-500 font-bold"
+                  : isDelivered && index === currentStep
+                  ? "text-green-500 font-bold"
+                  : isCompleted
+                  ? "text-blue-500 font-bold"
+                  : "text-gray-300"
+              }`}
+            >
+              {step.label}
+            </div>
 
-      {/* Connecting Dotted Line (Only between steps) */}
-      {index < steps.length - 1 && (
-        <div
-          className={`absolute top-1/2 left-full transform -translate-y-1/2 w-[240px] h-0.5 border-t-2 border-dashed ${
-            index < currentStep ? "border-blue-500" : "border-gray-300"
-          }`}
-        ></div>
-      )}
+            {/* Step Circle */}
+            <div
+              className={`w-14 h-14 flex items-center justify-center rounded-full border-2 z-10 ${
+                isCanceled && index === currentStep
+                  ? "border-red-500 bg-red-100"
+                  : isDelivered && index === currentStep
+                  ? "border-green-500 bg-green-100"
+                  : isCompleted
+                  ? "border-blue-500 bg-blue-100"
+                  : "border-gray-300 bg-gray-100"
+              }`}
+            >
+              {step.icon}
+            </div>
+
+            {/* Connecting Dotted Line */}
+            {index < steps.length - 1 && (
+              <div
+                className={`absolute top-[66%] left-[43%] transform -translate-y-1/2 w-[13rem] h-0.5 border-t-2 border-dashed ${
+                  isCanceled
+                    ? "border-red-500"
+                    : isDelivered
+                    ? "border-green-500"
+                    : index < currentStep
+                    ? "border-blue-500"
+                    : "border-gray-300"
+                }`}
+              ></div>
+            )}
+          </div>
+        );
+      })}
     </div>
   </div>
-))}
+) : (
+  <p className="text-gray-500 text-center">Select a suborder to view tracking</p>
+)}
+
+
+  </div>
 
 </div>
 
@@ -254,10 +273,10 @@ const currentStep = getCurrentStep();
           <h3 class='section-title'>Rent Cost Breakup</h3>
           <div class='grid-container'>
             <div class='label'>Total Rent</div>
-            <div class='value'>₹ {orders.totalAmount}/mo</div>
+            <div class='value'>₹ {orders.totalAmount}/-</div>
 
-            <div class='label'>Discounts</div>
-            <div class='value discount'>- {rentData.discounts}/mo</div>
+            {/* <div class='label'>Discounts</div> */}
+            {/* <div class='value discount'>- {rentData.discounts}/mo</div> */}
 
             {/* <div class='label'>Other</div>
             <div class='value'>₹ {rentData.otherCharges}/mo</div> */}
@@ -272,7 +291,8 @@ const currentStep = getCurrentStep();
 
             <div class='label grand-total'>Rent Grand Total</div>
             <div class='value grand-total'>
-              ₹ {calculateGrandTotal().toFixed(2)}
+              {/* ₹ {calculateGrandTotal().toFixed(2)} */}
+              ₹ {orders.totalAmount}/-
             </div>
           </div>
         </div>

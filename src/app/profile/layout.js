@@ -6,7 +6,7 @@ import '../../styles/ProfileMenus.css';
 
 export default function ProfileLayout({ children }) {
   return (
-    <div className="container menu-content">
+    <div className="w-full xl:w-full xl:px-20">
       <div className="app_wbgeubeqb">
         <Sidebar /> 
         <div className="content">{children}</div> 

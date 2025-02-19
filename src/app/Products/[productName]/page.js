@@ -638,14 +638,14 @@ const ProductPage = () => {
                   Product Description
                 </h2>
                 <tbody>
-                  <p className="font-sm text-md text-gray-700 leading-relaxed">{product.description}</p>
+                  <p className="font-sm text-md text-gray-700 leading-relaxed text-justify">{product.description}</p>
                 </tbody>
               </table>
             </div>
           </div>
 
           {/* Right Side - FAQ Section */}
-          <div>
+          {/* <div>
             <h2 className='text-lg font-semibold mb-3'>FAQ ABOUT THIS PRODUCT</h2>
             <div className='border bg-white rounded-lg border-slate-200'>
               {faqItems?.map((faq, index) => (
@@ -670,7 +670,7 @@ const ProductPage = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>}
 
         {/* Left Side - Product Details and Other Details */}
@@ -719,10 +719,10 @@ const ProductPage = () => {
             <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
           </div>
         </div>
-
+{/* 
         <div className="pt-3 w-1/2 justify-center text-center">
           <button className="border b-orange-200 bg-orange-400 p-3 w-80 rounded-lg text-white font-semibold" onClick={() => setIsReview(true)}>write a review</button>
-        </div>
+        </div> */}
         {isReview && (
           <div className="modal-overlay">
             <div className="modal-content">

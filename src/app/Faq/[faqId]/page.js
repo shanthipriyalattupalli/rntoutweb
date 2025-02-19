@@ -143,9 +143,9 @@ const categories = [
 const FaqPage = () => {
 
     const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState({});
       const params = useParams();
-    const FaqId=params.FaqId
+    const FaqId=params.faqId
     console.log(FaqId,"faqId")
     // const fetchFaqCategories = async () => {
     //     try {
@@ -166,8 +166,8 @@ const FaqPage = () => {
 
     const fetchFaqQuestions = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/faq/questions`);
-            console.log(response, "response")
+            const response = await axios.get(`${BASE_URL}/faq/categories/${FaqId}`);
+            console.log(response, "response in category")
             setCategories(response?.data?.data);
 
         } catch (error) {
@@ -186,12 +186,12 @@ const FaqPage = () => {
     return (
         <div className="max-w-7xl mx-auto p-4">
             <div className="text-center m-8">
-                <h1 className="text-3xl font-bold text-gray-900">Frequently Asked Questions</h1>
+                <h1 className="text-3xl font-bold text-gray-900">{categories.title}</h1>
                 <p className="text-gray-500 mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {categories.map((category, index) => (
+                {/* {categories.map((category, index) => (
                     <div
                         key={index}
                         className="border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition duration-300 cursor-pointer"
@@ -224,7 +224,7 @@ const FaqPage = () => {
                         </ul>
 
                     </div>
-                ))}
+                ))} */}
             </div>
         </div>
     );

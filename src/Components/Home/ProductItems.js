@@ -62,6 +62,7 @@ const ProductItem = ({ product }) => {
     rentalAvailability,
     stockQuantity,
     rentalPrice,
+    averageRating,
     _id,
   } = product;
 
@@ -225,10 +226,10 @@ const ProductItem = ({ product }) => {
 
             {/* Rating and Fav Icon positioned on top */}
             <div className="absolute top-[14px] right-4 z-10 flex flex-col items-center space-x-2">
-              <p className="flex items-center bg-green-700 px-2 rounded-full text-white">
-                <img src={stars} alt="Rating stars" className="w-4 h-4" />
-                <span className="ml-1">4.5</span>
-              </p>
+            {averageRating &&  <p className="flex items-center bg-green-700 px-2 rounded-full text-white">
+                <img src={stars} alt="Rating stars" className="w-4 h-3" />
+                <span className="ml-1">{averageRating}</span>
+              </p>}
 
               {/* <p
                 className="cursor-pointer"

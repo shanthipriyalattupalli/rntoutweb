@@ -37,7 +37,7 @@ const Navigation = () => {
       const response = await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`);
       setSubcategories(response.data || []);
       setActiveCategory(categoryId);
-      
+
       if (categoryRefs.current[categoryId]) {
         const rect = categoryRefs.current[categoryId].getBoundingClientRect();
         setDropdownPosition({
@@ -49,8 +49,8 @@ const Navigation = () => {
       console.error("Error fetching subcategories:", error);
     }
   };
-  
-  
+
+
 
   const handleMouseEnter = (categoryId, event) => {
     if (isMobile) return;
@@ -84,10 +84,32 @@ const Navigation = () => {
     fetchCategories();
   }, []);
 
+
+  useEffect(() => {
+    const categoryContainer = document.getElementById("category-container");
+
+    if (categoryContainer) {
+      const handleWheelScroll = (event) => {
+        if (event.deltaY !== 0) {
+          event.preventDefault();
+          categoryContainer.scrollLeft += event.deltaY;
+        }
+      };
+
+      categoryContainer.addEventListener("wheel", handleWheelScroll);
+
+      return () => categoryContainer.removeEventListener("wheel", handleWheelScroll);
+    }
+  }, []);
+
+
   return (
     <nav className="px-4 sm:px-20 bg-white border border-slate-200 relative z-20">
-      <div className="mx-auto relative">
-        <div className="flex items-center h-12 gap-3 overflow-x-auto xl:overflow-visible whitespace-nowrap scrollbar-hide relative">
+      <div className="relative">
+        <div
+          id="category-container"
+          className="flex items-center h-12 gap-3 overflow-x-auto overflow-visible whitespace-nowrap scrollbar-hide relative"
+        >
           {categories?.map((category) => (
             <div
               key={category._id}
@@ -112,7 +134,7 @@ const Navigation = () => {
         {activeCategory && (
           <div
             className="absolute flex flex-col left-0 min-w-[12rem] bg-white rounded-md shadow-lg z-50 border border-gray-200"
-            style={{ top: `${dropdownPosition.top - 60}px`, left: `${dropdownPosition.left-40}px` }}
+            style={{ top: `${dropdownPosition.top - 60}px`, left: `${dropdownPosition.left - 40}px` }}
 
           >
             {subcategories.map((subcategory) => (
