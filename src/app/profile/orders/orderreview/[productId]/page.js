@@ -39,7 +39,7 @@ const OrderReview = () => {
   const [imagePreview, setImagePreview] = useState([]);
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(null);
-  const [orderData, setOrderData] = useState([]);
+  const [orderData, setOrderData] = useState({});
   const router = useRouter();
   const params = useParams();
   const productId = params.productId;
@@ -49,8 +49,8 @@ const OrderReview = () => {
     try {
       const response = await axios.get(`${BASE_URL}/orders/suborder/${productId}`);
 
-      const data = response.data.variant;
-      setOrderData(response.data)
+      const data = response.data.variantId;
+      setOrderData(response.data.order)
       console.log(response.data, "fetch suborder by suborderid");
 
     } catch (error) {
@@ -106,7 +106,7 @@ const OrderReview = () => {
   };
 
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (orderId) => {
     if (!rating || !review) {
       toast.error("Please provide both rating and review!");
       return;
@@ -115,7 +115,7 @@ const OrderReview = () => {
     try {
       const payload = {
         variantId: orderData.variantId._id,
-        userId:userId,
+        subOrderId:orderId,
         rating: rating,
         comment: review,
       };
@@ -153,7 +153,7 @@ toast.error(error?.response?.data?.message)
         </div>
         <div
           
-          onClick={() => handleSubmit()}
+          onClick={() => handleSubmit(orderData._id)}
         >
           Submit
         </div>

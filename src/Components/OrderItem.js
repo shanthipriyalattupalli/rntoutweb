@@ -1,32 +1,36 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { CiStar } from "react-icons/ci";
+import OrderTracking from "./OrderTracking";
+
 const laptop = "/Assets/laptop-2.jpg";
 
-const OrderItem = ({ hideHeader, orderData,onShowTracking  }) => {
-  console.log(orderData, "orderData");
+const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, steps, getCurrentStep }) => {
+  const [expandedSubOrderId, setExpandedSubOrderId] = useState(null);
 
   // Check if orderData has subOrders
   if (!orderData || !orderData.subOrders || orderData.subOrders.length === 0) {
-    return <p>No orders found</p>; // Handle case where there are no sub-orders
+    return <p>No orders found</p>;
   }
+
+  const handleShowTracking = (item) => {
+    if (expandedSubOrderId === item._id) {
+      setExpandedSubOrderId(null); // Collapse if already open
+    } else {
+      setExpandedSubOrderId(item._id); // Expand tracking for the clicked suborder
+      onShowTracking(item);
+    }
+  };
 
   return (
     <>
       {orderData.subOrders.map((item) => (
         <div className="order-item" key={item._id}>
-          {/* Order Header */}
-
-
           {/* Order Product */}
           <div className="order-product">
             <img
-              src={
-                // laptop
-                item.variantId.images?.[0] ||
-                "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"
-              } // Default image fallback
+              src={item.variantId.images?.[0] || "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"}
               alt={item.variantId.title || "Product Image"}
               className="product-image"
             />
@@ -36,8 +40,9 @@ const OrderItem = ({ hideHeader, orderData,onShowTracking  }) => {
                 <p>
                   <span>₹{item.price || "0"}</span> / {item.rentalPeriod} | Rented for:{" "}
                   <span>{item.quantity} item(s)</span>
-                </p>|
-                {item.orderStatus === "placed" && (
+                </p>
+                |
+                {item.orderStatus === "delivered" && (
                   <a href={`/profile/orders/orderreview/${item._id}`} className="review_cta">
                     <span>
                       <CiStar />
@@ -45,15 +50,15 @@ const OrderItem = ({ hideHeader, orderData,onShowTracking  }) => {
                     Write Product Review
                   </a>
                 )}
-                    <button
-                className="text-blue-500 font-semibold px-4 rounded"
-                onClick={() => onShowTracking(item)}
-              >
-                Show Tracking
-              </button>
+                <button
+                  className="text-blue-500 font-semibold px-4 rounded"
+                  onClick={() => handleShowTracking(item)}
+                >
+                  {expandedSubOrderId === item._id ? "Hide Tracking" : "Show Tracking"}
+                </button>
               </div>
-          
 
+              {/* Show tracking only for the selected suborder */}
               {/* Conditionally render feedback if available */}
               {item.review && item.review.feedback && (
                 <div className="review-section-feedback">
@@ -70,8 +75,12 @@ const OrderItem = ({ hideHeader, orderData,onShowTracking  }) => {
               )}
             </div>
           </div>
+          {expandedSubOrderId === item._id && (
+                <OrderTracking selectedSubOrder={selectedSubOrder} steps={steps} getCurrentStep={getCurrentStep} />
+              )}
         </div>
       ))}
+      
     </>
   );
 };

@@ -84,6 +84,8 @@ function Sidebar() {
       localStorage.removeItem("userId");
       localStorage.removeItem("userName");
       localStorage.removeItem("userToken");
+
+
     }
     router.push("/");
     router.push(eachbar.route);

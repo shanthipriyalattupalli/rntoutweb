@@ -44,27 +44,79 @@ useEffect(() => {
   }
 }, [token]);
 
-const handleApply = (couponId,couponcode ,maxDiscountAmount, minRentAmount, discountValue) => {
-  if (totalPrice > minRentAmount) {
+// const handleApply = async(couponId,couponcode ,maxDiscountAmount, minRentAmount, discountValue) => {
+//   try {
+//     const response = await axios.post(`${BASE_URL}/coupons/validate`,{
+//       params:{
+//         code: couponcode,
+//         rentAmount: totalPrice
+//       },
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+//     console.log(response.data,"coupone validate");
+    
+//   } catch (error) {
+//     console.log(error,"error validation")
+    
+//   }
+// //   if (totalPrice > minRentAmount) {
 
-    const calculatedDiscount = (totalPrice * discountValue) / 100;
+// //     const calculatedDiscount = (totalPrice * discountValue) / 100;
     
 
-    const discount = Math.min(calculatedDiscount, maxDiscountAmount);
+// //     const discount = Math.min(calculatedDiscount, maxDiscountAmount);
     
 
-    const discountedPrice = totalPrice - discount;
-console.log(discountedPrice,"discountedPrice")
+// //     const discountedPrice = totalPrice - discount;
+// // console.log(discountedPrice,"discountedPrice")
  
-    toast.success(`Coupon applied successfully! You saved ₹${discount.toFixed(2)}.`);
-    onDiscountedPrice(discountedPrice,couponcode,discountValue);
-    console.log(`Final price after discount: ₹${discountedPrice.toFixed(2)}`);
-  } else {
+// //     toast.success(`Coupon applied successfully! You saved ₹${discount.toFixed(2)}.`);
+// //     onDiscountedPrice(discountedPrice,couponcode,discountValue);
+// //     console.log(`Final price after discount: ₹${discountedPrice.toFixed(2)}`);
+// //   } else {
 
-    toast.error(`Minimum rent amount of ₹${minRentAmount} is required to apply this coupon.`);
+// //     toast.error(`Minimum rent amount of ₹${minRentAmount} is required to apply this coupon.`);
+// //   }
+// };
+
+const handleApply = async (couponId, couponcode, maxDiscountAmount, minRentAmount, discountValue) => {
+  try {
+    if (!token) {
+      console.error("Token is missing. Please log in again.");
+      toast.error("Session expired. Please log in again.");
+      return;
+    }
+
+    const response = await axios.post(
+      `${BASE_URL}/coupons/validate`,
+      { code: couponcode, rentAmount: totalPrice }, 
+      { headers: { Authorization: `Bearer ${token}` } } 
+    );
+
+    console.log(response.data, "coupon validated");
+    if(response.data.success === true) {
+      try {
+        const response=await axios.post(`${BASE_URL}/coupons/apply`,
+          { code: couponcode, rentAmount: totalPrice },
+          { headers: { Authorization: `Bearer ${token}` } }
+        
+        );
+        console.log(response.data, "coupon applied") ;
+        onDiscountedPrice(response.data.data.finalAmount,couponcode)
+        toast.success(response.data.message||"Coupon applied successfully!");
+        
+      } catch (error) {
+        console.log(error,"error while applying coupon")
+        
+      }
+    }
+  } catch (error) {
+    console.error("Error validating coupon:", error.response?.data?.message || error.message);
+    toast.error(error.response?.data?.message || "Coupon validation failed. Please try again.");
   }
 };
-
 
   
 

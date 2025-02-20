@@ -81,7 +81,7 @@ const CartPage = () => {
           },
         }
       );
-
+console.log(response,"updated checkbox status")
       fetchCartDetails();
       toast.success(response.data.message);
     } catch (error) {
@@ -267,6 +267,7 @@ const CartPage = () => {
   const fetchCartDetails = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
+      console.log(response.data,"response in cart")
       setCartItems(response.data.cartItems, "cartItems");
       const initialQuantities = response.data.cartItems.reduce((acc, item) => {
         acc[item.variant_id._id] = item.quantity || 1;
@@ -433,9 +434,12 @@ const CartPage = () => {
 
   // Calculate total price
   const totalPrice = cartItems.reduce(
-    (sum, item) => sum + (item.lineTotal || 0),
+    (sum, item) => sum + (item.selected ? item.lineTotal || 0 : 0),
     0
   );
+  
+  console.log(totalPrice);
+  
 
 
   return (

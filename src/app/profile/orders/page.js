@@ -184,7 +184,7 @@ console.log(response.data,"suborders in order history")
           </div>
           <div class="order-actions-price-status">
             <p class="download-invoice">
-              Total Amount: <span>{order.totalAmount}</span>
+              Total Amount: <span>₹ {order.totalAmount}</span>
             </p>
             {Array.isArray(order.subOrders) && order.subOrders.length > 0 && (
       <div className="suborders-status">

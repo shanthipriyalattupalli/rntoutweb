@@ -36,6 +36,7 @@
 } */
 .Orders_page_section .order-item {
     min-height: 60px;
+    width: 100%;
     margin-bottom: 8px;
     display: inline-flex;
     flex-direction: column;

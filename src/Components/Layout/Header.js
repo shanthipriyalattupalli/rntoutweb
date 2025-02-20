@@ -16,21 +16,7 @@ const cartitems = '/Assets/cartitems.svg'
 
 
 function Header() {
-  // const [name, setName] = useState("");
-  // const [token,setToken]=useState("")
 
-  // useEffect(() => {
-  //   const name = localStorage.getItem("userName");
-  //   const token = localStorage.getItem("token");
-  //   setName(name);
-  //   setToken(token)
-  // }, []);
-  //   useEffect(() => {
-  //   const name = localStorage.getItem("userName");
-  //   const token = localStorage.getItem("token");
-  //   setName(name);
-  //   setToken(token)
-  // }, []);
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
   const [locationError, setLocationError] = useState(null);
@@ -40,7 +26,7 @@ function Header() {
   const name = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
   const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
   const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
-  const [profilePic, setProfilePic] = useState(Photo);
+  const [profilePic, setProfilePic] = useState( (typeof window !== 'undefined') ? localStorage.getItem("profilePic") : null || Photo);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [location, setLocation] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -54,6 +40,7 @@ function Header() {
   const [loading, setLoading] = useState(true);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const router = useRouter();
+ ;
 
   const [modalShow, setModalShow] = React.useState(false);
 
@@ -68,13 +55,14 @@ function Header() {
 
   useEffect(() => {
     const handleProfileUpdate = (event) => {
-      setProfilePic(event.detail.profilePic);
+      const updatedPic = event.detail.profilePic;
+      setProfilePic(updatedPic);
+      localStorage.setItem("profilePic", updatedPic? updatedPic:Photo); // Store in localStorage
     };
   
     window.addEventListener("profileUpdated", handleProfileUpdate);
   
     return () => {
-   
       window.removeEventListener("profileUpdated", handleProfileUpdate);
     };
   }, []);
@@ -250,7 +238,7 @@ function Header() {
 
   {/* Center Section - Search Input */}
   <div className="hidden sm:flex items-center relative w-full max-w-xs ml-4">
-    <SearchInput onChange={(e) => handleSearchInputChange(e.target.value)} />
+    <SearchInput onChange={(e) => handleSearchInputChange(e.target.value)}  className="w-[250px]"/>
     {showSuggestions && variants.length > 0 && (
       <ul className="absolute left-0 w-full bg-white border rounded shadow mt-[32rem] z-40">
         {variants.slice(0, 10).map((variant) => (

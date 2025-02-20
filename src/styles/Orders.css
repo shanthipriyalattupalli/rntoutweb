@@ -42,10 +42,11 @@
 }
 .Orders_page_section .order-item {
     min-height: 60px;
+    width: 100%;
     margin-bottom: 8px;
     display: inline-flex;
     flex-direction: column;
-    padding: 12px 16px;
+    padding: 12px 20px;
     gap: 12px;
     border-bottom: 1px solid #0707070D;
     

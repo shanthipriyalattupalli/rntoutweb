@@ -8,6 +8,7 @@ import '../styles/OrderTrackingWithNavigate.css';
 import OrderItem from "@/Components/OrderItem";
 import { PiClockClockwiseBold } from "react-icons/pi";
 import { AiFillShop } from "react-icons/ai";
+import OrderTracking from "./OrderTracking";
 const payment_icon = "/Assets/payment_icon.png";
 const HistoryImage = "/Assets/HistoryImage.png";
 const shipping = "/Assets/shipping.svg";
@@ -153,16 +154,16 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
     <div className='order-tracking-container'>
       <div className='order_item-frame'>
 
-        <OrderItem key={orders._id} orderData={orders}  onShowTracking={handleShowTracking} />
+        <OrderItem key={orders._id} orderData={orders}  onShowTracking={handleShowTracking} selectedSubOrder={selectedSubOrder} steps={steps} getCurrentStep={getCurrentStep} />
 
       </div>
 
       <div className='order_trackinf_section'>
-        <div className="bg-white py-4">
+        <div className="bg-white py-4 px-4">
           <h3 className="px-10 font-semibold text-lg">Order Tracking</h3>
-
+          <h3 className="px-10 font-semibold text-md pt-5">{selectedSubOrder?.variantId?.title}</h3>
           <div className="w-full flex items-center justify-between  relative">
-          <div>
+          {/* <div>
           {selectedSubOrder ? (
   <div className="w-full flex items-center justify-between py-6 relative">
     <div className="flex items-center space-x-6">
@@ -173,8 +174,8 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
         const isCanceled = selectedSubOrder.orderStatus === "canceled";
 
         return (
+          <div className="flex flex-col">
           <div key={index} className="flex flex-col items-center relative">
-            {/* Step Label */}
             <div
               className={`w-48 text-center ${
                 isCanceled && index === currentStep
@@ -188,8 +189,6 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
             >
               {step.label}
             </div>
-
-            {/* Step Circle */}
             <div
               className={`w-14 h-14 flex items-center justify-center rounded-full border-2 z-10 ${
                 isCanceled && index === currentStep
@@ -203,8 +202,6 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
             >
               {step.icon}
             </div>
-
-            {/* Connecting Dotted Line */}
             {index < steps.length - 1 && (
               <div
                 className={`absolute top-[66%] left-[43%] transform -translate-y-1/2 w-[13rem] h-0.5 border-t-2 border-dashed ${
@@ -219,6 +216,7 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
               ></div>
             )}
           </div>
+          </div>
         );
       })}
     </div>
@@ -226,9 +224,8 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
 ) : (
   <p className="text-gray-500 text-center">Select a suborder to view tracking</p>
 )}
+  </div> */}
 
-
-  </div>
 
 </div>
 
@@ -275,8 +272,8 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
             <div class='label'>Total Rent</div>
             <div class='value'>₹ {orders.totalAmount}/-</div>
 
-            {/* <div class='label'>Discounts</div> */}
-            {/* <div class='value discount'>- {rentData.discounts}/mo</div> */}
+            <div class='label'>Discounts</div> 
+           {/* <div class='value discount'>- {orders.coupon.maxDiscountAmount}/mo</div> */}
 
             {/* <div class='label'>Other</div>
             <div class='value'>₹ {rentData.otherCharges}/mo</div> */}

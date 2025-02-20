@@ -162,7 +162,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                 <li key={subcategory._id}>
                   <div
                     onClick={() => handleClick(subcategory._id, subcategory.categoryId._id)}
-                    className={`flex justify-between items-center text-gray-700 border rounded-lg hover:text-gray-900 cursor-pointer p-2 ${activeIndex === subcategory._id
+                    className={`w-48 2xl:w-full flex justify-between items-center text-gray-700 border rounded-lg hover:text-gray-900 cursor-pointer p-2 ${activeIndex === subcategory._id
                       ? "bg-[#F0F5FF] text-black border-[#2F6FED]"
                       : "bg-[#0707070D] text-black border-[#0707071A]"
                       }`}

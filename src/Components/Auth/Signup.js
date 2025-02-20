@@ -9,6 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 const Rntout = "/Assets/Rntout_Logo.png";
+const profile_avatar = "/Assets/profile_avatar.png";
 
 const Signup = ({setIsRegisterOpen}) => {
   const [profile, setProfile] = useState({
@@ -100,6 +101,10 @@ const Signup = ({setIsRegisterOpen}) => {
       const profiles=response.data.profile
       toast.success("Profile updated successfully!");
       localStorage.setItem("gender", profiles.gender);
+      localStorage.setItem("userName", user.name );
+      localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("profilePic", profile_avatar);
+
   
           router.push("/");
       window.location.reload();
@@ -112,7 +117,7 @@ const Signup = ({setIsRegisterOpen}) => {
 
   const handleSkip=()=>{
     router.push("/");
-    window.location.reload();
+    // window.location.reload();
   }
 
   return (

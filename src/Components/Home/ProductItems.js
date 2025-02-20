@@ -167,7 +167,7 @@ const ProductItem = ({ product }) => {
       {/* <ToastContainer /> */}
       <style>{customStyles}</style>
 
-      <div className='2xl:w-full xl:w-[308px] xl:h-[436px] bg-white rounded-lg border border-slate-200'
+      <div className="2xl:w-full xl:w-full xl:h-[436px] bg-white rounded-lg border border-slate-200"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
         <div className="relative rounded-xl">
@@ -255,7 +255,7 @@ const ProductItem = ({ product }) => {
                   className="bg-white text-black w-54 text-center rounded-full border-2 p-1 cursor-pointer"
                   onClick={handleclick}
                 >
-                  View all details
+                  View all packages
                 </span>
               ) : (
                 <span
