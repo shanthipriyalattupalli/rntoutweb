@@ -283,7 +283,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                       className='flex items-center justify-between cursor-pointer'
                       onClick={handleDeliveryByToggle}
                     >
-                      <h3 className='text-md font-bold mb-2'>Delivery By</h3>
+                      <h3 className='text-md font-bold mb-2'>Distance</h3>
                       {isDeliveryByOpen ? (
                         <ChevronDownIcon className='w-5 h-5 text-gray-600' />
                       ) : (

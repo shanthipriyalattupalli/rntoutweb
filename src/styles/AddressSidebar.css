@@ -12,6 +12,28 @@
     
     
 }
+.input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+  
+  .required-input::placeholder {
+    color: #999;
+  }
+  
+  .input-wrapper::after {
+    content: "*";
+    color: red;
+    position: absolute;
+    right: 10px; /* Adjust as needed */
+    top: 50%;
+    left: 50%;
+    /* transform: translateY(-50%); */
+    font-size: 16px;
+    pointer-events: none; /* Allows clicks to pass through */
+  }
+  
 .form-select {
     display: flex;
     gap: 10px;
@@ -160,7 +182,7 @@ box-shadow: 0px -1px 0.5px 1px var(--OverlaysBlackAlpha8) inset;
 .address-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    /* gap: 10px; */
    
 
 }

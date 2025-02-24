@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { GrLocation} from "react-icons/gr";
 const upload = "/Assets/upload.png";
+import { useRouter } from "next/navigation";
 
 const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -23,7 +24,7 @@ const MainContent = () => {
   const productId = params.productId;
   console.log(productId, "productId.....");
   const [products, setProducts] = useState([]);
-
+  const router = useRouter();
   const [productName, setProductName] = useState("");
   const [productQuality, setProductQuality] = useState("");
   const [availableStock, setAvailableStock] = useState("");
@@ -40,6 +41,7 @@ const MainContent = () => {
   const categoryId = (typeof window !== 'undefined') ? localStorage.getItem("selectedcategoryId") : null;
   const subCategoryId = (typeof window !== 'undefined') ? localStorage.getItem("selectedSubCategoryId") : null;
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+
 
 
   useEffect(() => {
@@ -220,44 +222,14 @@ const MainContent = () => {
   };
 
 
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      // console.log(categoryId,subCategoryId,"fetchProducts")
-      try {
-        if (categoryId && subCategoryId) {
-          const response = await axios.get(
-            `${BASE_URL}/products/categoryProducts/?categoryId=${categoryId}&subCategoryId=${subCategoryId}`
-          );
-          console.log(response.data, "Fetched Products by subCategoryId");
-          setProducts(response.data); // Update the products state
-        }
-      } catch (error) {
-        console.error("Error fetching products by subCategoryId:", error);
-      }
-    };
-
-    fetchProducts();
-  }, [categoryId, subCategoryId]);
-
-
-
-  const handleOptionChange = (option) => {
-    setSelectedOption(option);
-    setFormData({
-      ...formData,
-      productId: option,
-    });
-  };
-
   const initialFormData = {
     owner: userId,
     title: "",
     description: "",
     images: [],
-    categoryId: categoryId,
-    subCategoryId: subCategoryId,
-    productId: selectedOption,
+    categoryId:"",
+    subCategoryId:"",
+    productId:"",
     available: true,
     rentalPrice: [
       { period: "daily", price: 0 },
@@ -284,6 +256,60 @@ const MainContent = () => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
+
+
+    const fetchProducts = async () => {
+      // console.log(categoryId,subCategoryId,"fetchProducts")
+      try {
+        const response = await axios.get(`${BASE_URL}/variants/${productId}`);
+        console.log(response.data, "Fetched Product Details");
+  setFormData(response.data);
+  setFormData(
+    (prevData) => ({
+     ...prevData,
+      categoryId: response.data.categoryId._id,
+      subCategoryId: response.data.subCategoryId._id,
+      productId:response.data.productId._id
+    })
+  )
+        // Map fetched itemDetails to productDetails format
+        const fetchedItemDetails = response.data.itemDetails || {};
+        const formattedDetails = Object.entries(fetchedItemDetails).map(
+          ([key, value]) => ({
+            id: Date.now() + Math.random(), // Unique ID
+            key,
+            value,
+          })
+        );
+  
+        // Set state with formatted data
+        setProductDetails([
+          {
+            id: Date.now(),
+            details: formattedDetails.length
+              ? formattedDetails
+              : [{ id: Date.now(), key: "", value: "" }],
+          },
+        ]);
+  
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      }
+    };
+    useEffect(() => {
+    fetchProducts();
+  }, []);
+
+
+
+  const handleOptionChange = (option) => {
+    setSelectedOption(option);
+    setFormData({
+      ...formData,
+      productId: option,
+    });
+  };
+
   const [mapCenter, setMapCenter] = useState({ lat: 17.4065, lng: 78.4772 });
 
   const handleInputChange = (e) => {
@@ -302,6 +328,17 @@ const MainContent = () => {
       },
     }));
   };
+  const handleEndDateChange = (date) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      rentalAvailability: {
+        ...prevData.rentalAvailability,
+        endDate: date,
+    
+      },
+    }));
+  };
+
 
   const handleChange = (sectionId, detailId, fieldType, value) => {
     setProductDetails((prevDetails) =>
@@ -425,7 +462,7 @@ const MainContent = () => {
 
       console.log("Payload to be sent:", formDataToSend);
 
-      const response = await axios.post(`${BASE_URL}/variants/${productId}`, formDataToSend, {
+      const response = await axios.put(`${BASE_URL}/variants/${productId}`, formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -435,7 +472,8 @@ const MainContent = () => {
 
       if (response.data.success) {
         toast.success("Product published successfully!");
-        setFormData(initialFormData); 
+        fetchProducts();
+        router.push('/profile/products')
         setPreviewImages([]);
       } else {
         toast.error("Failed to publish the product. Please try again.");
@@ -470,13 +508,13 @@ const MainContent = () => {
       <ToastContainer />
       <div className='radio-button-group bg-blue-100'>
       <div className='item-header1' onClick={() => router.back()}>
-        <div className='back-product22 flex gap-2 pt-3'>
+        <div className='back-product22 flex gap-2 h-6'>
           <IoMdArrowRoundBack  className="mt-2 ml-3" />
           <p>
             DROGO Throne Ergonomic Gaming Chair with Foot Rest, Armrest &
             Adjustable Seat (Blue)
           </p>
-          <h1>Save Details</h1>
+          {/* <h1>Save Details</h1> */}
         </div>
       </div>
       </div>
@@ -573,30 +611,30 @@ const MainContent = () => {
           </label>
         <div className='date-picker-container'>
           <div className="w-full">
-          <label>Product Availability (start date)</label>
-          <div className='date-picker-wrapper'>
+          <label>Product Availability  <span className="text-gray-400">(Start)</span></label>
+          <div className='date-picker-input'>
             <DatePicker
               selected={formData.rentalAvailability.startDate}
               name='startDate'
               value={formData.rentalAvailability.startDate}
               onChange={(date) => handleDateChange(date)}
               placeholderText='Select start date'
-              className='date-picker-input'
+              className='date-picker-wrapper'
               dateFormat='MMMM d, yyyy'
             />
             <FaRegCalendarAlt className='calendar-icon' />
           </div>
           </div>
           <div className="w-full">
-          <label>Product Availability (start date)</label>
-          <div className='date-picker-wrapper'>
+          <label>Product Availability <span className="text-gray-400">(end)</span></label>
+          <div className='date-picker-input'>
             <DatePicker
               selected={formData.rentalAvailability.endDate}
-              name='startDate'
+              name='endDate'
               value={formData.rentalAvailability.endDate}
-              onChange={(date) => handleDateChange(date)}
+              onChange={(date) => handleEndDateChange(date)}
               placeholderText='Select End date'
-              className='date-picker-input'
+              className='date-picker-wrapper'
               dateFormat='MMMM d, yyyy'
             />
             <FaRegCalendarAlt className='calendar-icon' />
@@ -644,44 +682,67 @@ const MainContent = () => {
         </div>
       </div>
       <p>
-          <strong>Address:</strong> {formData.address}
+          <strong>Address:</strong> {formData.pickupAddress}
           {/* {errors.address && <p style={{ color: "red" }}>{errors.address}</p>} */}
 
         </p>
       <div className="pt-6 flex flex-col">
         <label>Description</label>
-        <input type="text" placeholder="Enter product details" className="border p-4 rounded-2xl h-min"/>
+        <textarea type="text" placeholder="Enter product details" className="border p-4 rounded-2xl h-min"    
+         name='description'
+              value={formData.description}
+              onChange={handleInputChange}/>
       </div>
 
+      <div className='form-section4'>
+  <h2 className='ba-in'>
+    PRICING INFO{" "}
+    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+  </h2>
+  <div className='pricing-section'>
+    {[
+      "perDay",
+      "perWeek",
+      "perMonth",
+      "perQuarter",
+      "perSixMonths",
+      "perYear",
+    ].map((timeframe) => {
+      // Map timeframe to match the period in fetched data
+      const mapping = {
+        perDay: "daily",
+        perWeek: "weekly",
+        perMonth: "monthly",
+        perQuarter: "quarterly",
+        perSixMonths: "semiannual",
+        perYear: "annual",
+      };
 
-        <div className='form-section4'>
-          <h2 className='ba-in'>
-            PRICING INFO{" "}
-            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-          </h2>
-          <div className='pricing-section'>
-            {[
-              "perDay",
-              "perWeek",
-              "perMonth",
-              "perQuarter",
-              "perSixMonths",
-              "perYear",
-            ].map((timeframe) => (
-              <div key={timeframe} className='form-section5'>
-                <label>
-                  {timeframe.replace("per", "Per ").replace(/([A-Z])/g, " $1")}
-                </label>
-                <input
-                  type='number'
-                  name={timeframe}
-                  onChange={handlePriceChange}
-                  placeholder='₹ 0.00'
-                />
-              </div>
-            ))}
-          </div>
+      const period = mapping[timeframe];
+
+      // Get the price from fetched rentalPrice
+      const price =
+        formData?.rentalPrice?.find((item) => item.period === period)?.price ||
+        "";
+
+      return (
+        <div key={timeframe} className='form-section5'>
+          <label>
+            {timeframe.replace("per", "Per ").replace(/([A-Z])/g, " $1")}
+          </label>
+          <input
+            type='number'
+            name={timeframe}
+            value={price} // Set value from fetched data
+            onChange={handlePriceChange}
+            placeholder='₹ 0.00'
+          />
         </div>
+      );
+    })}
+  </div>
+</div>
+
       </div>
       <div className='details-section'>
         <h2 className='ba-in'>
@@ -755,7 +816,7 @@ const MainContent = () => {
 
       </div>
       <button onClick={handlePublishProduct} className='publish-button'>
-        Publish Product
+        Update Product
       </button>
     </div>
   );

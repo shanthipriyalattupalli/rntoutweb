@@ -10,7 +10,7 @@ const left = '/Assets/leftarrow.svg';
 const DeliveryIcon = "/Assets/delivery.svg";
 const AvailabilityIcon = "/Assets/Icons/availability.png";
 const AvailabilIcon = "/Assets/Icons/ava-stock.png";
-const cartIcon = "/Assets/Icons/add-to-cart.png";
+const cartIcon = "/Assets/add-to-cart.svg";
 const cartIconHov = "/Assets/Icons/add-to-cart-white.png";
 const stars = "/Assets/stars.svg";
 const favIcon = "/Assets/bookmarks_line.svg"
@@ -181,7 +181,7 @@ const ProductItem = ({ product }) => {
                   <img src={left} alt="Previous" className="rotate-360" />
                 </div>
                 <div
-                  className="absolute right-[2.7px] top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
+                  className="absolute right-[0px] top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
                   onClick={() => swiperRef.current?.slideNext()} // Navigate to the next slide
                 >
                   <img src={left} alt="Next" className="rotate-180" />
@@ -252,14 +252,14 @@ const ProductItem = ({ product }) => {
             <div className="absolute top-[200px]  z-10 flex items-center justify-center w-full">
               {isView ? (
                 <span
-                  className="bg-white text-black w-54 text-center rounded-full border-2 p-1 cursor-pointer"
+                  className="bg-white text-black w-54 font-sm text-center rounded-full border-2  px-2 py-1 cursor-pointer"
                   onClick={handleclick}
                 >
                   View all packages
                 </span>
               ) : (
                 <span
-                  className="bg-white text-black w-54 text-center rounded-full border-2 p-1 cursor-pointer"
+                  className="bg-white text-black w-54  text-center rounded-full border-2 px-2 py-1 cursor-pointer"
                   onClick={handleBack}
                 >
                   Back to details
@@ -367,7 +367,7 @@ const ProductItem = ({ product }) => {
                     width={500}
                     height={300}
                   />
-                  <span className="text-sm">Add to cart</span>
+                  <span className={`text-sm ${stockQuantity > 0 ? "":"text-gray-400"}`}>Add to cart</span>
                 </button>
               {/* ) */}
             {/* } */}

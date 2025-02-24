@@ -30,20 +30,20 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
 
 
 
-    const fetchAddress = async () => {
-      console.log(token, "token");
-      try {
-        const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        console.log(response.data.profile.addresses, "addresses");
-        setAddresses(response.data.profile.addresses);
-      } catch (error) {
-        console.error(error);
-        // toast.error("Failed to fetch addresses.");
-      }
-    };
-    useEffect(() => {
+  const fetchAddress = async () => {
+    console.log(token, "token");
+    try {
+      const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(response.data.profile.addresses, "addresses");
+      setAddresses(response.data.profile.addresses);
+    } catch (error) {
+      console.error(error);
+      // toast.error("Failed to fetch addresses.");
+    }
+  };
+  useEffect(() => {
     if (token) {
       fetchAddress();
     }
@@ -114,8 +114,11 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       setIsAddAddress(false); // Return to address list view
       fetchAddress();
     } catch (error) {
-      console.error("Error saving address:", error);
-      toast.error(error.response.data.message)
+      // console.error("Error saving address:", error);
+      const errorResponse = error.response.data.message
+      const errorMessage = errorResponse.details.length > 0 ? errorResponse.details[0].message : null;
+      console.error(errorMessage)
+      toast.error(errorMessage)
     }
   };
 
@@ -168,11 +171,15 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       );
 
       if (response.status === 200) {
+        fetchAddress();
+        setActiveModalIndex(null)
         toast.success("Address updated successfully!");
         // Reset the form and state after successful update
         setEditingAddressId(null);
-        setFormData(initialFormData); // Reset form to initial state
-        setIsAddAddress(false); // Hide the address form
+        setFormData(initialFormData);
+        setIsAddAddress(false);
+
+
       } else {
         toast.error("Failed to update address.");
       }
@@ -204,14 +211,14 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          params:{
+          params: {
             addressId: addressId
           }
         }
       );
- console.log("Delete Address:", response)
-        toast.success("Address deleted successfully!");
-  fetchAddress();
+      console.log("Delete Address:", response)
+      toast.success("Address deleted successfully!");
+      fetchAddress();
 
     } catch (error) {
       console.error("Error updating address:", error);
@@ -244,14 +251,19 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                   </span>
                 ))}
               </div>
+              <label className="pt-20">Name <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 placeholder="Receiver’s name"
-                className="text-input"
+                className="text-input required-input"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
+                required
               />
+
+              <label className="pt-4">Mobile <span className="text-red-500">*</span></label>
+
               <input
                 type="number"
                 placeholder="Receiver’s contact number"
@@ -259,7 +271,10 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                 name="mobile"
                 value={formData.mobile}
                 onChange={handleInputChange}
+                required
               />
+              <label className="pt-4">Flat/ House no/ Floor / Building<span className="text-red-500">*</span></label>
+
               <input
                 type="text"
                 placeholder="Flat/ House no/ Floor / Building"
@@ -267,7 +282,9 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                 name="flatOrHouseNo"
                 value={formData.flatOrHouseNo}
                 onChange={handleInputChange}
+                required
               />
+              <label className="pt-4">Area / Sector / Locality<span className="text-red-500">*</span></label>
               <input
                 type='text'
                 placeholder='Area / Sector / Locality'
@@ -275,50 +292,69 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                 name='street'
                 value={formData.street}
                 onChange={handleInputChange}
+                required
               />
+              <label className="pt-4">Nearby Landmark<span className="text-red-500">*</span></label>
               <input
                 type="text"
-                placeholder="Nearby Landmark (Optional)"
+                placeholder="Nearby Landmark"
                 className="text-input"
                 name="landmark"
                 value={formData.landmark}
                 onChange={handleInputChange}
+                required
               />
               <div className='flex gap-2'>
-                <input
-                  type="text"
-                  placeholder="Country"
-                  className="text-input"
-                  name="country"
-                  value={formData.country}
-                  onChange={handleInputChange}
-                />
-                <input
-                  type='text'
-                  placeholder='State'
-                  className='text-input'
-                  name='state'
-                  value={formData.state}
-                  onChange={handleInputChange}
-                />
+                <div className="pt-4">
+                  <label >Country<span className="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    placeholder="Country"
+                    className="text-input"
+                    name="country"
+                    value={formData.country}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="pt-4">
+                  <label>State<span className="text-red-500">*</span></label>
+                  <input
+                    type='text'
+                    placeholder='State'
+                    className='text-input'
+                    name='state'
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
               </div>
               <div className='flex gap-2'>
-                <input
-                  type='text'
-                  placeholder='City'
-                  className='text-input'
-                  name='city'
-                  value={formData.city}
-                  onChange={handleInputChange}
-                />
-                <input
-                  type='text'
-                  placeholder='Postcode'
-                  className='text-input'
-                  name='zip'
-                  value={formData.zip}
-                  onChange={handleInputChange}
-                />
+                <div className="pt-4">
+                  <label>City<span className="text-red-500">*</span></label>
+                  <input
+                    type='text'
+                    placeholder='City'
+                    className='text-input'
+                    name='city'
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="pt-4">
+                  <label>PostCode<span className="text-red-500">*</span></label>
+                  <input
+                    type='text'
+                    placeholder='Postcode'
+                    className='text-input'
+                    name='zip'
+                    value={formData.zip}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
               </div>
               {editingAddressId ? <button className='address-button' onClick={handleUpdateAddress}>
                 update Address
@@ -337,71 +373,71 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                 &times;
               </button>
             </div>
-<div className="flex flex-col gap-4">
-            {addresses.length > 0 ? (
-              addresses.map((address, index) => (
-                <div key={index} className="container address-card">
-                  <div className="delivery-content">
-                    <div className="delivery-context">
-                      <h5 className="delivery-to">DELIVERS TO</h5>
-                      <span>{address.type}</span>
+            <div className="flex flex-col gap-4">
+              {addresses.length > 0 ? (
+                addresses.map((address, index) => (
+                  <div key={index} className="container address-card">
+                    <div className="delivery-content">
+                      <div className="delivery-context">
+                        <h5 className="delivery-to">DELIVERS TO</h5>
+                        <span>{address.type}</span>
+                      </div>
+
+                      {/* Edit Icon with Modal */}
+                      <div className="relative inline-block">
+                        <img
+                          src={edit}
+                          alt="edit"
+                          className="w-6 h-6 cursor-pointer"
+                          onClick={() => setActiveModalIndex(activeModalIndex === index ? null : index)}
+                        />
+
+                        {activeModalIndex === index && (
+                          <div className="absolute right-0 mt-2 w-32 bg-white border shadow-lg rounded-md p-2 z-50">
+                            <button
+                              className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200"
+                              onClick={() => handleEditAddress(address)}
+                            >
+                              ✏️ Edit
+                            </button>
+                            <button
+                              className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200 text-red-600"
+                              onClick={() => handleDeleteAddress(address._id)}
+                            >
+                              🗑️ Delete
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
 
-                    {/* Edit Icon with Modal */}
-                    <div className="relative inline-block">
-                      <img
-                        src={edit}
-                        alt="edit"
-                        className="w-6 h-6 cursor-pointer"
-                        onClick={() => setActiveModalIndex(activeModalIndex === index ? null : index)}
-                      />
+                    <div
+                      className="address-context cursor-pointer"
+                      onClick={() => {
+                        onAddressSelect(address);
+                        onClose();
+                      }}
+                    >
+                      <h4>{address.name}</h4>
+                      <p>|</p>
+                      <p>{address.mobile}</p>
+                    </div>
 
-                      {activeModalIndex === index && (
-                        <div className="absolute right-0 mt-2 w-32 bg-white border shadow-lg rounded-md p-2 z-50">
-                          <button
-                            className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200"
-                            onClick={() => handleEditAddress(address)}
-                          >
-                            ✏️ Edit
-                          </button>
-                          <button
-                            className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200 text-red-600"
-                            onClick={() =>handleDeleteAddress(address._id)}
-                          >
-                            🗑️ Delete
-                          </button>
-                        </div>
-                      )}
+                    <div>
+                      <p>
+                        {address.flatOrHouseNo}, {address.street}, {address.city}, {address.state},{" "}
+                        {address.country}
+                      </p>
+                      <p>({address.zip})</p>
                     </div>
                   </div>
-
-                  <div
-                    className="address-context"
-                    onClick={() => {
-                      onAddressSelect(address);
-                      onClose();
-                    }}
-                  >
-                    <h4>{address.name}</h4>
-                    <p>|</p>
-                    <p>{address.mobile}</p>
-                  </div>
-
-                  <div>
-                    <p>
-                      {address.flatOrHouseNo}, {address.street}, {address.city}, {address.state},{" "}
-                      {address.country}
-                    </p>
-                    <p>({address.zip})</p>
-                  </div>
+                ))
+              ) : (
+                <div className="flex flex-col justify-center text-center ">
+                  <img src={emptyaddress} alt="No Address Found" />
+                  <h1 className="font-semibold text-lg">No address added</h1>
                 </div>
-              ))
-            ) : (
-              <div className="flex flex-col justify-center text-center ">
-                <img src={emptyaddress} alt="No Address Found" />
-                <h1 className="font-semibold text-lg">No address added</h1>
-              </div>
-            )}
+              )}
             </div>
 
             <button className="address-button" onClick={handleAddAddress}>

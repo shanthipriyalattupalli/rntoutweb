@@ -62,7 +62,7 @@ const Navigation = () => {
     if (isMobile) return;
     const id = setTimeout(() => {
       setActiveCategory(null);
-    }, 4000);
+    }, 1000);
     setTimeoutId(id);
   };
 
@@ -104,7 +104,7 @@ const Navigation = () => {
 
 
   return (
-    <nav className="px-4 sm:px-20 bg-white border border-slate-200 relative z-20">
+    <nav className="px-4 sm:px-20 bg-white border border-slate-200 relative">
       <div className="relative">
         <div
           id="category-container"

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
 import SearchInput from "../SearchInput";
-import { useRouter } from "next/navigation";
+import { useRouter,usePathname} from "next/navigation";
 import { MAP_API } from '../../services/GMap'
 import Login from "../Auth/Login";
 const logo = "/Assets/Rntout_Logo.png";
@@ -35,23 +35,15 @@ function Header() {
   const [selectedDistance, setSelectedDistance] = useState("");
   const [cartItems, setCartItems] = useState(0);
   const [locationsList, setLocationsList] = useState([]);
+  const [searchValue, setSearchValue] = useState(''); 
+  console.log(searchValue,"searchvalue")
   const [address, setAddress] = useState({ suburb: "" });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const router = useRouter();
+  const pathname = usePathname(); 
  ;
-
-  const [modalShow, setModalShow] = React.useState(false);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
 
   useEffect(() => {
     const handleProfileUpdate = (event) => {
@@ -66,6 +58,13 @@ function Header() {
       window.removeEventListener("profileUpdated", handleProfileUpdate);
     };
   }, []);
+
+  useEffect(() => {
+    if (!pathname.startsWith("/Products")) {
+      setSearchValue("");
+      setShowSuggestions(false);
+    }
+  }, [pathname]);
 
 
 
@@ -153,30 +152,6 @@ function Header() {
 
 
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const handleLocationChange = (newLocation) => {
-    setLocation(newLocation);
-    setIsDropdownOpen(false);
-  };
-
-
-
-  const handleNavigate = () => {
-    router.push("/Login");
-  };
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState("");
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUserName("");
-    router.push("/Login"); // Redirect to login page on logout
-  };
-
   const fetchCartDetails = async () => {
     console.log("out fetching cart");
     try {
@@ -195,6 +170,7 @@ function Header() {
 
 
   const handleSearchInputChange = async (searchTerm) => {
+    setSearchValue(searchTerm);
     if (searchTerm.length > 3) {
       try {
         const response = await axios.get(`${BASE_URL}/variants/filter`, {
@@ -215,6 +191,14 @@ function Header() {
   };
 
 
+  const handleSuggestionClick = (variant) => {
+    setSearchValue(variant.title);
+    setShowSuggestions(false); // Close suggestions
+    router.push(`/Products/${variant.title}?id=${variant._id}`);
+    
+
+  };
+  
   const handleVariantClick = () => {
     router.push('/Products')
   }
@@ -238,22 +222,17 @@ function Header() {
 
   {/* Center Section - Search Input */}
   <div className="hidden sm:flex items-center relative w-full max-w-xs ml-4">
-    <SearchInput onChange={(e) => handleSearchInputChange(e.target.value)}  className="w-[250px]"/>
+    <SearchInput  value={searchValue} onChange={(e) => handleSearchInputChange(e.target.value)}  className="w-[250px]"/>
     {showSuggestions && variants.length > 0 && (
       <ul className="absolute left-0 w-full bg-white border rounded shadow mt-[32rem] z-40">
         {variants.slice(0, 10).map((variant) => (
-          <Link
-            href={{ pathname: `/Products/${variant.title}`, query: { id: variant._id } }}
-            key={variant._id}
-          >
             <li
               key={variant._id}
-              onClick={() => setShowSuggestions(false)}
+              onClick={() => handleSuggestionClick(variant)}
               className="p-2 cursor-pointer hover:bg-gray-200"
             >
               {variant.title}
             </li>
-          </Link>
         ))}
       </ul>
     )}
@@ -310,7 +289,7 @@ function Header() {
       {name || token ? (
         <div
           onClick={() => router.push("/profile")}
-          className="flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 cursor-pointer"
+          className="w-full flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 cursor-pointer"
         >
           <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" />
           <p className="hidden sm:flex hidden md:flex text-sm">{name}</p>

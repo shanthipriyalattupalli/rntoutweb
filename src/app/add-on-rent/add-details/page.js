@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 // import ReactQuill from "react-quill";
 import axios from "axios";
+import { X } from "lucide-react";
 // import "@/styles/Adddetail.css";
 import '../../../styles/Adddetail.css';
 import { FaUpload, FaRegCalendarAlt } from "react-icons/fa";
@@ -196,10 +197,21 @@ const MainContent = () => {
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
+        const previews = [];
     if (!files.length) {
       toast.error("No files selected");
       return;
     }
+        Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        previews.push(reader.result);
+        if (previews.length === files.length) {
+          setPreviewImages(previews);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
     // Clear previous images in formData
     setFormData((prev) => ({ ...prev, images: [] }));
     // Add the selected files to formData
@@ -209,6 +221,20 @@ const MainContent = () => {
     }));
     // Show toast notification for successful upload
     toast.success("Files added successfully!");
+  };
+
+  const handleRemoveImage = (indexToRemove) => {
+    // Remove the image from previewImages
+    const updatedPreviews = previewImages.filter((_, index) => index !== indexToRemove);
+    setPreviewImages(updatedPreviews);
+  
+    // Remove the corresponding file from formData.images
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, index) => index !== indexToRemove),
+    }));
+  
+    toast.info("Image removed!");
   };
 
 // console.log(formData.images,"images of selected")
@@ -500,7 +526,7 @@ const MainContent = () => {
       </div>
       <div className='product-form'>
         <h2 className='ba-in'>BASICS INFO</h2>
-        <div className='basic-details'>
+        <div className='basic-details '>
           <div className='form-section1'>
             <label>
               Product Name{" "}
@@ -573,16 +599,24 @@ const MainContent = () => {
 <p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 4 images. 📸</p>
           {/* Render Preview Images */}
           <div className='image-preview-container'>
-            {previewImages.map((src, index) => (
-              <div key={index} className='image-preview-box'>
-                <img
-                  src={src}
-                  alt={`Preview ${index + 1}`}
-                  className='preview-image'
-                />
-              </div>
-            ))}
-          </div>
+  {previewImages.map((src, index) => (
+    <div key={index} className='image-preview-box relative'>
+      <img
+        src={src}
+        alt={`Preview ${index + 1}`}
+        className='preview-image'
+      />
+      {/* Remove button with cross icon */}
+      <button
+        onClick={() => handleRemoveImage(index)}
+        className='absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-700'
+      >
+        <X size={14} /> {/* Icon from lucide-react */}
+      </button>
+    </div>
+  ))}
+</div>
+
         </div>
         <div className="flex flex-col">
         <label className='ba-in'>

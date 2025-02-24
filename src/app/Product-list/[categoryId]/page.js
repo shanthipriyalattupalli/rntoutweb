@@ -220,7 +220,7 @@ const handleRating=(rating)=>{
 
   return (
     <main className="min-h-screen py-6 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5">
-      {/* <ScrollToTop/> */}
+      <ScrollToTop/>
       <div className="px-16">
       <Breadcrumb categoryName={breadcrumbCategoryName} />
       </div>
@@ -233,7 +233,7 @@ const handleRating=(rating)=>{
           <Sidebar subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} rating={handleRating}/>
 
           <div className="w-full flex flex-col gap-2 py-4 h-[auto] border border-slate-200  bg-white rounded-r-lg overflow-hidden">
-            <div className="px-10 border-b-2 pb-4">
+            <div className="px-8 border-b-2 pb-4">
           <div id="product-container" className="w-full overflow-x-auto border rounded-lg scrollbar-hide">
   <div className="flex w-max">
     {product.map((productItem) => (

@@ -4,6 +4,7 @@ import axios from "axios";
 
 // import "@/styles/ProductInformation.css";
 import '../../../styles/ProductInformation.css';
+import ProductDetails from '../../../Components/Products/ProductDetails'
 import { LuPencil } from "react-icons/lu";
 import { FaEye } from "react-icons/fa";
 import { MdToggleOff } from "react-icons/md";
@@ -15,7 +16,7 @@ import Link from "next/link";
 
 export default function Dashboard({ products }) {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
- 
+ const [isdetailsOpen, setIsdetailsOpen]=useState(false)
 
   const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [userProducts,setUserProducts]=useState([])
@@ -37,6 +38,8 @@ useEffect(() => {
   fetchUserProducts();
   }
 }, [token]);
+
+
 
   const router = useRouter();
 
@@ -89,10 +92,26 @@ useEffect(() => {
                     <LuPencil />
                     Edit
                   </p>
-                  <p>
+                  <p         
+                     onClick={()=>
+                      setIsdetailsOpen(true)
+              }>
                     <FaEye />
                     View
                   </p>
+                  {isdetailsOpen && (
+  <div className="modal-overlay">
+    <div className="modal-content">
+      <button
+        className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl"
+        onClick={() => setIsdetailsOpen(false)}
+      >
+        ✕
+      </button>
+      <ProductDetails setIsdetailsOpen={setIsdetailsOpen} productId={item._id} />
+    </div>
+  </div>
+)}
                   <p>
                     <MdToggleOff />
                     Inactive?

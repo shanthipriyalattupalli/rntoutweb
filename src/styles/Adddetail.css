@@ -138,6 +138,7 @@
 }
 
 .form-section1 {
+    width: 100%;
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
@@ -146,7 +147,8 @@
 }
 
 .form-section1 input {
-    width: 350px;
+    /* width: 350px; */
+    width: 100%;
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ccc;
@@ -155,6 +157,7 @@
 }
 
 .form-section2 {
+    width: 100%;
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
@@ -162,7 +165,7 @@
 }
 
 .form-section2 select {
-    width: 220px;
+    width: 100%;
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ccc;
@@ -171,14 +174,16 @@
 }
 
 .form-section3 {
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     margin-bottom: 15px;
 
 }
 
 .form-section3 input {
-    width: 220px;
+    /* width: 220px; */
+    width: 100%;
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ccc;

@@ -1,12 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
+import axios from "axios";
 import { CiStar } from "react-icons/ci";
 import OrderTracking from "./OrderTracking";
 
 const laptop = "/Assets/laptop-2.jpg";
 
 const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, steps, getCurrentStep }) => {
+  const BASE_URL =process.env.NEXT_PUBLIC_APP_BASE_URL;
+  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [expandedSubOrderId, setExpandedSubOrderId] = useState(null);
 
   // Check if orderData has subOrders
@@ -16,12 +19,31 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
 
   const handleShowTracking = (item) => {
     if (expandedSubOrderId === item._id) {
-      setExpandedSubOrderId(null); // Collapse if already open
+      setExpandedSubOrderId(null); 
     } else {
-      setExpandedSubOrderId(item._id); // Expand tracking for the clicked suborder
+      setExpandedSubOrderId(item._id);
       onShowTracking(item);
     }
   };
+
+  const handleCancelOrder=async(subOrderId)=>{
+    try {
+      const response= await axios.patch(`${BASE_URL}/orders/cancel/${subOrderId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      
+      console.log(response.data,"order deleted");
+      
+    } catch (error) {      
+      console.log(error,"error cancelling order")
+      
+    }
+
+  }
 
   return (
     <>
@@ -50,6 +72,12 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                     Write Product Review
                   </a>
                 )}
+{(item.orderStatus === "placed" || item.orderStatus === "confirmed" || item.orderStatus === "shipped") && (
+  <a className="inline-flex gap-1.5 items-center justify-center no-underline text-red-500 font-medium cursor-pointer" onClick={()=>{handleCancelOrder(item._id)}}>
+
+    Cancel Order
+  </a>
+)}
                 <button
                   className="text-blue-500 font-semibold px-4 rounded"
                   onClick={() => handleShowTracking(item)}
