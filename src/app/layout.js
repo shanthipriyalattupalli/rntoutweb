@@ -1,4 +1,6 @@
 
+"use client"
+
 import axios from "axios";
 import localFont from "next/font/local";
 import "./globals.css";
