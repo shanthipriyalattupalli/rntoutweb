@@ -5,22 +5,23 @@ import { useRouter } from 'next/router';
 import '@/styles/globals.css';
 import  { AppProps } from "next/app";
 import ScrollToTop from './ScrollToTop';
-import WebNotificationController from '../Components/WebNotificationController ';
+import UseFcmToken from '../Components/PushNotificationClient';
 
 function MyApp({ Component, pageProps }) {
-  // Register service worker
-  if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-    navigator.serviceWorker
-      .register("/firebase-messaging-sw.js")
-      .then((registration) => {
-        console.log("Service Worker registered:", registration);
-      })
-      .catch((error) => console.error("Service Worker registration failed:", error));
-  }
-
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/firebase-messaging-sw.js")
+        .then((registration) => {
+          console.log("Service Worker registered:", registration);
+        })
+        .catch((err) => console.log("Service Worker registration failed:", err));
+    }
+  }, []);
   return (
     <>
-      <WebNotificationController />
+      {/* <WebNotificationController /> */}
+      <UseFcmToken/>
       <Component {...pageProps} />
     </>
   );

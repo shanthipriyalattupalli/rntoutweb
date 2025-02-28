@@ -33,7 +33,9 @@ const customStyles = `
 const ProductItem = ({ product }) => {
   const swiperRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
-
+  const [selectedRentalPeriod, setSelectedRentalPeriod] = useState("daily");
+  const [isBeginning, setIsBeginning] = useState(true);
+const [isEnd, setIsEnd] = useState(false);
   // const { imgSrc, name, price, dateRange, availability, stock } = product;
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   // const [userId, setUserId] = useState("");
@@ -66,7 +68,7 @@ const ProductItem = ({ product }) => {
     _id,
   } = product;
 
-  console.log(rentalPrice, "rental price");
+  // console.log(rentalPrice, "rental price");
   const formattedDate = new Date(
     rentalAvailability?.startDate
   ).toLocaleDateString("en-US", {
@@ -82,6 +84,13 @@ const ProductItem = ({ product }) => {
     year: "numeric",
   });
 
+  const startdate = new Date(rentalAvailability?.startDate);
+  const endDate = new Date(rentalAvailability?.endDate);
+  
+  // Calculate the difference in months
+  const monthsDifference =
+    (endDate.getFullYear() - startdate.getFullYear()) * 12 +
+    (endDate.getMonth() - startdate.getMonth());
 
 
   const rentalStartDate = new Date(rentalAvailability?.startDate);
@@ -108,7 +117,7 @@ const ProductItem = ({ product }) => {
         user_id: userId,
         variant_id: productId,
         quantity: 1,
-        rentalPeriod: "daily",
+        rentalPeriod: selectedRentalPeriod,
       };
       const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
         headers: {
@@ -172,57 +181,71 @@ const ProductItem = ({ product }) => {
         onMouseLeave={() => setIsHovered(false)}>
         <div className="relative rounded-xl">
           <div className="border-b-2 border-bottom-color: rgb(209 213 219 / var(--tw-border-opacity, 1))">
-            {isHovered ? (
-              <>
-                <div
-                  className="absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
-                  onClick={() => swiperRef.current?.slidePrev()} // Navigate to the previous slide
-                >
-                  <img src={left} alt="Previous" className="rotate-360" />
-                </div>
-                <div
-                  className="absolute right-[0px] top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
-                  onClick={() => swiperRef.current?.slideNext()} // Navigate to the next slide
-                >
-                  <img src={left} alt="Next" className="rotate-180" />
-                </div>
-                <Swiper
-                  onSwiper={(swiper) => (swiperRef.current = swiper)} // Set the Swiper instance to the ref
-                  navigation={false} // Disable default navigation as we are using custom buttons
-                  pagination={{ clickable: true }}
-                  modules={[Navigation]}
-                  autoplay={{ delay: 3000 }}
-                // className="rounded-[40px] border border-gray-200"
-                // className="h-44"
-                >
-                  {images.map((img, index) => (
-                    <SwiperSlide key={index}>
-                      <Link href={{ pathname: `/Products/${title}`, query: { id: _id } }} key={_id}>
+          {isHovered ? (
+    <>
+      <div
+        className={`absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer ${
+          isBeginning ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+        onClick={() => {
+          if (!isBeginning) swiperRef.current?.slidePrev();
+        }}
+      >
+        <img src={left} alt="Previous" className="rotate-360" />
+      </div>
 
-                        <Image
-                          src={img}
-                          alt={`${title} - ${index + 1}`}
-                          className="w-full h-[220px] object-cover rounded-lg"
-                          width={308}
-                          height={220}
-                        />
-                      </Link>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              </>
-            ) : (
-              // Show single image when not hovered
-              <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
-                <Image
-                  src={images[0]}
-                  alt={title}
-                  className="w-full h-[220px] object-cover rounded-lg"
-                  width={308}
-                  height={220}
-                />
-              </Link>
-            )}
+      <div
+        className={`absolute right-0 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer ${
+          isEnd ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+        onClick={() => {
+          if (!isEnd) swiperRef.current?.slideNext();
+        }}
+      >
+        <img src={left} alt="Next" className="rotate-180" />
+      </div>
+
+      <Swiper
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+          setIsBeginning(swiper.isBeginning);
+          setIsEnd(swiper.isEnd);
+        }}
+        onSlideChange={(swiper) => {
+          setIsBeginning(swiper.isBeginning);
+          setIsEnd(swiper.isEnd);
+        }}
+        navigation={false}
+        pagination={{ clickable: true }}
+        modules={[Navigation]}
+        autoplay={{ delay: 3000 }}
+      >
+        {images.map((img, index) => (
+          <SwiperSlide key={index}>
+            <Link href={{ pathname: `/Products/${title}`, query: { id: _id } }} key={_id}>
+              <Image
+                src={img}
+                alt={`${title} - ${index + 1}`}
+                className="w-full h-[220px] object-cover rounded-lg"
+                width={308}
+                height={220}
+              />
+            </Link>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </>
+  ) : (
+    <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
+      <Image
+        src={images[0]}
+        alt={title}
+        className="w-full h-[220px] object-cover rounded-lg"
+        width={308}
+        height={220}
+      />
+    </Link>
+  )}
 
             {/* Rating and Fav Icon positioned on top */}
             <div className="absolute top-[14px] right-4 z-10 flex flex-col items-center space-x-2">
@@ -311,11 +334,14 @@ const ProductItem = ({ product }) => {
                 width={16}
                 height={16}
               />
-              {rentalAvailability && (
+              {rentalAvailability && formattedDate && !isNaN(new Date(rentalAvailability?.endDate)) ? (
                 <span className='text-gray-500 text-xs truncate w-full'>
                 <span className="hidden sm:inline">Availability:</span> {formattedDate}-{formattedendDate}
                 </span>
-              )}
+              ):rentalAvailability && formattedDate ? (
+                <span className="text-gray-500 text-xs hidden sm:inline">
+                  Availability: {formattedDate}
+                </span>):null}
             </div>
             {/* <Image
                 src={AvailabilIcon}
@@ -378,11 +404,15 @@ const ProductItem = ({ product }) => {
             <div className='w-full'>
               <div className='grid grid-cols-2 text-center'>
                 {rentalPrice.slice(0, -2)?.map((detail) => (
-                  <div key={rentalPrice._id} className='border p-2.5'>
-                    <span className='block text-blue-500 font-[500] text-[12px]'>
+                  <div key={rentalPrice._id} className={`border p-2.5 cursor-pointer  ${
+                    selectedRentalPeriod === detail.period
+                      ? "border-blue-500 bg-blue-500" 
+                      : ""
+                  }`}    onClick={() => setSelectedRentalPeriod(detail.period)} >
+                    <span className={`block  font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white":"text-blue-500"}`}>
                       {detail.period}
                     </span>
-                    <span className='block text-black text-lg font-[500] text-[16px]'>
+                    <span className={`block  text-lg font-[500] text-[16px] ${selectedRentalPeriod === detail.period ? "text-white":"text-black"}`}>
                       ₹
                       {detail.price
                         ? detail.price.toLocaleString()
@@ -392,14 +422,14 @@ const ProductItem = ({ product }) => {
                 ))}
               </div>
               {/* Additional rows like "6 Months" */}
-              <div className='mt-4'>
-                <div className='text-blue-500 font-[500] text-center text-[12px]'>
-                  6 Months
-                </div>
-                <div className='text-center text-gray-600 text-[16px] font-[500]'>
-                  Not Available
-                </div>
-              </div>
+              <div className="mt-4">
+    <div className="text-blue-500 font-[500] text-center text-[12px]">
+      {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}
+    </div>
+    <div className="text-center text-gray-600 text-[16px] font-[500]">
+      Available
+    </div>
+  </div>
             </div>
           </div>
         )}

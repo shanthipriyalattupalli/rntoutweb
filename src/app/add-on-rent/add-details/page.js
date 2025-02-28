@@ -40,6 +40,8 @@ const MainContent = () => {
   const categoryId = (typeof window !== 'undefined') ? localStorage.getItem("selectedcategoryId") : null;
   const subCategoryId = (typeof window !== 'undefined') ? localStorage.getItem("selectedSubCategoryId") : null;
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const latitude = (typeof window !== 'undefined') ? parseFloat(localStorage.getItem("latitude") || "0") : null;
+  const longitude = (typeof window !== 'undefined') ? parseFloat(localStorage.getItem("longitude") || "0") : null;
 
 
   useEffect(() => {
@@ -220,24 +222,21 @@ const MainContent = () => {
       images: [...prev.images, ...files],
     }));
     // Show toast notification for successful upload
-    toast.success("Files added successfully!");
+    // toast.success("Files added successfully!");
   };
 
   const handleRemoveImage = (indexToRemove) => {
-    // Remove the image from previewImages
     const updatedPreviews = previewImages.filter((_, index) => index !== indexToRemove);
     setPreviewImages(updatedPreviews);
-  
-    // Remove the corresponding file from formData.images
     setFormData((prev) => ({
       ...prev,
       images: prev.images.filter((_, index) => index !== indexToRemove),
     }));
   
-    toast.info("Image removed!");
+    // toast.info("Image removed!");
   };
 
-// console.log(formData.images,"images of selected")
+
   const handleIconClick = () => {
     fileInputRef.current.click();
   };
@@ -246,14 +245,13 @@ const MainContent = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      // console.log(categoryId,subCategoryId,"fetchProducts")
       try {
         if (categoryId && subCategoryId) {
           const response = await axios.get(
             `${BASE_URL}/products/categoryProducts/?categoryId=${categoryId}&subCategoryId=${subCategoryId}`
           );
           console.log(response.data, "Fetched Products by subCategoryId");
-          setProducts(response.data); // Update the products state
+          setProducts(response.data);
         }
       } catch (error) {
         console.error("Error fetching products by subCategoryId:", error);
@@ -308,7 +306,7 @@ const MainContent = () => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
-  const [mapCenter, setMapCenter] = useState({ lat: 17.4065, lng: 78.4772 });
+  const [mapCenter, setMapCenter] = useState({ lat: latitude, lng: longitude });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -459,10 +457,7 @@ const MainContent = () => {
           formDataToSend.append(`itemDetails[${key}]`, formData.itemDetails[key]);
         }
       }
-
-
       console.log("Payload to be sent:", formDataToSend);
-
       const response = await axios.post(`${BASE_URL}/variants`, formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -470,7 +465,6 @@ const MainContent = () => {
         },
       });
       console.log(response,"response of variant")
-
       if (response.data.success) {
         toast.success("Product published successfully!");
         setFormData(initialFormData); 
@@ -481,10 +475,9 @@ const MainContent = () => {
     } catch (error) {
       if (error.response?.status === 401) {
         toast.error("Session expired. Please log in again.");
-        // Redirect to login page
         setTimeout(() => {
-          window.location.href = "/login"; // Adjust the path as per your routing setup
-        }, 2000); // Delay to let the toast message display
+          window.location.href = "/login";
+        }, 2000);
       } else {
         console.error("Error while publishing product:", error);
         toast.error(`Error: ${error.response?.data?.message || error.message}`);
@@ -686,8 +679,8 @@ const MainContent = () => {
             {formData.location.coordinates && formData.location.coordinates.length === 2 && (
               <Marker
                 position={{
-                  lat: formData.location.coordinates[1], // latitude
-                  lng: formData.location.coordinates[0], // longitude
+                  lat: parseFloat(formData.location.coordinates[1]), // latitude
+                  lng: parseFloat(formData.location.coordinates[0]), // longitude
                 }}
               />
             )}
@@ -724,7 +717,7 @@ const MainContent = () => {
         <div className='form-section4'>
           <h2 className='ba-in'>
             PRICING INFO{" "}
-            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+            {/* <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span> */}
           </h2>
           <div className='pricing-section'>
             {[
@@ -756,7 +749,7 @@ const MainContent = () => {
           <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
         </h2>
         {productDetails?.map((section) => (
-          <div className='product-details-card'>
+          <div className='product-details-card' key={section._id}>
             Title
             {section.details?.map((detail) => (
               <div key={detail._id} className='detail-row'>

@@ -152,7 +152,7 @@
 }
 
 .order-actions a {
-    width: 286px;
+    /* width: 286px; */
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -161,7 +161,7 @@
     
     text-decoration: none;
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 19.5px;
     text-align: left;
     text-underline-position: from-font;

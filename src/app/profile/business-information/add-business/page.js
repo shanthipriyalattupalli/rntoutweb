@@ -104,6 +104,13 @@ export default function BusinessInformation2() {
     });
   };
 
+  useEffect(() => {
+    if (formData.bannerImages?.length) {
+      // Map existing images from API response
+      const existingImages = formData.bannerImages.map((img) => img.imageUrl);
+      setPreviewImages(existingImages);
+    }
+  }, [formData.bannerImages]);
 
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -281,7 +288,7 @@ export default function BusinessInformation2() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Bank Name:</strong></div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.bankName}</div></p>
                       <p className="flex flex-col"><div className="flex gap-2"><FaCreditCard className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">IFSC Code:</strong> </div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.ifsc}</div></p>
-                      <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Account Number:</strong></div><div className="text-[14px] font-normal leading-[20px] text-left"> ******123</div></p>
+                      <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Account Number:</strong></div><div className="text-[14px] font-normal leading-[20px] text-left"> {formData.accountNumber}</div></p>
                     </div>
                     <p className="flex items-center gap-2 mt-2"><FaMapMarkerAlt className="text-gray-500" /> {formData.bankBranchAddress.full}</p>
                   </div>
@@ -291,7 +298,7 @@ export default function BusinessInformation2() {
                   <h3 className="text-md font-semibold text-yellow-600">BASIC INFO</h3>
                   <div className=" p-4 rounded-md">
                     <div className="flex flex-col gap-4 mb-4">
-                      <img src={Userprofile} alt="Profile" className="w-16 h-16 rounded-full" />
+                      <img src={formData.profileImage} alt="Profile" className="w-16 h-16 rounded-full" />
                       <div className="flex gap-8">
                         <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500 h-6" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Business Name:</strong> </div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.businessName}</div></p>
                         <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500 h-6" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Store Name:</strong> </div><div className="text-[14px] font-normal leading-[20px] text-left">Codefacts Furniss Shop</div></p>
@@ -308,10 +315,10 @@ export default function BusinessInformation2() {
                 <div>
                   <h3 className="text-md font-semibold text-yellow-600">ADVERTISEMENT BANNER</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <img src={card} alt="Ad 1" className="rounded-md shadow-md w-full" />
-                    <img src={card1} alt="Ad 2" className="rounded-md shadow-md w-full" />
-                    <img src={card} alt="Ad 3" className="rounded-md shadow-md w-full" />
-                    <img src={card1} alt="Ad 4" className="rounded-md shadow-md w-full" />
+                    {formData.bannerImages
+                      .map((src, index) => (
+                        <img key={index} src={src.imageUrl} alt={`Ad ${index + 1}`} className="rounded-md shadow-md w-full h-40" />
+                      ))}
                   </div>
                 </div>
               </div>
@@ -465,35 +472,35 @@ export default function BusinessInformation2() {
               <h3 className="section-title">Basic Info</h3>
               <div className="basic-info">
                 <div className="icon-text">
-                <div className="icon">
-  {/* Display uploaded image preview if available */}
-  {previewProfileImage ? (
-    <img src={previewProfileImage} alt="Profile Preview" />
-  ) : (
-    <img src={formData.profileImage} alt="Default Icon" /> // Fallback image
-  )}
-</div>
+                  <div className="icon">
+                    {/* Display uploaded image preview if available */}
+                    {previewProfileImage ? (
+                      <img src={previewProfileImage} alt="Profile Preview" />
+                    ) : (
+                      <img src={formData.profileImage} alt="Default Icon" /> // Fallback image
+                    )}
+                  </div>
 
                 </div>
                 <div className="icon-button">
-                <input
-  type="file"
-  accept="image/*"
-  onChange={(e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreviewProfileImage(imageUrl); 
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        const imageUrl = URL.createObjectURL(file);
+                        setPreviewProfileImage(imageUrl);
 
-      setFormData((prev) => ({
-        ...prev,
-        profileImage: file, 
-      }));
-    }
-  }}
-  style={{ display: "none" }}
-  id="upload-profile-image"
-/>
+                        setFormData((prev) => ({
+                          ...prev,
+                          profileImage: file,
+                        }));
+                      }
+                    }}
+                    style={{ display: "none" }}
+                    id="upload-profile-image"
+                  />
 
                   {/* Button to trigger image upload */}
                   <button

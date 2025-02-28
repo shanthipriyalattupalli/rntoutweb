@@ -11,13 +11,13 @@ import { MdToggleOff } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 const prodimg = "/Assets/dummy-image.svg";
-const vector = "/Assets/vector-icon.svg";
+const vector = "/Assets/Vector-icon.svg";
 import Link from "next/link";
 
 export default function Dashboard({ products }) {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
  const [isdetailsOpen, setIsdetailsOpen]=useState(false)
-
+const [productId,setProductId]=useState(null)
   const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [userProducts,setUserProducts]=useState([])
 const fetchUserProducts=async()=>{
@@ -55,7 +55,7 @@ useEffect(() => {
           <header className='dashboard-header'>
             <div className='logo'>
               <img src={vector} alt='Logo' />
-              rntout
+              Rntout
             </div>
             <div className='view-transactions'>view all transactions</div>
           </header>
@@ -93,9 +93,10 @@ useEffect(() => {
                     Edit
                   </p>
                   <p         
-                     onClick={()=>
-                      setIsdetailsOpen(true)
-              }>
+                     onClick={()=>{
+                      setProductId(item._id);
+                      setIsdetailsOpen(true);
+              }}>
                     <FaEye />
                     View
                   </p>
@@ -108,14 +109,14 @@ useEffect(() => {
       >
         ✕
       </button>
-      <ProductDetails setIsdetailsOpen={setIsdetailsOpen} productId={item._id} />
+      <ProductDetails setIsdetailsOpen={setIsdetailsOpen} productId={productId} />
     </div>
   </div>
 )}
-                  <p>
+                  {/* <p>
                     <MdToggleOff />
                     Inactive?
-                  </p>
+                  </p> */}
                   <p style={{ color: "red" }}>
                     <RiDeleteBinLine />
                     Delete
@@ -128,14 +129,14 @@ isApproved?<span className="px-2 py-1 bg-green-700 font-xl text-sm text-white ro
 <span className="px-2 py-1 bg-orange-400 font-xl text-md text-white rounded-full">In Review</span>}
 
                 </div>
-              <Link href={{ pathname: `/Products/${item._id}`, query: { id: item._id } }} key={item._id}>
+          
               <img
                 src={item.images[0]}
                 alt={item.title}
                 className='item-image'
 
               />
-              </Link>
+       
               <div className='item-card-details'>
                 <div className='item-det-section'>
                   <h3 className='item-title'>{item.title}</h3>

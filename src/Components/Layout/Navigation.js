@@ -108,7 +108,7 @@ const Navigation = () => {
       <div className="relative">
         <div
           id="category-container"
-          className="flex items-center h-12 gap-3 overflow-x-auto overflow-visible whitespace-nowrap scrollbar-hide relative"
+          className="flex items-center h-12 gap-3 2xl:gap-32 overflow-x-auto overflow-visible whitespace-nowrap scrollbar-hide relative"
         >
           {categories?.map((category) => (
             <div

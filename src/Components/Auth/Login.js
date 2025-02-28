@@ -164,7 +164,8 @@ const Login = ({setIsLoginOpen}) => {
 
             {isPhoneSelected && (
               <div>
-                <p className='login-p1 m-0'>Mobile Number</p>
+                <p className='login-p1 m-0'>Mobile Number    <span style={{ color: 'red' }}>*</span></p>
+             
                 <input
                   type='tel'
                   placeholder='+91 1234567890'

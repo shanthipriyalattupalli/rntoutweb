@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+const profile_avatar = "/Assets/profile_avatar.png";
 import Signup from "./Signup";
 
 const Rntout = "/Assets/Rntout_Logo.png";
@@ -24,6 +25,8 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
 //   const mobileNumber = searchParams.get("mobileNumber");
 const userName = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
 const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
+const fcmToken = typeof window !== 'undefined' ? localStorage.getItem("FCMToken") : null;
+
 
   console.log(mobileNumber, "mobile num in otp");
 
@@ -82,7 +85,10 @@ const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") 
       localStorage.setItem("userName", user.name || "");  // Ensuring it's never null
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("role", user.role);
-  
+      localStorage.setItem("profilePic", profile_avatar);
+      if (fcmToken) {
+        await saveFcmToken(fcmToken);
+      }  
       if (!user.name || user.name === "undefined" || user.name === "null") {
         setIsRegisterOpen(true);
       } else {
@@ -96,6 +102,25 @@ const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") 
     }
   };
   
+
+
+  const saveFcmToken = async () => {
+    try {
+
+     const response= await axios.post(
+        `${BASE_URL}/users/save-fcm-token`,
+        { fcmToken },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("FCM Token saved successfully",response);
+    } catch (error) {
+      console.error("Error saving FCM token:", error);
+    }
+  };
 
   const handleSendOtp = async () => {
     if (!mobileNumber || !/^\+?[0-9]{10,13}$/.test(mobileNumber)) {

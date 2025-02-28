@@ -239,6 +239,8 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
               </button>
             </div>
             <div className='address-form'>
+            <label className="pb-2">Type<span className="text-red-500">*</span></label>
+
               <div className='form-select'>
                 {["Home", "Office", "Hotel", "Others"].map((item) => (
                   <span
@@ -251,7 +253,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                   </span>
                 ))}
               </div>
-              <label className="pt-20">Name <span className="text-red-500">*</span></label>
+              <label className="pt-8">Name <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 placeholder="Receiver’s name"

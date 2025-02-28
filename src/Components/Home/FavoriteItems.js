@@ -66,7 +66,7 @@ const FavoriteItem = ({ product,fetchFavorites}) => {
   } = product;
   console.log(rentalAvailability,"favorites products")
 
-  console.log(rentalPrice, "rental price");
+  // console.log(rentalPrice, "rental price");
   const formattedDate = new Date(
     rentalAvailability?.startDate
   ).toLocaleDateString("en-US", {
@@ -74,6 +74,24 @@ const FavoriteItem = ({ product,fetchFavorites}) => {
     month: "short",
     year: "numeric",
   });
+
+  const formattedendDate = new Date(
+    rentalAvailability?.endDate
+  ).toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+
+
+  const startdate = new Date(rentalAvailability?.startDate);
+const endDate = new Date(rentalAvailability?.endDate);
+
+// Calculate the difference in months
+const monthsDifference =
+  (endDate.getFullYear() - startdate.getFullYear()) * 12 +
+  (endDate.getMonth() - startdate.getMonth());
+
 
   const Details = [
     { label: "Day", price: rentalPrice.daily },
@@ -170,7 +188,7 @@ const FavoriteItem = ({ product,fetchFavorites}) => {
                   <img src={left} alt="Previous" className="rotate-360" />
                 </div>
                 <div
-                  className="absolute right-[2.7px] top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
+                  className="absolute right-[0px] top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
                   onClick={() => swiperRef.current?.slideNext()} // Navigate to the next slide
                 >
                   <img src={left} alt="Next" className="rotate-180" />
@@ -244,7 +262,7 @@ const FavoriteItem = ({ product,fetchFavorites}) => {
                   className="bg-white text-black w-54 text-center rounded-full border-2 p-1"
                   onClick={handleclick}
                 >
-                  View all details
+                  View all packages
                 </span>
               ) : (
                 <span
@@ -295,11 +313,16 @@ const FavoriteItem = ({ product,fetchFavorites}) => {
                 width={16}
                 height={16}
               />
-              {rentalAvailability && (
-                <span className='text-gray-500 text-xs'>
-                  Availability: {formattedDate}
-                </span>
-              )}
+{rentalAvailability && formattedDate && !isNaN(new Date(rentalAvailability?.endDate)) ? (
+  <span className="text-gray-500 text-xs">
+    Availability: {formattedDate} - {formattedendDate}
+  </span>
+) : rentalAvailability && formattedDate ? (
+  <span className="text-gray-500 text-xs">
+    Availability: {formattedDate}
+  </span>
+) : null}
+
             </div>
 
             {/* Stock Information */}
@@ -356,14 +379,14 @@ const FavoriteItem = ({ product,fetchFavorites}) => {
                 ))}
               </div>
               {/* Additional rows like "6 Months" */}
-              <div className='mt-4'>
-                <div className='text-blue-500 font-[500] text-center text-[12px]'>
-                  6 Months
-                </div>
-                <div className='text-center text-gray-600 text-[16px] font-[500]'>
-                  Not Available
-                </div>
-              </div>
+              <div className="mt-4">
+    <div className="text-blue-500 font-[500] text-center text-[12px]">
+      {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}
+    </div>
+    <div className="text-center text-gray-600 text-[16px] font-[500]">
+      Available
+    </div>
+  </div>
             </div>
           </div>
         )}

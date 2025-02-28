@@ -4,14 +4,18 @@ import React, { useState } from "react";
 import axios from "axios";
 import { CiStar } from "react-icons/ci";
 import OrderTracking from "./OrderTracking";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CancelOrder from "./Orders/CancelOrder";
 
 const laptop = "/Assets/laptop-2.jpg";
 
 const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, steps, getCurrentStep }) => {
+  console.log(orderData,"orderData in...")
   const BASE_URL =process.env.NEXT_PUBLIC_APP_BASE_URL;
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [expandedSubOrderId, setExpandedSubOrderId] = useState(null);
-
+const[isCanceled,setIsCanceled]=useState(false)
   // Check if orderData has subOrders
   if (!orderData || !orderData.subOrders || orderData.subOrders.length === 0) {
     return <p>No orders found</p>;
@@ -26,27 +30,13 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
     }
   };
 
-  const handleCancelOrder=async(subOrderId)=>{
-    try {
-      const response= await axios.patch(`${BASE_URL}/orders/cancel/${subOrderId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      
-      console.log(response.data,"order deleted");
-      
-    } catch (error) {      
-      console.log(error,"error cancelling order")
-      
-    }
 
-  }
+
 
   return (
-    <>
+    <div>
+            <ToastContainer/>
+      
       {orderData.subOrders.map((item) => (
         <div className="order-item" key={item._id}>
           {/* Order Product */}
@@ -73,11 +63,20 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                   </a>
                 )}
 {(item.orderStatus === "placed" || item.orderStatus === "confirmed" || item.orderStatus === "shipped") && (
-  <a className="inline-flex gap-1.5 items-center justify-center no-underline text-red-500 font-medium cursor-pointer" onClick={()=>{handleCancelOrder(item._id)}}>
+  <a className="inline-flex gap-1.5 items-center justify-center no-underline text-red-500 font-medium cursor-pointer" onClick={()=>setIsCanceled(true)}>
 
     Cancel Order
   </a>
 )}
+              {isCanceled &&(  <div className="modal-overlay">
+                  <div className="modal-content">
+                    <button className="close-button" onClick={() => setIsCanceled(false)}>
+                      ✕
+                    </button>
+                <CancelOrder setIsCanceled={setIsCanceled} subOrderId={item._id} suborder={item}/>
+                  </div>
+                </div>)}
+
                 <button
                   className="text-blue-500 font-semibold px-4 rounded"
                   onClick={() => handleShowTracking(item)}
@@ -85,9 +84,6 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                   {expandedSubOrderId === item._id ? "Hide Tracking" : "Show Tracking"}
                 </button>
               </div>
-
-              {/* Show tracking only for the selected suborder */}
-              {/* Conditionally render feedback if available */}
               {item.review && item.review.feedback && (
                 <div className="review-section-feedback">
                   <h3>
@@ -109,7 +105,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
         </div>
       ))}
       
-    </>
+    </div>
   );
 };
 

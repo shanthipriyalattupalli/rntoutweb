@@ -14,14 +14,12 @@ const ProductItems = lazy(() => import("../Home/ProductItems"));
 
 const ITInfrastructure = ({ products, categoryId }) => {
   // Defaulting to an empty array
-  console.log(products, "nko98ytfchgvb nmo-9897tyfcg ");
+  // console.log(products, "nko98ytfchgvb nmo-9897tyfcg ");
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
   const [numProducts, setNumProducts] = useState(4);
 
-  useEffect(() => {
-    console.log(products, "nko98ytfchgvb nmo-9897tyfcg ");
-  });
+
   const nextSlide = () => {
     if (products.length > 0 && currentSlide < products.length - 1) {
       setCurrentSlide(currentSlide + 1);

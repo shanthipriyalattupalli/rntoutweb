@@ -65,7 +65,7 @@ const RelatedProducts = ({ product }) => {
     _id,
   } = product;
 
-  console.log(rentalPrice, "rental price");
+  // console.log(rentalPrice, "rental price");
   const formattedDate = new Date(
     rentalAvailability?.startDate
   ).toLocaleDateString("en-US", {

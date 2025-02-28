@@ -8,7 +8,7 @@ import Navigation from "@/Components/Layout/Navigation";
 import HomeComponent from "../Pages/Home";
 import { ToastContainer, toast } from "react-toastify";
 import MobileApp from "@/Components/Home/MobileApp";
-import WebNotificationController from "@/Components/WebNotificationController ";
+// import WebNotificationController from "@/Components/PushNotification";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

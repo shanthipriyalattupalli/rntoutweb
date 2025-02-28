@@ -255,7 +255,7 @@ function Header() {
         <option value="40">40 km</option>
         <option value="50">50 km</option>
         <option value="60">60 km</option>
-        <option value="100">100 km</option>
+        <option value="100">100 + km</option>
       </select>
     </div>
 

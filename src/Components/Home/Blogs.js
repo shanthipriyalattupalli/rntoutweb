@@ -132,14 +132,14 @@ const Blog = () => {
             </svg>
           </a>
         </div>
-        <p className='text-gray-600 text-left mb-8'>
+        <p className='text-gray-600 text-left mb-8 px-16'>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </p>
 
         {/* Carousel Section */}
         <div className='relative'>
           {/* Carousel Content */}
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:px-10 gap-6'>
+          <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:px-10 gap-6'>
             {currentBlogs?.map((blog, index) => (
               <div
                 key={index}

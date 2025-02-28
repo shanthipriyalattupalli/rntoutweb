@@ -91,7 +91,7 @@ const CuratedCollections = () => {
       : currentCollections;
 
   return (
-    <div className='mx-auto py-2 w-full mx-auto max-w-screen-2xl px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16'>
+    <div className='mx-auto py-2 w-full mx-auto px-6 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-4'>
       <h1 className='text-3xl font-bold text-gray-800 text-center mb-6'>
         Curated Rental Collections
       </h1>
@@ -100,7 +100,7 @@ const CuratedCollections = () => {
       </p>
 
       <div className='relative'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10 px-14'>
           {/* Map over the current 3 images to display */}
           {wrapAroundCollections?.map((collection) => (
             <div key={collection.id} className='relative'>

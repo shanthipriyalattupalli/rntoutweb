@@ -125,7 +125,7 @@ const Notifications = () => {
               <p>{notification.message}</p>
             </div>
             <div className='notification-meta'>
-              <span className='time'>{notification.sentAt}</span>
+            <span className='time'>{new Date(notification.sentAt).toLocaleString()}</span>
               <FaEllipsisV
                 className='options-icon'
                 onClick={() => toggleOptions(notification._id)}

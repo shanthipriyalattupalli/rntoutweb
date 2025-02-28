@@ -14,7 +14,7 @@ const ProductItems = lazy(() => import("./ProductItems"));
 
 const Furniture = ({ products, categoryId }) => {
   // Defaulting to an empty array
-  console.log(products, "furniture");
+  // console.log(products, "furniture");
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
   const [numProducts, setNumProducts] = useState(4);

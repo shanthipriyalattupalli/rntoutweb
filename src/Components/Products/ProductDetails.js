@@ -113,7 +113,9 @@ const ProductPage = ({ setIsModelOpen, productId }) => {
         }
     };
     useEffect(() => {
+        if(productId){
         fetchProductById();
+        }
     }, [productId]);
 
 

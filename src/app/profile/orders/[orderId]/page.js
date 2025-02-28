@@ -12,14 +12,11 @@ const OrderDetail = () => {
   const orderId = params.orderId;
   console.log(orderId,"orderid")
   return (
-    <div className="order-detail">
-      <h2 className='item-header' onClick={() => router.back()}>
-        <div className='back-product'><IoMdArrowRoundBack style={{ marginRight: "12px" }} /> Order detail
-        </div></h2>
+
       <div className="Orders_page_section">
         <OrderTrackingWithNavigate orderId={orderId}/>
       </div>
-    </div>
+  
   );
 };
 

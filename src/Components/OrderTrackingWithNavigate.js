@@ -12,6 +12,7 @@ import OrderTracking from "./OrderTracking";
 const payment_icon = "/Assets/payment_icon.png";
 const HistoryImage = "/Assets/HistoryImage.png";
 const shipping = "/Assets/shipping.svg";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 // const trackingSteps = [
 //   {
@@ -90,7 +91,7 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response, "fetch order history")
+      console.log(response.data, "fetch order history")
       setOrders(response.data)
       setSubOrders(response.data.subOrders)
 
@@ -151,6 +152,15 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
     setSelectedSubOrder(subOrder);
   };
   return (
+    <>
+       <h2 className='item-header' onClick={() => router.back()}>
+            <div className='back-product'><IoMdArrowRoundBack style={{ marginRight: "12px" }} /> Order detail
+            </div>
+            <a href="#" className="download-invoice" onClick={null}>
+            Download Invoice
+        </a>
+            </h2>
+
     <div className='order-tracking-container'>
       <div className='order_item-frame'>
 
@@ -159,11 +169,11 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
       </div>
 
       <div className='order_trackinf_section'>
-        <div className="bg-white py-4 px-4">
+        {/* <div className="bg-white py-4 px-4">
           <h3 className="px-10 font-semibold text-lg">Order Tracking</h3>
           <h3 className="px-10 font-semibold text-md pt-5">{selectedSubOrder?.variantId?.title}</h3>
           <div className="w-full flex items-center justify-between  relative">
-          {/* <div>
+          <div>
           {selectedSubOrder ? (
   <div className="w-full flex items-center justify-between py-6 relative">
     <div className="flex items-center space-x-6">
@@ -224,12 +234,12 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
 ) : (
   <p className="text-gray-500 text-center">Select a suborder to view tracking</p>
 )}
-  </div> */}
+  </div>
 
 
 </div>
 
-        </div>
+        </div> */}
         {/* payment status */}
         <div class='payment-section'>
           <div class='payment-info'>
@@ -323,6 +333,8 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
         </div>
       </div>
     </div>
+    </>
+  
   );
 };
 

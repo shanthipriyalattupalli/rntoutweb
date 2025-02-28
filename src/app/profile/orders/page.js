@@ -1,12 +1,13 @@
 'use client';
 import React, { useState, useEffect } from "react";
-
+import Switch from "react-switch";
 // import "@/styles/Orders.css";
 import '../../../styles/Orders.css';
 import axios from "axios";
 import { FaTruck } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { MdPayments } from "react-icons/md";
+import OrderItem from "@/Components/OrderItem";
 
 const orderHistoryImage = "/Assets/orderHistoryImage.png";
 
@@ -72,7 +73,8 @@ export default function Orders() {
   const [orderItems, setOrderItems] = useState([]);
   const statusClass = "Completed" ? "completed" : "in-progress";
   const [trackingStatuses, setTrackingStatuses] = useState([]);
-
+const [selectedSubOrder, setSelectedSubOrder] = useState(null);
+const [isOn, setIsOn] = useState(false);
   const router = useRouter();
 
 
@@ -84,8 +86,24 @@ export default function Orders() {
         },
       });
       console.log(response.data, "fetch order history")
-      setOrders(response.data)
-console.log(response.data,"suborders in order history")
+      setOrders(response.data);
+      const filteredOrders = response.data
+      .map(order => {
+        const canceledSubOrders = order.subOrders?.filter(subOrder => {
+          console.log(subOrder.orderStatus, "Checking orderStatus"); // Debugging
+          return subOrder.orderStatus.toLowerCase().trim() === "canceled"; 
+        }) || [];
+
+        return {
+          ...order,
+          subOrders: canceledSubOrders, // Keep only canceled suborders
+        };
+      })
+      .filter(order => order.subOrders.length > 0); // Remove orders with no canceled suborders
+
+    console.log(filteredOrders, "Filtered Canceled Order History");
+    setOrderItems(filteredOrders)
+    
 
     } catch (error) {
       console.error('Error:', error);
@@ -107,6 +125,10 @@ console.log(response.data,"suborders in order history")
     }
   }, [orders]);
   
+
+
+ 
+  
   const getTrackingStatus = () => {
     return orders.map(order => {
       const statuses = order.subOrders.map(subOrder => subOrder.deliveryStatus);
@@ -121,6 +143,7 @@ console.log(response.data,"suborders in order history")
     });
   };
 
+
   return (
 
 
@@ -128,16 +151,23 @@ console.log(response.data,"suborders in order history")
     <div className="profile-settings Orders_page_section">
       <div className="item-header">
         <h2>Order History</h2>
-        <a href="#" className="edit-btn" onClick={null}>
-          Cancelled Orders
-        </a>
+
+        <label className="edit-btn flex items-center gap-2">
+  <Switch checked={isOn} onChange={setIsOn}  onColor="#22c55e" 
+    offColor="#ccc"  />
+  Cancelled Orders
+</label>
+
+
       </div>
 
       <div className="order_item-frame">
 
       </div>
 
-      {orders.map((order,index) => (
+{isOn ?      
+      
+      orders.map((order,index) => (
         <div class="order-item" key={order._id}>
           <div className="order-header">
             <span>ID: #{`1234567890`}</span>
@@ -149,7 +179,7 @@ console.log(response.data,"suborders in order history")
           <div className="order-item-container">
           {Array.isArray(order.subOrders) && order.subOrders.map((item) => (
 
-              <div class="order-product" key={item._id}>
+              <div class="order-product" key={item._id} onClick={()=>  router.push(`/Products/${item.variantId._id}?id=${item.variantId._id}`)}>
                 <div>
                 <img
                   src={item.variantId.images?.[0]}
@@ -175,9 +205,9 @@ console.log(response.data,"suborders in order history")
             <a class="track-order cursor-pointer" onClick={() => { router.push(`/profile/orders/${order._id}`) }}>
               Track & View Order
             </a>
-            <a href="#" class="cancel-order">
+            {/* <a href="#" class="cancel-order">
               Cancel Order
-            </a>
+            </a> */}
             <a href="#" class="download-invoice">
               Download Invoice
             </a>
@@ -213,9 +243,87 @@ console.log(response.data,"suborders in order history")
             </p>}
           </div>
         </div>
+      )):
+
+orderItems.map((orderItem,index) => (
+        <div class="order-item" key={orderItem._id}>
+          <div className="order-header">
+            <span>ID: #{`1234567890`}</span>
+            <span>
+              Date: {new Date(orderItem.createdAt).toLocaleDateString('en-GB')}
+            </span>
+
+          </div>
+          <div className="order-item-container">
+          {Array.isArray(orderItem.subOrders) && orderItem.subOrders.map((item) => (
+
+              <div class="order-product" key={item._id} onClick={()=>  router.push(`/Products/${item.variantId._id}?id=${item.variantId._id}`)}>
+                <div>
+                <img
+                  src={item.variantId.images?.[0]}
+                  alt="Dell 27 inch Monitor"
+                  class="product-image"
+                />
+</div>
+                <div class="product-info">
+                  <h4>
+                 {item.variantId.title}
+                  </h4>
+                  <p>
+                    <span>{item.price}</span> /{item.rentalPeriod} | Rented for: <span>3 months</span>
+                  </p>
+                </div>
+
+              </div>
+
+            ))}
+          </div>
+
+          <div class="order-actions">
+            <a class="track-order cursor-pointer" onClick={() => { router.push(`/profile/orders/${orderItem._id}`) }}>
+              Track & View Order
+            </a>
+            {/* <a href="#" class="cancel-order">
+              Cancel Order
+            </a> */}
+            <a href="#" class="download-invoice">
+              Download Invoice
+            </a>
+          </div>
+          <div class="order-actions-price-status">
+            <p class="download-invoice">
+              Total Amount: <span>₹ {orderItem.totalAmount}</span>
+            </p>
+            {Array.isArray(orderItem.subOrders) && orderItem.subOrders.length > 0 && (
+      <div className="suborders-status">
+        <p className={`download-invoice progress d-flex gap-5 ${trackingStatuses[index]}`}>
+          <span>
+            <FaTruck />
+          </span>{" "}
+          {trackingStatuses[index]}
+        </p>
+      </div>
+    )}
+
+
+      {orderItem.paymentStatus === "pending" ?<p className={`download-invoice progress ${orderItem.paymentStatus}`}>
+              <span>
+         <MdPayments/>
+              </span>{" "}
+              {orderItem.paymentStatus}
+            </p>
+            :
+            <p class={`download-invoice progress ${orderItem.paymentStatus}`}>
+                        <span>
+         <MdPayments/>
+              </span>{" "}
+              {orderItem.paymentStatus}
+            </p>}
+          </div>
+        </div>
       ))}
-      {/* <OrderItem /> */}
-      {/* <OrderItem /> */}
+
+
     </div>
   );
 };

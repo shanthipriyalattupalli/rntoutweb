@@ -53,7 +53,7 @@
     content: "";
     width: 8px;
     height: 8px;
-    background-color: #007bff;
+    background-color: #FF0000;
     /* Customize this color as needed */
     border-radius: 50%;
 }
@@ -254,7 +254,7 @@ label {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 20px;
+    margin: 20px 20px;
     
 }
 
