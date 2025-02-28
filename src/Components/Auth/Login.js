@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import Otp from "./Otp";
 import Signup from "./Signup";
 
-const Login = ({setIsLoginOpen}) => {
+const Login = ({ setIsLoginOpen }) => {
   const [isPhoneSelected, setIsPhoneSelected] = useState(true);
   const [isForgetPassword, setIsForgetPassword] = useState(false);
   const [mobileNumber, setMobileNumber] = useState(""); // For phone login
@@ -143,10 +143,10 @@ const Login = ({setIsLoginOpen}) => {
           </div>
         ) : (
           <div>
-                  <div className='login-first'>
-        <img src={Rntout} alt='RentOut Logo' className='login-logo' />
-        <h2 className='subtitle'>Sign in to RntOut</h2>
-      </div>
+            <div className='login-first'>
+              <img src={Rntout} alt='RentOut Logo' className='login-logo' />
+              <h2 className='subtitle'>Sign in to RntOut</h2>
+            </div>
             {/* <div className='tab-container'>
               <button
                 className={`tab ${isPhoneSelected ? "active" : "inactive"}`}
@@ -165,14 +165,30 @@ const Login = ({setIsLoginOpen}) => {
             {isPhoneSelected && (
               <div>
                 <p className='login-p1 m-0'>Mobile Number    <span style={{ color: 'red' }}>*</span></p>
-             
+
                 <input
                   type='tel'
-                  placeholder='+91 1234567890'
+                  placeholder='1234567890'
                   className='input'
                   value={mobileNumber}
-                  onChange={(e) => setMobileNumber(e.target.value)}
+                  onChange={(e) => {
+                    let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+
+                    if (value.startsWith("+91") && value.length > 10) {
+                      value = value.slice(3); 
+                    }
+                    if (value.startsWith("+1") && value.length > 10) {
+                      value = value.slice(2); 
+                    }
+
+                    if (value.length > 10) {
+                      value = value.slice(0, 10); // Limit to 10 digits
+                    }
+
+                    setMobileNumber(value);
+                  }}
                 />
+
                 <button
                   className='button'
                   onClick={handleSendOtp}
@@ -180,16 +196,16 @@ const Login = ({setIsLoginOpen}) => {
                 >
                   {isLoading ? "Sending..." : "Get OTP"}
                 </button>
-        {isOtpOpen && (
-              <div className="modal-overlay">
-                <div className="modal-content">
-                  <button className="close-button" onClick={() => setIsOtpOpen(false)}>
-                    ✕
-                  </button>
-                  <Otp mobileNumber={mobileNumber} setIsOtpOpen={setIsOtpOpen}/>
-                </div>
-              </div>
-            )}
+                {isOtpOpen && (
+                  <div className="modal-overlay">
+                    <div className="modal-content">
+                      <button className="close-button" onClick={() => setIsOtpOpen(false)}>
+                        ✕
+                      </button>
+                      <Otp mobileNumber={mobileNumber} setIsOtpOpen={setIsOtpOpen} />
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -235,7 +251,7 @@ const Login = ({setIsLoginOpen}) => {
                 Create account
               </span>
             </p>
-                        {/* {isregisterOpen && (
+            {/* {isregisterOpen && (
                           <div className="modal-overlay">
                             <div className="modal-content">
                               <button className="close-button" onClick={() => setIsRegisterOpen(false)}>

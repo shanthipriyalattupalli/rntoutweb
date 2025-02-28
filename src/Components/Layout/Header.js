@@ -215,7 +215,7 @@ function Header() {
 <header className="flex items-center justify-between px-6 md:px-10 lg:px-20 py-3 bg-white shadow-md">
   {/* Left Section - Logo */}
   <div className="flex items-center">
-    <Link href="/">
+    <Link href="/" style={{all:"unset"}}>
       <img src={logo} alt="RNT Out Logo" className="h-8 sm:h-10 border-none border-0" />
     </Link>
   </div>

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import '../../../styles/coupons.css'
 import axios from "axios";
 // import "@/styles/AddressSidebar.css";
-import '../../../styles/AddressSidebar.css';
+// import '../../../styles/AddressSidebar.css';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -125,11 +125,11 @@ const handleApply = async (couponId, couponcode, maxDiscountAmount, minRentAmoun
     <div className='sidebar-overlay' onClick={onClose}>
       <div className='sidebar' onClick={(e) => e.stopPropagation()}>
         <div className='sidebar-header'>
-          <h2>Promo</h2>
+          <h2 className="text-[18px] font-semibold">Promo Coupon</h2>
           <button onClick={onClose} className='close-button'>&times;</button>
         </div>
-        {coupons.map((coupon) => (
-          <div className='container coupons-card' key={coupon._id}>
+        {coupons.map((coupon,index) => (
+          <div className={`container coupons-card ${index === 0 ? 'no-border' : ''}`} key={coupon._id}>
             <div className='delivery-content'>
               <div className='coupons-context'>
                 <span className="bg-gray-200 size-fit justify-center p-1 rounded-lg">{coupon.code}</span>

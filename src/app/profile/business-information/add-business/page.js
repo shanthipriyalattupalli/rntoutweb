@@ -331,7 +331,7 @@ export default function BusinessInformation2() {
               <IoMdArrowRoundBack style={{ marginRight: "12px" }} />
               Business Information
             </div>
-            <h3 className="cursor-pointer" onClick={toggleEdit}>edit</h3>
+            {/* <h3 className="cursor-pointer" onClick={toggleEdit}>edit</h3> */}
           </h2>
           <div className="bi2-main-div">
 
@@ -475,9 +475,9 @@ export default function BusinessInformation2() {
                   <div className="icon">
                     {/* Display uploaded image preview if available */}
                     {previewProfileImage ? (
-                      <img src={previewProfileImage} alt="Profile Preview" />
+                      <img src={previewProfileImage} alt="Profile Preview" className="w-[7rem] h-[5.5rem] rounded-full" />
                     ) : (
-                      <img src={formData.profileImage} alt="Default Icon" /> // Fallback image
+                      <img src={formData.profileImage} alt="Default Icon" className="w-[7rem] h-[5.5rem] rounded-full" /> // Fallback image
                     )}
                   </div>
 
