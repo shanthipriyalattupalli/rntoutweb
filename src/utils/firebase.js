@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+
 const firebaseConfig = {
   apiKey: "AIzaSyD6c9EO44Za_692sMUNCw4nyWsZT-w4K3U",
   authDomain: "rntout-28514.firebaseapp.com",
@@ -12,14 +13,21 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+
+// Only initialize messaging in the browser
+let messaging;
+if (typeof window !== "undefined" && "Notification" in window) {
+  messaging = getMessaging(app);
+}
+
 // Request FCM Token for Push Notifications
 export const requestForToken = async () => {
+  if (!messaging) return;
   try {
-    
     const currentToken = await getToken(messaging, {
       vapidKey: "BJoiDFvVi8iMCZdlYBXfomD8McGhsFuxCRUG3mzhN47CWGYl_U2x34d17p8HRkqpwXse7DvtWmD-DdRtXdowwlw",
     });
+
     if (currentToken) {
       console.log("FCM Token:", currentToken);
       localStorage.setItem("FCMToken", currentToken);
@@ -31,20 +39,14 @@ export const requestForToken = async () => {
     console.error("An error occurred while retrieving token:", error);
   }
 };
+
 // Foreground Message Listener
 export const onMessageListener = () =>
   new Promise((resolve) => {
+    if (!messaging) return;
     onMessage(messaging, (payload) => {
       resolve(payload);
     });
   });
+
 export { messaging };
-
-
-
-
-
-
-
-
-

@@ -7,11 +7,12 @@ import  { AppProps } from "next/app";
 import ScrollToTop from './ScrollToTop';
 import UseFcmToken from '../Components/PushNotificationClient';
 
+
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register("/firebase-messaging-sw.js")
+        .register("../../public/firebase-messaging-sw")
         .then((registration) => {
           console.log("Service Worker registered:", registration);
         })
