@@ -6,10 +6,12 @@ import MenuItems from '@/Components/submenuadd';
 import '../../../styles/Adddetail.css';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ScrollToTop from '@/app/ScrollToTop';
 
 
 const Layout = ({ children }) => (
     <>
+    <ScrollToTop/>
      <div className="container-para">
                 <h1> Go ahead and pick the subcategories! 🚀</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>

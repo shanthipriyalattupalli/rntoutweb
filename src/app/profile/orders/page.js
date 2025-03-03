@@ -165,90 +165,10 @@ const [isOn, setIsOn] = useState(false);
 
       </div>
 
-{isOn ?      
-      
-      orders.map((order,index) => (
-        <div class="order-item" key={order._id}>
-          <div className="order-header">
-            <span>ID: #{`1234567890`}</span>
-            <span>
-              Date: {new Date(order.createdAt).toLocaleDateString('en-GB')}
-            </span>
-
-          </div>
-          <div className="order-item-container">
-          {Array.isArray(order.subOrders) && order.subOrders.map((item) => (
-
-              <div class="order-product" key={item._id} onClick={()=>  router.push(`/Products/${item.variantId._id}?id=${item.variantId._id}`)}>
-                <div>
-                <img
-                  src={item.variantId.images?.[0]}
-                  alt="Dell 27 inch Monitor"
-                  class="product-image"
-                />
-</div>
-                <div class="product-info">
-                  <h4>
-                 {item.variantId.title}
-                  </h4>
-                  <p>
-                    <span>{item.price}</span> /{item.rentalPeriod} | Rented for: <span>3 months</span>
-                  </p>
-                </div>
-
-              </div>
-
-            ))}
-          </div>
-
-          <div class="order-actions">
-            <a class="track-order cursor-pointer" onClick={() => { router.push(`/profile/orders/${order._id}`) }}>
-              Track & View Order
-            </a>
-            {/* <a href="#" class="cancel-order">
-              Cancel Order
-            </a> */}
-            <a href="#" class="download-invoice">
-              Download Invoice
-            </a>
-          </div>
-          <div class="order-actions-price-status">
-            <p class="download-invoice">
-              Total Amount: <span>₹ {order.totalAmount}</span>
-            </p>
-            {Array.isArray(order.subOrders) && order.subOrders.length > 0 && (
-      <div className="suborders-status">
-        <p className={`download-invoice progress d-flex gap-5 ${trackingStatuses[index]}`}>
-          <span>
-            <FaTruck />
-          </span>{" "}
-          {trackingStatuses[index]}
-        </p>
-      </div>
-    )}
-
-
-      {order.paymentStatus === "pending" ?<p className={`download-invoice progress ${order.paymentStatus}`}>
-              <span>
-         <MdPayments/>
-              </span>{" "}
-              {order.paymentStatus}
-            </p>
-            :
-            <p class={`download-invoice progress ${order.paymentStatus}`}>
-                        <span>
-         <MdPayments/>
-              </span>{" "}
-              {order.paymentStatus}
-            </p>}
-          </div>
-        </div>
-      )):
-
-orderItems.map((orderItem,index) => (
+{isOn ? orderItems.map((orderItem,index) => (
         <div class="order-item" key={orderItem._id}>
           <div className="order-header">
-            <span>ID: #{`1234567890`}</span>
+            <span>ID: {orderItem._id}</span>
             <span>
               Date: {new Date(orderItem.createdAt).toLocaleDateString('en-GB')}
             </span>
@@ -321,7 +241,87 @@ orderItems.map((orderItem,index) => (
             </p>}
           </div>
         </div>
-      ))}
+      )):     
+      
+      orders.map((order,index) => (
+        <div class="order-item" key={order._id}>
+          <div className="order-header">
+            <span>ID: {order._id}</span>
+            <span>
+              Date: {new Date(order.createdAt).toLocaleDateString('en-GB')}
+            </span>
+
+          </div>
+          <div className="order-item-container">
+          {Array.isArray(order.subOrders) && order.subOrders.map((item) => (
+
+              <div class="order-product" key={item._id} onClick={()=>  router.push(`/Products/${item.variantId._id}?id=${item.variantId._id}`)}>
+                <div>
+                <img
+                  src={item.variantId.images?.[0]}
+                  alt="Dell 27 inch Monitor"
+                  class="product-image"
+                />
+</div>
+                <div class="product-info">
+                  <h4>
+                 {item.variantId.title}
+                  </h4>
+                  <p>
+                    <span>{item.price}</span> /{item.rentalPeriod} | Rented for: <span>3 months</span>
+                  </p>
+                </div>
+
+              </div>
+
+            ))}
+          </div>
+
+          <div class="order-actions">
+            <a class="track-order cursor-pointer" onClick={() => { router.push(`/profile/orders/${order._id}`) }}>
+              Track & View Order
+            </a>
+            {/* <a href="#" class="cancel-order">
+              Cancel Order
+            </a> */}
+            <a href="#" class="download-invoice">
+              Download Invoice
+            </a>
+          </div>
+          <div class="order-actions-price-status">
+            <p class="download-invoice">
+              Total Amount: <span>₹ {order.totalAmount}</span>
+            </p>
+            {Array.isArray(order.subOrders) && order.subOrders.length > 0 && (
+      <div className="suborders-status">
+        <p className={`download-invoice progress d-flex gap-5 ${trackingStatuses[index]}`}>
+          <span>
+            <FaTruck />
+          </span>{" "}
+          {trackingStatuses[index]}
+        </p>
+      </div>
+    )}
+
+
+      {order.paymentStatus === "pending" ?<p className={`download-invoice progress ${order.paymentStatus}`}>
+              <span>
+         <MdPayments/>
+              </span>{" "}
+              {order.paymentStatus}
+            </p>
+            :
+            <p class={`download-invoice progress ${order.paymentStatus}`}>
+                        <span>
+         <MdPayments/>
+              </span>{" "}
+              {order.paymentStatus}
+            </p>}
+          </div>
+        </div>
+      ))
+
+}
 
 
     </div>

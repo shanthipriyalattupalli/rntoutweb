@@ -149,7 +149,8 @@ line-height: 20px; /* 142.857% */
   }
   .icon-text{
     display: flex;
-    padding: var(--Spacing-space-9, 20px);
+    height: 30%;
+    width: 10%;
     align-items: center;
     gap: 8px;    border-radius: 99px;
 border: 1px solid var(--Info-700, #2F6FED);

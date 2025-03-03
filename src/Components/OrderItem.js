@@ -11,11 +11,11 @@ import CancelOrder from "./Orders/CancelOrder";
 const laptop = "/Assets/laptop-2.jpg";
 
 const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, steps, getCurrentStep }) => {
-  console.log(orderData,"orderData in...")
-  const BASE_URL =process.env.NEXT_PUBLIC_APP_BASE_URL;
+  console.log(orderData, "orderData in...")
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [expandedSubOrderId, setExpandedSubOrderId] = useState(null);
-const[isCanceled,setIsCanceled]=useState(false)
+  const [isCanceled, setIsCanceled] = useState(false)
   // Check if orderData has subOrders
   if (!orderData || !orderData.subOrders || orderData.subOrders.length === 0) {
     return <p>No orders found</p>;
@@ -23,7 +23,7 @@ const[isCanceled,setIsCanceled]=useState(false)
 
   const handleShowTracking = (item) => {
     if (expandedSubOrderId === item._id) {
-      setExpandedSubOrderId(null); 
+      setExpandedSubOrderId(null);
     } else {
       setExpandedSubOrderId(item._id);
       onShowTracking(item);
@@ -35,8 +35,8 @@ const[isCanceled,setIsCanceled]=useState(false)
 
   return (
     <div>
-            <ToastContainer/>
-      
+      <ToastContainer />
+
       {orderData.subOrders.map((item) => (
         <div className="order-item" key={item._id}>
           {/* Order Product */}
@@ -62,18 +62,18 @@ const[isCanceled,setIsCanceled]=useState(false)
                     Write Product Review
                   </a>
                 )}
-{(item.orderStatus === "placed" || item.orderStatus === "confirmed" || item.orderStatus === "shipped") && (
-  <a className="inline-flex gap-1.5 items-center justify-center no-underline text-red-500 font-medium cursor-pointer" onClick={()=>setIsCanceled(true)}>
+                {(item.orderStatus === "placed" || item.orderStatus === "confirmed" || item.orderStatus === "shipped") && (
+                  <a className="inline-flex gap-1.5 items-center justify-center no-underline text-red-500 font-medium cursor-pointer" onClick={() => setIsCanceled(true)}>
 
-    Cancel Order
-  </a>
-)}
-              {isCanceled &&(  <div className="modal-overlay">
+                    Cancel Order
+                  </a>
+                )}
+                {isCanceled && (<div className="modal-overlay">
                   <div className="modal-content">
                     <button className="close-button" onClick={() => setIsCanceled(false)}>
                       ✕
                     </button>
-                <CancelOrder setIsCanceled={setIsCanceled} subOrderId={item._id} suborder={item}/>
+                    <CancelOrder setIsCanceled={setIsCanceled} subOrderId={item._id} suborder={item} />
                   </div>
                 </div>)}
 
@@ -81,8 +81,13 @@ const[isCanceled,setIsCanceled]=useState(false)
                   className="text-blue-500 font-semibold px-4 rounded"
                   onClick={() => handleShowTracking(item)}
                 >
-                  {expandedSubOrderId === item._id ? "Hide Tracking" : "Show Tracking"}
+                  {expandedSubOrderId === item._id ? (
+                    <>Hide Tracking &#x25BE;</> // Down arrow
+                  ) : (
+                    <>Show Tracking &#x276F;</> // Side arrow
+                  )}
                 </button>
+
               </div>
               {item.review && item.review.feedback && (
                 <div className="review-section-feedback">
@@ -100,11 +105,11 @@ const[isCanceled,setIsCanceled]=useState(false)
             </div>
           </div>
           {expandedSubOrderId === item._id && (
-                <OrderTracking selectedSubOrder={selectedSubOrder} steps={steps} getCurrentStep={getCurrentStep} />
-              )}
+            <OrderTracking selectedSubOrder={selectedSubOrder} steps={steps} getCurrentStep={getCurrentStep} />
+          )}
         </div>
       ))}
-      
+
     </div>
   );
 };

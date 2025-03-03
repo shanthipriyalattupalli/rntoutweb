@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 // import "@/styles/Cart.css";
 import '../../styles/Cart.css';
 import { FaReceipt } from "react-icons/fa";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowDropleft, IoIosArrowDropleftCircle, IoIosArrowUp } from "react-icons/io";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 import axios from "axios";
 import Sidebar from "./Sidebar/page";
@@ -13,7 +14,8 @@ import { toast, ToastContainer } from "react-toastify";
 import RenderRazorpay from "../PayModule/PayModule";
 import "react-toastify/dist/ReactToastify.css";
 import PromoCoupon from "./PromoCoupon/page";
-const cube = "/Assets/cube_fill.png";
+import { ArrowLeft } from "lucide-react";
+const cube = "/Assets/cube_fill.svg";
 const deleteicon = "/Assets/deleteicon.svg";
 const stock = "/Assets/stock.svg";
 const location = "/Assets/location.svg";
@@ -22,7 +24,8 @@ const coupon = "/Assets/coupon.svg";
 const insurance = "/Assets/insurance.svg";
 const costbreakup = "/Assets/costbreakup.svg";
 const delivery = "/Assets/delivery.svg";
-const emptycart="/Assets/emptycart.svg";
+const emptycart = "/Assets/emptycart.svg";
+const rcb='/Assets/RCB.svg'
 
 const CartPage = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -69,11 +72,11 @@ const CartPage = () => {
     const selectedStatus = isChecked;
 
     try {
- 
+
       const response = await axios.patch(
         `${BASE_URL}/cart/selection/${cartId}`,
         {
-          selected: selectedStatus, 
+          selected: selectedStatus,
         },
         {
           headers: {
@@ -81,7 +84,7 @@ const CartPage = () => {
           },
         }
       );
-console.log(response,"updated checkbox status")
+      console.log(response, "updated checkbox status")
       fetchCartDetails();
       toast.success(response.data.message);
     } catch (error) {
@@ -267,7 +270,7 @@ console.log(response,"updated checkbox status")
   const fetchCartDetails = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
-      console.log(response.data,"response in cart")
+      console.log(response.data, "response in cart")
       setCartItems(response.data.cartItems, "cartItems");
       const initialQuantities = response.data.cartItems.reduce((acc, item) => {
         acc[item.variant_id._id] = item.quantity || 1;
@@ -332,7 +335,7 @@ console.log(response,"updated checkbox status")
         couponCode: String(couponcode),
         addressId: String(selectedAddress._id),
       };
-      console.log(payload,"payload");
+      console.log(payload, "payload");
 
       // API call for order checkout
       const response = await axios.post(`${BASE_URL}/orders/checkout`, payload, {
@@ -359,7 +362,7 @@ console.log(response,"updated checkbox status")
   };
 
   const handleContinueClick = async (orderId, amount) => {
-    console.log(orderId,"order id in checkout")
+    console.log(orderId, "order id in checkout")
     try {
       const payload = {
         orderId: orderId,
@@ -375,7 +378,7 @@ console.log(response,"updated checkbox status")
 
       // Axios response data is already parsed
       if (response.data.order && response.data.order.id) {
-        console.log(response.data.order.id,"order in paymentinitate")
+        console.log(response.data.order.id, "order in paymentinitate")
         setDisplayRazorpay(true);
         setRazorpayOrderId(response.data.order.id);
       } else {
@@ -437,9 +440,9 @@ console.log(response,"updated checkbox status")
     (sum, item) => sum + (item.selected ? item.lineTotal || 0 : 0),
     0
   );
-  
+
   console.log(totalPrice);
-  
+
 
 
   return (
@@ -449,92 +452,97 @@ console.log(response,"updated checkbox status")
         <h2 className='cart-title'>
           My Cart <span className='cart-count'>{cartItems.length}</span>
         </h2>
-        {cartItems.length >0 ?
-        
-        
-        cartItems?.map((item, index) => (
-          <div key={item._id || index} className="cart-item cursor-pointer flex items-center">
-            <input
-              type="checkbox"
-              className="mr-3 w-5 h-5 accent-red-500 checked:bg-red-500 checked:border-red-500"
-              checked={item.selected} 
-              onChange={(e) => handleCheckboxChange(item._id, e.target.checked)} 
-            />
+        {cartItems.length > 0 ?
 
-            <Link
-              href={{
-                pathname: `/Products/${item.variant_id.title}`,
-                query: { id: item.variant_id._id },
-              }}
-            >
-              <img
-                src={item.variant_id.images[0]}
-                alt="Product"
-                className="item-image"
+
+          cartItems?.map((item, index) => (
+            <div key={item._id || index} className="cart-item cursor-pointer flex items-center">
+              <input
+                type="checkbox"
+                className="mr-3 w-5 h-5 accent-red-500 checked:bg-red-500 checked:border-red-500"
+                checked={item.selected}
+                onChange={(e) => handleCheckboxChange(item._id, e.target.checked)}
               />
-            </Link>
 
-            <div className="item-details">
-              <h3 className="item-name">{item.variant_id.title}</h3>
-              <p className="item-price">
-                ₹{item.unitPrice}/{item.rentalPeriod}
-              </p>
+              <Link
+                href={{
+                  pathname: `/Products/${item.variant_id.title}`,
+                  query: { id: item.variant_id._id },
+                }}
+              >
+                <img
+                  src={item.variant_id.images[0]}
+                  alt="Product"
+                  className="item-image"
+                />
+              </Link>
 
-              <div className="quantity-controls">
-                <button
-                  className="quantity-btn"
-                  onClick={() => decreaseQuantity(item.variant_id._id, item.quantity)}
-                >
-                  -
-                </button>
-                <span className="quantity">{item.quantity || 1}</span>
-                <button
-                  className="quantity-btn"
-                  onClick={() => increaseQuantity(item.variant_id._id, item.quantity)}
-                >
-                  +
-                </button>
-
-                <select
-                  className="duration-select"
-                  value={selectedOptions[item.variant_id._id]?.period || item.rentalPeriod}
-                  onChange={(e) => handleSelectChange(item.variant_id._id, e.target.value)}
-                >
-                  <option key={item._id} value={item.rentalPeriod}>
-                    {item.rentalPeriod}
-                  </option>
-                  {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
-                    <option key={rentalPrice._id} value={rentalPrice.period}>
-                      {rentalPrice.period}
-                    </option>
-                  ))}
-                </select>
-
-                {/* <p>Total: {item.lineTotal}</p> */}
-              </div>
-
-              <div className="product-right">
-                <button className="delete-btn" onClick={() => handleRemove(item._id, item.variant_id._id)}>
-                  <img src={deleteicon} className="flex align-left" />
-                </button>
-                <div className="flex gap-2">
-                  <img src={cube} />
-                  {/* <p className="stock-info">{item.variant_id.stockQuantity} stock avail.</p> */}
-                  <p className="stock-info">In stock</p>
-
+              <div className="item-details">
+                <h3 className="item-name">{item.variant_id.title}</h3>
+                <div className="product-right">
+                  <button className="delete-btn" onClick={() => handleRemove(item._id, item.variant_id._id)}>
+                    <img src={deleteicon} className="flex align-left" />
+                  </button>
                 </div>
+                <div className="flex justify-between">
+                <p className="item-price">
+                  ₹{item.unitPrice}/{item.rentalPeriod}
+                </p>
+                <div className="product-right">
+                  <div className="flex gap-2">
+                    <img src={cube} />
+                    {/* <p className="stock-info">{item.variant_id.stockQuantity} stock avail.</p> */}
+                    <p className="stock-info">In stock</p>
+
+                  </div>
+                </div>
+                </div>
+                <div className="quantity-controls">
+                  <div className="flex gap-2 items-center bg-white border rounded-md">
+                  <button
+                    className="quantity-btn"
+                    onClick={() => decreaseQuantity(item.variant_id._id, item.quantity)}
+                  >
+                    -
+                  </button>
+                  <span className="quantity">{item.quantity || 1}</span>
+                  <button
+                    className="quantity-btn"
+                    onClick={() => increaseQuantity(item.variant_id._id, item.quantity)}
+                  >
+                    +
+                  </button>
+</div>
+                  <select
+                    className="duration-select"
+                    value={selectedOptions[item.variant_id._id]?.period || item.rentalPeriod}
+                    onChange={(e) => handleSelectChange(item.variant_id._id, e.target.value)}
+                  >
+                    <option key={item._id} value={item.rentalPeriod}>
+                      {item.rentalPeriod}
+                    </option>
+                    {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
+                      <option key={rentalPrice._id} value={rentalPrice.period}>
+                        {rentalPrice.period}
+                      </option>
+                    ))}
+                  </select>
+
+                  {/* <p>Total: {item.lineTotal}</p> */}
+                </div>
+
+    
               </div>
             </div>
-          </div>
-        )):<>
-<div className="flex flex-col justify-center items-center h-3/4">
-  <img src={emptycart} className="w-auto h-auto" />
-  <h1 className="text-lg font-semibold">Empty Orders</h1>
-  <span>you haven’t place any order, to place order <span className="text-md font-semibold">"Browse Products" </span>button.</span>
-</div>
+          )) : <>
+            <div className="flex flex-col justify-center items-center h-3/4">
+              <img src={emptycart} className="w-auto h-auto" />
+              <h1 className="text-lg font-semibold">Empty Orders</h1>
+              <span>you haven’t place any order, to place order <span className="text-md font-semibold">"Browse Products" </span>button.</span>
+            </div>
 
-        </>
-      }
+          </>
+        }
 
 
 
@@ -542,7 +550,7 @@ console.log(response,"updated checkbox status")
       </div>
 
       <div className='summary-section'>
-      <div className='summary-item address' onClick={handleAddressToggle}>
+        <div className='summary-item address' onClick={handleAddressToggle}>
           <div className='address-content'>
             <img src={location} />
             <span>Select Address</span>
@@ -597,27 +605,29 @@ console.log(response,"updated checkbox status")
           </div>
         </div>
         <div className="summary-item address" onClick={handleCouponToggle}>
-  <div className="address-content">
-    <img src={coupon} alt="Coupon Icon" />
-    <span>{couponcode ? couponcode : "Promo Coupon"}</span>
+          <div className="flex justify-between align-center text-center items-center">
+            <div className="flex flex-row items-center gap-4">
+            <img src={coupon} alt="Coupon Icon" />
+            <span>{couponcode ? couponcode : "Promo Coupon"}</span>
 
-    {/* Show remove button only when a coupon is applied */}
-    {couponcode && (
-      <button 
-        className="remove-coupon-btn"
-        onClick={(e) => {
-          e.stopPropagation(); // Prevent sidebar from opening
-          setCouponCode("");
-          setDiscountedPrice(null);
-        }}
-      >
-        ✖
-      </button>
-    )}
+            {/* Show remove button only when a coupon is applied */}
+            {couponcode && (
+              <button
+                className="remove-coupon-btn"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent sidebar from opening
+                  setCouponCode("");
+                  setDiscountedPrice(null);
+                }}
+              >
+                ✖
+              </button>
+            )}
+            </div>
+            <MdOutlineKeyboardArrowRight />
 
-    <i className="fas fa-chevron-right"></i>
-  </div>
-</div>
+          </div>
+        </div>
 
         {isCoupon && (
           <PromoCoupon
@@ -648,7 +658,7 @@ console.log(response,"updated checkbox status")
             onClick={() => setIsOpen(!isOpen)}
           >
             <div className="flex items-center space-x-2">
-              <FaReceipt className="text-pink-500" />
+              <img src={rcb}/>
               <h2 className="font-poppins text-sm font-medium leading-5 text-left">Rent Cost Breakup</h2>
             </div>
             {isOpen ? (
