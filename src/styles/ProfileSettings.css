@@ -128,9 +128,9 @@
 
 .input-group {
     display: inline-flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: start;
-    justify-content: center;
+    /* justify-content: center; */
     gap: 4px;
     width: 100%;
 }

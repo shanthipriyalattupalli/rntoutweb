@@ -19,7 +19,8 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
     const [isregisterOpen, setIsRegisterOpen] = useState(false);
-    const [profile,setProfile]=useState(null)
+    const [profile,setProfile]=useState(null);
+    const [otpError, setOtpError] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 //   const mobileNumber = searchParams.get("mobileNumber");
@@ -61,13 +62,16 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
   const handleOtpVerify = async () => {
     const otpCode = otp.join("");
     console.log(otpCode, "otpcode");
+    
     if (otpCode.length < 4) {
       setErrorMessage("Please enter a valid 4-digit OTP.");
+      setOtpError(true); // Apply red border
       return;
     }
   
     setErrorMessage("");
     setIsLoading(true);
+    setOtpError(false); // Reset error state
   
     try {
       const response = await axios.post(`${BASE_URL}/users/verify-otp`, {
@@ -82,27 +86,33 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
   
       localStorage.setItem("userToken", response.data.token);
       localStorage.setItem("userId", user.id);
-      localStorage.setItem("userName", user.name || "");  // Ensuring it's never null
+      localStorage.setItem("userName", user.name || ""); // Ensuring it's never null
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("role", user.role);
-      if(!profilepic){
-      localStorage.setItem("profilePic", profile_avatar);
-      }else{
+      
+      if (!profilepic) {
+        localStorage.setItem("profilePic", profile_avatar);
+      } else {
         localStorage.setItem("profilePic", profilepic);
       }
+  
       if (fcmToken) {
         await saveFcmToken(fcmToken);
-      }  
+      }
+  
       if (!user.name || user.name === "undefined" || user.name === "null") {
         setIsRegisterOpen(true);
       } else {
+        if(!otpError){
         setIsRegisterOpen(false);
         router.push("/");
         window.location.reload();
+        }
       }
     } catch (error) {
       setIsLoading(false);
-      setErrorMessage("Something went wrong. Please try again later.");
+      setErrorMessage("Invalid OTP");
+      setOtpError(true); // Apply red border
     }
   };
   
@@ -183,42 +193,36 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
         </p>
 
         <div className="otp-inputs">
-          {otp.map((digit, index) => (
-            <input
-              key={index}
-              id={`otp-${index}`}
-              type="text"
-              maxLength="1"
-              value={digit}
-              onChange={(e) => handleChange(index, e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Backspace")
-                  handleBackspace(index, e.target.value);
-              }}
-              className="otp-input"
-            />
-          ))}
+      {otp.map((digit, index) => (
+        <input
+          key={index}
+          id={`otp-${index}`}
+          type="text"
+          maxLength="1"
+          value={digit}
+          onChange={(e) => handleChange(index, e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Backspace") handleBackspace(index, e.target.value);
+          }}
+          className={`otp-input ${otpError ? "otp-error" : ""}`} // Apply red border class on error
+        />
+      ))}
+    </div>
+
+    {errorMessage && <p className={`error-message ${errorMessage && "text-red"}`}>{errorMessage}</p>}
+
+    <button className="button" onClick={handleOtpVerify} disabled={isLoading}>
+      {isLoading ? "Verifying..." : "Continue"}
+    </button>
+
+    {isregisterOpen && (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <button className="close-button" onClick={() => setIsRegisterOpen(false)}>✕</button>
+          <Signup setIsRegisterOpen={setIsRegisterOpen} />
         </div>
-
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-
-        <button
-          className="button"
-          onClick={handleOtpVerify}
-          disabled={isLoading}
-        >
-          {isLoading ? "Verifying..." : "Continue"}
-        </button>
-        {isregisterOpen &&(
-                          <div className="modal-overlay">
-                            <div className="modal-content">
-                              <button className="close-button" onClick={() => setIsRegisterOpen(false)}>
-                                ✕
-                              </button>
-                            <Signup setIsRegisterOpen={setIsRegisterOpen}/>
-                            </div>
-                          </div>
-                        )}
+      </div>
+    )}
         <p className="otp-resend" onClick={handleSendOtp}>
           <span className="otp-resend-link">Resend OTP</span>
         </p>

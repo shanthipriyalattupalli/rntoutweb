@@ -41,12 +41,10 @@ const SellerCarouselProfile = () => {
   }, [sellerId]);
 
 
-  const slides = [
-    { id: 1, image: "/Assets/sofa.svg" },
-    { id: 2, image: "/Assets/sofa.svg" },
-    { id: 3, image: "/Assets/sofa.svg" },
-  ];
+
   const [userRatings, setUserRatings] = useState([])
+  
+
 
   const [currentSlide, setCurrentSlide] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
@@ -55,12 +53,24 @@ const SellerCarouselProfile = () => {
   
   const [activeTab, setActiveTab] = useState("products");
 
+  const bannerImages = sellerDetails?.bannerImages || []; 
+  console.log(bannerImages,"bannerImages")
+  useEffect(() => {
+    if (bannerImages.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
+      }, 3000); // Change slide every 3 seconds
+
+      return () => clearInterval(interval); // Cleanup on unmount
+    }
+  }, [bannerImages]);
+
   const handlePrev = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    setCurrentSlide((prev) => (prev === 0 ? bannerImages.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    setCurrentSlide((prev) => (prev === bannerImages.length - 1 ? 0 : prev + 1));
   };
 
 
@@ -241,32 +251,36 @@ const SellerCarouselProfile = () => {
 
   return (
     <>
-      <div className='seller-carousel-container'>
-        <div className='seller-carousel-slide'>
+ <div className="seller-carousel-container">
+    {bannerImages.length > 0 ? (
+      <>
+        <div className="seller-carousel-slide">
           <img
-            src={slides[currentSlide].image}
+            src={bannerImages[currentSlide]} // Directly using the URL from array
             alt={`Slide ${currentSlide + 1}`}
-            className='seller-carousel-image'
+            className="seller-carousel-image"
           />
         </div>
-        <button className='seller-carousel-prev-button' onClick={handlePrev}>
+        <button className="seller-carousel-prev-button" onClick={handlePrev}>
           &#x276E;
         </button>
-        <button className='seller-carousel-next-button' onClick={handleNext}>
+        <button className="seller-carousel-next-button" onClick={handleNext}>
           &#x276F;
         </button>
-        <div className='seller-carousel-indicators'>
-          {slides?.map((_, index) => (
+        <div className="seller-carousel-indicators">
+          {bannerImages.map((_, index) => (
             <span
               key={index}
-              className={`seller-carousel-indicator ${
-                index === currentSlide ? "active" : ""
-              }`}
+              className={`seller-carousel-indicator ${index === currentSlide ? "active" : ""}`}
               onClick={() => setCurrentSlide(index)}
             ></span>
           ))}
         </div>
-      </div>
+      </>
+    ) : (
+      <p>Loading banners...</p> // Placeholder for when images are not yet available
+    )}
+  </div>
 
       <div className='seller-profile-container'>
         {/* Header Section */}

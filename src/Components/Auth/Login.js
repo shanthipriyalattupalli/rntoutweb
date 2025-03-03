@@ -18,38 +18,31 @@ const Login = ({ setIsLoginOpen }) => {
   const [email, setEmail] = useState(""); // For email login
   const [password, setPassword] = useState(""); // For email login
   const [isLoading, setIsLoading] = useState(false); // Loading state
-  const [errorMessage, setErrorMessage] = useState(""); // Error messages
-  const [userData, setUserData] = useState(""); // User data
-  const [loginError, setLoginError] = useState(""); //
+  const [isInvalid, setIsInvalid] = useState(false);
   const router = useRouter();
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isOtpOpen, setIsOtpOpen] = useState(false);
   // const [isregisterOpen, setIsRegisterOpen] = useState(false);
   // Handle OTP API integration
   const handleSendOtp = async () => {
-    if (!mobileNumber || !/^\+?[0-9]{10,13}$/.test(mobileNumber)) {
-      toast.error("Please enter a valid mobile number.");
+    if (!mobileNumber || !/^\d{10}$/.test(mobileNumber)) {
+      setIsInvalid(true); // Mark input as invalid
+      toast.error("Please enter a valid 10-digit mobile number.");
       return;
     }
+    setIsInvalid(false); // Reset validation
     setIsLoading(true);
-
+  
     try {
       const response = await axios.post(`${BASE_URL}/users/send-otp`, {
         phoneNumber: mobileNumber,
       });
       console.log(response);
       setIsLoading(false);
-
+  
       if (response.status === 200) {
         toast.success(response.data.message || "OTP sent successfully!");
-        console.log(mobileNumber, "mobilenum in login page");
-        // router.push({
-        //   pathname: "/Otp",
-        //   query: { mobileNumber: mobileNumber },
-        // });
-        // setIsLoginOpen(false)
-        setIsOtpOpen(true)
-        // router.push(`/Otp?mobileNumber=${encodeURIComponent(mobileNumber)}`);
+        setIsOtpOpen(true);
       } else {
         toast.error(response.data.error || "Failed to send OTP. Try again.");
       }
@@ -58,6 +51,7 @@ const Login = ({ setIsLoginOpen }) => {
       toast.error("Something went wrong. Please try again later.");
     }
   };
+  
 
   // Handle Email and Password Login
   const handleEmailLogin = async () => {
@@ -163,50 +157,50 @@ const Login = ({ setIsLoginOpen }) => {
             </div> */}
 
             {isPhoneSelected && (
-              <div>
-                <p className='login-p1 m-0'>Mobile Number    <span style={{ color: 'red' }}>*</span></p>
-
-                <input
-                  type='tel'
-                  placeholder='1234567890'
-                  className='input'
-                  value={mobileNumber}
-                  onChange={(e) => {
-                    let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
-
-                    if (value.startsWith("+91") && value.length > 10) {
-                      value = value.slice(3); 
-                    }
-                    if (value.startsWith("+1") && value.length > 10) {
-                      value = value.slice(2); 
-                    }
-
-                    if (value.length > 10) {
-                      value = value.slice(0, 10); // Limit to 10 digits
-                    }
-
-                    setMobileNumber(value);
-                  }}
-                />
-
-                <button
-                  className='button'
-                  onClick={handleSendOtp}
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Sending..." : "Get OTP"}
-                </button>
-                {isOtpOpen && (
-                  <div className="modal-overlay">
-                    <div className="modal-content">
-                      <button className="close-button" onClick={() => setIsOtpOpen(false)}>
-                        ✕
-                      </button>
-                      <Otp mobileNumber={mobileNumber} setIsOtpOpen={setIsOtpOpen} />
-                    </div>
-                  </div>
-                )}
-              </div>
+           <div>
+           <p className={`login-p1 m-0 ${isInvalid ? "invalid-number" : ""}`}>
+             Mobile Number <span style={{ color: "red" }}>*</span>
+           </p>
+       
+           <input
+             type="tel"
+             placeholder="1234567890"
+             className={`input ${isInvalid ? "invalid-input" : ""}`}
+             value={mobileNumber}
+             onChange={(e) => {
+               let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+       
+               if (value.startsWith("+91") && value.length > 10) {
+                 value = value.slice(3);
+               }
+               if (value.startsWith("+1") && value.length > 10) {
+                 value = value.slice(2);
+               }
+       
+               if (value.length > 10) {
+                 value = value.slice(0, 10);
+               }
+       
+               setMobileNumber(value);
+               setIsInvalid(false); // Reset validation on input change
+             }}
+           />
+       
+           <button className="button" onClick={handleSendOtp} disabled={isLoading}>
+             {isLoading ? "Sending..." : "Get OTP"}
+           </button>
+       
+           {isOtpOpen && (
+             <div className="modal-overlay">
+               <div className="modal-content">
+                 <button className="close-button" onClick={() => setIsOtpOpen(false)}>
+                   ✕
+                 </button>
+                 <Otp mobileNumber={mobileNumber} setIsOtpOpen={setIsOtpOpen} />
+               </div>
+             </div>
+           )}
+         </div>
             )}
 
             {!isPhoneSelected && (

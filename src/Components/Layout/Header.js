@@ -185,7 +185,7 @@ function Header() {
         console.error("Error fetching variants:", error);
       }
     } else {
-      setVariants([]); // Clear variants if searchTerm is less than 3
+      setVariants([]); 
       setShowSuggestions(false);
     }
   };
@@ -224,7 +224,7 @@ function Header() {
   <div className="hidden sm:flex items-center relative w-full max-w-xs ml-4">
     <SearchInput  value={searchValue} onChange={(e) => handleSearchInputChange(e.target.value)}  className="w-[250px]"/>
     {showSuggestions && variants.length > 0 && (
-      <ul className="absolute left-0 w-full bg-white border rounded shadow mt-[32rem] z-40">
+      <ul className="absolute left-0 w-full bg-white border rounded shadow top-[40px] z-40">
         {variants.slice(0, 10).map((variant) => (
             <li
               key={variant._id}
@@ -286,7 +286,7 @@ function Header() {
 
     {/* Profile & Sign In/Sign Up */}
     <nav>
-      {name || token ? (
+      {name || !token === "undefined"? (
         <div
           onClick={() => router.push("/profile")}
           className="w-full flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 cursor-pointer"

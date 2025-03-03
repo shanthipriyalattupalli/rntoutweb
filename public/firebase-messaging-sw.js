@@ -4,13 +4,13 @@ importScripts(
 );
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCXrABKNar-okOGSL02ZQwvCUVwytA-SF8",
-  authDomain: "testings-61b1e.firebaseapp.com",
-  projectId: "testings-61b1e",
-  storageBucket: "testings-61b1e.firebasestorage.app",
-  messagingSenderId: "424655797418",
-  appId: "1:424655797418:web:8e807cc3adb51800aba4d3",
-  measurementId: "G-K1ZLTX68N7"
+  apiKey: "AIzaSyD6c9EO44Za_692sMUNCw4nyWsZT-w4K3U",
+  authDomain: "rntout-28514.firebaseapp.com",
+  projectId: "rntout-28514",
+  storageBucket: "rntout-28514.firebasestorage.app",
+  messagingSenderId: "637936986952",
+  appId: "1:637936986952:web:5c41006ff48abad233217d",
+  measurementId: "G-7B7BMMHMN7"
 };
 
 firebase.initializeApp(firebaseConfig);
