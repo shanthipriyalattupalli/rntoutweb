@@ -83,10 +83,8 @@ const SellerCarouselProfile = () => {
   const getPaginationNumbers = () => {
     const pages = [];
     if (totalPages <= 10) {
-      // Show all pages if total pages are 10 or less
       for (let i = 1; i <= totalPages; i++) pages.push(i);
     } else {
-      // Always show first 3 pages, last page, and ellipsis when necessary
       pages.push(1, 2, 3);
       if (currentPage > 5) pages.push("...");
       if (currentPage > 4 && currentPage < totalPages - 3) pages.push(currentPage);
