@@ -27,17 +27,25 @@ const Banner = ({ banners, isLoading }) => {
     <div className="w-full">
       {isLoading
         ? <Shimmer /> // Show shimmer when loading
-        : banners.map((banner, index) => (
+        : (
+          <>
+ {         banners.map((banner, index) => (
           <div className="relative px-[80px] py-10" key={index}>
-            {/* Custom Navigation Buttons */}
+
             <button
-              className={`absolute left-4 top-1/2 transform -translate-y-1/2 z-10 
+              className={`absolute left-2 sm:left-[5rem] md:left-[5rem] lg:left-[5rem] top-1/2 transform -translate-y-1/2 z-10 
                 ${activeIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
               onClick={() => swiperRef.current?.slidePrev()}
               disabled={activeIndex === 0}
             >
-              <img src={left} alt="Previous" className="rotate-360 ml-16" />
+              <img src={left} alt="Previous" className="rotate-360" />
             </button>
+            <button className={`absolute right-2  sm:right-[5rem] md:right-[5rem] lg:right-[5rem] top-1/2 transform -translate-y-1/2 z-20 
+              ${activeIndex === (banner.images.length - 1) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} 
+              onClick={() => swiperRef.current?.slideNext()} disabled={activeIndex === (banner.images.length - 1)} >
+             <img src={left} alt="Next" className="rotate-180 " />
+             </button>
+            
           <Swiper
             onSwiper={(swiper) => (swiperRef.current = swiper)}
             onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
@@ -74,7 +82,7 @@ const Banner = ({ banners, isLoading }) => {
             ))}
           </Swiper>
         </div>
-      ))}
+      ))}</>)}
     </div>
   );
 };
