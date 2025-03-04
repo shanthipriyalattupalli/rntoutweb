@@ -433,20 +433,20 @@ const ProductPage = () => {
             {/* Duration Selection */}
             <div>
               <h3 className='font-medium mb-3 text-sm'>SELECT DURATION</h3>
-              <div className='grid grid-cols-5 gap-3 bg-white'>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 bg-white">
                 {rentalPrice.map((price) => (
                   <button
                     key={price._id}
-                    className={`p-3 rounded-lg border text-center ${selectedDuration === price.period
-                      ? "border-[#F48003] bg-[#FFF5EB]"
-                      : "border-gray-200"
-                      }`}
+                    className={`flex flex-col items-center justify-center px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 rounded-lg border text-center w-full sm:w-auto 
+                   ${selectedDuration === price.period ? "border-[#F48003] bg-[#FFF5EB]" : "border-gray-200"}`}
                     onClick={() => handleselectedDuration(price.period)}
                   >
-                    <div className='text-xs'>{price.period}</div>
-                    <div className='font-bold'>₹{price.price}</div>
+                    <div className="text-[10px] sm:text-xs md:text-sm">{price.period}</div>
+                    <div className="font-bold text-sm sm:text-base md:text-lg">₹{price.price}</div>
                   </button>
                 ))}
+
+
                 {/* <button
                   className={`p-3 rounded-lg border text-center ${selectedcustomDuration === "Custom"
                     ? "border-[#F48003] bg-[#FFF5EB]"
@@ -550,48 +550,52 @@ const ProductPage = () => {
             </div>
 
             {/* Delivery Info */}
-            <div className='flex items-center justify-around bg-white p-3 border border-slate-200 rounded-xl'>
-              <div className='flex gap-2 items-center text-center  justify-center'>
-                {/* <Truck className='w-5 h-5 mr-2' /> */}
-                <img src={truck} />
-                <span className=' text-sm text-[#070707CC] font-[600]'>
-                  within 2 days
-                </span>
-              </div>|
-              <div className='flex gap-2 items-center text-center  justify-center'>
-                {/* <Truck className='w-5 h-5 mr-2' /> */}
-                <img src={estimation} />
-                <span className=' text-sm text-[#070707CC] font-[600]'>
+            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-around bg-white p-3 border border-slate-200 rounded-xl gap-3 sm:gap-0">
+              <div className="flex gap-2 items-center text-center justify-center">
+                <img src={truck} className="w-4 sm:w-5 h-4 sm:h-5" />
+                <span className="text-xs sm:text-sm text-[#070707CC] font-[600]">within 2 days</span>
+              </div>
+
+              <span className="hidden sm:block">|</span>
+
+              <div className="flex gap-2 items-center text-center justify-center">
+                <img src={estimation} className="w-4 sm:w-5 h-4 sm:h-5" />
+                <span className="text-xs sm:text-sm text-[#070707CC] font-[600]">
                   {formattedStartDate} {formattedEndDate === "NaN Invalid Date ‘aN" ? "" : "-"}{formattedEndDate === "NaN Invalid Date ‘aN" ? "" : formattedEndDate}
                 </span>
               </div>
-              <span>|</span>
-              {product.stockQuantity > 0 ? <div className='flex gap-2 items-center text-blue-600 text-[#070707CC] font-[600] text-sm'>
-                {/* <span className='mr-2 '>✓</span> */}
-                <img src={stock} />
-                In stock
-              </div> :
-                <div className='flex gap-2 items-center text-red-500 text-[#070707CC] font-[600] text-sm'>
-                  {/* <span className='mr-2 '>✓</span> */}
-                  <img src={stock} />
+
+              <span className="hidden sm:block">|</span>
+
+              {product.stockQuantity > 0 ? (
+                <div className="flex gap-2 items-center text-blue-600 text-[#070707CC] font-[600] text-xs sm:text-sm">
+                  <img src={stock} className="w-4 sm:w-5 h-4 sm:h-5" />
+                  In stock
+                </div>
+              ) : (
+                <div className="flex gap-2 items-center text-red-500 text-[#070707CC] font-[600] text-xs sm:text-sm">
+                  <img src={stock} className="w-4 sm:w-5 h-4 sm:h-5" />
                   Out of stock
-                </div>}
+                </div>
+              )}
             </div>
+
 
             {/* Services */}
             <div>
-              <h3 className='font-medium mb-3 text-sm'>SERVICES</h3>
-              <div className='grid grid-cols-4 gap-4'>
+              <h3 className="font-medium mb-3 text-sm">SERVICES</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {services.map((service, index) => (
-                  <div key={index} className='text-center border rounded-md py-4'>
-                    <div className='flex justify-center text-blue-600 mb-2'>
-                      <img src={service.icon} />
+                  <div key={index} className="text-center border rounded-md py-4">
+                    <div className="flex justify-center text-blue-600 mb-2">
+                      <img src={service.icon} className="w-6 sm:w-8 h-6 sm:h-8" />
                     </div>
-                    <div className='text-xs'>{service.label}</div>
+                    <div className="text-xs sm:text-sm">{service.label}</div>
                   </div>
                 ))}
               </div>
             </div>
+
           </div>
         </div>
 
@@ -719,7 +723,7 @@ const ProductPage = () => {
             <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
           </div>
         </div>
-{/* 
+        {/* 
         <div className="pt-3 w-1/2 justify-center text-center">
           <button className="border b-orange-200 bg-orange-400 p-3 w-80 rounded-lg text-white font-semibold" onClick={() => setIsReview(true)}>write a review</button>
         </div> */}

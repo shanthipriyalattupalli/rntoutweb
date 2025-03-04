@@ -13,29 +13,30 @@ const left = '/Assets/leftarrow.svg';
 const Banner = ({ banners }) => {
   const router = useRouter();
   const swiperRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0); // Track active slide
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <div className="w-full">
       {banners.map((banner, index) => (
-        <div className="relative px-[80px] py-10" key={index}>
-          {/* Custom Navigation Buttons */}
+        <div className="relative px-5 sm:px-10 md:px-16 lg:px-20  py-6 md:py-10" key={index}>
+
+          {/* Navigation Buttons */}
           <button
-            className={`absolute left-4 top-1/2 transform -translate-y-1/2 z-10 
+            className={`absolute left-2 sm:left-[5rem] md:left-[4rem] lg:left-[5rem] top-1/2 transform -translate-y-1/2 z-10 
               ${activeIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
             onClick={() => swiperRef.current?.slidePrev()}
             disabled={activeIndex === 0}
           >
-            <img src={left} alt="Previous" className="rotate-360 ml-16" />
+            <img src={left} alt="Previous" className="rotate-360 w-6 sm:w-8" />
           </button>
 
           <button
-            className={`absolute right-4 top-1/2 transform -translate-y-1/2 z-10 
+            className={`absolute right-2 sm:right-[5rem] md:right-[4rem] lg:right-[5rem] top-1/2 transform -translate-y-1/2 z-10 
               ${activeIndex === (banner.images.length - 1) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
             onClick={() => swiperRef.current?.slideNext()}
             disabled={activeIndex === (banner.images.length - 1)}
           >
-            <img src={left} alt="Next" className="rotate-180 mr-16" />
+            <img src={left} alt="Next" className="rotate-180 w-6 sm:w-8" />
           </button>
 
           <Swiper
@@ -45,25 +46,25 @@ const Banner = ({ banners }) => {
             pagination={{ clickable: true }}
             modules={[Navigation, Pagination, Autoplay]}
             autoplay={{ delay: 3000 }}
-            className="rounded-[40px] border border-gray-200 h-[500px]"
+            className="rounded-lg md:rounded-[40px] border border-gray-200 h-[300px] sm:h-[400px] md:h-[500px]"
           >
             {banner.images?.map((image, idx) => (
-              <SwiperSlide key={idx} className="h-1/2">
-                <div className="relative h-1/2">
+              <SwiperSlide key={idx} className="h-full">
+                <div className="relative h-full">
                   <img
                     src={image}
                     alt={`Slide ${idx + 1}`}
-                    className="w-full h-[500px] rounded-lg"
+                    className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover rounded-lg"
                   />
                   <div className="absolute inset-0 bg-black opacity-0"></div>
-                  <div className="absolute top-28 left-10 text-slate-600">
-                    <h1 className="text-5xl font-bold">Affordable Beds</h1>
-                    <p className="text-3xl">Unmatched Comfort!</p>
-                    <p className="mt-8 text-lg">
+                  <div className="absolute top-16 sm:top-24 md:top-28 left-4 sm:left-10 text-slate-600 text-sm sm:text-base md:text-lg">
+                    <h1 className="text-xl sm:text-3xl md:text-5xl font-bold">Affordable Beds</h1>
+                    <p className="text-sm sm:text-xl">Unmatched Comfort!</p>
+                    <p className="mt-4 sm:mt-6 text-xs sm:text-lg">
                       Choose from our wide range of collections starting at just ₹199/month.
                     </p>
                     <button
-                      className="mt-4 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg"
+                      className="mt-4 px-4 sm:px-6 py-2 sm:py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg"
                       onClick={() => router.push(banner.link)}
                     >
                       Rent Now!
