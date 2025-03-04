@@ -47,18 +47,21 @@ export async function requestPermission() {
   }
 }
 
-onMessage(messaging, (payload) => {
-  console.log("Foreground Message Received:", payload);
+if (messaging) {
+  onMessage(messaging, (payload) => {
+    console.log("Foreground Message Received:", payload);
 
-  // Check if notifications are granted
-  if (Notification.permission === "granted") {
-    new Notification(payload.notification.title, {
-      body: payload.notification.body,
-      icon: payload.notification.image || "/firebase-logo.png",
-    });
-  } else {
-    console.warn("Notifications are not allowed by the user.");
-  }
-});
+    // Check if notifications are granted
+    if (Notification.permission === "granted") {
+      new Notification(payload.notification.title, {
+        body: payload.notification.body,
+        icon: payload.notification.image || "/firebase-logo.png",
+      });
+    } else {
+      console.warn("Notifications are not allowed by the user.");
+    }
+  });
+}
+
 
 export { app, messaging };
