@@ -10,13 +10,34 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 const left = '/Assets/leftarrow.svg';
 
-const Banner = ({ banners }) => {
+const Banner = ({ banners, isLoading }) => {
   const router = useRouter();
   const swiperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  // Shimmer Placeholder
+  const Shimmer = () => (
+    <div className="relative px-[80px] py-10">
+      <div className="rounded-[40px] border border-gray-200 h-[500px] bg-gray-200 animate-pulse"></div>
+    </div>
+  );
+  const [activeIndex, setActiveIndex] = useState(0);
+
   return (
     <div className="w-full">
+      {isLoading
+        ? <Shimmer /> // Show shimmer when loading
+        : banners.map((banner, index) => (
+          <div className="relative px-[80px] py-10" key={index}>
+            {/* Custom Navigation Buttons */}
+            <button
+              className={`absolute left-4 top-1/2 transform -translate-y-1/2 z-10 
+                ${activeIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+              onClick={() => swiperRef.current?.slidePrev()}
+              disabled={activeIndex === 0}
+            >
+              <img src={left} alt="Previous" className="rotate-360 ml-16" />
+            </button>
       {banners.map((banner, index) => (
         <div className="relative px-5 sm:px-10 md:px-16 lg:px-20  py-6 md:py-10" key={index}>
 
@@ -30,6 +51,14 @@ const Banner = ({ banners }) => {
             <img src={left} alt="Previous" className="rotate-360 w-6 sm:w-8" />
           </button>
 
+            <button
+              className={`absolute right-4 top-1/2 transform -translate-y-1/2 z-10 
+                ${activeIndex === (banner.images.length - 1) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+              onClick={() => swiperRef.current?.slideNext()}
+              disabled={activeIndex === (banner.images.length - 1)}
+            >
+              <img src={left} alt="Next" className="rotate-180 mr-16" />
+            </button>
           <button
             className={`absolute right-2 sm:right-[5rem] md:right-[4rem] lg:right-[5rem] top-1/2 transform -translate-y-1/2 z-10 
               ${activeIndex === (banner.images.length - 1) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
@@ -39,6 +68,43 @@ const Banner = ({ banners }) => {
             <img src={left} alt="Next" className="rotate-180 w-6 sm:w-8" />
           </button>
 
+            <Swiper
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+              navigation={false}
+              pagination={{ clickable: true }}
+              modules={[Navigation, Pagination, Autoplay]}
+              autoplay={{ delay: 3000 }}
+              className="rounded-[40px] border border-gray-200 h-[500px]"
+            >
+              {banner.images?.map((image, idx) => (
+                <SwiperSlide key={idx} className="h-1/2">
+                  <div className="relative h-1/2">
+                    <img
+                      src={image}
+                      alt={`Slide ${idx + 1}`}
+                      className="w-full h-[500px] rounded-lg"
+                    />
+                    <div className="absolute inset-0 bg-black opacity-0"></div>
+                    <div className="absolute top-28 left-10 text-slate-600">
+                      <h1 className="text-5xl font-bold">Affordable Beds</h1>
+                      <p className="text-3xl">Unmatched Comfort!</p>
+                      <p className="mt-8 text-lg">
+                        Choose from our wide range of collections starting at just ₹199/month.
+                      </p>
+                      <button
+                        className="mt-4 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg"
+                        onClick={() => router.push(banner.link)}
+                      >
+                        Rent Now!
+                      </button>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        ))}
           <Swiper
             onSwiper={(swiper) => (swiperRef.current = swiper)}
             onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}

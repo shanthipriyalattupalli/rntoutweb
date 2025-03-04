@@ -188,13 +188,14 @@ line-height: 32px; /* 145.455% */
   display: -webkit-box;
   -webkit-line-clamp: 1; /* Limit to 2 lines */
   -webkit-box-orient: vertical;
+  width: 90%;
   overflow: hidden;
   font-weight: 600;
   font-size: 14px;
   text-overflow: ellipsis;
   white-space: normal;
   max-height: 3em; /* Adjust based on your line height */
-  line-height: 1.5em; /* Ensure proper spacing */
+  line-height: 2em; /* Ensure proper spacing */
   word-wrap: break-word;
 }
 
@@ -237,7 +238,7 @@ line-height: 18px; /* 150% */
 }
 
 .action-menu {
-  position: absolute;
+  /* position: absolute; */
   display: inline-block;
   top:10px;
   right:23px;
@@ -262,8 +263,8 @@ line-height: 18px; /* 150% */
   gap:6px;
   display: none;
   position: absolute;
-  right: 0;
-  top:18px;
+  right: 25px;
+  bottom:10px;
   background-color: #fff;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
@@ -276,7 +277,7 @@ line-height: 18px; /* 150% */
 
 }
 
-.action-menu:hover   .dropdown-menu {
+.action-menu:hover .dropdown-menu {
   display: block;
 }
 

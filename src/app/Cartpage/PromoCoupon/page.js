@@ -122,6 +122,7 @@ const handleApply = async (couponId, couponcode, maxDiscountAmount, minRentAmoun
 
   return (
     <div>
+      <ToastContainer/>
     <div className='sidebar-overlay' onClick={onClose}>
       <div className='sidebar' onClick={(e) => e.stopPropagation()}>
         <div className='sidebar-header'>

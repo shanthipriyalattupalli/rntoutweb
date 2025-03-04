@@ -1,19 +1,22 @@
 // Import the functions you need
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import axios from "axios";
 
 // Ensure code runs only in browser
 const isBrowser = typeof window !== "undefined";
+const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
 // Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyCXrABKNar-okOGSL02ZQwvCUVwytA-SF8",
-  authDomain: "testings-61b1e.firebaseapp.com",
-  projectId: "testings-61b1e",
-  storageBucket: "testings-61b1e.firebasestorage.app",
-  messagingSenderId: "424655797418",
-  appId: "1:424655797418:web:8e807cc3adb51800aba4d3",
-  measurementId: "G-K1ZLTX68N7"
+  apiKey: "AIzaSyD6c9EO44Za_692sMUNCw4nyWsZT-w4K3U",
+  authDomain: "rntout-28514.firebaseapp.com",
+  projectId: "rntout-28514",
+  storageBucket: "rntout-28514.firebasestorage.app",
+  messagingSenderId: "637936986952",
+  appId: "1:637936986952:web:5c41006ff48abad233217d",
+  measurementId: "G-7B7BMMHMN7"
 };
 
 // Initialize Firebase
@@ -21,6 +24,26 @@ const app = initializeApp(firebaseConfig);
 
 // Messaging (Only in browser)
 const messaging = isBrowser ? getMessaging(app) : null;
+
+
+   const saveFcmToken = async (fcmToken) => {
+    if (!token) return;
+     try {
+ 
+      const response= await axios.post(
+         `${BASE_URL}/users/save-fcm-token`,
+         { fcmToken },
+         {
+           headers: {
+             Authorization: `Bearer ${token}`,
+           },
+         }
+       );
+       console.log("FCM Token saved successfully",response);
+     } catch (error) {
+       console.error("Error saving FCM token:", error);
+     }
+   };
 
 // Register service worker and get token
 export async function requestPermission() {
@@ -32,13 +55,18 @@ export async function requestPermission() {
       // 🔹 Register service worker before getting token
       const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
 
-      const token = await getToken(messaging, {
-        vapidKey: "BPLGIvQ-9aMp31vTuUGfxxLYccS4ICe0ny1AoYRIsuUZJe_H_sYTq06-gUKTXuviow2xqcG-EORWma66CXX_0wE",
+      const fcmtoken = await getToken(messaging, {
+        vapidKey: "BJoiDFvVi8iMCZdlYBXfomD8McGhsFuxCRUG3mzhN47CWGYl_U2x34d17p8HRkqpwXse7DvtWmD-DdRtXdowwlw",
         serviceWorkerRegistration: registration, // Pass service worker registration
       });
 
-      console.log("Firebase Token:", token);
-      return token;
+   console.log("Firebase Token:", fcmtoken);
+      if(fcmtoken){
+
+        localStorage.setItem("fcmToken",fcmtoken);
+         saveFcmToken(fcmtoken)
+      }
+      return fcmtoken;
     } else {
       console.warn("Notification permission denied");
     }
@@ -47,18 +75,21 @@ export async function requestPermission() {
   }
 }
 
-onMessage(messaging, (payload) => {
-  console.log("Foreground Message Received:", payload);
+if (messaging) {
+  onMessage(messaging, (payload) => {
+    console.log("Foreground Message Received:", payload);
 
-  // Check if notifications are granted
-  if (Notification.permission === "granted") {
-    new Notification(payload.notification.title, {
-      body: payload.notification.body,
-      icon: payload.notification.image || "/firebase-logo.png",
-    });
-  } else {
-    console.warn("Notifications are not allowed by the user.");
-  }
-});
+    // Check if notifications are granted
+    if (Notification.permission === "granted") {
+      new Notification(payload.notification.title, {
+        body: payload.notification.body,
+        icon: payload.notification.image || "/rntout.png"   
+      });
+    } else {
+      console.warn("Notifications are not allowed by the user.");
+    }
+  });
+}
+
 
 export { app, messaging };

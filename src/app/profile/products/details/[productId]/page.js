@@ -267,9 +267,9 @@ const MainContent = () => {
   setFormData(
     (prevData) => ({
      ...prevData,
-      categoryId: response.data.categoryId._id,
-      subCategoryId: response.data.subCategoryId._id,
-      productId:response.data.productId._id
+      categoryId: response.data.categoryId?._id,
+      subCategoryId: response.data.subCategoryId?._id,
+      productId:response.data.productId?._id
     })
   )
         // Map fetched itemDetails to productDetails format

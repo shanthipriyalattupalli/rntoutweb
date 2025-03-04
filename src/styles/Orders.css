@@ -84,7 +84,7 @@
     min-height: 44px;
     display: inline-flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 9px;
     
 }
 .Orders_page_section .product-info > h4 {

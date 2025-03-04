@@ -19,6 +19,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
   const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
   const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
   const [activeModalIndex, setActiveModalIndex] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
   // const [token, setToken] = useState("");
 
   // useEffect(() => {
@@ -91,6 +92,9 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
+    // Prevent entering more than 10 digits for mobile number
+    if (name === "mobile" && value.length > 10) return;
+
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
@@ -98,6 +102,14 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
   };
 
   const handleSaveAddress = async () => {
+    // Validate mobile number
+    if (!formData.mobile || formData.mobile.length !== 10) {
+      setErrorMessage("Mobile number must be 10 digits.");
+      return;
+    }
+
+    setErrorMessage(""); // Reset error message if valid
+
     try {
       const response = await axios.post(
         `${BASE_URL}/profile/add-address`,
@@ -109,16 +121,16 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
         }
       );
       console.log(response.data, "successful");
-      toast.success(response.data.message)
+      toast.success(response.data.message);
       setFormData(initialFormData); // Reset the form
       setIsAddAddress(false); // Return to address list view
       fetchAddress();
     } catch (error) {
-      // console.error("Error saving address:", error);
-      const errorResponse = error.response.data.message
-      const errorMessage = errorResponse.details.length > 0 ? errorResponse.details[0].message : null;
-      console.error(errorMessage)
-      toast.error(errorMessage)
+      const errorResponse = error.response.data.message;
+      const errorMessages =
+        errorResponse.details.length > 0 ? errorResponse.details[0].message : null;
+      console.error(errorMessages);
+      toast.error(errorMessages);
     }
   };
 
@@ -239,7 +251,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
               </button>
             </div>
             <div className='address-form'>
-            <label className="pb-2">Type<span className="text-red-500">*</span></label>
+              <label className="pb-2">Type<span className="text-red-500">*</span></label>
 
               <div className='form-select'>
                 {["Home", "Office", "Hotel", "Others"].map((item) => (
@@ -263,18 +275,21 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                 onChange={handleInputChange}
                 required
               />
-
-              <label className="pt-4">Mobile <span className="text-red-500">*</span></label>
+              <label className="pt-4">
+                Mobile <span className="text-red-500">*</span>
+              </label>
 
               <input
                 type="number"
                 placeholder="Receiver’s contact number"
-                className="text-input"
+                className={`text-input ${errorMessage ? "border-red-500" : ""}`}
                 name="mobile"
                 value={formData.mobile}
                 onChange={handleInputChange}
                 required
               />
+
+              {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
               <label className="pt-4">Flat/ House no/ Floor / Building<span className="text-red-500">*</span></label>
 
               <input
@@ -427,7 +442,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
 
                     <div>
                       <p>
-                        {address.flatOrHouseNo}, {address.street}, {address.city}, {address.state},{" "}
+                        {address.flatOrHouseNo},{address.street},{address.city},{address.state},{" "}
                         {address.country}
                       </p>
                       <p>({address.zip})</p>

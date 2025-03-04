@@ -26,6 +26,7 @@ export default function BusinessInformation2() {
   const [businessId, setBusinessId] = useState();
   const [isEditable, setIsEditable] = useState(false);
   const [previewProfileImage, setPreviewProfileImage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // useEffect(() => {
   //   const userId = localStorage.getItem("userId");
@@ -92,6 +93,7 @@ export default function BusinessInformation2() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const keys = name.split(".");
+    if (name === "contactPhone" && value.length > 10) return;
     setFormData((prevFormData) => {
       const updatedFormData = { ...prevFormData };
       let temp = updatedFormData;
@@ -140,6 +142,14 @@ export default function BusinessInformation2() {
 
 
   const handleBusinessInformation = async () => {
+    if (!formData.businessName ||!formData.storeName ||!formData.businessAddress.full ||!formData.taxId ||!formData.contactEmail ||!formData.contactPhone ||!formData.storeDescription ||!formData.bankName ||!formData.accountNumber ||!formData.ifsc ||!formData.bankBranchAddress.full) {
+      toast.error("This fields are required");
+      return;
+    }
+    if (!formData.contactPhone  || formData.contactPhone.length !== 10) {
+      setErrorMessage("Mobile number must be 10 digits.");
+      return;
+    }
     try {
       const formDataToSend = new FormData();
 
@@ -416,13 +426,17 @@ export default function BusinessInformation2() {
                 <div className="input-item">
                   <label htmlFor="mobile-number">Mobile Number</label>
                   <input id="mobile-number"
-                    type="text"
+                    type="number"
                     placeholder="Enter mobile number"
+                className={`${errorMessage ? "border-red-500" : ""}`}
                     name='contactPhone'
                     value={formData.contactPhone}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
+              {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+
                 </div>
+                
                 <div className="input-item">
                   <label htmlFor="email-address">Email Address</label>
                   <input id="email-address"

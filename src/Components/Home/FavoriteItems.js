@@ -64,7 +64,7 @@ const FavoriteItem = ({ product,fetchFavorites}) => {
     rentalPrice,
     _id,
   } = product;
-  console.log(rentalAvailability,"favorites products")
+  // console.log(rentalAvailability,"favorites products")
 
   // console.log(rentalPrice, "rental price");
   const formattedDate = new Date(

@@ -2,12 +2,15 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import Link from 'next/link'
 import '../../styles/ProfileSettings.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const profile_avatar = "/Assets/profile_avatar.png";
 const Photo = "/Assets/Photo.png";
 import { useRouter } from 'next/navigation';
+import { IoMdArrowRoundBack } from "react-icons/io";
+
 
 export default function ProfileSettings() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -171,7 +174,8 @@ export default function ProfileSettings() {
       <ToastContainer />
 
       <div className="item-header">
-        <h2>Profile Settings</h2>
+   <Link href='/' className='flex flex-row gap-1'><IoMdArrowRoundBack style={{ marginRight: "12px" }} /> Profile Settings
+               </Link>
 
         <div className="flex items-center space-x-4">
           <a className="text-green-600 font-medium text-sm cursor-pointer" onClick={() => router.push("/profile/business-information/Kyc")}>

@@ -8,6 +8,24 @@
   /* height: 100vh; */
   background-color: #f4f4f9;
 }
+.input {
+  border: 2px solid #ccc; 
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border 0.3s ease-in-out;
+}
+
+.input.invalid-input {
+  border: 2px solid red !important; 
+  /* background-color: #ffe6e6 !important; */
+  box-shadow: 0 0 2px rgb(212, 120, 120) !important;
+}
+
+.invalid-number{
+  color: red !important;
+
+}
 
 .login-logo {
   width: 150px;

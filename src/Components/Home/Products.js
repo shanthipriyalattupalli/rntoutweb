@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { ToastContainer } from "react-toastify";
+import ProductCard from "../Shimmer/ProductCard";
 
 const pro1 = "/Assets/laptop-1.jpg";
 const pro2 = "/Assets/laptop-2.jpg";
@@ -30,11 +31,13 @@ const Products = ({ products, categoryId }) => {
 
   {/* Product Grid */}
   <div className='grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-2 sm:gap-4 md:gap-6 2xl:gap-10 gap-3   mt-3'>
-    <Suspense fallback={<div>Loading...</div>}>
+
       {products.map((product) => (
+            <Suspense key={product._id} fallback={<ProductCard/>}>
         <ProductItems key={product._id} product={product} />
+        </Suspense>
       ))}
-    </Suspense>
+
   </div>
 
   {/* View All Button Section */}
