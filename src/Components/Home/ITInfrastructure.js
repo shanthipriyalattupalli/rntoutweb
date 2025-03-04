@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import Link from "next/link";
+import ProductCard from "../Shimmer/ProductCard";
 
 const pro1 = "/Assets/laptop-1.jpg";
 const pro2 = "/Assets/laptop-2.jpg";
@@ -12,7 +13,7 @@ const pro5 = "/Assets/laptop-5.jpg";
 // Lazy loading ProductItem component
 const ProductItems = lazy(() => import("../Home/ProductItems"));
 
-const ITInfrastructure = ({ products, categoryId }) => {
+const ITInfrastructure = ({ products, categoryId,isLoading }) => {
   // Defaulting to an empty array
   // console.log(products, "nko98ytfchgvb nmo-9897tyfcg ");
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -107,12 +108,11 @@ const ITInfrastructure = ({ products, categoryId }) => {
     {/* Product Grid */}
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-2 sm:gap-4 md:gap-6 2xl:gap-10 mt-6">
       {products?.slice(0, numProducts)?.map((product) => (
-        <Suspense key={product._id} fallback={<div>Loading...</div>}>
-          <ProductItems product={product} />
+        <Suspense key={product._id} fallback={<ProductCard/>}>
+          <ProductItems product={product} isLoading={isLoading}/>
         </Suspense>
       ))}
     </div>
-
   </div>
 </div>
 

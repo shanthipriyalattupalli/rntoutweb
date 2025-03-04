@@ -1,9 +1,12 @@
 // Import the functions you need
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import axios from "axios";
 
 // Ensure code runs only in browser
 const isBrowser = typeof window !== "undefined";
+const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
 // Firebase config
 const firebaseConfig = {
@@ -22,6 +25,26 @@ const app = initializeApp(firebaseConfig);
 // Messaging (Only in browser)
 const messaging = isBrowser ? getMessaging(app) : null;
 
+
+   const saveFcmToken = async (fcmToken) => {
+    if (!token) return;
+     try {
+ 
+      const response= await axios.post(
+         `${BASE_URL}/users/save-fcm-token`,
+         { fcmToken },
+         {
+           headers: {
+             Authorization: `Bearer ${token}`,
+           },
+         }
+       );
+       console.log("FCM Token saved successfully",response);
+     } catch (error) {
+       console.error("Error saving FCM token:", error);
+     }
+   };
+
 // Register service worker and get token
 export async function requestPermission() {
   if (!isBrowser || !messaging) return;
@@ -32,13 +55,18 @@ export async function requestPermission() {
       // 🔹 Register service worker before getting token
       const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
 
-      const token = await getToken(messaging, {
+      const fcmtoken = await getToken(messaging, {
         vapidKey: "BJoiDFvVi8iMCZdlYBXfomD8McGhsFuxCRUG3mzhN47CWGYl_U2x34d17p8HRkqpwXse7DvtWmD-DdRtXdowwlw",
         serviceWorkerRegistration: registration, // Pass service worker registration
       });
 
-      console.log("Firebase Token:", token);
-      return token;
+   console.log("Firebase Token:", fcmtoken);
+      if(fcmtoken){
+
+        localStorage.setItem("fcmToken",fcmtoken);
+         saveFcmToken(fcmtoken)
+      }
+      return fcmtoken;
     } else {
       console.warn("Notification permission denied");
     }
@@ -55,7 +83,7 @@ if (messaging) {
     if (Notification.permission === "granted") {
       new Notification(payload.notification.title, {
         body: payload.notification.body,
-        icon: payload.notification.image || "/firebase-logo.png",
+        icon: payload.notification.image || "/rntout.png"   
       });
     } else {
       console.warn("Notifications are not allowed by the user.");

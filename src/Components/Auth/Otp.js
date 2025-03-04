@@ -27,6 +27,7 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
 const userName = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
 const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
 const fcmToken = typeof window !== 'undefined' ? localStorage.getItem("FCMToken") : null;
+console.log(fcmToken)
 const profilepic = typeof window !== 'undefined'? localStorage.getItem("profilePic"):null;
 
   console.log(mobileNumber, "mobile num in otp");

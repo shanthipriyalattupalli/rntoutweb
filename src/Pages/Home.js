@@ -29,7 +29,8 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [categoryProducts, setCategoryProducts] = useState({});
   const [banners,setBanners]=useState([])
-  const [banner,setBanner]=useState([])
+  const [banner,setBanner]=useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const categoryIds = (typeof window !== 'undefined') ? localStorage.getItem("categoryId") : null;
   const latitude=(typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
@@ -56,6 +57,8 @@ const Home = () => {
         setCategories(response.data.categories);
       } catch (error) {
         console.error("Error fetching categories:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchCategories();
@@ -82,6 +85,8 @@ const Home = () => {
       }));
     } catch (error) {
       console.error(`Error fetching products for category ${categoryId}:`, error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -108,6 +113,8 @@ const Home = () => {
       setBanners(response.data.data)
     } catch (error) {
       console.error(`Error fetching products for category :`, error);
+    } finally {
+      setIsLoading(false);
     }
   };
  
@@ -146,28 +153,28 @@ useEffect(() => {
   console.log(banner[0]?.image,"banners")
   return (
     <main className='tmp-bg'>
-      <Banner banners={banners}/>
-      <CategoryList categories={categories} />
-      <ProductGrid categories={categories} />
+      <Banner banners={banners} isLoading={isLoading} />
+      <CategoryList categories={categories} isLoading={isLoading} />
+      <ProductGrid categories={categories} isLoading={isLoading} />
       <Products products={categoryProducts[categoryIds] || []} categoryId={categoryIds} />
       <CuratedCollections />
 
-      <ITInfrastructure products={categoryProducts[CATEGORY_IDS.IT_INFRASTRUCTURE] || []} categoryId={CATEGORY_IDS.IT_INFRASTRUCTURE} />
-      <Furniture products={categoryProducts[CATEGORY_IDS.FURNITURE] || []} categoryId={CATEGORY_IDS.FURNITURE} />
+      <ITInfrastructure products={categoryProducts[CATEGORY_IDS.IT_INFRASTRUCTURE] || []} categoryId={CATEGORY_IDS.IT_INFRASTRUCTURE} isLoading={isLoading}/>
+      <Furniture products={categoryProducts[CATEGORY_IDS.FURNITURE] || []} categoryId={CATEGORY_IDS.FURNITURE} isLoading={isLoading}/>
       <PromotionalAd banner={banner[0]} />
-      <MedicalEquipment products={categoryProducts[CATEGORY_IDS.MEDICAL_EQUIPMENT] || []} categoryId={CATEGORY_IDS.MEDICAL_EQUIPMENT} />
-      <VacationEquipment products={categoryProducts[CATEGORY_IDS.VACATION_EQUIPMENT] || []} categoryId={CATEGORY_IDS.VACATION_EQUIPMENT} />
-      <PromotionalAd banner={banner[1]} />
-      <Vehicles products={categoryProducts[CATEGORY_IDS.VEHICLES] || []} categoryId={CATEGORY_IDS.VEHICLES} />
-      <PartyMaterial products={categoryProducts[CATEGORY_IDS.PARTY_MATERIAL] || []} categoryId={CATEGORY_IDS.PARTY_MATERIAL} />
-      <SportsGym products={categoryProducts[CATEGORY_IDS.SPORTS_GYM] || []} categoryId={CATEGORY_IDS.SPORTS_GYM} />
-      <HouseholdKitchen products={categoryProducts[CATEGORY_IDS.HOUSEHOLD_KITCHEN] || []} categoryId={CATEGORY_IDS.HOUSEHOLD_KITCHEN} />
+      <MedicalEquipment products={categoryProducts[CATEGORY_IDS.MEDICAL_EQUIPMENT] || []} categoryId={CATEGORY_IDS.MEDICAL_EQUIPMENT} isLoading={isLoading}/>
+      <VacationEquipment products={categoryProducts[CATEGORY_IDS.VACATION_EQUIPMENT] || []} categoryId={CATEGORY_IDS.VACATION_EQUIPMENT} isLoading={isLoading}/>
+      <PromotionalAd banner={banner[1]} isLoading={isLoading}/>
+      <Vehicles products={categoryProducts[CATEGORY_IDS.VEHICLES] || []} categoryId={CATEGORY_IDS.VEHICLES} isLoading={isLoading}/>
+      <PartyMaterial products={categoryProducts[CATEGORY_IDS.PARTY_MATERIAL] || []} categoryId={CATEGORY_IDS.PARTY_MATERIAL} isLoading={isLoading}/>
+      <SportsGym products={categoryProducts[CATEGORY_IDS.SPORTS_GYM] || []} categoryId={CATEGORY_IDS.SPORTS_GYM} isLoading={isLoading}/>
+      <HouseholdKitchen products={categoryProducts[CATEGORY_IDS.HOUSEHOLD_KITCHEN] || []} categoryId={CATEGORY_IDS.HOUSEHOLD_KITCHEN} isLoading={isLoading}/>
 
-      <Services />
+      <Services isLoading={isLoading}/>
       {/* <CityExplorer /> */}
-      <Achievements />
-      <Blogs />
-      <Testimonials />
+      <Achievements isLoading={isLoading}/>
+      <Blogs isLoading={isLoading}/>
+      <Testimonials isLoading={isLoading}/>
     </main>
   );
 };
