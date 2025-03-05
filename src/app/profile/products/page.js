@@ -45,6 +45,19 @@ export default function Dashboard({ products }) {
   const router = useRouter();
 
 
+  const handleProductDelete =async(productId)=>{
+    console.log(productId,"delete product");
+    try {
+  const response=  await axios.delete(`${BASE_URL}/variants/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(response,"product deleted");
+      fetchUserProducts();
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  }
+
   return (
     <div className='prod-container-page'>
       <div className='item-header'>
@@ -143,7 +156,7 @@ export default function Dashboard({ products }) {
                     <MdToggleOff />
                     Inactive?
                   </p> */}
-                  <p style={{ color: "red" }}>
+                  <p style={{ color: "red" }} onClick={()=>handleProductDelete(item._id)}>
                     <RiDeleteBinLine />
                     Delete
                   </p>

@@ -2,6 +2,8 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { X } from "lucide-react";
+import { format } from "date-fns";
 // import "@/styles/Adddetail.css";
 import '../../../../../styles/Adddetail.css';
 import { FaUpload, FaRegCalendarAlt } from "react-icons/fa";
@@ -14,7 +16,7 @@ import { MAP_API } from '../../../../../services/GMap'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { GrLocation} from "react-icons/gr";
+import { GrLocation } from "react-icons/gr";
 const upload = "/Assets/upload.png";
 import { useRouter } from "next/navigation";
 
@@ -205,6 +207,22 @@ const MainContent = () => {
       toast.error("No files selected");
       return;
     }
+    const previews = [];
+
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        previews.push(reader.result);
+        if (previews.length === files.length) {
+          setPreviewImages(previews);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+    if (!files.length) {
+      toast.error("No files selected");
+      return;
+    }
     // Clear previous images in formData
     setFormData((prev) => ({ ...prev, images: [] }));
     // Add the selected files to formData
@@ -216,7 +234,18 @@ const MainContent = () => {
     toast.success("Files added successfully!");
   };
 
-// console.log(formData.images,"images of selected")
+  const handleRemoveImage = (indexToRemove) => {
+    setPreviewImages((prev) => prev.filter((_, index) => index !== indexToRemove));
+
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, index) => index !== indexToRemove),
+    }));
+
+    toast.info("Image removed!");
+  };
+
+  // console.log(formData.images,"images of selected")
   const handleIconClick = () => {
     fileInputRef.current.click();
   };
@@ -227,9 +256,9 @@ const MainContent = () => {
     title: "",
     description: "",
     images: [],
-    categoryId:"",
-    subCategoryId:"",
-    productId:"",
+    categoryId: "",
+    subCategoryId: "",
+    productId: "",
     available: true,
     rentalPrice: [
       { period: "daily", price: 0 },
@@ -249,7 +278,7 @@ const MainContent = () => {
     stockQuantity: 0,
     location: {
       type: "Point",
-      coordinates: [0,0]
+      coordinates: [0, 0]
     },
     pickupAvailable: true,
     itemDetails: {},
@@ -258,45 +287,45 @@ const MainContent = () => {
   const [formData, setFormData] = useState(initialFormData);
 
 
-    const fetchProducts = async () => {
-      // console.log(categoryId,subCategoryId,"fetchProducts")
-      try {
-        const response = await axios.get(`${BASE_URL}/variants/${productId}`);
-        console.log(response.data, "Fetched Product Details");
-  setFormData(response.data);
-  setFormData(
-    (prevData) => ({
-     ...prevData,
-      categoryId: response.data.categoryId?._id,
-      subCategoryId: response.data.subCategoryId?._id,
-      productId:response.data.productId?._id
-    })
-  )
-        // Map fetched itemDetails to productDetails format
-        const fetchedItemDetails = response.data.itemDetails || {};
-        const formattedDetails = Object.entries(fetchedItemDetails).map(
-          ([key, value]) => ({
-            id: Date.now() + Math.random(), // Unique ID
-            key,
-            value,
-          })
-        );
-  
-        // Set state with formatted data
-        setProductDetails([
-          {
-            id: Date.now(),
-            details: formattedDetails.length
-              ? formattedDetails
-              : [{ id: Date.now(), key: "", value: "" }],
-          },
-        ]);
-  
-      } catch (error) {
-        console.error("Error fetching product details:", error);
-      }
-    };
-    useEffect(() => {
+  const fetchProducts = async () => {
+    // console.log(categoryId,subCategoryId,"fetchProducts")
+    try {
+      const response = await axios.get(`${BASE_URL}/variants/${productId}`);
+      console.log(response.data, "Fetched Product Details");
+      setFormData(response.data);
+      setFormData(
+        (prevData) => ({
+          ...prevData,
+          categoryId: response.data.categoryId?._id,
+          subCategoryId: response.data.subCategoryId?._id,
+          productId: response.data.productId?._id
+        })
+      )
+      // Map fetched itemDetails to productDetails format
+      const fetchedItemDetails = response.data.itemDetails || {};
+      const formattedDetails = Object.entries(fetchedItemDetails).map(
+        ([key, value]) => ({
+          id: Date.now() + Math.random(), // Unique ID
+          key,
+          value,
+        })
+      );
+
+      // Set state with formatted data
+      setProductDetails([
+        {
+          id: Date.now(),
+          details: formattedDetails.length
+            ? formattedDetails
+            : [{ id: Date.now(), key: "", value: "" }],
+        },
+      ]);
+
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+    }
+  };
+  useEffect(() => {
     fetchProducts();
   }, []);
 
@@ -334,11 +363,18 @@ const MainContent = () => {
       rentalAvailability: {
         ...prevData.rentalAvailability,
         endDate: date,
-    
+
       },
     }));
   };
 
+  const formattedStartDate = formData.rentalAvailability.startDate
+    ? format(new Date(formData.rentalAvailability.startDate), "MMMM d, yyyy")
+    : "";
+
+  const formattedEndDate = formData.rentalAvailability.endDate
+    ? format(new Date(formData.rentalAvailability.endDate), "MMMM d, yyyy")
+    : "";
 
   const handleChange = (sectionId, detailId, fieldType, value) => {
     setProductDetails((prevDetails) =>
@@ -431,27 +467,29 @@ const MainContent = () => {
         formDataToSend.append(`rentalPrice[${index}][price]`, item.price);
       });
 
-      formDataToSend.append('rentalAvailability[startDate]', formData.rentalAvailability.startDate);
-      // formDataToSend.append('rentalAvailability[endDate]', formData.rentalAvailability.endDate);
+      formDataToSend.append(
+        'rentalAvailability',
+        JSON.stringify(formData.rentalAvailability),
+      );
       formDataToSend.append('seoTags', formData.seoTags);
       formDataToSend.append('isForSale', formData.isForSale);
       formDataToSend.append('salePrice', formData.salePrice);
       formDataToSend.append('stockQuantity', formData.stockQuantity);
-      
+      formDataToSend.append('pickupAddress', formData.pickupAddress);
       const coordinates = formData.location.coordinates;
-      const validCoordinates = Array.isArray(coordinates) && 
+      const validCoordinates = Array.isArray(coordinates) &&
         coordinates.length === 2 &&
         !isNaN(coordinates[0]) && !isNaN(coordinates[1]);
-  
+
       formDataToSend.append(
         "location",
         JSON.stringify({
           type: formData.location.type || "Point",
-          coordinates: validCoordinates ? coordinates : [0, 0], 
+          coordinates: validCoordinates ? coordinates : [0, 0],
         })
       );
-  
-      
+
+
       formDataToSend.append('pickupAvailable', formData.pickupAvailable);
       for (const key in formData.itemDetails) {
         if (formData.itemDetails.hasOwnProperty(key)) {
@@ -468,7 +506,7 @@ const MainContent = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response,"response of variant")
+      console.log(response, "response of variant")
 
       if (response.data.success) {
         toast.success("Product published successfully!");
@@ -492,7 +530,11 @@ const MainContent = () => {
     }
   };
 
-
+  useEffect(() => {
+    if (formData.images?.length) {
+      setPreviewImages(formData.images);
+    }
+  }, [formData.images]);
 
   console.log(productDetails, "productDetails");
   console.log(formData.itemDetails, "formdata itemDetails");
@@ -507,16 +549,16 @@ const MainContent = () => {
     <div className='main-content'>
       <ToastContainer />
       <div className='radio-button-group bg-blue-100'>
-      <div className='item-header1' onClick={() => router.back()}>
-        <div className='back-product22 flex gap-2 h-6'>
-          <IoMdArrowRoundBack  className="mt-2 ml-3" />
-          <p>
-            DROGO Throne Ergonomic Gaming Chair with Foot Rest, Armrest &
-            Adjustable Seat (Blue)
-          </p>
-          {/* <h1>Save Details</h1> */}
+        <div  className='item-header2'onClick={() => router.back()}>
+          <div className='back-product22 flex gap-2 h-6'>
+            <IoMdArrowRoundBack className="mt-1 ml-3" />
+            <p>
+              DROGO Throne Ergonomic Gaming Chair with Foot Rest, Armrest &
+              Adjustable Seat (Blue)
+            </p>
+            {/* <h1>Save Details</h1> */}
+          </div>
         </div>
-      </div>
       </div>
       <div className='product-form'>
         <h2 className='ba-in'>BASICS INFO</h2>
@@ -590,158 +632,166 @@ const MainContent = () => {
             </p>
             <p className='file-note'>Image format will be a JPEG, PNG, JPG</p>
           </div>
-<p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 4 images. 📸</p>
+          <p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 4 images. 📸</p>
           {/* Render Preview Images */}
           <div className='image-preview-container'>
             {previewImages.map((src, index) => (
-              <div key={index} className='image-preview-box'>
+              <div key={index} className='image-preview-box relative'>
                 <img
                   src={src}
                   alt={`Preview ${index + 1}`}
                   className='preview-image'
                 />
+                {/* Remove button with cross icon */}
+                <button
+                  onClick={() => handleRemoveImage(index)}
+                  className='absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-700'
+                >
+                  <X size={14} /> {/* Icon from lucide-react */}
+                </button>
               </div>
             ))}
           </div>
         </div>
         <div className="flex flex-col">
-        <label className='ba-in'>
+          <label className='ba-in'>
             Product Availability{" "}
             <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </label>
-        <div className='date-picker-container'>
-          <div className="w-full">
-          <label>Product Availability  <span className="text-gray-400">(Start)</span></label>
-          <div className='date-picker-input'>
-            <DatePicker
-              selected={formData.rentalAvailability.startDate}
-              name='startDate'
-              value={formData.rentalAvailability.startDate}
-              onChange={(date) => handleDateChange(date)}
-              placeholderText='Select start date'
-              className='date-picker-wrapper'
-              dateFormat='MMMM d, yyyy'
-            />
-            <FaRegCalendarAlt className='calendar-icon' />
-          </div>
-          </div>
-          <div className="w-full">
-          <label>Product Availability <span className="text-gray-400">(end)</span></label>
-          <div className='date-picker-input'>
-            <DatePicker
-              selected={formData.rentalAvailability.endDate}
-              name='endDate'
-              value={formData.rentalAvailability.endDate}
-              onChange={(date) => handleEndDateChange(date)}
-              placeholderText='Select End date'
-              className='date-picker-wrapper'
-              dateFormat='MMMM d, yyyy'
-            />
-            <FaRegCalendarAlt className='calendar-icon' />
-          </div>
-          </div>
-        </div>
-        </div>
-        <div>
-  <label>Location</label>
-  <div className="relative">
-    <input 
-      type="search" 
-      placeholder="Select a location" 
-      className="location-input pl-8" 
-    />
-    
-   <GrLocation className="absolute left-96 ml-20 top-1/2 transform -translate-y-1/2 h-1/2"/>
-  </div>
-</div>
+          <div className='date-picker-container'>
+            <div className="w-full">
+              <label>Product Availability  <span className="text-gray-400">(Start)</span></label>
+              <div className='date-picker-input'>
+                <DatePicker
+                  selected={formData.rentalAvailability.startDate}
+                  name="startDate"
+                  value={formattedStartDate}  // Display formatted date
+                  onChange={handleDateChange}
+                  placeholderText="Select start date"
+                  className="date-picker-wrapper"
+                  dateFormat="MMMM d, yyyy"
+                />
+                <FaRegCalendarAlt className='calendar-icon' />
+              </div>
+            </div>
+            <div className="w-full">
+              <label>Product Availability <span className="text-gray-400">(end)</span></label>
+              <div className='date-picker-input'>
+                <DatePicker
+                  selected={formData.rentalAvailability.endDate}
+                  name="endDate"
+                  value={formattedEndDate}  // Display formatted date
+                  onChange={handleEndDateChange}
+                  placeholderText="Select End date"
+                  className="date-picker-wrapper"
+                  dateFormat="MMMM d, yyyy"
+                />
 
-<div className="mt-4 mb-4 flex flex-col gap-3">
-  <label className="text-[14px] font-semibold">Select Pick up address</label>
-  <div className="google-content">
-        <LoadScript googleMapsApiKey={MAP_API}>
-          <GoogleMap
-            mapContainerStyle={{
-              height: "300px",
-              width: "100%",
-              borderRadius: "16px",
-            }}
-            center={mapCenter}
-            zoom={10}
-            onClick={handleMapClick}
-          >
-            {formData.location.coordinates && formData.location.coordinates.length === 2 && (
-              <Marker
-                position={{
-                  lat: formData.location.coordinates[1], // latitude
-                  lng: formData.location.coordinates[0], // longitude
-                }}
-              />
-            )}
-          </GoogleMap>
-        </LoadScript>
+                <FaRegCalendarAlt className='calendar-icon' />
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <p>
+        <div className="mt-12">
+          <label>Location</label>
+          <div className="relative">
+            <input
+              type="search"
+              placeholder="Select a location"
+              className="location-input pl-8"
+            />
+
+            <GrLocation className="absolute left-96 ml-20 top-1/2 transform -translate-y-1/2 h-1/2" />
+          </div>
+        </div>
+
+        <div className="mt-4 mb-4 flex flex-col gap-3">
+          <label className="text-[14px] font-semibold">Select Pick up address</label>
+          <div className="google-content">
+            <LoadScript googleMapsApiKey={MAP_API}>
+              <GoogleMap
+                mapContainerStyle={{
+                  height: "300px",
+                  width: "100%",
+                  borderRadius: "16px",
+                }}
+                center={mapCenter}
+                zoom={10}
+                onClick={handleMapClick}
+              >
+                {formData.location.coordinates && formData.location.coordinates.length === 2 && (
+                  <Marker
+                    position={{
+                      lat: formData.location.coordinates[1], // latitude
+                      lng: formData.location.coordinates[0], // longitude
+                    }}
+                  />
+                )}
+              </GoogleMap>
+            </LoadScript>
+          </div>
+        </div>
+        <p>
           <strong>Address:</strong> {formData.pickupAddress}
           {/* {errors.address && <p style={{ color: "red" }}>{errors.address}</p>} */}
 
         </p>
-      <div className="pt-6 flex flex-col">
-        <label>Description</label>
-        <textarea type="text" placeholder="Enter product details" className="border p-4 rounded-2xl h-min"    
-         name='description'
-              value={formData.description}
-              onChange={handleInputChange}/>
-      </div>
-
-      <div className='form-section4'>
-  <h2 className='ba-in'>
-    PRICING INFO{" "}
-    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-  </h2>
-  <div className='pricing-section'>
-    {[
-      "perDay",
-      "perWeek",
-      "perMonth",
-      "perQuarter",
-      "perSixMonths",
-      "perYear",
-    ].map((timeframe) => {
-      // Map timeframe to match the period in fetched data
-      const mapping = {
-        perDay: "daily",
-        perWeek: "weekly",
-        perMonth: "monthly",
-        perQuarter: "quarterly",
-        perSixMonths: "semiannual",
-        perYear: "annual",
-      };
-
-      const period = mapping[timeframe];
-
-      // Get the price from fetched rentalPrice
-      const price =
-        formData?.rentalPrice?.find((item) => item.period === period)?.price ||
-        "";
-
-      return (
-        <div key={timeframe} className='form-section5'>
-          <label>
-            {timeframe.replace("per", "Per ").replace(/([A-Z])/g, " $1")}
-          </label>
-          <input
-            type='number'
-            name={timeframe}
-            value={price} // Set value from fetched data
-            onChange={handlePriceChange}
-            placeholder='₹ 0.00'
-          />
+        <div className="pt-6 flex flex-col">
+          <label>Description</label>
+          <textarea type="text" placeholder="Enter product details" className="border p-4 rounded-2xl h-min"
+            name='description'
+            value={formData.description}
+            onChange={handleInputChange} />
         </div>
-      );
-    })}
-  </div>
-</div>
+
+        <div className='form-section4'>
+          <h2 className='ba-in'>
+            PRICING INFO{" "}
+            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+          </h2>
+          <div className='pricing-section'>
+            {[
+              "perDay",
+              "perWeek",
+              "perMonth",
+              "perQuarter",
+              "perSixMonths",
+              "perYear",
+            ].map((timeframe) => {
+              // Map timeframe to match the period in fetched data
+              const mapping = {
+                perDay: "daily",
+                perWeek: "weekly",
+                perMonth: "monthly",
+                perQuarter: "quarterly",
+                perSixMonths: "semiannual",
+                perYear: "annual",
+              };
+
+              const period = mapping[timeframe];
+
+              // Get the price from fetched rentalPrice
+              const price =
+                formData?.rentalPrice?.find((item) => item.period === period)?.price ||
+                "";
+
+              return (
+                <div key={timeframe} className='form-section5'>
+                  <label>
+                    {timeframe.replace("per", "Per ").replace(/([A-Z])/g, " $1")}
+                  </label>
+                  <input
+                    type='number'
+                    name={timeframe}
+                    value={price} // Set value from fetched data
+                    onChange={handlePriceChange}
+                    placeholder='₹ 0.00'
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
 
       </div>
       <div className='details-section'>
@@ -799,7 +849,7 @@ const MainContent = () => {
           <FiPlus /> Add New Product Description
         </button>
       </div>
-   
+
 
 
 

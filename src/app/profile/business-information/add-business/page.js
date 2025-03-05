@@ -142,10 +142,10 @@ export default function BusinessInformation2() {
 
 
   const handleBusinessInformation = async () => {
-    if (!formData.businessName ||!formData.storeName ||!formData.businessAddress.full ||!formData.taxId ||!formData.contactEmail ||!formData.contactPhone ||!formData.storeDescription ||!formData.bankName ||!formData.accountNumber ||!formData.ifsc ||!formData.bankBranchAddress.full) {
-      toast.error("This fields are required");
-      return;
-    }
+    // if (!formData.businessName ||!formData.storeName ||!formData.businessAddress.full ||!formData.taxId ||!formData.contactEmail ||!formData.contactPhone ||!formData.storeDescription ||!formData.bankName ||!formData.accountNumber ||!formData.ifsc ||!formData.bankBranchAddress.full) {
+    //   toast.error("This fields are required");
+    //   return;
+    // }
     if (!formData.contactPhone  || formData.contactPhone.length !== 10) {
       setErrorMessage("Mobile number must be 10 digits.");
       return;
@@ -269,7 +269,7 @@ export default function BusinessInformation2() {
               <h3 className="cursor-pointer" onClick={toggleEdit}>Edit Details</h3>
             </h2>
             <div className=" flex justify-center">
-              <div className="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md">
+              <div className="w-full bg-white p-6 rounded-lg shadow-md">
                 {/* Owner Info */}
                 <div className="mb-6">
                   <h3 className="text-md font-semibold text-yellow-600">OWNER INFO</h3>

@@ -113,8 +113,8 @@ const ProductPage = ({ setIsModelOpen, productId }) => {
         }
     };
     useEffect(() => {
-        if(productId){
-        fetchProductById();
+        if (productId) {
+            fetchProductById();
         }
     }, [productId]);
 
@@ -352,49 +352,47 @@ const ProductPage = ({ setIsModelOpen, productId }) => {
         <>
             <div className='flex gap-4 px-4'>
 
-                    <div className='relative'>
-                        <img
-                            src={images[selectedImage]} // Dynamically bind the selected image
-                            alt={`Product Image ${selectedImage + 1}`}
-                            className='w-full h-[250px] rounded-lg shadow-lg'
-                        />
+                <div className='relative'>
+                    <img
+                        src={images[selectedImage]} // Dynamically bind the selected image
+                        alt={`Product Image ${selectedImage + 1}`}
+                        className='w-full h-[250px] rounded-lg shadow-lg'
+                    />
 
-                        <div className='grid grid-cols-4 gap-2'>
-                            {images.map((image, index) => (
+                    <div className='grid grid-cols-4 gap-2'>
+                        {images.map((image, index) => (
+                            <button
+                                key={index}
+                                className={`border-2 rounded-lg overflow-hidden ${selectedImage === index ? "border-red-500" : "border-gray-200"
+                                    }`}
+                                onClick={() => setSelectedImage(index)} // Update the selected image
+                            >
+                                <img
+                                    src={image}
+                                    alt={`Thumbnail ${index + 1}`}
+                                    className='w-full h-20 object-cover'
+                                />
+                            </button>
+                        ))}
+                    </div>
+                </div>
+                <div className='space-y-2 w-full'>
+                    <h1 className='text-2xl font-bold'>{product.title}</h1>
+                    <div>
+                        <h3 className='font-medium mb-3 text-sm'>SELECT DURATION</h3>
+                        <div className='grid grid-cols-2 md:grid-cols-3  gap-3 bg-white'>
+                            {rentalPrice.map((price) => (
                                 <button
-                                    key={index}
-                                    className={`border-2 rounded-lg overflow-hidden ${selectedImage === index ? "border-red-500" : "border-gray-200"
-                                        }`}
-                                    onClick={() => setSelectedImage(index)} // Update the selected image
+                                    key={price._id}
+                                    className={`flex flex-col items-center justify-center px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 rounded-lg border text-center w-full sm:w-auto "`}
                                 >
-                                    <img
-                                        src={image}
-                                        alt={`Thumbnail ${index + 1}`}
-                                        className='w-full h-20 object-cover'
-                                    />
+                                    <div className='text-[10px] sm:text-xs md:text-sm'>{price.period}</div>
+                                    <div className='font-bold text-sm sm:text-md md:text-sm'>₹{price.price}</div>
                                 </button>
                             ))}
                         </div>
                     </div>
-                    <div className='space-y-2 w-full'>
-                        <h1 className='text-2xl font-bold'>{product.title}</h1>
-                        <div>
-                            <h3 className='font-medium mb-3 text-sm'>SELECT DURATION</h3>
-                            <div className='grid grid-cols-5 gap-3 bg-white'>
-                                {rentalPrice.map((price) => (
-                                    <button
-                                        key={price._id}
-                                        className={`p-3 rounded-lg border text-center  "border-gray-200"`}
-
-                                    >
-                                        <div className='text-xs'>{price.period}</div>
-                                        <div className='font-bold'>₹{price.price}</div>
-                                    </button>
-                                ))}
-
-                            </div>
-                        </div>
-                        {productDetails.length > 0 && <div className='flex flex-col gap-8 py-6'>
+                    {productDetails.length > 0 && <div className='flex flex-col gap-8 py-6'>
                         <div className='space-y-6'>
                             <div className=''>
                                 <table className='flex flex-col w-full text-sm border bg-white rounded-3xl p-4'>
@@ -440,13 +438,13 @@ const ProductPage = ({ setIsModelOpen, productId }) => {
 
 
                     </div>}
-                    </div>
-
-          
-              
                 </div>
 
-            
+
+
+            </div>
+
+
 
 
         </>

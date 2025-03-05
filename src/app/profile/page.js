@@ -57,7 +57,7 @@ export default function ProfileSettings() {
       setAvatar(profileData.profilePic || profile_avatar);
     } catch (error) {
       console.error(error);
-      toast.error("Failed to fetch profile.");
+      // toast.error("Failed to fetch profile.");
     }
   };
 

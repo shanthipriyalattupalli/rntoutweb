@@ -107,6 +107,10 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       setErrorMessage("Mobile number must be 10 digits.");
       return;
     }
+    if(!token){
+      toast.error("Please login to add address.");
+      return;
+    }
 
     setErrorMessage(""); // Reset error message if valid
 

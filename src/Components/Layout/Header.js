@@ -44,12 +44,14 @@ function Header() {
   const router = useRouter();
   const pathname = usePathname(); 
  const cartlength=typeof window !== 'undefined' ? localStorage.getItem("cart"):null;
+ const profile = typeof window !== 'undefined' ? localStorage.getItem("profilePic") : null;
 
   useEffect(() => {
     const handleProfileUpdate = (event) => {
       const updatedPic = event.detail.profilePic;
+      localStorage.setItem("profilePic", updatedPic && updatedPic); 
       setProfilePic(updatedPic);
-      localStorage.setItem("profilePic", updatedPic? updatedPic:Photo); // Store in localStorage
+
     };
   
     window.addEventListener("profileUpdated", handleProfileUpdate);
@@ -58,6 +60,10 @@ function Header() {
       window.removeEventListener("profileUpdated", handleProfileUpdate);
     };
   }, []);
+
+  useEffect(()=>{
+setProfilePic(profile);
+  })
 
   useEffect(() => {
     if (!pathname.startsWith("/Products")) {

@@ -6,6 +6,7 @@ import axios from "axios";
 import { X } from "lucide-react";
 // import "@/styles/Adddetail.css";
 import '../../../styles/Adddetail.css';
+import { useRouter } from "next/navigation";
 import { FaUpload, FaRegCalendarAlt } from "react-icons/fa";
 import { FiPlus, FiTrash } from "react-icons/fi";
 import DatePicker from "react-datepicker";
@@ -20,7 +21,7 @@ const upload = "/Assets/upload.png";
 
 const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-
+  const router = useRouter();
   //console.log(subCategoryId, "ghbnm,lpoiuyghvb nmkiuyghvb");
   const [products, setProducts] = useState([]);
 
@@ -481,6 +482,8 @@ const MainContent = () => {
       } else {
         console.error("Error while publishing product:", error);
         toast.error(`Error: ${error.response?.data?.message || error.message}`);
+        router.push("/profile/business-information/add-business")
+       
       }
     }
   };
@@ -699,7 +702,7 @@ const MainContent = () => {
   <label className="left-3 text-gray-500 text-sm bg-white">Description</label>
   <textarea 
     placeholder="Enter product details" 
-    className="border rounded-2xl h-40 p-3 pt-6 focus:border-red-500 focus:ring-blue-500 focus:outline-none font-medium text-red-500"
+    className="border rounded-2xl h-40 p-3 pt-6 focus:border-red-500 focus:ring-blue-500 focus:outline-none"
     name="description"
     value={formData.description}
     onChange={handleInputChange}

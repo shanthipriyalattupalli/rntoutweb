@@ -68,7 +68,7 @@ const RenderRazorpay = ({ orderId,razorpayOrderId, keyId, currency, amount, hand
             orderId,
             error: error.response?.data?.message || 'Payment verification failed'
           });
-          alert("Payment verification error ---- ")
+          // alert("Payment verification error ---- ")
           // window.location.href = '/payment-failed';
         }
       }

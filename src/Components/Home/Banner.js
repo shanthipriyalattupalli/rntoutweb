@@ -72,7 +72,7 @@ const Banner = ({ banners, isLoading }) => {
                     </p>
                     <button
                       className="mt-4 px-4 sm:px-6 py-2 sm:py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg"
-                      onClick={() => router.push(banner.link)}
+                      onClick={() => router.push("/add-on-rent")}
                     >
                       Rent Now!
                     </button>
