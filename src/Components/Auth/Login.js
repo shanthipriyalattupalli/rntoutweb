@@ -30,19 +30,26 @@ const Login = ({ setIsLoginOpen }) => {
       toast.error("Please enter a valid 10-digit mobile number.");
       return;
     }
-    setIsInvalid(false); // Reset validation
+    setIsInvalid(false); 
     setIsLoading(true);
   
     try {
       const response = await axios.post(`${BASE_URL}/users/send-otp`, {
         phoneNumber: mobileNumber,
       });
-      console.log(response);
+      console.log(response,"sendotp");
       setIsLoading(false);
   
       if (response.status === 200) {
         toast.success(response.data.message || "OTP sent successfully!");
         setIsOtpOpen(true);
+
+        const fcmToken = (typeof window !== 'undefined') ? localStorage.getItem("fcmToken") : null;
+        if (fcmToken) {
+          await sendFcmTokenToServer(fcmToken);
+        } else {
+          console.warn("FCM Token not found in localStorage");
+        }
       } else {
         toast.error(response.data.error || "Failed to send OTP. Try again.");
       }
@@ -51,6 +58,21 @@ const Login = ({ setIsLoginOpen }) => {
       toast.error("Something went wrong. Please try again later.");
     }
   };
+  
+
+  const sendFcmTokenToServer = async (fcmToken) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/users/save-fcm-token`, {
+        fcmToken,
+      });
+ console.log(response,"response of fcm")
+        toast.success("FCM Token saved successfully!");
+    } catch (error) {
+      console.error("Error saving FCM Token:", error);
+      // toast.error("Error saving FCM Token.");
+    }
+  };
+  
   
 
   // Handle Email and Password Login
