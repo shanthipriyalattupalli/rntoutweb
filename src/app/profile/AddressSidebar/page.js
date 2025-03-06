@@ -87,24 +87,42 @@ useEffect(() => {
 
   const handleSaveAddress = async () => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/profile/add-address`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${BASE_URL}/profile/add-address`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
       console.log(response.data, "successful");
-toast.success(response.data.message)
+  
+      // Show success message
+      Swal.fire({
+        icon: "success",
+        title: "Address Added!",
+        text: response.data.message || "Your address has been added successfully.",
+        confirmButtonColor: "#d33",
+      });
+  
       setFormData(initialFormData); // Reset the form
       setIsAddAddress(false); // Return to address list view
     } catch (error) {
       console.error("Error saving address:", error);
-  toast.error(error.response.data.message)
+  
+      let errorMessage = "Failed to add address. Please try again.";
+      if (error.response && error.response.data) {
+        errorMessage = error.response.data.message || errorMessage;
+      }
+  
+      // Show error message
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: errorMessage,
+        confirmButtonColor: "#d33",
+      });
     }
   };
+  
 
   const Address = [
     {

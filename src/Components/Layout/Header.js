@@ -163,8 +163,9 @@ setProfilePic(profile);
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
       console.log(response, "response in cart")
-      setCartItems(response.data?.cartItems?.length || 0);
+      setCartItems(response.data?.cartItems?.length );
     } catch (error) {
+      setCartItems(0);
       console.log("Error fetching cart details:", error);
     }
   };
@@ -280,7 +281,7 @@ setProfilePic(profile);
 
     {/* Cart Button */}
     <div className="relative" onClick={() => router.push("/Cartpage")}>
-      {cartlength > 0 ? (
+      {cartItems > 0 ? (
         <>
           <Image src={cartitems} width={28} height={28} alt="cart"  className="min-w-[28px] min-h-[28px]"/>
           <span className="absolute -top-2 -top-2 -right-2  bg-red-500 rounded-full w-5 h-5 text-xs font-semibold text-white flex items-center justify-center">

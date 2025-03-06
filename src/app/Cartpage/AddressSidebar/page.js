@@ -6,6 +6,8 @@ import axios from "axios";
 import '../../../styles/AddressSidebar.css';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
+
 
 const edit = "/Assets/editicon.svg";
 const emptyaddress = "/Assets/emptyaddress.svg";
@@ -125,7 +127,12 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
         }
       );
       console.log(response.data, "successful");
-      toast.success(response.data.message);
+      Swal.fire({
+        icon: "success",
+        title: "Address Added!",
+        text: "Your address was successfully added.",
+        confirmButtonColor: "#d33", // Optional: Customize button color
+      });
       setFormData(initialFormData); // Reset the form
       setIsAddAddress(false); // Return to address list view
       fetchAddress();
@@ -137,14 +144,18 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       toast.error(errorMessages);
     }
   };
-
-
+ 
   const handleUpdateAddress = async () => {
     if (!editingAddressId) {
-      toast.error("No address selected for updating.");
+      Swal.fire({
+        icon: "error",
+        title: "No Address Selected",
+        text: "Please select an address to update.",
+        confirmButtonColor: "#d33",
+      });
       return;
     }
-
+  
     // Prepare the payload
     const payload = {
       addressId: editingAddressId,
@@ -159,87 +170,124 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       country: formData.country,
       zip: formData.zip,
       location: {
-        // latitude: latitude|| 0,
-        // longitude: longitude|| 0,
         lat: latitude,
-        lng: longitude
+        lng: longitude,
       },
     };
-
+  
     console.log("Update Payload:", payload);
-
+  
     try {
-      const token =
-        typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
+      const token = typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
       if (!token) {
-        toast.error("User token is missing.");
+        Swal.fire({
+          icon: "error",
+          title: "User Token Missing",
+          text: "Please log in to update your address.",
+          confirmButtonColor: "#d33",
+        });
         return;
       }
-
-      const response = await axios.put(
-        `${BASE_URL}/profile/update-address`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+  
+      const response = await axios.put(`${BASE_URL}/profile/update-address`, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
       if (response.status === 200) {
         fetchAddress();
-        setActiveModalIndex(null)
-        toast.success("Address updated successfully!");
+        setActiveModalIndex(null);
+  
+        // Show success message
+        Swal.fire({
+          icon: "success",
+          title: "Address Updated!",
+          text: "Your address has been successfully updated.",
+          confirmButtonColor: "#d33",
+        });
+  
         // Reset the form and state after successful update
         setEditingAddressId(null);
         setFormData(initialFormData);
         setIsAddAddress(false);
-
-
       } else {
-        toast.error("Failed to update address.");
+        Swal.fire({
+          icon: "error",
+          title: "Update Failed",
+          text: "Failed to update the address. Please try again.",
+          confirmButtonColor: "#d33",
+        });
       }
     } catch (error) {
       console.error("Error updating address:", error);
+  
+      let errorMessage = "An unexpected error occurred.";
       if (error.response && error.response.data) {
-        toast.error(error.response.data.message || "Failed to update address.");
-      } else {
-        toast.error("An unexpected error occurred.");
+        errorMessage = error.response.data.message || errorMessage;
       }
+  
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: errorMessage,
+        confirmButtonColor: "#d33",
+      });
     }
   };
-
+  
+  
   const handleDeleteAddress = async (addressId) => {
-
-    // console.log("Update Payload:", payload);
-
     try {
-      const token =
-        typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
+      const token = typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
       if (!token) {
-        toast.error("User token is missing.");
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "User token is missing.",
+          confirmButtonColor: "#d33",
+        });
         return;
       }
-
-      const response = await axios.delete(
-        `${BASE_URL}/profile/delete-address`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            addressId: addressId
-          }
-        }
-      );
-      console.log("Delete Address:", response)
-      toast.success("Address deleted successfully!");
-      fetchAddress();
-
+  
+      // Show confirmation alert before deleting
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to recover this address!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+      });
+  
+      if (result.isConfirmed) {
+        const response = await axios.delete(`${BASE_URL}/profile/delete-address`, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { addressId: addressId },
+        });
+  
+        console.log("Delete Address:", response);
+  
+        // Show success alert
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "Address deleted successfully!",
+          confirmButtonColor: "#d33",
+        });
+  
+        fetchAddress();
+      }
     } catch (error) {
-      console.error("Error updating address:", error);
+      console.error("Error deleting address:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! Please try again.",
+        confirmButtonColor: "#d33",
+      });
     }
   };
+  
 
 
   return (

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Sidebar from "./Sidebar/page";
 import AddressSidebar from "./AddressSidebar/page";
+import Swal from "sweetalert2";
 import Link from "next/link";
 import { toast, ToastContainer } from "react-toastify";
 import RenderRazorpay from "../PayModule/PayModule";
@@ -266,18 +267,27 @@ const router=useRouter();
 
   const fetchCartDetails = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/cart/${userId}`);
-      console.log(response.data, "response in cart")
-      setCartItems(response.data.cartItems, "cartItems");
-      const initialQuantities = response.data.cartItems.reduce((acc, item) => {
-        acc[item.variant_id._id] = item.quantity || 1;
-        return acc;
-      }, {});
-      setQuantities(initialQuantities);
+        const response = await axios.get(`${BASE_URL}/cart/${userId}`);
+        const cartData = response.data.cartItems || [];
+
+        console.log(cartData, "response in cart");
+
+        setCartItems(cartData); // Set updated cart items
+
+        if (cartData.length === 0) {
+            setQuantities({}); // Clear quantities if cart is empty
+        } else {
+            const initialQuantities = cartData.reduce((acc, item) => {
+                acc[item.variant_id._id] = item.quantity || 1;
+                return acc;
+            }, {});
+            setQuantities(initialQuantities);
+        }
     } catch (error) {
-      console.error("Error fetching cart details:", error);
+        console.error("Error fetching cart details:", error);
     }
-  };
+};
+
 
   useEffect(() => {
     fetchCartDetails();
@@ -286,22 +296,55 @@ const router=useRouter();
   const handleRemove = async (cartId, variantId) => {
     try {
       const response = await axios.delete(`${BASE_URL}/cart/remove/${cartId}`);
+  
+      setCartItems((prevItems) => {
+        const updatedItems = prevItems.filter((item) => item._id !== cartId);
+  
+        // ✅ Ensure event fires when cart is empty
+        if (updatedItems.length === 0) {
+          console.log("Last item removed, dispatching cartUpdated event");
+          window.dispatchEvent(new CustomEvent("cartUpdated", { detail: 0 }));
+        }
+  
+        return updatedItems;
+      });
+  
       setSelectedOptions((prevOptions) => {
         const updatedOptions = { ...prevOptions };
         delete updatedOptions[variantId];
         localStorage.setItem("selectedOptions", JSON.stringify(updatedOptions));
         return updatedOptions;
       });
-
+  
+      // ✅ Force re-fetch to ensure UI updates correctly
       fetchCartDetails();
-      router.refresh();
-      window.dispatchEvent(new CustomEvent("cartUpdated",));
+  
       toast.success(response.data.message || "Removed successfully");
     } catch (error) {
-      toast.error(error.message || "Error removing item from cart.");
+      toast.error(error.response?.data?.message || "Error removing item from cart.");
       console.error("Error removing item from cart:", error);
     }
   };
+  
+  useEffect(() => {
+    console.log("Cart items updated:", cartItems);
+    
+    // ✅ Only dispatch when cart is empty
+    if (cartItems.length === 0) {
+      console.log("Dispatching cartUpdated event with count 0");
+      window.dispatchEvent(new CustomEvent("cartUpdated", { detail: 0 }));
+    } else {
+      console.log("Dispatching cartUpdated event with count", cartItems.length);
+      window.dispatchEvent(new CustomEvent("cartUpdated", { detail: cartItems.length }));
+    }
+  }, [cartItems]);  // ✅ Runs whenever cartItems changes
+  
+
+useEffect(() => {
+  // Ensure event is dispatched only after cartItems is updated
+  window.dispatchEvent(new CustomEvent("cartUpdated"));
+}, [cartItems]);
+
 
 
 
@@ -344,13 +387,19 @@ const router=useRouter();
 
       // If orderId is present, proceed to initiate payment
       if (orderId) {
+
         setOrderId(orderId); // Save orderId for future use
         await handleContinueClick(orderId, finalAmount);
+        router.push("/profile/orders")
       }
 
       // Display success toast for order placement
-      toast.success("Order placed successfully!");
-    } catch (error) {
+      Swal.fire({
+        icon: "success",
+        title: "Order Placed!",
+        text: "Your order was successfully placed.",
+        confirmButtonColor: "#d33", // Optional: Customize button color
+      });    } catch (error) {
       // Extract and display error message safely
       const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";
       toast.warn(errorMessage);
@@ -409,6 +458,8 @@ const router=useRouter();
   const handlePayment = async (status, orderDetails) => {
     if (status === "succeeded") {
       setDisplayRazorpay(false);
+      console.log("navigating to orders...");
+      // router.push("/profile/orders")
       // await handleContinueClick(orderDetails);
       setFormData(initialFormData);
     } else if (status === "cancelled") {
