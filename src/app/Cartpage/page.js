@@ -5,7 +5,7 @@ import '../../styles/Cart.css';
 import { FaReceipt } from "react-icons/fa";
 import { IoIosArrowDown, IoIosArrowDropleft, IoIosArrowDropleftCircle, IoIosArrowUp } from "react-icons/io";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { useRouter } from "next/navigation";
+
 import axios from "axios";
 import Sidebar from "./Sidebar/page";
 import AddressSidebar from "./AddressSidebar/page";
@@ -25,7 +25,7 @@ const insurance = "/Assets/insurance.svg";
 const costbreakup = "/Assets/costbreakup.svg";
 const delivery = "/Assets/delivery.svg";
 const emptycart = "/Assets/emptycart.svg";
-const rcb='/Assets/RCB.svg'
+const rcb = '/Assets/RCB.svg'
 
 const CartPage = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -47,7 +47,7 @@ const CartPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [disValue, setDisValue] = useState(0)
   const [razorpayOrderId, setRazorpayOrderId] = useState()
-const router=useRouter();
+
   // const [userId, setUserId] = useState("");
   // const [token, setToken] = useState("");
 
@@ -299,7 +299,6 @@ const router=useRouter();
       });
 
       fetchCartDetails();
-      router.refresh();
       toast.success(response.data.message || "Removed successfully");
     } catch (error) {
       toast.error(error.message || "Error removing item from cart.");
@@ -479,41 +478,44 @@ const router=useRouter();
               </Link>
 
               <div className="item-details">
-                <h3 className="item-name">{item.variant_id.title}</h3>
-                <div className="product-right">
-                  <button className="delete-btn" onClick={() => handleRemove(item._id, item.variant_id._id)}>
-                    <img src={deleteicon} className="flex align-left" />
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold text-gray-900">{item.variant_id.title}</h3>
+                  <button
+                    className="flex items-center justify-center p-2 rounded-md  transition duration-200"
+                    onClick={() => handleRemove(item._id, item.variant_id._id)}
+                  >
+                    <img src={deleteicon} alt="Delete" className="w-5 h-5" />
                   </button>
                 </div>
-                <div className="flex justify-between">
-                <p className="item-price">
-                  ₹{item.unitPrice}/{item.rentalPeriod}
-                </p>
-                <div className="product-right">
-                  <div className="flex gap-2">
-                    <img src={cube} />
-                    {/* <p className="stock-info">{item.variant_id.stockQuantity} stock avail.</p> */}
-                    <p className="stock-info">In stock</p>
 
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-lg font-semibold text-[#2F6FED]">
+                      ₹{item.unitPrice}/{item.rentalPeriod}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <img src={cube} alt="Cube Icon" className="w-5 h-5" />
+                    <p className="text-[#2F6FED] text-sm font-medium">In stock</p>
                   </div>
                 </div>
-                </div>
+
                 <div className="quantity-controls">
                   <div className="flex gap-2 items-center bg-white border rounded-md">
-                  <button
-                    className="quantity-btn"
-                    onClick={() => decreaseQuantity(item.variant_id._id, item.quantity)}
-                  >
-                    -
-                  </button>
-                  <span className="quantity">{item.quantity || 1}</span>
-                  <button
-                    className="quantity-btn"
-                    onClick={() => increaseQuantity(item.variant_id._id, item.quantity)}
-                  >
-                    +
-                  </button>
-</div>
+                    <button
+                      className="quantity-btn"
+                      onClick={() => decreaseQuantity(item.variant_id._id, item.quantity)}
+                    >
+                      -
+                    </button>
+                    <span className="quantity">{item.quantity || 1}</span>
+                    <button
+                      className="quantity-btn"
+                      onClick={() => increaseQuantity(item.variant_id._id, item.quantity)}
+                    >
+                      +
+                    </button>
+                  </div>
                   <select
                     className="duration-select"
                     value={selectedOptions[item.variant_id._id]?.period || item.rentalPeriod}
@@ -532,7 +534,7 @@ const router=useRouter();
                   {/* <p>Total: {item.lineTotal}</p> */}
                 </div>
 
-    
+
               </div>
             </div>
           )) : <>
@@ -608,22 +610,22 @@ const router=useRouter();
         <div className="summary-item address" onClick={handleCouponToggle}>
           <div className="flex justify-between align-center text-center items-center">
             <div className="flex flex-row items-center gap-4">
-            <img src={coupon} alt="Coupon Icon" />
-            <span>{couponcode ? couponcode : "Promo Coupon"}</span>
+              <img src={coupon} alt="Coupon Icon" />
+              <span>{couponcode ? couponcode : "Promo Coupon"}</span>
 
-            {/* Show remove button only when a coupon is applied */}
-            {couponcode && (
-              <button
-                className="remove-coupon-btn"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent sidebar from opening
-                  setCouponCode("");
-                  setDiscountedPrice(null);
-                }}
-              >
-                ✖
-              </button>
-            )}
+              {/* Show remove button only when a coupon is applied */}
+              {couponcode && (
+                <button
+                  className="remove-coupon-btn"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent sidebar from opening
+                    setCouponCode("");
+                    setDiscountedPrice(null);
+                  }}
+                >
+                  ✖
+                </button>
+              )}
             </div>
             <MdOutlineKeyboardArrowRight />
 
@@ -659,7 +661,7 @@ const router=useRouter();
             onClick={() => setIsOpen(!isOpen)}
           >
             <div className="flex items-center space-x-2">
-              <img src={rcb}/>
+              <img src={rcb} />
               <h2 className="font-poppins text-sm font-medium leading-5 text-left">Rent Cost Breakup</h2>
             </div>
             {isOpen ? (

@@ -16,7 +16,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
   console.log(subCategories, "subcategories in sidebar menu");
   const [activeIndex, setActiveIndex] = useState(null);
   const [priceRange, setPriceRange] = useState(0); // Current slider value
-  const [ratings,setRating]= useState(0)
+  const [ratings, setRating] = useState(0)
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(2000);
   const [discount, setDiscount] = useState(null);
@@ -30,12 +30,16 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
   const [isRatingOpen, setIsRatingOpen] = useState(false);
   const [isDurationOpen, setIsDurationOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [openIndex, setOpenIndex] = useState(null);
+
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const params = useParams();
   const categoryId = params.categoryId; // Extract categoryId directly from params
   console.log("categoryId from params:", categoryId);
   const router = useRouter();
   console.log(subcategoryId, "subcategoryid....")
+ 
+ 
 
 
   // Set the default active subcategory when the component mounts
@@ -91,6 +95,11 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
   };
 
   const handleClick = (subcategoryId, categoryId) => {
+    if (openIndex === subcategoryId) {
+      setOpenIndex(null);
+    } else {
+      setOpenIndex(subcategoryId);
+    }
     console.log(categoryId, "categoryID.............");
     console.log(subcategoryId, "subcategoryIds...........");
 
@@ -137,9 +146,16 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
   const handleRating = (e) => {
     const newRating = e.target.value;
     setRating(newRating);
-    rating(newRating); 
+    rating(newRating);
   };
-  
+
+  const handleClearFilters = () => {
+    setMinPrice(0);
+    setMaxPrice(2000);
+    setPriceRange(0);
+    setRating(0);
+  };
+
 
   return (
     <div className="w-full sm:w-80">
@@ -162,13 +178,18 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                 <li key={subcategory._id}>
                   <div
                     onClick={() => handleClick(subcategory._id, subcategory.categoryId._id)}
-                    className={`w-48 2xl:w-full flex justify-between items-center text-gray-700 border rounded-lg hover:text-gray-900 cursor-pointer p-2 ${activeIndex === subcategory._id
+                    className={`w-48 2xl:w-full flex justify-between items-center text-gray-700 border rounded-lg hover:text-gray-900 cursor-pointer p-2 ${openIndex === subcategory._id
                       ? "bg-[#F0F5FF] text-black border-[#2F6FED]"
                       : "bg-[#0707070D] text-black border-[#0707071A]"
                       }`}
                   >
                     <span className="truncate w-[80%]">{subcategory.subCategoryName}</span>
-                    <ChevronDownIcon className="w-5 h-5 text-gray-600" />
+                    {openIndex === subcategory._id ? (
+                      <ChevronRightIcon className="w-5 h-5 text-gray-600" />
+
+                    ) : (
+                      <ChevronDownIcon className="w-5 h-5 text-gray-600" />
+                    )}
                   </div>
 
                 </li>
@@ -186,7 +207,10 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
               onClick={handleFilterToggle}
             >
               <h2 className='text-md font-bold mb-2 px-6 pb-4'>Filters</h2>
-              <span className="text-blue-400 px-6 pb-4">Clear all</span>
+              <span className="text-[#2F6FED] text-sm cursor-pointer px-6 pb-4" onClick={handleClearFilters}>
+                Clear all
+              </span>
+
               {/* {isFilterOpen ? (
                 <ChevronDownIcon className='w-5 h-5 text-gray-600' />
               ) : (
@@ -256,11 +280,11 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                         {/* Price Labels */}
                         <div className="price-values3">
                           <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
-                          <span className="ml-2 text-gray-200 ">|</span>
+                            <span className="ml-2 text-gray-200 ">|</span>
                             <span>₹0</span>
                           </div>
                           <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
-                          <span className="ml-2 text-gray-200 ">|</span>
+                            <span className="ml-2 text-gray-200 ">|</span>
                             <span>₹2000</span>
                           </div>
                         </div>
@@ -379,19 +403,19 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                           }}
                         />
 
-<div className="price-values4">
-  {[1, 2, 3, 4, 5].map((num) => (
-    <div key={num} className="flex flex-col text-xs font-normal leading-[18px] text-left">
-      <span className="ml-2 text-gray-200">|</span>
-      <span className="flex items-center gap-1">
-        {num} 
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.158 3.554a1 1 0 00.95.69h3.75c.969 0 1.371 1.24.588 1.81l-3.033 2.213a1 1 0 00-.364 1.118l1.158 3.554c.3.921-.755 1.688-1.54 1.118l-3.033-2.213a1 1 0 00-1.176 0L5.037 16.99c-.784.57-1.839-.197-1.54-1.118l1.158-3.554a1 1 0 00-.364-1.118L1.258 9.004c-.784-.57-.38-1.81.588-1.81h3.75a1 1 0 00.95-.69l1.158-3.554z" />
-        </svg>
-      </span>
-    </div>
-  ))}
-</div>
+                        <div className="price-values4">
+                          {[1, 2, 3, 4, 5].map((num) => (
+                            <div key={num} className="flex flex-col text-xs font-normal leading-[18px] text-left">
+                              <span className="ml-2 text-gray-200">|</span>
+                              <span className="flex items-center gap-1">
+                                {num}
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.158 3.554a1 1 0 00.95.69h3.75c.969 0 1.371 1.24.588 1.81l-3.033 2.213a1 1 0 00-.364 1.118l1.158 3.554c.3.921-.755 1.688-1.54 1.118l-3.033-2.213a1 1 0 00-1.176 0L5.037 16.99c-.784.57-1.839-.197-1.54-1.118l1.158-3.554a1 1 0 00-.364-1.118L1.258 9.004c-.784-.57-.38-1.81.588-1.81h3.75a1 1 0 00.95-.69l1.158-3.554z" />
+                                </svg>
+                              </span>
+                            </div>
+                          ))}
+                        </div>
 
                         <div className="price0">
                           {ratings && ratings}
@@ -403,7 +427,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                     )}
                   </div>
                 </div>
-         
+
 
 
               </div>

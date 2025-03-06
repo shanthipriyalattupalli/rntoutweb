@@ -16,13 +16,13 @@ export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep 
                 <div key={index} className="flex flex-col items-center w-full relative">
                   {/* Step Label */}
                   <div
-                    className={`text-center text-xs sm:text-sm md:text-base lg:text-lg mb-2 md:mb-4 ${
+                    className={`text-center text-md sm:text-sm md:text-base  mb-2 md:mb-4 ${
                       isCanceled && index === currentStep
-                        ? "text-red-500 font-bold"
+                        ? "text-red-500 "
                         : isDelivered && index === currentStep
-                        ? "text-green-500 font-bold"
+                        ? "text-green-500 "
                         : isCompleted
-                        ? "text-blue-500 font-bold"
+                        ? "text-blue-500 "
                         : "text-gray-300"
                     }`}
                   >

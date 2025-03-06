@@ -422,11 +422,11 @@ const ProductPage = () => {
                   </span>
                   </Link>
                 )}
-                <div className='flex items-center'>
+                {/* <div className='flex items-center'>
                   <Star className='w-4 h-4 fill-yellow-400 text-yellow-400' />
                   <span className='ml-1 text-xs'>4.6</span>
                   <span className='text-gray-500 text-xs ml-1'>(41 reviews)</span>
-                </div>
+                </div> */}
               </div>
             </div>
 

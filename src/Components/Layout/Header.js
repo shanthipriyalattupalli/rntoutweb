@@ -220,14 +220,14 @@ setProfilePic(profile);
   return (
 <header className="flex items-center justify-between px-6 md:px-10 lg:px-20 py-3 bg-white shadow-md">
   {/* Left Section - Logo */}
-  <div className="flex items-center">
+  <div className="flex items-center cursor-pointer">
     <Link href="/" style={{all:"unset"}}>
       <img src={logo} alt="RNT Out Logo" className="h-8 sm:h-10 border-none border-0" />
     </Link>
   </div>
 
   {/* Center Section - Search Input */}
-  <div className="hidden sm:flex items-center relative w-full max-w-xs ml-4">
+  <div className="hidden sm:flex items-center relative w-full max-w-xs ml-4 cursor-pointer">
     <SearchInput  value={searchValue} onChange={(e) => handleSearchInputChange(e.target.value)}  className="w-[250px]"/>
     {showSuggestions && variants.length > 0 && (
       <ul className="absolute left-0 w-full bg-white border rounded shadow top-[40px] z-40">
@@ -245,7 +245,7 @@ setProfilePic(profile);
   </div>
 
   {/* Right Section - Location, Distance, Cart, Profile, and Buttons */}
-  <div className="flex items-center gap-3 md:gap-4">
+  <div className="flex items-center gap-3 md:gap-4 cursor-pointer">
     {/* Location */}
     <div className="hidden sm:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 gap-2">
       <Image src={locations} alt="location" width={18} height={18} />
@@ -253,11 +253,11 @@ setProfilePic(profile);
     </div>
 
     {/* Distance Selection */}
-    <div className="hidden sm:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100">
+    <div className="hidden sm:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
       <Image src={nearby} alt="location" width={18} height={18} />
-      <select className="bg-transparent text-sm" value={selectedDistance} onChange={handleDistanceChange}>
-        <option value="20">20 km</option>
-        <option value="30">30 km</option>
+      <select className="bg-transparent text-sm cursor-pointer" value={selectedDistance} onChange={handleDistanceChange}>
+        <option className="cursor-pointer" value="20">20 km</option>
+        <option className="cursor-pointer" value="30">30 km</option>
         <option value="40">40 km</option>
         <option value="50">50 km</option>
         <option value="60">60 km</option>
@@ -266,7 +266,7 @@ setProfilePic(profile);
     </div>
 
     {/* Cart Button */}
-    <div className="relative" onClick={() => router.push("/Cartpage")}>
+    <div className="relative cursor-pointer" onClick={() => router.push("/Cartpage")}>
       {cartlength > 0 ? (
         <>
           <Image src={cartitems} width={28} height={28} alt="cart"  className="min-w-[28px] min-h-[28px]"/>
