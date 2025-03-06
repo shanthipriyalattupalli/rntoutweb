@@ -176,8 +176,7 @@ export default function ProfileSettings() {
       <ToastContainer />
 
       <div className="item-header">
-   <Link href='/' className='flex flex-row gap-1'><IoMdArrowRoundBack style={{ marginRight: "12px" }} /> Profile Settings
-               </Link>
+   <Link href='/' className='flex flex-row gap-1'> Profile Settings</Link>
 
         <div className="flex items-center space-x-4">
           <a className="text-green-600 font-medium text-sm cursor-pointer" onClick={() => setIsKyc(true)}>

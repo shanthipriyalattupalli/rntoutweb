@@ -191,7 +191,7 @@ setProfilePic(profile);
 
   const handleSearchInputChange = async (searchTerm) => {
     setSearchValue(searchTerm);
-    if (searchTerm.length > 3) {
+    if (searchTerm.length > 2) {
       try {
         const response = await axios.get(`${BASE_URL}/variants/filter`, {
           params: {
