@@ -14,6 +14,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
   const [addresses, setAddresses] = useState([]);
   const [editingAddressId, setEditingAddressId] = useState(null);
   const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
@@ -29,7 +30,13 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
 
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
+  useEffect(() => {
+    if (addresses.length > 0) {
+      onAddressSelect(addresses[0]); // Select first address by default
+    }
+  }, [addresses, onAddressSelect]);
 
+  
 
   const fetchAddress = async () => {
     console.log(token, "token");
@@ -395,71 +402,95 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
               </button>
             </div>
             <div className="flex flex-col gap-4">
-              {addresses.length > 0 ? (
-                addresses.map((address, index) => (
-                  <div key={index} className="container address-card">
-                    <div className="delivery-content">
-                      <div className="delivery-context">
-                        <h5 className="delivery-to">DELIVERS TO</h5>
-                        <span>{address.type}</span>
-                      </div>
+  {addresses.length > 0 ? (
+    addresses.map((address, index) => (
+      <div key={index} className="container address-card cursor-pointer">
+        <div className="delivery-content">
+          <div className="delivery-context flex items-center gap-2">
+            {/* Custom Checkbox */}
+            <label className="relative flex items-center ">
+              <input
+                type="checkbox"
+                checked={selectedAddressIndex === index}
+                onChange={() => {
+                  setSelectedAddressIndex(index);
+                  onAddressSelect(address);
+                }}
+                className="peer hidden"
+              />
+              <div className=" cursor-pointer w-5 h-5 border-2 border-gray-400 rounded-md flex items-center justify-center peer-checked:bg-red-500 peer-checked:border-red-500">
+                {selectedAddressIndex === index && (
+                  <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 13l4 4L19 7"></path>
+                  </svg>
+                )}
+              </div>
+            </label>
 
-                      {/* Edit Icon with Modal */}
-                      <div className="relative inline-block">
-                        <img
-                          src={edit}
-                          alt="edit"
-                          className="w-6 h-6 cursor-pointer"
-                          onClick={() => setActiveModalIndex(activeModalIndex === index ? null : index)}
-                        />
-
-                        {activeModalIndex === index && (
-                          <div className="absolute right-0 mt-2 w-32 bg-white border shadow-lg rounded-md p-2 z-50">
-                            <button
-                              className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200"
-                              onClick={() => handleEditAddress(address)}
-                            >
-                              ✏️ Edit
-                            </button>
-                            <button
-                              className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200 text-red-600"
-                              onClick={() => handleDeleteAddress(address._id)}
-                            >
-                              🗑️ Delete
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div
-                      className="address-context cursor-pointer"
-                      onClick={() => {
-                        onAddressSelect(address);
-                        onClose();
-                      }}
-                    >
-                      <h4>{address.name}</h4>
-                      <p>|</p>
-                      <p>{address.mobile}</p>
-                    </div>
-
-                    <div>
-                      <p>
-                        {address.flatOrHouseNo},{address.street},{address.city},{address.state},{" "}
-                        {address.country}
-                      </p>
-                      <p>({address.zip})</p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="flex flex-col justify-center text-center ">
-                  <img src={emptyaddress} alt="No Address Found" />
-                  <h1 className="font-semibold text-lg">No address added</h1>
-                </div>
-              )}
+            <div>
+              <h5 className="delivery-to">DELIVERS TO</h5>
+              <span>{address.type}</span>
             </div>
+          </div>
+
+          {/* Edit Icon with Modal */}
+          <div className="relative inline-block">
+            <img
+              src={edit}
+              alt="edit"
+              className="w-6 h-6 cursor-pointer"
+              onClick={() => setActiveModalIndex(activeModalIndex === index ? null : index)}
+            />
+
+            {activeModalIndex === index && (
+              <div className="absolute right-0 mt-2 w-32 bg-white border shadow-lg rounded-md p-2 z-50">
+                <button
+                  className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200"
+                  onClick={() => handleEditAddress(address)}
+                >
+                  ✏️ Edit
+                </button>
+                <button
+                  className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200 text-red-600"
+                  onClick={() => handleDeleteAddress(address._id)}
+                >
+                  🗑️ Delete
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div
+          className="address-context cursor-pointer"
+          onClick={() => {
+            setSelectedAddressIndex(index);
+            onAddressSelect(address);
+            onClose();
+          }}
+        >
+          <h4>{address.name}</h4>
+          <p>|</p>
+          <p>{address.mobile}</p>
+        </div>
+
+        <div>
+          <p>
+            {address.flatOrHouseNo}, {address.street}, {address.city}, {address.state},{" "}
+            {address.country}
+          </p>
+          <p>({address.zip})</p>
+        </div>
+      </div>
+    ))
+  ) : (
+    <div className="flex flex-col justify-center text-center">
+      <img src={emptyaddress} alt="No Address Found" />
+      <h1 className="font-semibold text-lg">No address added</h1>
+    </div>
+  )}
+</div>
+
 
             <button className="address-button" onClick={handleAddAddress}>
               Add New Address

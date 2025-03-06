@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-// import "@/styles/AddressSidebar.css";
-import '../../../styles/AddressSidebar.css';
+import "../../styles/AddressSidebar.css";
+import "../../styles/Sidebar.css"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const edit = "/Assets/editicon.svg";
 
-const AddressSidebar = ({ isOpen, onClose, onAddressSelect }) => {
+const AddressSidebar = ({ isOpen, onClose }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -65,7 +65,9 @@ useEffect(() => {
   const [formData, setFormData] = useState(initialFormData);
   console.log(formData, "initial form");
 
+
   if (!isOpen) return null;
+
 
   const handleAddAddress = () => {
     setIsAddAddress(true);

@@ -10,6 +10,7 @@ const profile_avatar = "/Assets/profile_avatar.png";
 const Photo = "/Assets/Photo.png";
 import { useRouter } from 'next/navigation';
 import { IoMdArrowRoundBack } from "react-icons/io";
+import KYCVerification from "@/Components/Kyc/Kyc";
 
 
 export default function ProfileSettings() {
@@ -17,6 +18,7 @@ export default function ProfileSettings() {
   const [avatar, setAvatar] = useState(profile_avatar);
   const fileInputRef = useRef(null);
   const [isEditable, setIsEditable] = useState(false);
+  const [isKyc,setIsKyc]=useState(false);
   const [profile, setProfile] = useState({
     user: {
       name: "",
@@ -170,7 +172,7 @@ export default function ProfileSettings() {
   const router = useRouter();
 
   return (
-    <div className="profile-settings bg-white ">
+  isKyc?<KYCVerification setIsKyc={setIsKyc}/>:  <div className="profile-settings bg-white ">
       <ToastContainer />
 
       <div className="item-header">
@@ -178,7 +180,7 @@ export default function ProfileSettings() {
                </Link>
 
         <div className="flex items-center space-x-4">
-          <a className="text-green-600 font-medium text-sm cursor-pointer" onClick={() => router.push("/profile/business-information/Kyc")}>
+          <a className="text-green-600 font-medium text-sm cursor-pointer" onClick={() => setIsKyc(true)}>
             Personal KYC
           </a>
 
