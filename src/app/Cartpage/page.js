@@ -5,7 +5,7 @@ import '../../styles/Cart.css';
 import { FaReceipt } from "react-icons/fa";
 import { IoIosArrowDown, IoIosArrowDropleft, IoIosArrowDropleftCircle, IoIosArrowUp } from "react-icons/io";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-
+import {useRouter} from 'next/navigation'
 import axios from "axios";
 import Sidebar from "./Sidebar/page";
 import AddressSidebar from "./AddressSidebar/page";
@@ -48,7 +48,7 @@ const CartPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [disValue, setDisValue] = useState(0)
   const [razorpayOrderId, setRazorpayOrderId] = useState()
-
+const router=useRouter();
   // const [userId, setUserId] = useState("");
   // const [token, setToken] = useState("");
 
@@ -384,22 +384,25 @@ useEffect(() => {
         },
       });
       const { orderId, finalAmount } = response.data;
+      console.log(orderId,finalAmount,"orderId")
 
       // If orderId is present, proceed to initiate payment
       if (orderId) {
 
         setOrderId(orderId); // Save orderId for future use
         await handleContinueClick(orderId, finalAmount);
-        router.push("/profile/orders")
+    router.push('/profile/orders')
       }
 
+
       // Display success toast for order placement
-      Swal.fire({
-        icon: "success",
-        title: "Order Placed!",
-        text: "Your order was successfully placed.",
-        confirmButtonColor: "#d33", // Optional: Customize button color
-      });    } catch (error) {
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "Order Placed!",
+      //   text: "Your order was successfully placed.",
+      //   confirmButtonColor: "#d33", // Optional: Customize button color
+      // });  
+      } catch (error) {
       // Extract and display error message safely
       const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";
       toast.warn(errorMessage);

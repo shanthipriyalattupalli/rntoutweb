@@ -280,7 +280,6 @@ setProfilePic(profile);
     </div>
 
     {/* Cart Button */}
-    
     <div className="relative cursor-pointer" onClick={() => router.push("/Cartpage")}>
       {cartItems > 0 ? (
         <>
