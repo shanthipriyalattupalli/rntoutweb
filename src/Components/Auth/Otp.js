@@ -212,7 +212,7 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
 
     {errorMessage && <p className={`error-message ${errorMessage && "text-red"}`}>{errorMessage}</p>}
 
-    <button className="button" onClick={handleOtpVerify} disabled={isLoading}>
+    <button className="button" onClick={handleOtpVerify}   disabled={isLoading || otp.some((digit) => digit === "")}>
       {isLoading ? "Verifying..." : "Continue"}
     </button>
 
@@ -227,8 +227,8 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
         <p className="otp-resend" onClick={handleSendOtp}>
           <span className="otp-resend-link">Resend OTP</span>
         </p>
-        <p className="or-text">or</p>
-        <button className="button1">Sign in with your password</button>
+        {/* <p className="or-text">or</p>
+        <button className="button1">Sign in with your password</button> */}
       </div>
     </div>
   );

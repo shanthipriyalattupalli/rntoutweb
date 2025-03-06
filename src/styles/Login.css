@@ -8,13 +8,17 @@
   /* height: 100vh; */
   background-color: #f4f4f9;
 }
-.input {
+/* .input {
   border: 2px solid #ccc; 
-  padding: 10px;
+  padding: 10px 20px;
   border-radius: 5px;
   font-size: 16px;
   transition: border 0.3s ease-in-out;
-}
+  padding-left: 50px; 
+  height: 40px;
+  font-size: 16px;
+  width: 100%;
+} */
 
 .input.invalid-input {
   border: 2px solid red !important; 
@@ -157,7 +161,7 @@
 /* Input Fields */
 .input {
   width: 100%;
-  padding: 7px 16px;
+  padding: 7px 46px;
   margin: 10px 0;
   border-radius: 12px;
   box-shadow: 0px 1px 2px 0px #0000000D;
@@ -174,8 +178,12 @@
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  font-weight: 500;
 }
-
+.button:disabled {
+  background-color: #cccccc; /* Gray color for disabled state */
+  cursor: not-allowed;
+}
 .or-text {
   margin: 15px 0;
   color: #666;
@@ -258,3 +266,19 @@
   margin-top: 10px;
   cursor: pointer;
 }
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.country-code {
+  position: absolute;
+  left: 10px;
+  font-size: 16px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+

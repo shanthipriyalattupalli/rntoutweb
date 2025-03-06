@@ -5,7 +5,7 @@ import '../../styles/Cart.css';
 import { FaReceipt } from "react-icons/fa";
 import { IoIosArrowDown, IoIosArrowDropleft, IoIosArrowDropleftCircle, IoIosArrowUp } from "react-icons/io";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import Sidebar from "./Sidebar/page";
 import AddressSidebar from "./AddressSidebar/page";
@@ -47,7 +47,7 @@ const CartPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [disValue, setDisValue] = useState(0)
   const [razorpayOrderId, setRazorpayOrderId] = useState()
-
+const router=useRouter();
   // const [userId, setUserId] = useState("");
   // const [token, setToken] = useState("");
 
@@ -299,6 +299,7 @@ const CartPage = () => {
       });
 
       fetchCartDetails();
+      router.refresh();
       toast.success(response.data.message || "Removed successfully");
     } catch (error) {
       toast.error(error.message || "Error removing item from cart.");

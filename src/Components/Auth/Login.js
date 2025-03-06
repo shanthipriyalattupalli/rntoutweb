@@ -161,7 +161,7 @@ const Login = ({ setIsLoginOpen }) => {
           <div>
             <div className='login-first'>
               <img src={Rntout} alt='RentOut Logo' className='login-logo' />
-              <h2 className='subtitle'>Sign in to RntOut</h2>
+              <h2 className='subtitle'>Sign in to rntOut</h2>
             </div>
             {/* <div className='tab-container'>
               <button
@@ -179,53 +179,56 @@ const Login = ({ setIsLoginOpen }) => {
             </div> */}
 
             {isPhoneSelected && (
-           <div>
-           <p className={`login-p1 m-0 ${isInvalid ? "invalid-number" : ""}`}>
-             Mobile Number <span style={{ color: "red" }}>*</span>
-           </p>
-       
-           <input
-             type="tel"
-             placeholder="1234567890"
-             className={`input ${isInvalid ? "invalid-input" : ""}`}
-             value={mobileNumber}
-             onChange={(e) => {
-               let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
-       
-               if (value.startsWith("+91") && value.length > 10) {
-                 value = value.slice(3);
-               }
-               if (value.startsWith("+1") && value.length > 10) {
-                 value = value.slice(2);
-               }
-       
-               if (value.length > 10) {
-                 value = value.slice(0, 10);
-               }
-       
-               setMobileNumber(value);
-               setIsInvalid(false); // Reset validation on input change
-             }}
-           />
-       
-           <button className="button" onClick={handleSendOtp} disabled={isLoading}>
-             {isLoading ? "Sending..." : "Get OTP"}
-           </button>
-       
-           {isOtpOpen && (
-             <div className="modal-overlay">
-               <div className="modal-content">
-                 <button className="close-button" onClick={() => setIsOtpOpen(false)}>
-                   ✕
-                 </button>
-                 <Otp mobileNumber={mobileNumber} setIsOtpOpen={setIsOtpOpen} />
-               </div>
-             </div>
-           )}
-         </div>
+              <div>
+  <p className={`login-p1 m-0 ${isInvalid ? "invalid-number" : ""}`}>
+    Mobile Number <span style={{ color: "red" }}>*</span>
+  </p>
+
+  <div className="input-wrapper">
+    <span className="country-code">
+      +91
+    </span>
+    <input
+      type="tel"
+      placeholder="00000 00000"
+      className={`input ${isInvalid ? "invalid-input" : ""}`}
+      value={mobileNumber}
+      onChange={(e) => {
+        let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+
+        if (value.startsWith("+91")) {
+          value = value.slice(3);
+        }
+
+        if (value.length > 10) {
+          value = value.slice(0, 10);
+        }
+
+        setMobileNumber(value);
+        setIsInvalid(false); // Reset validation on input change
+      }}
+    />
+  </div>
+
+  <button className="button" onClick={handleSendOtp} disabled={isLoading || mobileNumber.length !== 10}>
+    {isLoading ? "Sending..." : "Get OTP"}
+  </button>
+
+  {isOtpOpen && (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <button className="close-button" onClick={() => setIsOtpOpen(false)}>
+          ✕
+        </button>
+        <Otp mobileNumber={mobileNumber} setIsOtpOpen={setIsOtpOpen} />
+      </div>
+    </div>
+  )}
+</div>
+
             )}
 
-            {!isPhoneSelected && (
+            {/* {!isPhoneSelected && (
               <div>
                 <p className='login-p1 m-0'>Email Address</p>
                 <input
@@ -251,8 +254,8 @@ const Login = ({ setIsLoginOpen }) => {
                   {isLoading ? "Logging in..." : "Login"}
                 </button>
               </div>
-            )}
-            <p className='or-text'>or</p>
+            )} */}
+            {/* <p className='or-text'>or</p>
             <button className='google-button'>
               <img
                 src='https://img.icons8.com/color/48/000000/google-logo.png'
@@ -266,7 +269,7 @@ const Login = ({ setIsLoginOpen }) => {
               <span className='link'   >
                 Create account
               </span>
-            </p>
+            </p> */}
             {/* {isregisterOpen && (
                           <div className="modal-overlay">
                             <div className="modal-content">
