@@ -93,9 +93,6 @@ const router=useRouter();
     }
   };
 
-
-
-
   const handleSelectChange = async (variantId, selectedPeriod) => {
     const selectedRental = cartItems
       .find((item) => item.variant_id._id === variantId)
@@ -202,7 +199,7 @@ const router=useRouter();
         ...prevQuantities,
         [variantId]: newQuantity,
       }));
-      toast.success("Quantity updated successfully.");
+      // toast.success("Quantity updated successfully.");
       fetchCartDetails();
     } catch (error) {
       console.error("Error increasing quantity:", error);
@@ -232,7 +229,7 @@ const router=useRouter();
         ...prevQuantities,
         [variantId]: newQuantity,
       }));
-      toast.success("Quantity updated successfully.");
+      // toast.success("Quantity updated successfully.");
       fetchCartDetails();
     } catch (error) {
       console.error("Error decreasing quantity:", error);
@@ -277,8 +274,6 @@ const router=useRouter();
         return acc;
       }, {});
       setQuantities(initialQuantities);
-      localStorage.setItem("cart", response.data.cartItems.length);
-      window.dispatchEvent(new CustomEvent("cartUpdated", { detail: cart.length }));
     } catch (error) {
       console.error("Error fetching cart details:", error);
     }
@@ -300,6 +295,7 @@ const router=useRouter();
 
       fetchCartDetails();
       router.refresh();
+      window.dispatchEvent(new CustomEvent("cartUpdated",));
       toast.success(response.data.message || "Removed successfully");
     } catch (error) {
       toast.error(error.message || "Error removing item from cart.");

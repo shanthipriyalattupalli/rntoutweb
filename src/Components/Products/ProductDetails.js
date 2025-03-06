@@ -225,6 +225,7 @@ const ProductPage = ({ setIsModelOpen, productId }) => {
                 },
             });
             console.log(response.data);
+            window.dispatchEvent(new CustomEvent("cartUpdated",));
             toast.success(response.data.message);
         } catch (error) {
             console.error("Error adding product to cart:", error);
