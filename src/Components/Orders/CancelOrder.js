@@ -20,14 +20,20 @@ const CancelOrder = ({ setIsCanceled, subOrderId,suborder }) => {
     "Other",
   ];
 
+  
   const handleCancelOrder = async () => {
     if (!selectedReason) {
-      toast.error("Please select a reason for cancellation.");
+      Swal.fire({
+        icon: "warning",
+        title: "Cancellation Required",
+        text: "Please select a reason for cancellation.",
+        confirmButtonColor: "#d33",
+      });
       return;
     }
-
+  
     setIsSubmitting(true);
-
+  
     try {
       const response = await axios.patch(
         `${BASE_URL}/orders/cancel/${subOrderId}`,
@@ -36,17 +42,36 @@ const CancelOrder = ({ setIsCanceled, subOrderId,suborder }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
-      toast.success(response.data.message || "Order successfully canceled!");
+  
+      // Show success message
+      Swal.fire({
+        icon: "success",
+        title: "Order Canceled",
+        text: response.data.message || "Your order has been canceled successfully.",
+        confirmButtonColor: "#d33",
+      });
+  
       setIsCanceled(false); // Close modal after success
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to cancel order.");
-      console.error(error.response?.data || error, "error cancelling order");
+      let errorMessage = "Failed to cancel order. Please try again.";
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+  
+      // Show error message
+      Swal.fire({
+        icon: "error",
+        title: "Cancellation Failed",
+        text: errorMessage,
+        confirmButtonColor: "#d33",
+      });
+  
+      console.error(error.response?.data || error, "Error canceling order");
     } finally {
       setIsSubmitting(false);
     }
   };
-
+  
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-transparent bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-1/4">

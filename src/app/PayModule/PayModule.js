@@ -3,7 +3,7 @@
 import axios from "axios";
 const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 import { useEffect, useRef } from 'react';
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const loadScript = (src ) => new Promise((resolve) => {
   const script = document.createElement('script');
@@ -52,8 +52,12 @@ const RenderRazorpay = ({ orderId,razorpayOrderId, keyId, currency, amount, hand
               signature: response.razorpay_signature,
             });
             // alert("successfully payment completed ")
-            toast.success("payment completed successfully")
-            // window.location.href = '/payment-success';
+            Swal.fire({
+              icon: "success",
+              title: "Payment Completed!",
+              text: "Your payment was successfully processed.",
+              confirmButtonColor: "#d33", // Optional: Customize button color
+            });            // window.location.href = '/payment-success';
           } else {
             handlePayment('failed', {
               razorpayOrderId,

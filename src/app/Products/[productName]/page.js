@@ -224,8 +224,10 @@ const ProductPage = () => {
           Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
         },
       });
-      console.log(response.data);
+      console.log(response.data,"cart added response");
       toast.success(response.data.message);
+      window.dispatchEvent(new CustomEvent("cartUpdated",));
+
     } catch (error) {
       console.error("Error adding product to cart:", error);
       toast.error(

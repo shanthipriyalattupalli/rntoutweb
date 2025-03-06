@@ -45,7 +45,7 @@ function Header() {
   const pathname = usePathname(); 
  const cartlength=typeof window !== 'undefined' ? localStorage.getItem("cart"):null;
  const profile = typeof window !== 'undefined' ? localStorage.getItem("profilePic") : null;
-
+console.log(cartlength,"current cart length according to local")
   useEffect(() => {
     const handleProfileUpdate = (event) => {
       const updatedPic = event.detail.profilePic;
@@ -163,8 +163,9 @@ setProfilePic(profile);
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
       console.log(response, "response in cart")
-      setCartItems(response.data.cartItems);
+      setCartItems(response.data?.cartItems?.length );
     } catch (error) {
+      setCartItems(0);
       console.log("Error fetching cart details:", error);
     }
   };
@@ -173,6 +174,19 @@ setProfilePic(profile);
     fetchCartDetails();
   }, [userId]);
 
+  useEffect(() => {
+    fetchCartDetails(); // Initial fetch when component mounts
+
+    const handleCartUpdate = () => {
+        fetchCartDetails(); // Fetch cart details when event is received
+    };
+
+    window.addEventListener("cartUpdated", handleCartUpdate);
+
+    return () => {
+        window.removeEventListener("cartUpdated", handleCartUpdate);
+    };
+}, [userId]);
 
 
   const handleSearchInputChange = async (searchTerm) => {
@@ -266,12 +280,13 @@ setProfilePic(profile);
     </div>
 
     {/* Cart Button */}
+    
     <div className="relative cursor-pointer" onClick={() => router.push("/Cartpage")}>
-      {cartlength > 0 ? (
+      {cartItems > 0 ? (
         <>
           <Image src={cartitems} width={28} height={28} alt="cart"  className="min-w-[28px] min-h-[28px]"/>
           <span className="absolute -top-2 -top-2 -right-2  bg-red-500 rounded-full w-5 h-5 text-xs font-semibold text-white flex items-center justify-center">
-            {cartlength}
+            {cartItems}
           </span>
         </>
       ) : (

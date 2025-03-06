@@ -122,6 +122,8 @@ const monthsDifference =
         },
       });
       console.log(response, "cart concole");
+      window.dispatchEvent(new CustomEvent("cartUpdated",));
+
       toast.success(response.data.message);
     } catch (error) {
       console.error("Error adding product to cart:", error);

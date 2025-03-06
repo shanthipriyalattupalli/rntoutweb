@@ -113,27 +113,40 @@ const [isEnd, setIsEnd] = useState(false);
   const handleAddToCart = async (productId) => {
     console.log(productId, "variant id");
     try {
-      const payload = {
-        user_id: userId,
-        variant_id: productId,
-        quantity: 1,
-        rentalPeriod: selectedRentalPeriod,
-      };
-      const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
-        },
-      });
-      console.log(response, "cart concole");
-      toast.success(response.data.message);
+        const payload = {
+            user_id: userId,
+            variant_id: productId,
+            quantity: 1,
+            rentalPeriod: selectedRentalPeriod,
+        };
+
+        const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        console.log(response, "cart console");
+
+        // Retrieve the current cart count from localStorage (default to 0 if null)
+        // let cartCount = parseInt(localStorage.getItem("cart")) || 0;
+        // cartCount += 1; // Increment count by 1
+
+        // // Update localStorage with the new cart count
+        // localStorage.setItem("cart", cartCount);
+          
+        // Dispatch event with the updated cart count
+        window.dispatchEvent(new CustomEvent("cartUpdated",));
+
+        toast.success(response.data.message);
     } catch (error) {
-      console.error("Error adding product to cart:", error);
-      toast.error(
-        error.response?.data?.message ||
-        "Something went wrong. Please try again."
-      );
+        console.error("Error adding product to cart:", error);
+        toast.error(
+            error.response?.data?.message || "Something went wrong. Please try again."
+        );
     }
-  };
+};
+
 
   const handleAddCart = () => {
     if (userId) {
