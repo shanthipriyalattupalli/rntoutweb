@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Categories from "../../Products/ProductList/categories";
 import Sidebar from "../../Products/ProductList/Sidebar";
-// import Products from "@/Components/Home/Products";
-import Products from '../../Products/ProductList/products'
 import { useParams } from "next/navigation";
 import { useRouter, useSearchParams } from 'next/navigation';
 import CategoryProducts from '@/Components/Home/CategoryProducts';
@@ -23,27 +21,17 @@ const ProductList = () => {
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
   const [distance,setDistance] = useState();
-  console.log(distance,"distance")
   const [rating,setRating]=useState();
-  console.log(rating,"ratings in product list")
   const [breadcrumbCategoryName, setBreadcrumbCategoryName] = useState("");
   const params = useParams();
   const categoryId = params.categoryId; // Extract categoryId directly from params
-  console.log("categoryId from params:", categoryId);
   const subcategoryId=(typeof window !== 'undefined') ? localStorage.getItem(`subcategoryId_${categoryId}`) : null;
   const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
   const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
-  console.log(subcategoryId, "subcategoryid selected in category")
-  // const subcategoryId=params.subcategoryId
-  console.log("subcategoryId from params:", subcategoryId);
-
-  console.log(categoryId, subcategoryId, active, "activeindex productsbnhjb nmhbjn m")
-
   const distances = (typeof window !== 'undefined') ? localStorage.getItem("selectedDistance") : null
 
   const fetchProducts = async () => {
     if (!categoryId || !subcategoryId || !active) {
-      console.log("Missing required parameters: categoryId, subcategoryId, or active.");
       return;
     }
 
@@ -64,8 +52,6 @@ const ProductList = () => {
         },
       });
 
-      // Log and set the products state
-      console.log("Product fetch response:", response?.data.data);
       setProducts(response?.data.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -80,7 +66,6 @@ const ProductList = () => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/categories`);
-      console.log(response?.data.categories, "Categories fetched");
       setCategories(response?.data.categories);
       if (categoryId) {
         const currentCategory = response?.data.categories.find(
@@ -104,7 +89,6 @@ const ProductList = () => {
   const fetchSubCategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`);
-      console.log(response.data, "Subcategories by category");
       const fetchedSubCategories = response.data;
   
       setSubcategories(fetchedSubCategories);
@@ -139,7 +123,6 @@ const ProductList = () => {
       const response = await axios.get(
         `${BASE_URL}/products/categoryProducts/?categoryId=${categoryId}&subCategoryId=${subCategoryID}`
       );
-      console.log(response.data, "Products by subcategoryId");
       setProduct(response.data);
 
     } catch (error) {
@@ -170,7 +153,6 @@ const ProductList = () => {
       const response = await axios.get(
         `${BASE_URL}/products/categoryProducts/?categoryId=${categoryId}&subCategoryId=${selectedSubcategoryId}`
       );
-      console.log(response.data, "Products by subcategoryId");
       setProduct(response.data);
   
       // Set the first product as active
@@ -182,20 +164,16 @@ const ProductList = () => {
     }
   };
   const handlePriceChange = (min, max) => {
-    console.log("Updated Prices:", { min, max });
     setMinPrice(min);
     setMaxPrice(max)
     // Use the values as needed
   };
 
  const handleDistance=(distance)=>{
-   console.log("Updated Distance:", distance);
    setDistance(distance)
    // Use the value as needed
  }
-const handleRating=(rating)=>{
-   console.log("Updated Rating:", rating);
-   // Use the value as needed
+const handleRating=(rating)=>{ded
    setRating(rating)
  
 }

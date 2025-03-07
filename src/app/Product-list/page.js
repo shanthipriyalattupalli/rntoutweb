@@ -16,7 +16,6 @@ const ProductLists = () => {
   const categoryId = searchParams.get("categoryId"); */
   const params = useParams();
   const categoryId = params.categoryId;
-  console.log(categoryId, "categoryid");
   const [categories, setCategories] = useState([]);
   // const [categoryId,setCategoryId]=useState("")
   const [subcategories, setSubcategories] = useState([]);
@@ -26,7 +25,6 @@ const ProductLists = () => {
   const fetchProducts = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/variants/product-variants`);
-      console.log(response, "fetchproductstfgvhb");
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -34,22 +32,17 @@ const ProductLists = () => {
   };
 
   const getProductsByCategory = (categoryId) => {
-    console.log(
-      "Getting products by category",
-      products.filter((product) => product.categoryId._id === categoryId)
-    );
+
     if (!categoryId) return products;
-    console.log("caategoryid", categoryId);
     return products.filter((product) => product.categoryId._id === categoryId);
   };
 
   const fetchcategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/categories`);
-      console.log(response.data.categories, "categories");
+
       setCategories(response.data.categories)(
         response?.data.map((category) => {
-          console.log(category._id, "categorydivhdjvbcaj");
           // setCategoryId(category._id);
           return category._id;
         })

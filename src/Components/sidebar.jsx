@@ -89,7 +89,7 @@ function Sidebar() {
     }
     router.push("/");
     router.push(eachbar.route);
-   
+
     // window.location.reload();
   };
   return (

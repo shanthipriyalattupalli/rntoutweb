@@ -88,8 +88,6 @@ export default function BusinessInformation2() {
     walletBalance: 0,
   }
   const [formData, setFormData] = useState(initialFormData);
-
-  console.log(formData, "formData");
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const keys = name.split(".");
@@ -203,8 +201,6 @@ export default function BusinessInformation2() {
           "Content-Type": "multipart/form-data",
         },
       });
-
-      console.log(response, "Business info created or updated");
       setIsEditable(false);
       toast.success("Business information updated successfully");
       handlefetchBusinessInfo();
@@ -220,11 +216,6 @@ export default function BusinessInformation2() {
 
 
   const router = useRouter();
-  console.log(isBuisness, "business")
-
-  console.log(formData.bannerImages, "bannerimages")
-
-
   const handlefetchBusinessInfo = async () => {
     try {
 
@@ -233,8 +224,6 @@ export default function BusinessInformation2() {
           Authorization: `Bearer ${token}`,
         },
       })
-      console.log(response.data.data, "business data")
-      console.log(response.data.data.bannerImages, "banner images in business")
       setBusinessId(response.data.data._id)
       setFormData(response.data.data)
       // if(response.data.data._id){

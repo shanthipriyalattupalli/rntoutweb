@@ -48,8 +48,8 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
 
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [orders, setOrders] = useState([]);
-const [subOrders, setSubOrders] = useState([]);
-const [selectedSubOrder, setSelectedSubOrder] = useState(null);
+  const [subOrders, setSubOrders] = useState([]);
+  const [selectedSubOrder, setSelectedSubOrder] = useState(null);
   const handleStepClick = (path) => {
     navigate(path); // Navigate to the corresponding path
   };
@@ -91,7 +91,6 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data, "fetch order history")
       setOrders(response.data)
       setSubOrders(response.data.subOrders)
 
@@ -126,8 +125,8 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
     { label: "Delivered", date: "7th Nov 2024", icon: "✅" },
     { label: "Canceled", date: "7th Nov 2024", icon: "❌" },
   ];
-  
-  const trackingSteps = [ "Order Confirmed", "Order Packed", "Out for Delivery"];
+
+  const trackingSteps = ["Order Confirmed", "Order Packed", "Out for Delivery"];
 
   const getCurrentStep = (orderStatus) => {
     switch (orderStatus) {
@@ -145,7 +144,7 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
         return 0;
     }
   };
-  
+
   const router = useRouter();
 
   const handleShowTracking = (subOrder) => {
@@ -153,23 +152,23 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
   };
   return (
     <>
-       <h2 className='item-header' onClick={() => router.back()}>
-            <div className='back-product'><IoMdArrowRoundBack style={{ marginRight: "12px" }} /> Order detail
-            </div>
-            <a href="#" className="download-invoice" onClick={null}>
-            Download Invoice
+      <h2 className='item-header' onClick={() => router.back()}>
+        <div className='back-product'><IoMdArrowRoundBack style={{ marginRight: "12px" }} /> Order detail
+        </div>
+        <a href="#" className="download-invoice" onClick={null}>
+          Download Invoice
         </a>
-            </h2>
+      </h2>
 
-    <div className='order-tracking-container'>
-      <div className='order_item-frame'>
+      <div className='order-tracking-container'>
+        <div className='order_item-frame'>
 
-        <OrderItem key={orders._id} orderData={orders}  onShowTracking={handleShowTracking} selectedSubOrder={selectedSubOrder} steps={steps} getCurrentStep={getCurrentStep} />
+          <OrderItem key={orders._id} orderData={orders} onShowTracking={handleShowTracking} selectedSubOrder={selectedSubOrder} steps={steps} getCurrentStep={getCurrentStep} />
 
-      </div>
+        </div>
 
-      <div className='order_trackinf_section'>
-        {/* <div className="bg-white py-4 px-4">
+        <div className='order_trackinf_section'>
+          {/* <div className="bg-white py-4 px-4">
           <h3 className="px-10 font-semibold text-lg">Order Tracking</h3>
           <h3 className="px-10 font-semibold text-md pt-5">{selectedSubOrder?.variantId?.title}</h3>
           <div className="w-full flex items-center justify-between  relative">
@@ -240,55 +239,55 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
 </div>
 
         </div> */}
-        {/* payment status */}
-        <div class='payment-section'>
-          <div class='payment-info'>
-            <span class='icon'>
-              {/* <MdDone /> */}
-              <img src={payment_icon} alt='Icon' />
-            </span>
-            <div class='payment-details'>
-              <div className='payment-details_completed'>
-                <h4>Payment {orders.paymentStatus}</h4>
-                <p>{formattedDate}</p>
+          {/* payment status */}
+          <div class='payment-section'>
+            <div class='payment-info'>
+              <span class='icon'>
+                {/* <MdDone /> */}
+                <img src={payment_icon} alt='Icon' />
+              </span>
+              <div class='payment-details'>
+                <div className='payment-details_completed'>
+                  <h4>Payment {orders.paymentStatus}</h4>
+                  <p>{formattedDate}</p>
+                </div>
               </div>
             </div>
+            <div class='payment-date'>{formattedDate}</div>
           </div>
-          <div class='payment-date'>{formattedDate}</div>
-        </div>
-        <div className='shipping_address_sec'>
+          <div className='shipping_address_sec'>
             <span class='icon'>
               <img src={shipping} alt='Icon' />
             </span>
-     
-          <div class='payment-details'>
-            <div className='payment-details_completed'>
-              <h4 className="font-semibold text-lg">Shipping Address</h4>
-              {/* {subOrders.map((suborder)=>( */}
-              <div className="flex items-center gap-2">
-  <span>{subOrders?.[0]?.deliveryDetails?.deliveryAddress?.name}</span>
-  <span className="text-gray-500">•</span>
-  <span>{subOrders?.[0]?.deliveryDetails?.deliveryAddress?.mobile}</span>
-</div>
+
+            <div class='payment-details'>
+              <div className='payment-details_completed'>
+                <h4 className="font-semibold text-lg">Shipping Address</h4>
+                {/* {subOrders.map((suborder)=>( */}
+                <div className="flex items-center gap-2">
+                  <span>{subOrders?.[0]?.deliveryDetails?.deliveryAddress?.name}</span>
+                  <span className="text-gray-500">•</span>
+                  <span>{subOrders?.[0]?.deliveryDetails?.deliveryAddress?.mobile}</span>
+                </div>
 
                 <span>{subOrders?.[0]?.deliveryDetails?.deliveryAddress?.full}</span>
-              {/* ))} */}
+                {/* ))} */}
+              </div>
             </div>
           </div>
-        </div>
-        <div class='rent-cost-breakup'>
-          <h3 class='section-title'>Rent Cost Breakup</h3>
-          <div class='grid-container'>
-            <div class='label'>Total Rent</div>
-            <div class='value'>₹ {orders.totalAmount}/-</div>
+          <div class='rent-cost-breakup'>
+            <h3 class='section-title'>Rent Cost Breakup</h3>
+            <div class='grid-container'>
+              <div class='label'>Total Rent</div>
+              <div class='value'>₹ {orders.totalAmount}/-</div>
 
-            <div class='label'>Discounts</div> 
-           {/* <div class='value discount'>- {orders.coupon.maxDiscountAmount}/mo</div> */}
+              <div class='label'>Discounts</div>
+              {/* <div class='value discount'>- {orders.coupon.maxDiscountAmount}/mo</div> */}
 
-            {/* <div class='label'>Other</div>
+              {/* <div class='label'>Other</div>
             <div class='value'>₹ {rentData.otherCharges}/mo</div> */}
 
-            {/* <div class='label'>Total Costs</div>
+              {/* <div class='label'>Total Costs</div>
             <div class='value'>₹ {calculateTotalCosts()}</div>
 
             <div class='label'>GST</div>
@@ -296,14 +295,14 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
               ₹ {calculateGST().toFixed(2)} ({rentData.gstRate}%)
             </div> */}
 
-            <div class='label grand-total'>Rent Grand Total</div>
-            <div class='value grand-total'>
-              {/* ₹ {calculateGrandTotal().toFixed(2)} */}
-              ₹ {orders.totalAmount}/-
+              <div class='label grand-total'>Rent Grand Total</div>
+              <div class='value grand-total'>
+                {/* ₹ {calculateGrandTotal().toFixed(2)} */}
+                ₹ {orders.totalAmount}/-
+              </div>
             </div>
           </div>
-        </div>
-        {/* <div class='payment-info enterprice'>
+          {/* <div class='payment-info enterprice'>
           <span class='icon'>
             <AiFillShop />
           </span>
@@ -321,20 +320,20 @@ const [selectedSubOrder, setSelectedSubOrder] = useState(null);
             </p>
           </div>
         </div> */}
-        <div class='payment-info order_closer'>
-          <span class='icon'>
-            {/* <MdDone /> */}
-            <PiClockClockwiseBold />
-          </span>
-          <div class='payment-details'>
-            <h4>Order Closure</h4>
-            <p>{95} Days Remaining</p>
+          <div class='payment-info order_closer'>
+            <span class='icon'>
+              {/* <MdDone /> */}
+              <PiClockClockwiseBold />
+            </span>
+            <div class='payment-details'>
+              <h4>Order Closure</h4>
+              <p>{95} Days Remaining</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </>
-  
+
   );
 };
 

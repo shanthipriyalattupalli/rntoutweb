@@ -41,12 +41,11 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
   
 
   const fetchAddress = async () => {
-    console.log(token, "token");
+
     try {
       const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response.data.profile.addresses, "addresses");
       setAddresses(response.data.profile.addresses);
     } catch (error) {
       console.error(error);
@@ -79,7 +78,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
   }
 
   const [formData, setFormData] = useState(initialFormData);
-  console.log(formData, "initial form");
+
 
   if (!isOpen) return null;
 
@@ -133,7 +132,6 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
           },
         }
       );
-      console.log(response.data, "successful");
       Swal.fire({
         icon: "success",
         title: "Address Added!",
@@ -182,7 +180,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       },
     };
   
-    console.log("Update Payload:", payload);
+
   
     try {
       const token = typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
@@ -272,7 +270,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
           params: { addressId: addressId },
         });
   
-        console.log("Delete Address:", response);
+
   
         // Show success alert
         Swal.fire({

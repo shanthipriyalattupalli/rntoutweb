@@ -12,7 +12,6 @@ const edit = "/Assets/editicon.svg";
 
 const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
   const [selectedCoupon, setSelectedCoupon] = useState(null);
-  console.log(onClose, "onclose");
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -24,12 +23,11 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
 
   useEffect(() => {
     const fetchCoupons = async () => {
-      console.log(token, "token");
+
       try {
         const response = await axios.get(`${BASE_URL}/coupons`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log(response.data.data, "fetch coupons");
         setCoupons(response.data.data);
 
         // setAddresses(response.data.profile.addresses);
@@ -44,40 +42,6 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
     }
   }, [token]);
 
-  // const handleApply = async(couponId,couponcode ,maxDiscountAmount, minRentAmount, discountValue) => {
-  //   try {
-  //     const response = await axios.post(`${BASE_URL}/coupons/validate`,{
-  //       params:{
-  //         code: couponcode,
-  //         rentAmount: totalPrice
-  //       },
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     console.log(response.data,"coupone validate");
-
-  //   } catch (error) {
-  //     console.log(error,"error validation")
-
-  //   }
-  // //   if (totalPrice > minRentAmount) {
-
-  // //     const calculatedDiscount = (totalPrice * discountValue) / 100;
-
-  // //     const discount = Math.min(calculatedDiscount, maxDiscountAmount);
-
-  // //     const discountedPrice = totalPrice - discount;
-  // // console.log(discountedPrice,"discountedPrice")
-
-  // //     toast.success(`Coupon applied successfully! You saved ₹${discount.toFixed(2)}.`);
-  // //     onDiscountedPrice(discountedPrice,couponcode,discountValue);
-  // //     console.log(`Final price after discount: ₹${discountedPrice.toFixed(2)}`);
-  // //   } else {
-
-  // //     toast.error(`Minimum rent amount of ₹${minRentAmount} is required to apply this coupon.`);
-  // //   }
-  // };
 
   const handleApply = async (
     couponId,
@@ -99,7 +63,7 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      console.log(response.data, "coupon validated");
+
       if (response.data.success === true) {
         try {
           const response = await axios.post(
@@ -107,7 +71,7 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
             { code: couponcode, rentAmount: totalPrice },
             { headers: { Authorization: `Bearer ${token}` } }
           );
-          console.log(response.data, "coupon applied");
+
           onDiscountedPrice(response.data.data.finalAmount, couponcode);
           toast.success(
             response.data.message || "Coupon applied successfully!"

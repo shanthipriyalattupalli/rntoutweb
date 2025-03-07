@@ -86,7 +86,6 @@ const Blog = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data.blogs, "blogs");
       setBlogs(response.data.blogs);
     } catch (error) {
       console.error("Error fetching blogs:", error);
@@ -102,7 +101,6 @@ const Blog = () => {
     ...blogs.slice(0, currentSlide + 4 - blogs.length), // ensures continuous loop
   ].slice(0, 4); // Get only the first 4 items for display
 
-  console.log(currentBlogs, "Blogs");
   return (
     <div className='mt-8'>
       <div className='mx-auto w-full mx-auto 2xl:px-10  px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5'>

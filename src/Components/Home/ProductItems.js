@@ -35,7 +35,7 @@ const ProductItem = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [selectedRentalPeriod, setSelectedRentalPeriod] = useState("daily");
   const [isBeginning, setIsBeginning] = useState(true);
-const [isEnd, setIsEnd] = useState(false);
+  const [isEnd, setIsEnd] = useState(false);
   // const { imgSrc, name, price, dateRange, availability, stock } = product;
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   // const [userId, setUserId] = useState("");
@@ -68,7 +68,7 @@ const [isEnd, setIsEnd] = useState(false);
     _id,
   } = product;
 
-  // console.log(rentalPrice, "rental price");
+
   const formattedDate = new Date(
     rentalAvailability?.startDate
   ).toLocaleDateString("en-US", {
@@ -86,7 +86,7 @@ const [isEnd, setIsEnd] = useState(false);
 
   const startdate = new Date(rentalAvailability?.startDate);
   const endDate = new Date(rentalAvailability?.endDate);
-  
+
   // Calculate the difference in months
   const monthsDifference =
     (endDate.getFullYear() - startdate.getFullYear()) * 12 +
@@ -111,41 +111,41 @@ const [isEnd, setIsEnd] = useState(false);
   };
 
   const handleAddToCart = async (productId) => {
-    console.log(productId, "variant id");
+
     try {
-        const payload = {
-            user_id: userId,
-            variant_id: productId,
-            quantity: 1,
-            rentalPeriod: selectedRentalPeriod,
-        };
+      const payload = {
+        user_id: userId,
+        variant_id: productId,
+        quantity: 1,
+        rentalPeriod: selectedRentalPeriod,
+      };
 
-        const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+      const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        console.log(response, "cart console");
 
-        // Retrieve the current cart count from localStorage (default to 0 if null)
-        // let cartCount = parseInt(localStorage.getItem("cart")) || 0;
-        // cartCount += 1; // Increment count by 1
 
-        // // Update localStorage with the new cart count
-        // localStorage.setItem("cart", cartCount);
-          
-        // Dispatch event with the updated cart count
-        window.dispatchEvent(new CustomEvent("cartUpdated",));
+      // Retrieve the current cart count from localStorage (default to 0 if null)
+      // let cartCount = parseInt(localStorage.getItem("cart")) || 0;
+      // cartCount += 1; // Increment count by 1
 
-        toast.success(response.data.message);
+      // // Update localStorage with the new cart count
+      // localStorage.setItem("cart", cartCount);
+
+      // Dispatch event with the updated cart count
+      window.dispatchEvent(new CustomEvent("cartUpdated",));
+
+      toast.success(response.data.message);
     } catch (error) {
-        console.error("Error adding product to cart:", error);
-        toast.error(
-            error.response?.data?.message || "Something went wrong. Please try again."
-        );
+      console.error("Error adding product to cart:", error);
+      toast.error(
+        error.response?.data?.message || "Something went wrong. Please try again."
+      );
     }
-};
+  };
 
 
   const handleAddCart = () => {
@@ -164,7 +164,7 @@ const [isEnd, setIsEnd] = useState(false);
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
+
       toast.success(response.data.message);
     } catch (error) {
       console.error("Error adding product to favorites:", error);
@@ -194,75 +194,73 @@ const [isEnd, setIsEnd] = useState(false);
         onMouseLeave={() => setIsHovered(false)}>
         <div className="relative rounded-xl">
           <div className="border-b-2 border-bottom-color: rgb(209 213 219 / var(--tw-border-opacity, 1))">
-          {isHovered ? (
-    <>
-      <div
-        className={`absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer ${
-          isBeginning ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-        onClick={() => {
-          if (!isBeginning) swiperRef.current?.slidePrev();
-        }}
-      >
-        <img src={left} alt="Previous" className="rotate-360" />
-      </div>
+            {isHovered ? (
+              <>
+                <div
+                  className={`absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer ${isBeginning ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  onClick={() => {
+                    if (!isBeginning) swiperRef.current?.slidePrev();
+                  }}
+                >
+                  <img src={left} alt="Previous" className="rotate-360" />
+                </div>
 
-      <div
-        className={`absolute right-0 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer ${
-          isEnd ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-        onClick={() => {
-          if (!isEnd) swiperRef.current?.slideNext();
-        }}
-      >
-        <img src={left} alt="Next" className="rotate-180" />
-      </div>
+                <div
+                  className={`absolute right-0 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer ${isEnd ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  onClick={() => {
+                    if (!isEnd) swiperRef.current?.slideNext();
+                  }}
+                >
+                  <img src={left} alt="Next" className="rotate-180" />
+                </div>
 
-      <Swiper
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper;
-          setIsBeginning(swiper.isBeginning);
-          setIsEnd(swiper.isEnd);
-        }}
-        onSlideChange={(swiper) => {
-          setIsBeginning(swiper.isBeginning);
-          setIsEnd(swiper.isEnd);
-        }}
-        navigation={false}
-        pagination={{ clickable: true }}
-        modules={[Navigation]}
-        autoplay={{ delay: 3000 }}
-      >
-        {images.map((img, index) => (
-          <SwiperSlide key={index}>
-            <Link href={{ pathname: `/Products/${title}`, query: { id: _id } }} key={_id}>
-              <Image
-                src={img}
-                alt={`${title} - ${index + 1}`}
-                className="w-full h-[220px] object-cover rounded-lg"
-                width={308}
-                height={220}
-              />
-            </Link>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </>
-  ) : (
-    <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
-      <Image
-        src={images[0]}
-        alt={title}
-        className="w-full h-[220px] object-cover rounded-lg"
-        width={308}
-        height={220}
-      />
-    </Link>
-  )}
+                <Swiper
+                  onSwiper={(swiper) => {
+                    swiperRef.current = swiper;
+                    setIsBeginning(swiper.isBeginning);
+                    setIsEnd(swiper.isEnd);
+                  }}
+                  onSlideChange={(swiper) => {
+                    setIsBeginning(swiper.isBeginning);
+                    setIsEnd(swiper.isEnd);
+                  }}
+                  navigation={false}
+                  pagination={{ clickable: true }}
+                  modules={[Navigation]}
+                  autoplay={{ delay: 3000 }}
+                >
+                  {images.map((img, index) => (
+                    <SwiperSlide key={index}>
+                      <Link href={{ pathname: `/Products/${title}`, query: { id: _id } }} key={_id}>
+                        <Image
+                          src={img}
+                          alt={`${title} - ${index + 1}`}
+                          className="w-full h-[220px] object-cover rounded-lg"
+                          width={308}
+                          height={220}
+                        />
+                      </Link>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </>
+            ) : (
+              <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
+                <Image
+                  src={images[0]}
+                  alt={title}
+                  className="w-full h-[220px] object-cover rounded-lg"
+                  width={308}
+                  height={220}
+                />
+              </Link>
+            )}
 
             {/* Rating and Fav Icon positioned on top */}
             <div className="absolute top-[14px] right-4 z-10 flex flex-col items-center space-x-2">
-            {averageRating &&  <p className="flex items-center bg-green-700 px-2 rounded-full text-white">
+              {averageRating && <p className="flex items-center bg-green-700 px-2 rounded-full text-white">
                 <img src={stars} alt="Rating stars" className="w-4 h-3" />
                 <span className="ml-1">{averageRating}</span>
               </p>}
@@ -332,9 +330,9 @@ const [isEnd, setIsEnd] = useState(false);
                 width={16}
                 height={16}
               />
-     <span className="text-gray-500 text-xs">
-  <span className="hidden sm:inline">Free Delivery for: </span>5 km
-</span>
+              <span className="text-gray-500 text-xs">
+                <span className="hidden sm:inline">Free Delivery for: </span>5 km
+              </span>
 
             </div>
 
@@ -349,12 +347,12 @@ const [isEnd, setIsEnd] = useState(false);
               />
               {rentalAvailability && formattedDate && !isNaN(new Date(rentalAvailability?.endDate)) ? (
                 <span className='text-gray-500 text-xs truncate w-full'>
-                <span className="hidden sm:inline">Availability:</span> {formattedDate}-{formattedendDate}
+                  <span className="hidden sm:inline">Availability:</span> {formattedDate}-{formattedendDate}
                 </span>
-              ):rentalAvailability && formattedDate ? (
+              ) : rentalAvailability && formattedDate ? (
                 <span className="text-gray-500 text-xs hidden sm:inline">
                   Availability: {formattedDate}
-                </span>):null}
+                </span>) : null}
             </div>
             {/* <Image
                 src={AvailabilIcon}
@@ -391,24 +389,24 @@ const [isEnd, setIsEnd] = useState(false);
                   <span className="text-sm">Notify Me Availability</span>
                 </button>
               ) : ( */}
-                <button
-                  className={`${stockQuantity > 0
-                      ? "cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-                      : "cart-btn border-red-100 border text-black font-bold px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-                    } ${isHovered && stockQuantity > 0 ? "bg-red-600 text-white" : ""}`}
-                  onClick={() => stockQuantity > 0 && handleAddCart()}
-                  disabled={stockQuantity <= 0}
-                >
-                  <Image
-                    src={isHovered && stockQuantity > 0 ? cartIconHov : cartIcon}
-                    alt="Cart icon"
-                    className="w-4 h-4"
-                    width={500}
-                    height={300}
-                  />
-                  <span className={`text-sm ${stockQuantity > 0 ? "":"text-gray-400"}`}>Add to cart</span>
-                </button>
-              {/* ) */}
+            <button
+              className={`${stockQuantity > 0
+                ? "cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+                : "cart-btn border-red-100 border text-black font-bold px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+                } ${isHovered && stockQuantity > 0 ? "bg-red-600 text-white" : ""}`}
+              onClick={() => stockQuantity > 0 && handleAddCart()}
+              disabled={stockQuantity <= 0}
+            >
+              <Image
+                src={isHovered && stockQuantity > 0 ? cartIconHov : cartIcon}
+                alt="Cart icon"
+                className="w-4 h-4"
+                width={500}
+                height={300}
+              />
+              <span className={`text-sm ${stockQuantity > 0 ? "" : "text-gray-400"}`}>Add to cart</span>
+            </button>
+            {/* ) */}
             {/* } */}
 
           </div>
@@ -417,32 +415,32 @@ const [isEnd, setIsEnd] = useState(false);
             <div className='w-full'>
               <div className='grid grid-cols-2 text-center'>
                 {rentalPrice.slice(0, -2)?.map((detail) => (
-                  <div key={rentalPrice._id} className={`border p-2.5 cursor-pointer  ${
-                    selectedRentalPeriod === detail.period
-                      ? "border-blue-500 bg-blue-500" 
-                      : ""
-                  }`}    onClick={() => setSelectedRentalPeriod(detail.period)} >
-                    <span className={`block  font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white":"text-blue-500"}`}>
-                      {detail.period}
+                  <div
+                    key={detail._id}
+                    className={`border p-2.5 cursor-pointer ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""
+                      }`}
+                    onClick={() => setSelectedRentalPeriod(detail.period)}
+                  >
+                    <span className={`block font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"}`}>
+                      {detail.period.charAt(0).toUpperCase() + detail.period.slice(1)}
                     </span>
-                    <span className={`block  text-lg font-[500] text-[16px] ${selectedRentalPeriod === detail.period ? "text-white":"text-black"}`}>
+                    <span className={`block text-lg font-[500] text-[16px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-black"}`}>
                       ₹
-                      {detail.price
-                        ? detail.price.toLocaleString()
-                        : "Not Available"}
+                      {detail.price ? detail.price.toLocaleString() : "Not Available"}
                     </span>
                   </div>
                 ))}
+
               </div>
               {/* Additional rows like "6 Months" */}
               <div className="mt-4">
-    <div className="text-blue-500 font-[500] text-center text-[12px]">
-      {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}
-    </div>
-    <div className="text-center text-gray-600 text-[16px] font-[500]">
-      Available
-    </div>
-  </div>
+                <div className="text-blue-500 font-[500] text-center text-[12px]">
+                  {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}
+                </div>
+                <div className="text-center text-gray-600 text-[16px] font-[500]">
+                  Available
+                </div>
+              </div>
             </div>
           </div>
         )}

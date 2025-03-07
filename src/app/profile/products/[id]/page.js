@@ -32,7 +32,6 @@ export default function ProductInformation2() {
   const productId = searchParams.get("id");
   const [product,setProduct]=useState({})
   const [images,setImages]=useState([])
-console.log(productId,"productId")
 
 // const {id}=Params
   const handlePageClick = (pageNumber) => {
@@ -157,7 +156,6 @@ console.log(productId,"productId")
       const response = await axios.get(`${BASE_URL}/variants/${productId}`);
 
       const data = response.data;
-      console.log(data, "fetch product by id");
       setProduct(data)
       setImages(response.data.images)
 
@@ -169,7 +167,6 @@ console.log(productId,"productId")
     fetchProductById();
   }, [productId]);
 
-// console.log(product.images[2],"productimages")
   return (
     <>
       <h2 className='item-header' onClick={() => router.back()}>

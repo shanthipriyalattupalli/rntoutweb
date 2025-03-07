@@ -37,7 +37,6 @@ const Login = ({ setIsLoginOpen }) => {
       const response = await axios.post(`${BASE_URL}/users/send-otp`, {
         phoneNumber: mobileNumber,
       });
-      console.log(response,"sendotp");
       setIsLoading(false);
   
       if (response.status === 200) {
@@ -65,7 +64,6 @@ const Login = ({ setIsLoginOpen }) => {
       const response = await axios.post(`${BASE_URL}/users/save-fcm-token`, {
         fcmToken,
       });
- console.log(response,"response of fcm")
         toast.success("FCM Token saved successfully!");
     } catch (error) {
       console.error("Error saving FCM Token:", error);
@@ -89,8 +87,6 @@ const Login = ({ setIsLoginOpen }) => {
         email,
         password,
       });
-      console.log(response.data);
-
       setIsLoading(false);
 
       if (response.status === 200) {
@@ -102,9 +98,6 @@ const Login = ({ setIsLoginOpen }) => {
         localStorage.setItem("userName", user.name);
         localStorage.setItem("userEmail", user.email);
         localStorage.setItem("userToken", response.data.token);
-
-        console.log(user, "User details logged.");
-
         router.push("/"); // Redirect to home page
       } else {
         toast.error(response.data.error || "Login failed. Please try again.");

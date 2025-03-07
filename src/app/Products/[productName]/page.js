@@ -73,36 +73,16 @@ const ProductPage = () => {
   const searchParams = useSearchParams();
   const productId = searchParams.get("id");
   const swiperRef = useRef(null);
-  // console.log(router , "route information")
-  //   const { id, title } = router;
-  //   console.log(id, "productId");
-  const params = useParams();
-  //   console.log(params,"params")
-  // const productId = params.id;
-  console.log(productId, "productId");
-
-  // const [userId, setUserId] = useState("");
-  // const [token, setToken] = useState("");
-
-  // useEffect(() => {
-  //   const userId = localStorage.getItem("userId");
-  //   const token = localStorage.getItem("userToken");
-  //   setUserId(userId);
-  //   setToken(token);
-  // }, []);
-
   const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
 
-  console.log(productId, "productIdurdfcvbjhhgc");
 
   const fetchProductById = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/variants/${productId}?includeRelated=false`);
 
       const data = response.data.variant;
-      console.log(response, "fetch product by productid");
       setProduct(data);
       setRentalPrice(data.rentalPrice);
       setRentalAvailability(data.rentalAvailability);
@@ -124,7 +104,6 @@ const ProductPage = () => {
       const response = await axios.get(`${BASE_URL}/reviews/variant/${productId}`);
 
       const data = response.data;
-      console.log(data.data, "fetch review by id");
       setUserRatings(data.data)
     } catch (error) {
       console.error("Error fetching product:", error);
@@ -195,7 +174,7 @@ const ProductPage = () => {
       value,
     }))
     : [];
-  console.log(otherDetails, "otherDetails")
+
 
   const faqItems = [
     {
@@ -211,7 +190,7 @@ const ProductPage = () => {
   ];
 
   const handleAddToCart = async (productId) => {
-    console.log(productId, "variant id");
+
     try {
       const payload = {
         user_id: userId,
@@ -224,7 +203,7 @@ const ProductPage = () => {
           Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
         },
       });
-      console.log(response.data,"cart added response");
+
       toast.success(response.data.message);
       window.dispatchEvent(new CustomEvent("cartUpdated",));
 
@@ -238,7 +217,7 @@ const ProductPage = () => {
   };
 
   const handleAddCart = () => {
-    console.log(product._id, "productidijnfmjm");
+
     if (userId) {
       handleAddToCart(product._id);
     } else {
@@ -253,7 +232,6 @@ const ProductPage = () => {
       toast.error("Seller information is missing.");
     }
   };
-  console.log(selectedDuration, "selectedDuration");
 
   const handleCustomSelection = () => {
     setselectedcustomDuration("Custom");
@@ -285,7 +263,7 @@ const ProductPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
+
       setIsFavorite(true)
       toast.success(response.data.message);
     } catch (error) {
@@ -308,7 +286,7 @@ const ProductPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
+
       setIsFavorite(false)
       // fetchFavorites()
       toast.success(response.data.message);
@@ -434,121 +412,32 @@ const ProductPage = () => {
 
             {/* Duration Selection */}
             <div>
-              <h3 className='font-medium mb-3 text-sm'>SELECT DURATION</h3>
+              <h3 className='font-medium mb-3 text-sm'>Select Duration</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 bg-white">
                 {rentalPrice.map((price) => (
                   <button
                     key={price._id}
                     className={`flex flex-col items-center justify-center px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 rounded-lg border text-center w-full sm:w-auto 
-                   ${selectedDuration === price.period ? "border-[#F48003] bg-[#FFF5EB]" : "border-gray-200"}`}
+   ${selectedDuration === price.period ? "border-[#F48003] bg-[#FFF5EB]" : "border-gray-200"}`}
                     onClick={() => handleselectedDuration(price.period)}
                   >
-                    <div className="text-[10px] sm:text-xs md:text-sm">{price.period}</div>
+                    <div className="text-[10px] sm:text-xs md:text-sm">
+                      {price.period.charAt(0).toUpperCase() + price.period.slice(1)}
+                    </div>
                     <div className="font-bold text-sm sm:text-base md:text-lg">₹{price.price}</div>
                   </button>
                 ))}
 
 
-                {/* <button
-                  className={`p-3 rounded-lg border text-center ${selectedcustomDuration === "Custom"
-                    ? "border-[#F48003] bg-[#FFF5EB]"
-                    : "border-gray-200"
-                    }`}
-                  onClick={() => handleCustomSelection()}
-                >
-                  <div className='text-xs'>Custom</div>
-                </button> */}
-
               </div>
             </div>
 
-            {/* {selectedcustomDuration === "Custom" && <div className="w-2">
-              <div className="flex gap-20 text-center">
-                <div>
-                  <span className="ml-2 text-gray-200 ">|</span>
-                  <span>₹0</span>
-                </div>
-                <div>
-                  <span className="ml-2 text-gray-200 ">|</span>
-                  <span>30d</span>
-                </div>
-                <div>
-                  <span className="ml-2 text-gray-200 ">|</span>
-                  <span>60d</span>
-                </div>
-                <div>
-                  <span className="ml-2 text-gray-200 ">|</span>
-                  <span>90d</span>
-                </div>
-                <div>
-                  <span className="ml-2 text-gray-200 ">|</span>
-                  <span>180d</span>
-                </div>
-                <div>
-                  <span className="ml-2 text-gray-200 ">|</span>
-                  <span>360d</span>
-                </div>
-              </div>
-              <input
-                type="range"
-                id="price"
-                min="0"
-                max="360"
-                step="1"
-                value={priceRange}
-                onInput={handlePriceRange} // Trigger on input
-                className="w-[620px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
-                style={{
-                  WebkitAppearance: "none",
-                  MozAppearance: "none",
-                  background: `linear-gradient(to right, #ef4444 0%,rgb(165, 162, 162) 0%)`, // Initial background
-                }}
-              />
-
-              <div className="price0">
-                {priceRange && `Selected Price: ₹${priceRange}`}
-              </div>
-            </div>} */}
-
-            {/* Quantity */}
-
-            {/* Availability */}
-
-            {/* <div className='flex items-center space-x-4 text-sm'>
-              {product.stockQuantity > 0 && <div className='flex items-center text-blue-600 bg-[#2F6FED1A] rounded-full p-1.5 text-xs font-normal'>
-                <img src={AvailIcon} alt='Available' className='mr-2 w-4 h-4' />
-                In stock
-              </div>}
-              <div className='text-orange-500 bg-blue-100 rounded-md p-1 text-xs   font-[400] text-xs'>
-                <img
-                  src={AvailtyIcon}
-                  alt='Availability'
-                  className='mr-2 w-4 h-4 inline'
-                />
-                Availability: {formattedStartDate} {formattedEndDate && `-`}{formattedEndDate && formattedEndDate}
-              </div>
-            </div> */}
             <div className='flex items-center space-x-4'>
               <div className='flex items-center border border-red-500 text-white font-[600] rounded-lg bg-[#FF2D55]'>
                 <button className='p-2 w-64' onClick={() => handleAddCart()}>
                   Add to cart
                 </button>
               </div>
-              {/* <div className="flex items-center border border-red-500 rounded-full bg-red-50">
-              <button
-                className="p-2"
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              >
-                <Minus className="w-4 h-4" />
-              </button>
-              <span className="px-12">{quantity}</span>
-              <button
-                className="p-2"
-                onClick={() => setQuantity(quantity + 1)}
-              >
-                <Plus className="w-4 h-4" />
-              </button>
-            </div> */}
             </div>
 
             {/* Delivery Info */}
@@ -649,72 +538,7 @@ const ProductPage = () => {
               </table>
             </div>
           </div>
-
-          {/* Right Side - FAQ Section */}
-          {/* <div>
-            <h2 className='text-lg font-semibold mb-3'>FAQ ABOUT THIS PRODUCT</h2>
-            <div className='border bg-white rounded-lg border-slate-200'>
-              {faqItems?.map((faq, index) => (
-                <div key={index} className='border-b'>
-                  <button
-                    className='flex items-center justify-between w-full p-2'
-                    onClick={() =>
-                      setExpandedFaq(expandedFaq === index ? null : index)
-                    }
-                  >
-                    <span className='text-sm font-medium'>{faq.question}</span>
-                    <ChevronDown
-                      className={`w-5 h-5 transition-transform duration-200 ${expandedFaq === index ? "transform rotate-180" : ""
-                        }`}
-                    />
-                  </button>
-                  {expandedFaq === index && (
-                    <div className='text-sm text-gray-600 px-3 py-2'>
-                      {faq.answer}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div> */}
         </div>}
-
-        {/* Left Side - Product Details and Other Details */}
-        {/* <div className='space-y-6'>
-    
-          <div className=''>
-            <table className='flex flex-col w-full text-sm border bg-white rounded-3xl p-4'>
-              <h2 className='text-lg font-semibold mb-3 text-[#2F6FED]'>
-                Product Details
-              </h2>
-              <tbody>
-                {productDetails.map((detail, index) => (
-                  <tr key={index} className=''>
-                    <td className='p-2 font-semibold'>{detail.label}</td>
-                    <td className='p-2 text-gray-600'>{detail.value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-   
-          <div>
-            <table className='flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4'>
-              <h2 className='text-lg font-semibold mb-3 text-[#2F6FED]'>
-                Other Details
-              </h2>
-              <tbody>
-                {otherDetails?.map((detail, index) => (
-                  <tr key={index} className=''>
-                    <td className='p-2 font-semibold'>{detail.label}</td>
-                    <td className='p-2 text-gray-600'>{detail.value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div> */}
         <div className="flex flex-col w-full md:w-1/2 gap-2 border b-black-200 bg-white-500 p-6 md:p-10 rounded-lg text-center justify-center">
           <h2 className="text-black-500 text-5xl md:text-5xl font-bold">4.7</h2>
           <div className="flex gap-2 justify-center ">
@@ -725,10 +549,7 @@ const ProductPage = () => {
             <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
           </div>
         </div>
-        {/* 
-        <div className="pt-3 w-1/2 justify-center text-center">
-          <button className="border b-orange-200 bg-orange-400 p-3 w-80 rounded-lg text-white font-semibold" onClick={() => setIsReview(true)}>write a review</button>
-        </div> */}
+
         {isReview && (
           <div className="modal-overlay">
             <div className="modal-content">

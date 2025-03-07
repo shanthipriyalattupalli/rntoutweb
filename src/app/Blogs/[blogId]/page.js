@@ -11,7 +11,6 @@ const BlogPage = () => {
 
     const params = useParams();
     const blogId = params.blogId
-    console.log(blogId,"BLOGS ID");
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [blogs, setBlogs] = useState({});
     const fetchBlogs = async () => {
@@ -21,7 +20,7 @@ const BlogPage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data, "blogs fetched");
+
         setBlogs(response.data)
         
       } catch (error) {
@@ -41,7 +40,7 @@ const BlogPage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data.blogs, "blogs");
+
         setBlogs(response.data.blogs);
       } catch (error) {
         console.error("Error fetching blogs:", error);
@@ -52,7 +51,7 @@ const BlogPage = () => {
       fetchBlog();
     }, []);
 
-    console.log(blogs,"blogs...")
+
   return (
     <div className=" min-h-screen p-6 flex justify-center w-full">
       <div className=" w-full bg-white shadow-lg p-6 rounded-lg flex flex-col md:flex-row gap-6">

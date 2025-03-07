@@ -10,7 +10,6 @@ const OrderDetail = () => {
   const router = useRouter();
   const params = useParams();
   const orderId = params.orderId;
-  console.log(orderId,"orderid")
   return (
 
       <div className="Orders_page_section">

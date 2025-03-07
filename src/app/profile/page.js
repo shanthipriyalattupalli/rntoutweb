@@ -30,19 +30,18 @@ export default function ProfileSettings() {
   });
 
 
-  console.log(profile, "profile");
+
   const [selectedFile, setSelectedFile] = useState(null);
 
   const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
 
 
   const fetchProfile = async () => {
-    console.log(token, "token");
+
     try {
       const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response.data, "profiledata");
 
       const profileData = response.data.profile;
 
@@ -114,29 +113,7 @@ export default function ProfileSettings() {
     fileInputRef.current.click();
   };
 
-  // const handleUploadProfile = async () => {
-  //   if (!selectedFile) {
-  //     toast.error("Please select a profile image first.");
-  //     return;
-  //   }
 
-  //   const formData = new FormData();
-  //   formData.append("profilePic", selectedFile);
-
-  //   try {
-  //     const response = await axios.post(`${BASE_URL}/profile/upload-picture`, formData, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     });
-  //     console.log(response.data, "profile picture uploaded");
-  //     toast.success("Profile picture uploaded successfully!");
-  //   } catch (error) {
-  //     console.error("Error uploading profile picture:", error);
-  //     toast.error("Failed to upload profile picture.");
-  //   }
-  // };
 
 
   const handleSubmitProfile = async () => {
@@ -154,8 +131,6 @@ export default function ProfileSettings() {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      console.log(response.data, "profile updated");
       setIsEditable(false);
       fetchProfile();
       toast.success("Profile updated successfully!");

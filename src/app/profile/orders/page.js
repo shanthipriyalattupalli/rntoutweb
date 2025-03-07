@@ -85,12 +85,10 @@ const [isOn, setIsOn] = useState(false);
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data, "fetch order history")
       setOrders(response.data);
       const filteredOrders = response.data
       .map(order => {
         const canceledSubOrders = order.subOrders?.filter(subOrder => {
-          console.log(subOrder.orderStatus, "Checking orderStatus"); // Debugging
           return subOrder.orderStatus.toLowerCase().trim() === "canceled"; 
         }) || [];
 
@@ -100,8 +98,6 @@ const [isOn, setIsOn] = useState(false);
         };
       })
       .filter(order => order.subOrders.length > 0); // Remove orders with no canceled suborders
-
-    console.log(filteredOrders, "Filtered Canceled Order History");
     setOrderItems(filteredOrders)
     
 

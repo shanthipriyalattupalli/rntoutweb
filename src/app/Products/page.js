@@ -20,7 +20,6 @@ const ProductListPage = () => {
       const response = await axios.get(
         `${BASE_URL}/variants/product-variants?categoryId=67483b5c3b62da6a9bed56fd`
       );
-      console.log(response, "fetchproductstfgvhb");
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -32,24 +31,15 @@ const ProductListPage = () => {
   }, []);
 
   const getProductsByCategory = (categoryId) => {
-    console.log(
-      "Getting products by category",
-      products.filter((product) => product.categoryId._id === categoryId)
-    );
-    console.log("caategoryid", categoryId);
     return products.filter((product) => product.categoryId._id === categoryId);
   };
 
   const fetchcategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/categories`);
-      console.log(
-        response.data.categories,
-        "response in categ....................."
-      );
+
       setCategories(response.data.categories)(
         response?.data?.map((category) => {
-          console.log(category._id, "categorydivhdjvbcaj");
           setCategoryId(category._id);
           return category._id;
         })
@@ -63,19 +53,7 @@ const ProductListPage = () => {
     fetchcategories();
   }, []);
 
-  //   const fetchSubcategories=async ()=>{
-  //   try {
-  //     const response= await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}}`)
-  //     console.log(response.data,"subcategories")
-  //   } catch (error) {
-  //     console.error('Error fetching subcategories:', error);
 
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   fetchSubcategories();
-  // }, [categoryId]);
 
   const IT_INFRASTRUCTURE_ID = "67483b5c3b62da6a9bed56fd";
 

@@ -12,7 +12,6 @@ const Testimonials = () => {
     const fetchTestimonials = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/testimonial`);
-        console.log("API Response:", response.data);
 
         if (Array.isArray(response.data)) {
           setTestimonials(response.data);

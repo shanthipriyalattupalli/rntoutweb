@@ -9,11 +9,9 @@ const loadScript = (src ) => new Promise((resolve) => {
   const script = document.createElement('script');
   script.src = src;
   script.onload = () => {
-    console.log('razorpay loaded successfully');
     resolve(true);
   };
   script.onerror = () => {
-    console.log('error in loading razorpay');
     resolve(false);
   };
   document.body.appendChild(script);
@@ -29,7 +27,6 @@ const RenderRazorpay = ({ orderId,razorpayOrderId, keyId, currency, amount, hand
      name,
      order_id: razorpayOrderId,
     handler: async (response) => {1
-      console.log('Razorpay Handler Response:', response);
       if (response.razorpay_payment_id) {
         try {
           const token = localStorage.getItem('userToken'); 
@@ -43,7 +40,6 @@ const RenderRazorpay = ({ orderId,razorpayOrderId, keyId, currency, amount, hand
               Authorization: `Bearer ${token}`,
             }
           });
-          console.log('payment status Response:', result);
           if (result.data.transactionStatus === 'completed') {
             handlePayment('succeeded', {
               orderId,

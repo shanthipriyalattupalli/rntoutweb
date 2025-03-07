@@ -28,13 +28,13 @@ const Home = () => {
 
   const [categories, setCategories] = useState([]);
   const [categoryProducts, setCategoryProducts] = useState({});
-  const [banners,setBanners]=useState([])
-  const [banner,setBanner]=useState([]);
+  const [banners, setBanners] = useState([])
+  const [banner, setBanner] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const categoryIds = (typeof window !== 'undefined') ? localStorage.getItem("categoryId") : null;
-  const latitude=(typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
-  const longitude=(typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
+  const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
+  const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
   const distance = (typeof window !== 'undefined') ? localStorage.getItem("selectedDistance") : null
 
   // Define category IDs
@@ -69,11 +69,11 @@ const Home = () => {
     try {
       const response = await axios.get(`${BASE_URL}/variants/filter`, {
         params: {
-          categoryId:categoryId,
-          search:"",
+          categoryId: categoryId,
+          search: "",
           latitude: latitude,
           longitude: longitude,
-          distance:distance,
+          distance: distance,
           // minPrice: minPrice,
           // maxPrice: maxPrice,
         },
@@ -101,15 +101,15 @@ const Home = () => {
     try {
       const response = await axios.get(`${BASE_URL}/banners`, {
         params: {
-          device_type:"website",
-          banner_type:"landing_page_banner",
+          device_type: "website",
+          banner_type: "landing_page_banner",
           theme_type: "light",
           // status: "inactive",
           // minPrice: minPrice,
           // maxPrice: maxPrice,
         },
       });
-      console.log(response.data.data,"response of banners")
+
       setBanners(response.data.data)
     } catch (error) {
       console.error(`Error fetching products for category :`, error);
@@ -117,25 +117,24 @@ const Home = () => {
       setIsLoading(false);
     }
   };
- 
-useEffect(() => {
-  console.log("Fetching Banner...");
-  fetchBanners();
-}, []);
+
+  useEffect(() => {
+    fetchBanners();
+  }, []);
 
   const fetchBanner = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/banners`, {
         params: {
-          device_type:"website",
-          banner_type:"festival_banner",
+          device_type: "website",
+          banner_type: "festival_banner",
           theme_type: "light",
           // status: "inactive",
           // minPrice: minPrice,
           // maxPrice: maxPrice,
         },
       });
-      console.log(response.data.data,"response of banner")
+
       if (response.data && response.data.data) {
         setBanner(response.data.data); // Ensure you're setting the array
       }
@@ -144,13 +143,10 @@ useEffect(() => {
     }
   };
   useEffect(() => {
-    console.log("Fetching Banners...");
     fetchBanner();
   }, []);
 
 
-
-  console.log(banner[0]?.image,"banners")
   return (
     <main className='tmp-bg'>
       <Banner banners={banners} isLoading={isLoading} />
@@ -159,22 +155,22 @@ useEffect(() => {
       <Products products={categoryProducts[categoryIds] || []} categoryId={categoryIds} />
       <CuratedCollections />
 
-      <ITInfrastructure products={categoryProducts[CATEGORY_IDS.IT_INFRASTRUCTURE] || []} categoryId={CATEGORY_IDS.IT_INFRASTRUCTURE} isLoading={isLoading}/>
-      <Furniture products={categoryProducts[CATEGORY_IDS.FURNITURE] || []} categoryId={CATEGORY_IDS.FURNITURE} isLoading={isLoading}/>
+      <ITInfrastructure products={categoryProducts[CATEGORY_IDS.IT_INFRASTRUCTURE] || []} categoryId={CATEGORY_IDS.IT_INFRASTRUCTURE} isLoading={isLoading} />
+      <Furniture products={categoryProducts[CATEGORY_IDS.FURNITURE] || []} categoryId={CATEGORY_IDS.FURNITURE} isLoading={isLoading} />
       <PromotionalAd banner={banner[0]} />
-      <MedicalEquipment products={categoryProducts[CATEGORY_IDS.MEDICAL_EQUIPMENT] || []} categoryId={CATEGORY_IDS.MEDICAL_EQUIPMENT} isLoading={isLoading}/>
-      <VacationEquipment products={categoryProducts[CATEGORY_IDS.VACATION_EQUIPMENT] || []} categoryId={CATEGORY_IDS.VACATION_EQUIPMENT} isLoading={isLoading}/>
-      <PromotionalAd banner={banner[1]} isLoading={isLoading}/>
-      <Vehicles products={categoryProducts[CATEGORY_IDS.VEHICLES] || []} categoryId={CATEGORY_IDS.VEHICLES} isLoading={isLoading}/>
-      <PartyMaterial products={categoryProducts[CATEGORY_IDS.PARTY_MATERIAL] || []} categoryId={CATEGORY_IDS.PARTY_MATERIAL} isLoading={isLoading}/>
-      <SportsGym products={categoryProducts[CATEGORY_IDS.SPORTS_GYM] || []} categoryId={CATEGORY_IDS.SPORTS_GYM} isLoading={isLoading}/>
-      <HouseholdKitchen products={categoryProducts[CATEGORY_IDS.HOUSEHOLD_KITCHEN] || []} categoryId={CATEGORY_IDS.HOUSEHOLD_KITCHEN} isLoading={isLoading}/>
+      <MedicalEquipment products={categoryProducts[CATEGORY_IDS.MEDICAL_EQUIPMENT] || []} categoryId={CATEGORY_IDS.MEDICAL_EQUIPMENT} isLoading={isLoading} />
+      <VacationEquipment products={categoryProducts[CATEGORY_IDS.VACATION_EQUIPMENT] || []} categoryId={CATEGORY_IDS.VACATION_EQUIPMENT} isLoading={isLoading} />
+      <PromotionalAd banner={banner[1]} isLoading={isLoading} />
+      <Vehicles products={categoryProducts[CATEGORY_IDS.VEHICLES] || []} categoryId={CATEGORY_IDS.VEHICLES} isLoading={isLoading} />
+      <PartyMaterial products={categoryProducts[CATEGORY_IDS.PARTY_MATERIAL] || []} categoryId={CATEGORY_IDS.PARTY_MATERIAL} isLoading={isLoading} />
+      <SportsGym products={categoryProducts[CATEGORY_IDS.SPORTS_GYM] || []} categoryId={CATEGORY_IDS.SPORTS_GYM} isLoading={isLoading} />
+      <HouseholdKitchen products={categoryProducts[CATEGORY_IDS.HOUSEHOLD_KITCHEN] || []} categoryId={CATEGORY_IDS.HOUSEHOLD_KITCHEN} isLoading={isLoading} />
 
-      <Services isLoading={isLoading}/>
+      <Services isLoading={isLoading} />
       {/* <CityExplorer /> */}
-      <Achievements isLoading={isLoading}/>
-      <Blogs isLoading={isLoading}/>
-      <Testimonials isLoading={isLoading}/>
+      <Achievements isLoading={isLoading} />
+      <Blogs isLoading={isLoading} />
+      <Testimonials isLoading={isLoading} />
     </main>
   );
 };

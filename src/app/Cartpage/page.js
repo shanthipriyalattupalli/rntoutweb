@@ -85,7 +85,7 @@ const router=useRouter();
           },
         }
       );
-      console.log(response, "updated checkbox status")
+
       fetchCartDetails();
       toast.success(response.data.message);
     } catch (error) {
@@ -270,7 +270,7 @@ const router=useRouter();
         const response = await axios.get(`${BASE_URL}/cart/${userId}`);
         const cartData = response.data.cartItems || [];
 
-        console.log(cartData, "response in cart");
+
 
         setCartItems(cartData); // Set updated cart items
 
@@ -302,7 +302,7 @@ const router=useRouter();
   
         // ✅ Ensure event fires when cart is empty
         if (updatedItems.length === 0) {
-          console.log("Last item removed, dispatching cartUpdated event");
+
           window.dispatchEvent(new CustomEvent("cartUpdated", { detail: 0 }));
         }
   
@@ -327,14 +327,13 @@ const router=useRouter();
   };
   
   useEffect(() => {
-    console.log("Cart items updated:", cartItems);
-    
+
     // ✅ Only dispatch when cart is empty
     if (cartItems.length === 0) {
-      console.log("Dispatching cartUpdated event with count 0");
+
       window.dispatchEvent(new CustomEvent("cartUpdated", { detail: 0 }));
     } else {
-      console.log("Dispatching cartUpdated event with count", cartItems.length);
+
       window.dispatchEvent(new CustomEvent("cartUpdated", { detail: cartItems.length }));
     }
   }, [cartItems]);  // ✅ Runs whenever cartItems changes
@@ -375,7 +374,7 @@ useEffect(() => {
         couponCode: String(couponcode),
         addressId: String(selectedAddress._id),
       };
-      console.log(payload, "payload");
+
 
       // API call for order checkout
       const response = await axios.post(`${BASE_URL}/orders/checkout`, payload, {
@@ -384,7 +383,7 @@ useEffect(() => {
         },
       });
       const { orderId, finalAmount } = response.data;
-      console.log(orderId,finalAmount,"orderId")
+
 
       // If orderId is present, proceed to initiate payment
       if (orderId) {
@@ -411,7 +410,7 @@ useEffect(() => {
   };
 
   const handleContinueClick = async (orderId, amount) => {
-    console.log(orderId, "order id in checkout")
+
     try {
       const payload = {
         orderId: orderId,
@@ -427,7 +426,6 @@ useEffect(() => {
 
       // Axios response data is already parsed
       if (response.data.order && response.data.order.id) {
-        console.log(response.data.order.id, "order in paymentinitate")
         setDisplayRazorpay(true);
         setRazorpayOrderId(response.data.order.id);
       } else {
@@ -461,7 +459,6 @@ useEffect(() => {
   const handlePayment = async (status, orderDetails) => {
     if (status === "succeeded") {
       setDisplayRazorpay(false);
-      console.log("navigating to orders...");
       // router.push("/profile/orders")
       // await handleContinueClick(orderDetails);
       setFormData(initialFormData);
@@ -492,7 +489,7 @@ useEffect(() => {
     0
   );
 
-  console.log(totalPrice);
+
 
 
 

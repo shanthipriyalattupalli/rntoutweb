@@ -24,7 +24,6 @@ const MenuItems = () => {
       const response = await axios.get(
         `${BASE_URL}/subcategories/categories/${categoryId}`
       );
-      console.log(response.data, "subcategories by category");
       setSubcategories(response.data);
 
       // Automatically select the first subcategory on page load
@@ -47,7 +46,7 @@ const MenuItems = () => {
   // Handle click event to set the active subcategory
   const handleItemClick = (itemId) => {
     setActiveItem(itemId);
-    console.log(itemId, "clicking subcatgoryid");
+
     localStorage.setItem("selectedSubCategoryId", itemId); // Update localStorage
     window.dispatchEvent(new Event("storage"));
   };

@@ -23,7 +23,6 @@ const KYCVerification = ({ setIsKyc }) => {
         if (file) {
             setPreview(URL.createObjectURL(file)); // Set preview URL
             setImage(file); // Store file directly
-            console.log("File uploaded successfully", file);
         }
     };
 
@@ -55,12 +54,10 @@ const KYCVerification = ({ setIsKyc }) => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-
-            console.log(response.data, "kyc: verified");
             setIsKycSuccess(response.data.success)
             toast.success("KYC Verified Successfully!");
         } catch (error) {
-            console.log(error, "kyc: failed to verify");
+
             toast.error(error.response?.data?.message || "Verification failed");
         } finally {
             setIsVerifying(false);

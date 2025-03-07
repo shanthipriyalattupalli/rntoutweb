@@ -29,7 +29,6 @@ export default function Profile({ }) {
           Authorization: `Bearer ${token}`,
         },
       });
-    console.log(response.data.favoriteItems,"favorites");
     setProducts(response.data.favoriteItems)
 
     } catch (error) {

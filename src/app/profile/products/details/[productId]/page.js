@@ -24,7 +24,7 @@ const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const params = useParams();
   const productId = params.productId;
-  console.log(productId, "productId.....");
+
   const [products, setProducts] = useState([]);
   const router = useRouter();
   const [productName, setProductName] = useState("");
@@ -62,7 +62,7 @@ const MainContent = () => {
 
   }, []);
 
-  console.log(categoryId, subCategoryId, "fetchProducts ")
+
 
 
 
@@ -113,7 +113,7 @@ const MainContent = () => {
     );
   };
 
-  console.log(selectedOption, "selectedoption");
+
   const [prices, setPrices] = useState({
     perDay: 0,
     perWeek: 0,
@@ -173,7 +173,7 @@ const MainContent = () => {
       };
     });
 
-    console.log(formData.rentalPrice)// Ensure state update reflects
+
   };
 
 
@@ -245,7 +245,7 @@ const MainContent = () => {
     toast.info("Image removed!");
   };
 
-  // console.log(formData.images,"images of selected")
+
   const handleIconClick = () => {
     fileInputRef.current.click();
   };
@@ -288,10 +288,10 @@ const MainContent = () => {
 
 
   const fetchProducts = async () => {
-    // console.log(categoryId,subCategoryId,"fetchProducts")
+
     try {
       const response = await axios.get(`${BASE_URL}/variants/${productId}`);
-      console.log(response.data, "Fetched Product Details");
+
       setFormData(response.data);
       setFormData(
         (prevData) => ({
@@ -405,7 +405,7 @@ const MainContent = () => {
       return acc;
     }, {});
 
-    console.log("Mapped itemDetails: ", mappedDetails);
+
     setFormData((prev) => ({
       ...prev,
       itemDetails: mappedDetails,
@@ -430,7 +430,7 @@ const MainContent = () => {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${MAP_API}`
       );
-      console.log(response.data, "google maps");
+
       if (response.data.results[0]) {
         setFormData((prevData) => ({
           ...prevData,
@@ -443,7 +443,7 @@ const MainContent = () => {
   };
 
 
-  console.log(formData.images)
+
   const handlePublishProduct = async () => {
     try {
       const formDataToSend = new FormData();
@@ -498,7 +498,7 @@ const MainContent = () => {
       }
 
 
-      console.log("Payload to be sent:", formDataToSend);
+
 
       const response = await axios.put(`${BASE_URL}/variants/${productId}`, formDataToSend, {
         headers: {
@@ -506,7 +506,7 @@ const MainContent = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response, "response of variant")
+
 
       if (response.data.success) {
         toast.success("Product published successfully!");
@@ -536,15 +536,7 @@ const MainContent = () => {
     }
   }, [formData.images]);
 
-  console.log(productDetails, "productDetails");
-  console.log(formData.itemDetails, "formdata itemDetails");
-
-  console.log({ categoryId, subCategoryId }, "ouytrtdfgcvb");
-
-  console.log(formData, "formData");
-
-  const [selectedDate, setSelectedDate] = useState(null);
-
+  
   return (
     <div className='main-content'>
       <ToastContainer />

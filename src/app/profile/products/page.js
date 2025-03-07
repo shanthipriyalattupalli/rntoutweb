@@ -26,7 +26,6 @@ export default function Dashboard({ products }) {
       const response = await axios.get(`${BASE_URL}/variants/userVariants`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response, "userproducts");
       setUserProducts(response.data)
 
     } catch (error) {
@@ -46,12 +45,11 @@ export default function Dashboard({ products }) {
 
 
   const handleProductDelete =async(productId)=>{
-    console.log(productId,"delete product");
+
     try {
   const response=  await axios.delete(`${BASE_URL}/variants/${productId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response,"product deleted");
       fetchUserProducts();
     } catch (error) {
       console.error("Error deleting product:", error);

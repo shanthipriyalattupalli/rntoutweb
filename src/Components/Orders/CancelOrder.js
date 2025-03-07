@@ -5,8 +5,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const CancelOrder = ({ setIsCanceled, subOrderId,suborder }) => {
-  console.log(suborder,"suborder")
+const CancelOrder = ({ setIsCanceled, subOrderId, suborder }) => {
   const [selectedReason, setSelectedReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -20,7 +19,7 @@ const CancelOrder = ({ setIsCanceled, subOrderId,suborder }) => {
     "Other",
   ];
 
-  
+
   const handleCancelOrder = async () => {
     if (!selectedReason) {
       Swal.fire({
@@ -31,9 +30,9 @@ const CancelOrder = ({ setIsCanceled, subOrderId,suborder }) => {
       });
       return;
     }
-  
+
     setIsSubmitting(true);
-  
+
     try {
       const response = await axios.patch(
         `${BASE_URL}/orders/cancel/${subOrderId}`,
@@ -42,7 +41,7 @@ const CancelOrder = ({ setIsCanceled, subOrderId,suborder }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-  
+
       // Show success message
       Swal.fire({
         icon: "success",
@@ -50,14 +49,14 @@ const CancelOrder = ({ setIsCanceled, subOrderId,suborder }) => {
         text: response.data.message || "Your order has been canceled successfully.",
         confirmButtonColor: "#d33",
       });
-  
+
       setIsCanceled(false); // Close modal after success
     } catch (error) {
       let errorMessage = "Failed to cancel order. Please try again.";
       if (error.response?.data?.message) {
         errorMessage = error.response.data.message;
       }
-  
+
       // Show error message
       Swal.fire({
         icon: "error",
@@ -65,13 +64,13 @@ const CancelOrder = ({ setIsCanceled, subOrderId,suborder }) => {
         text: errorMessage,
         confirmButtonColor: "#d33",
       });
-  
+
       console.error(error.response?.data || error, "Error canceling order");
     } finally {
       setIsSubmitting(false);
     }
   };
-  
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-transparent bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-1/4">

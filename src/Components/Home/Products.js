@@ -19,7 +19,7 @@ const ProductItems = dynamic(() => import("../Home/ProductItems"), {
 });
 
 const Products = ({ products, categoryId }) => {
-  console.log(products, "products by categoryId");
+
 
   const handleProducts = () => {
     router.push("/Products"); // Navigate to the profile page

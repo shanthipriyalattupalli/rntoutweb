@@ -145,27 +145,10 @@ const FaqPage = () => {
 
     const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL
     const [categories, setCategories] = useState([])
-    // const fetchFaqCategories = async () => {
-    //     try {
-    //         const response = await axios.get(`${BASE_URL}/faq/categories`);
-    //         console.log(response, "response")
-    //         setCategories(response?.data?.data);
-
-    //     } catch (error) {
-    //         console.error("Error fetching FAQ categories:", error.response?.data || error.message);
-    //     }
-    // };
-
-
-
-    // useEffect(() => {
-    //     fetchFaqCategories();
-    // }, []);
 
     const fetchFaqQuestions = async () => {
         try {
             const response = await axios.get(`${BASE_URL}/faq/questions`);
-            console.log(response, "response")
             setCategories(response?.data?.data);
 
         } catch (error) {

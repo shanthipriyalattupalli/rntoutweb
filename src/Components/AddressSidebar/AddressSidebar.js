@@ -28,12 +28,10 @@ const AddressSidebar = ({ isOpen, onClose }) => {
 
 useEffect(() => {
   const fetchAddress = async () => {
-    console.log(token, "token");
     try {
       const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response.data.profile.addresses, "addresses");
       setAddresses(response.data.profile.addresses);
     } catch (error) {
       console.error(error);
@@ -64,7 +62,7 @@ useEffect(() => {
   }
 
   const [formData, setFormData] = useState(initialFormData);
-  console.log(formData, "initial form");
+
 
 
   if (!isOpen) return null;
@@ -96,7 +94,7 @@ useEffect(() => {
         },
       });
   
-      console.log(response.data, "successful");
+
   
       // Show success message
       Swal.fire({

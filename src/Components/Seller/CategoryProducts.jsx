@@ -20,10 +20,9 @@ const ProductItems = dynamic(() => import("../Home/ProductItems"), {
 
 const CategoryProducts = ({ products }) => {
   const router = useRouter();
-  console.log(products, "products by categoryId");
 
   const handleProducts = () => {
-    router.push("/Products"); // Navigate to the products page
+    router.push("/Products");
   };
 
   return (

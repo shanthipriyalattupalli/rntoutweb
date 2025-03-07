@@ -8,20 +8,9 @@ const Navigation = () => {
   const [subcategories, setSubcategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
-  const [timeoutId, setTimeoutId] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
   const categoryRefs = useRef({});
   const router = useRouter();
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-
-  // useEffect(() => {
-  //   const checkMobile = () => {
-  //     setIsMobile(window.innerWidth <= 1024);
-  //   };
-  //   checkMobile();
-  //   window.addEventListener("resize", checkMobile);
-  //   return () => window.removeEventListener("resize", checkMobile);
-  // }, []);
 
   const fetchCategories = async () => {
     try {
@@ -32,47 +21,29 @@ const Navigation = () => {
     }
   };
 
-  const fetchSubCategories = async (categoryId, event) => {
+  const fetchSubCategories = async (categoryId) => {
     try {
       const response = await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`);
       setSubcategories(response.data || []);
       setActiveCategory(categoryId);
-
-      if (categoryRefs.current[categoryId]) {
-        const rect = categoryRefs.current[categoryId].getBoundingClientRect();
-        setDropdownPosition({
-          top: rect.bottom - 10, // Move it closer by reducing this value
-          left: rect.left + 0, // Adjust left alignment slightly if needed
-        });
-      }
     } catch (error) {
       console.error("Error fetching subcategories:", error);
     }
   };
 
-
-
-  const handleMouseEnter = (categoryId, event) => {
-    if (isMobile) return;
-    // clearTimeout(timeoutId);
-    fetchSubCategories(categoryId, event);
+  const handleCategoryHover = (categoryId, event) => {
+    fetchSubCategories(categoryId);
+    if (categoryRefs.current[categoryId]) {
+      const rect = categoryRefs.current[categoryId].getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.bottom - 10,
+        left: rect.left + 0,
+      });
+    }
   };
 
   const handleMouseLeave = () => {
-    if (isMobile) return;
-    const id = setTimeout(() => {
-      setActiveCategory(null);
-    }, 1000);
-    setTimeoutId(id);
-  };
-
-  const handleCategoryClick = (categoryId) => {
-    if (!isMobile) return;
-    if (activeCategory === categoryId) {
-      setActiveCategory(null);
-    } else {
-      fetchSubCategories(categoryId);
-    }
+    setActiveCategory(null);
   };
 
   const handleSubcategoryClick = (categoryId, subcategoryId) => {
@@ -84,10 +55,8 @@ const Navigation = () => {
     fetchCategories();
   }, []);
 
-
   useEffect(() => {
     const categoryContainer = document.getElementById("category-container");
-
     if (categoryContainer) {
       const handleWheelScroll = (event) => {
         if (event.deltaY !== 0) {
@@ -95,17 +64,27 @@ const Navigation = () => {
           categoryContainer.scrollLeft += event.deltaY;
         }
       };
-
       categoryContainer.addEventListener("wheel", handleWheelScroll);
-
       return () => categoryContainer.removeEventListener("wheel", handleWheelScroll);
     }
   }, []);
 
 
+  // Keep submenu open while hovering
+const handleSubmenuMouseEnter = () => {
+  clearTimeout(timeoutId);
+};
+
+// Hide submenu only when moving away completely
+const handleSubmenuMouseLeave = () => {
+  timeoutId = setTimeout(() => {
+    setActiveCategory(null);
+  }, 300);
+};
+
   return (
     <nav className="px-4 sm:px-20 bg-white border border-slate-200 relative">
-      <div className="relative">
+      <div className="relative" onMouseLeave={handleMouseLeave}>
         <div
           id="category-container"
           className="flex items-center h-12 gap-3 2xl:gap-32 overflow-x-auto overflow-visible whitespace-nowrap scrollbar-hide relative"
@@ -114,13 +93,11 @@ const Navigation = () => {
             <div
               key={category._id}
               className="relative"
-              onMouseEnter={(event) => handleMouseEnter(category._id, event)}
-              onMouseLeave={handleMouseLeave}
+              onMouseOver={(event) => handleCategoryHover(category._id, event)}
               ref={(el) => (categoryRefs.current[category._id] = el)}
             >
               <button
                 className="flex items-center space-x-1 sm:space-x-2 text-gray-700 hover:text-gray-900 py-2 px-2 sm:px-4"
-                onClick={() => handleCategoryClick(category._id)}
               >
                 <img src={category.image} alt={category.categoryName} className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span className="font-poppins text-xs sm:text-sm font-normal leading-5 text-center">
@@ -135,7 +112,8 @@ const Navigation = () => {
           <div
             className="absolute flex flex-col left-0 min-w-[12rem] bg-white rounded-md shadow-lg z-50 border border-gray-200"
             style={{ top: `${dropdownPosition.top - 60}px`, left: `${dropdownPosition.left - 40}px` }}
-
+            onMouseEnter={handleSubmenuMouseEnter}
+            onMouseLeave={handleSubmenuMouseLeave}
           >
             {subcategories.map((subcategory) => (
               <a

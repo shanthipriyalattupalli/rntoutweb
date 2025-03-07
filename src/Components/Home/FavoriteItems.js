@@ -64,9 +64,7 @@ const FavoriteItem = ({ product,fetchFavorites}) => {
     rentalPrice,
     _id,
   } = product;
-  // console.log(rentalAvailability,"favorites products")
 
-  // console.log(rentalPrice, "rental price");
   const formattedDate = new Date(
     rentalAvailability?.startDate
   ).toLocaleDateString("en-US", {
@@ -108,7 +106,6 @@ const monthsDifference =
   };
 
   const handleAddToCart = async (productId) => {
-    console.log(productId, "variant id");
     try {
       const payload = {
         user_id: userId,
@@ -121,7 +118,7 @@ const monthsDifference =
           Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
         },
       });
-      console.log(response, "cart concole");
+
       window.dispatchEvent(new CustomEvent("cartUpdated",));
 
       toast.success(response.data.message);
@@ -150,7 +147,6 @@ const monthsDifference =
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
       fetchFavorites()
       toast.success(response.data.message);
     } catch (error) {
@@ -261,14 +257,14 @@ const monthsDifference =
             <div className="absolute top-[159px]  z-10 flex items-center justify-center w-full">
               {isView ? (
                 <span
-                  className="bg-white text-black w-54 text-center rounded-full border-2 p-1"
+                  className="bg-white text-black w-54 text-center rounded-full border-2 p-1 cursor-pointer"
                   onClick={handleclick}
                 >
                   View all packages
                 </span>
               ) : (
                 <span
-                  className="bg-white text-black w-54 text-center rounded-full border-2 p-1"
+                  className="bg-white text-black w-54 text-center rounded-full border-2 p-1 cursor-pointer"
                   onClick={handleBack}
                 >
                   Back to details

@@ -14,8 +14,7 @@ const pro5 = "/Assets/laptop-5.jpg";
 const ProductItems = lazy(() => import("../Home/ProductItems"));
 
 const ITInfrastructure = ({ products, categoryId,isLoading }) => {
-  // Defaulting to an empty array
-  // console.log(products, "nko98ytfchgvb nmo-9897tyfcg ");
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
   const [numProducts, setNumProducts] = useState(4);

@@ -14,7 +14,6 @@ const ProductListPage = ({ products }) => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/categories`);
-      console.log("Fetched categories:", response.data.categories);
       setCategories(response.data.categories);
 
       // Set default categoryId (first category in response, if exists)
@@ -32,13 +31,9 @@ const ProductListPage = ({ products }) => {
 
   // Filter products by categoryId
   const getProductsByCategory = () => {
-    console.log("categoryId from params:", categoryId);
-    console.log("Products array:", products);
+
 
     return products.filter((product) => {
-        console.log("Product categoryId:", product.categoryId); // Log each product's categoryId
-        console.log("Product categoryId._id:", product.categoryId?._id); // Log _id if available
-
         return product.categoryId?._id === categoryId;
     });
 };

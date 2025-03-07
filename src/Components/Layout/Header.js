@@ -36,7 +36,7 @@ function Header() {
   const [cartItems, setCartItems] = useState(0);
   const [locationsList, setLocationsList] = useState([]);
   const [searchValue, setSearchValue] = useState(''); 
-  console.log(searchValue,"searchvalue")
+
   const [address, setAddress] = useState({ suburb: "" });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,6 @@ function Header() {
   const pathname = usePathname(); 
  const cartlength=typeof window !== 'undefined' ? localStorage.getItem("cart"):null;
  const profile = typeof window !== 'undefined' ? localStorage.getItem("profilePic") : null;
-console.log(cartlength,"current cart length according to local")
   useEffect(() => {
     const handleProfileUpdate = (event) => {
       const updatedPic = event.detail.profilePic;
@@ -89,9 +88,7 @@ setProfilePic(profile);
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${MAP_API}`
       );
-      // console.log(response);
       const locationData = response.data.results;
-      console.log(locationData, "from the API");
       if (locationData) {
         const uniqueLocations = new Set(); // Use Set to store unique location names
         let locations = [];
@@ -106,10 +103,9 @@ setProfilePic(profile);
           }
         });
         setLocationsList(locations); // Set the list of unique locations0
-        // If we have at least one location, set the first one as the default suburb
         if (locations.length > 0) {
           const suburb = locations[0]; // Use the first match for suburb
-          // console.log(suburb.short_name, "suburb");
+
           setAddress({
             suburb: suburb.short_name,
           });
@@ -127,7 +123,7 @@ setProfilePic(profile);
   };
 
 
-  console.log(locationsList, "address")
+
 
   const fetchLocation = () => {
     if ("geolocation" in navigator) {
@@ -159,14 +155,12 @@ setProfilePic(profile);
 
 
   const fetchCartDetails = async () => {
-    console.log("out fetching cart");
+
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
-      console.log(response, "response in cart")
       setCartItems(response.data?.cartItems?.length );
     } catch (error) {
       setCartItems(0);
-      console.log("Error fetching cart details:", error);
     }
   };
 
@@ -198,7 +192,6 @@ setProfilePic(profile);
             search: searchTerm,
           },
         });
-        console.log(response, "response in search");
         setVariants(response.data.data);
         setShowSuggestions(true);
       } catch (error) {
@@ -225,7 +218,6 @@ setProfilePic(profile);
 
   const handleDistanceChange = (e) => {
     const distance = e.target.value;
-    console.log(distance, "distance..")
     setSelectedDistance(distance);
     localStorage.setItem("selectedDistance", distance);
     window.location.reload();
@@ -242,21 +234,38 @@ setProfilePic(profile);
 
   {/* Center Section - Search Input */}
   <div className="hidden sm:flex items-center relative w-full max-w-xs ml-4 cursor-pointer">
-    <SearchInput  value={searchValue} onChange={(e) => handleSearchInputChange(e.target.value)}  className="w-[250px]"/>
-    {showSuggestions && variants.length > 0 && (
-      <ul className="absolute left-0 w-full bg-white border rounded shadow top-[40px] z-40">
-        {variants.slice(0, 10).map((variant) => (
-            <li
-              key={variant._id}
-              onClick={() => handleSuggestionClick(variant)}
-              className="p-2 cursor-pointer hover:bg-gray-200"
-            >
-              {variant.title}
-            </li>
-        ))}
-      </ul>
-    )}
-  </div>
+  <SearchInput  
+    value={searchValue} 
+    onChange={(e) => handleSearchInputChange(e.target.value)}  
+    className="w-[250px]"
+  />
+  {showSuggestions && (
+    <ul className="absolute left-0 w-full bg-white border rounded shadow top-[40px] z-40">
+      {variants.length > 0 ? (
+        variants.slice(0, 10).map((variant) => (
+          <li
+            key={variant._id}
+            onClick={() => handleSuggestionClick(variant)}
+            className="p-2 cursor-pointer hover:bg-gray-200"
+          >
+            {variant.title}
+          </li>
+        ))
+      ) : (
+        <li className="flex items-center gap-2 p-2 text-gray-500 cursor-default">
+          {/* Search Icon */}
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          No search results for <strong>{searchValue}</strong>
+        </li>
+      )}
+    </ul>
+  )}
+</div>
+
+
 
   {/* Right Section - Location, Distance, Cart, Profile, and Buttons */}
   <div className="flex items-center gap-3 md:gap-4 cursor-pointer">

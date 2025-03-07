@@ -16,7 +16,6 @@ const customStyles = `
 `;
 
 const productList = ({ product }) => {
-  console.log(product, "productlist in produclist");
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isView, setIsview] = useState(true);
   // const [userId, setUserId] = useState("");
@@ -67,7 +66,6 @@ const productList = ({ product }) => {
   };
 
   const handleAddToCart = async (productId) => {
-    console.log(productId, "variant id");
     try {
       const payload = {
         user_id: userId,
@@ -80,7 +78,6 @@ const productList = ({ product }) => {
           Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
         },
       });
-      console.log(response.data);
       window.dispatchEvent(new CustomEvent("cartUpdated",));
 
       toast.success(response.data.message);

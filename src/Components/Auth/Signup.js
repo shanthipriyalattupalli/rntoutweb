@@ -21,7 +21,6 @@ const Signup = ({setIsRegisterOpen}) => {
     gender: "",
     profilePic: ""
   });
-  console.log(profile,"profile")
   const [isLoading, setIsLoading] = useState(false); // For loading state
   const router = useRouter();
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -42,53 +41,7 @@ const Signup = ({setIsRegisterOpen}) => {
     });
   };
 
-  // Handle form submission
-  // const handleCreateAccount = async () => {
 
-
-  //   const { name, role, email, mobile, password, confirmPassword } = formData;
-  //   console.log(role, "role")
-  //   // Validation
-  //   if (!name || !role || !email || !mobile || !password || !confirmPassword) {
-  //     toast.error("All fields are required.");
-  //     return;
-  //   }
-
-  //   if (password !== confirmPassword) {
-  //     toast.error("Passwords do not match.");
-  //     return;
-  //   }
-
-  //   setIsLoading(true);
-  //   try {
-  //     console.log(role, "role123")
-  //     const response = await axios.post(`${BASE_URL}/users`, {
-  //       name,
-  //       role,
-  //       email,
-  //       mobile,
-  //       password,
-  //     });
-  //     console.log(response);
-  //     setIsLoading(false);
-
-  //     if (response.status === 201) {
-  //       toast.success(response.data.message || "Account created successfully!");
-  //       router.push("/Login");
-  //     } else {
-  //       toast.error(
-  //         response.data.error || "Failed to create account. Try again."
-  //       );
-  //     }
-  //   } catch (error) {
-  //     setIsLoading(false);
-  //     console.log(error, "error")
-  //     toast.error(
-  //       error.response?.data?.error ||
-  //       "Something went wrong. Please try again later."
-  //     );
-  //   }
-  // };
 
 
   const handleSubmitProfile=async()=>{

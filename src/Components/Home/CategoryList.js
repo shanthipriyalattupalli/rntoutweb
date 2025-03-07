@@ -23,7 +23,6 @@ const CategoryList = ({ products = [], categories,isLoading }) => {
   const router = useRouter();
 
   const handleCategoryClick = (categoryId) => {
-    console.log(categoryId, "categoryclick");
     router.push(`/Product-list/${categoryId}`);
   };
 

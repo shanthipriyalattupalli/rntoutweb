@@ -13,7 +13,6 @@ import Image from "next/image";
 const downArrow = "/Assets/down_line.png";
 
 const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, distance, rating }) => {
-  console.log(subCategories, "subcategories in sidebar menu");
   const [activeIndex, setActiveIndex] = useState(null);
   const [priceRange, setPriceRange] = useState(0); // Current slider value
   const [ratings, setRating] = useState(0)
@@ -35,9 +34,8 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const params = useParams();
   const categoryId = params.categoryId; // Extract categoryId directly from params
-  console.log("categoryId from params:", categoryId);
   const router = useRouter();
-  console.log(subcategoryId, "subcategoryid....")
+
  
  
 
@@ -100,28 +98,13 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
     } else {
       setOpenIndex(subcategoryId);
     }
-    console.log(categoryId, "categoryID.............");
-    console.log(subcategoryId, "subcategoryIds...........");
 
 
     setActiveIndex(subcategoryId === activeIndex ? null : subcategoryId);
     subcategoryID(subcategoryId);
     localStorage.setItem(`subcategoryId_${categoryId}`, subcategoryId);
-
-    // router.push(`/Product-list/${categoryId}/${subcategoryId}`);
-    // setActiveIndex(subcategoryId);
   };
 
-  // useEffect(() => {
-  //   console.log("Active Index Updated:", activeIndex);
-  // }, [activeIndex]);
-
-  // useEffect(() => {
-  //   if (subCategories.length > 0 && !activeIndex) {
-  //     setActiveIndex(subCategories[0]._id);
-
-  //   }
-  // }, [subCategories]);
   const handleChange = (e) => {
     const { value, name } = e.target;
     if (name === "min") {

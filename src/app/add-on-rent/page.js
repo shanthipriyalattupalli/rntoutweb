@@ -39,7 +39,7 @@ const CategoryGrid = () => {
 
   const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
   const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
-  // console.log(token, "token of user")
+
 
   // Define background colors
   const categoryColors = [
@@ -79,11 +79,9 @@ const CategoryGrid = () => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/categories`);
-      console.log(response?.data.categories, "Categories fetched");
       setCategories(response?.data.categories);
       if (response?.data.categories.length > 0) {
         const firstCategory = response.data.categories[0];
-        console.log(firstCategory,"firstCategory")
         setSelectedCategory(firstCategory._id);
         setSelectedCategoryLabel(firstCategory.categoryName);
         localStorage.setItem("selectedcategoryId", firstCategory._id);
@@ -97,19 +95,16 @@ const CategoryGrid = () => {
     fetchCategories();
   }, []);
 
-console.log(selectedCategory,"selectedCategory");
-console.log(selectedCategoryLabel,"selectedCategoryLabel")
+
   const fetchBusinessDetails = async () => {
     if (!token) {
       console.error("Token is not set yet");
       return;
     }
     try {
-      // console.log("Token:", token);
       const response = await axios.get(`${BASE_URL}/business-info`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response.data.data._id, "Business Information");
       setBusinessId(response.data?.data?._id)
 
     } catch (error) {
@@ -126,7 +121,6 @@ console.log(selectedCategoryLabel,"selectedCategoryLabel")
 
   const handleNextClick = () => {
     if (selectedCategoryLabel && selectedCategory) {
-      console.log(selectedCategory, "selected category");
       router.push(`/add-on-rent/add-details?${selectedCategoryLabel}`);
     }
      else {

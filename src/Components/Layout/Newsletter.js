@@ -20,7 +20,6 @@ const Newsletter = () => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/categories`);
-      console.log(response.data.categories, "response in categ.....................");
       setCategories(response.data.categories || []);
     } catch (error) {
       console.error("Error fetching categories:", error);

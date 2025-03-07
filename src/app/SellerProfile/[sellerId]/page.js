@@ -20,7 +20,6 @@ const SellerCarouselProfile = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const params = useParams();
   const sellerId = params.sellerId;
-  console.log(sellerId,"sellerid");
   const [sellerDetails, setSellerDetails] = useState([]);
   const [products,setproducts]=useState([])
 
@@ -29,7 +28,7 @@ const SellerCarouselProfile = () => {
       const response = await axios.get(`${BASE_URL}/business-info/sellerInfo?ownerId=${sellerId}`);
 
       const data = response.data.data;
-      console.log(data, "fetch seller by sellerid");
+
       setSellerDetails(data)
       setproducts(data.variants)
     } catch (error) {
@@ -54,7 +53,7 @@ const SellerCarouselProfile = () => {
   const [activeTab, setActiveTab] = useState("products");
 
   const bannerImages = sellerDetails?.bannerImages || []; 
-  console.log(bannerImages,"bannerImages")
+
   useEffect(() => {
     if (bannerImages.length > 1) {
       const interval = setInterval(() => {
@@ -74,20 +73,7 @@ const SellerCarouselProfile = () => {
   };
 
 
-  // const fetchProductRatings = async () => {
-  //   try {
-  //     const response = await axios.get(`${BASE_URL}/reviews/variant/${productId}`);
 
-  //     const data = response.data;
-  //     console.log(data.data, "fetch review by id");
-  //     setUserRatings(data.data)
-  //   } catch (error) {
-  //     console.error("Error fetching product:", error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchProductRatings();
-  // }, [productId]);
 
 
   const getPaginationNumbers = () => {

@@ -43,7 +43,7 @@ const OrderReview = () => {
   const router = useRouter();
   const params = useParams();
   const productId = params.productId;
-  console.log(productId, "productid");
+
 
   const fetchProductById = async () => {
     try {
@@ -51,7 +51,6 @@ const OrderReview = () => {
 
       const data = response.data.variantId;
       setOrderData(response.data.order)
-      console.log(response.data, "fetch suborder by suborderid");
 
     } catch (error) {
       console.error("Error fetching product:", error);
@@ -119,7 +118,6 @@ const OrderReview = () => {
         rating: rating,
         comment: review,
       };
-console.log(payload,"payload of review");
       const config = {
         headers: {
           Authorization: `Bearer ${token}`, // Add the token if required by the API
@@ -128,7 +126,6 @@ console.log(payload,"payload of review");
       };
 
       const response = await axios.post(`${BASE_URL}/reviews`, payload, config);
-console.log(response,"repsonse of review")
       if (response.status === 201 || response.status === 200) {
         toast.success("Review submitted successfully!");
         // router.push("/profile/orders/orderReviewSubmited");

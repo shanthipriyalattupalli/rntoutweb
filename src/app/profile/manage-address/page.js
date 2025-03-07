@@ -29,12 +29,10 @@ export default function ManageAddresses() {
 
   useEffect(() => {
     const fetchAddress = async () => {
-      console.log(token, "token");
       try {
         const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log(response.data.profile.addresses, "addresses");
         setAddresses(response.data.profile.addresses);
       } catch (error) {
         console.error(error);
@@ -70,7 +68,6 @@ export default function ManageAddresses() {
 
   const handleAddressToggle = () => {
     setIsAddressOpen(!isAddressOpen);
-    console.log("Address Sidebar Open:", !isAddressOpen);
   };
 
   const handleDeleteAddress = (id) => {

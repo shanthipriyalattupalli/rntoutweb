@@ -27,10 +27,8 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
 const userName = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
 const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
 const fcmToken = typeof window !== 'undefined' ? localStorage.getItem("FCMToken") : null;
-console.log(fcmToken)
-const profilepic = typeof window !== 'undefined'? localStorage.getItem("profilePic"):null;
 
-  console.log(mobileNumber, "mobile num in otp");
+const profilepic = typeof window !== 'undefined'? localStorage.getItem("profilePic"):null;
 
   const handleChange = (index, value) => {
     if (/^\d*$/.test(value)) {
@@ -46,9 +44,7 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
     }
   };
 
-  useEffect(() => {
-    console.log(otp, "Updated otp state");
-  }, [otp]);
+
 
 
 
@@ -61,9 +57,7 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
   };
 
   const handleOtpVerify = async () => {
-    const otpCode = otp.join("");
-    console.log(otpCode, "otpcode");
-    
+    const otpCode = otp.join(""); 
     if (otpCode.length < 4) {
       setErrorMessage("Please enter a valid 4-digit OTP.");
       setOtpError(true); // Apply red border
@@ -80,7 +74,6 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
         phoneNumber: mobileNumber,
       });
   
-      console.log(response.data, "data in otp");
       setIsLoading(false);
       let user = response.data.user;
       toast.success(response.data.message || "OTP verified successfully!");
@@ -131,7 +124,6 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
           },
         }
       );
-      console.log("FCM Token saved successfully",response);
     } catch (error) {
       console.error("Error saving FCM token:", error);
     }
@@ -149,12 +141,10 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
       const response = await axios.post(`${BASE_URL}/users/send-otp`, {
         phoneNumber: mobileNumber,
       });
-      console.log(response);
       setIsLoading(false);
 
       if (response.status === 200) {
         toast.success(response.data.message || "OTP sent successfully!");
-        console.log(mobileNumber, "mobilenum in login page");
         // router.push({
         //   pathname: "/Otp",
         //   query: { mobileNumber: mobileNumber },

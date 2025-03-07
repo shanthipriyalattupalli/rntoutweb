@@ -14,22 +14,7 @@ import '../../../styles/productlist.css';
 // const household='Assets/household.svg'; 
 const Submenu = ({ categories, setCategoryId,categoryId }) => {
   let category = categories;
-  console.log(categories, "category in submenu...............................");
   const router = useRouter();
-  // const params = useParams(); // Get the categoryId from the route params
-  // const [activeMenu, setActiveMenu] = useState(null);
-
-  // useEffect(() => {
-  //   if (params?.categoryId) {
-  //     setActiveMenu(params.categoryId); // Set active menu from the route
-  //   }
-  // }, [params?.categoryId]);
-
-  // const handleMenuClick = (categoryId) => {
-  //   setActiveMenu(categoryId);
-  //   router.push(`/Product-list/${categoryId}`); // Navigate to ProductList with categoryId
-  // };
-
   const images = [
     "/Assets/it.svg",
     "/Assets/furniture.svg",

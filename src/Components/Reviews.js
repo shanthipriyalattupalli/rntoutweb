@@ -7,25 +7,15 @@ import "react-toastify/dist/ReactToastify.css";
 
 const laptop = "/Assets/laptop-1.jpg";
 
-const OrderReview = ({product}) => {
+const OrderReview = ({ product }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [headline, setHeadline] = useState("");
   const [review, setReview] = useState("");
-  // const [variantId, setVariantId] = useState("");
-  // const [userId, setUserId] = useState("");
-  const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
-  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
-
-
-  // Fetch variantId, userId, and token from localStorage
-  // useEffect(() => {
-  //   setVariantId(localStorage.getItem("variantId"));
-  //   setUserId(localStorage.getItem("userId"));
-  //   setAuthToken(localStorage.getItem("authToken")); 
-  // }, []);
+  const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
   const handleRating = (rate) => {
     setRating(rate);
@@ -39,7 +29,7 @@ const OrderReview = ({product}) => {
 
     try {
       const payload = {
-        variantId:product._id,
+        variantId: product._id,
         userId,
         rating,
         comment: review,
@@ -72,10 +62,7 @@ const OrderReview = ({product}) => {
     }
   };
 
-  // const product = {
-  //   name: "Dell 27 inch P2725H Monitor | Anti-Glare | 100Hz | 5ms",
-  //   image: laptop,
-  // };
+
 
   return (
     <div className="flex flex-col px-10 pb-10">

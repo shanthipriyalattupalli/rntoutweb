@@ -11,7 +11,7 @@ const LazyImage = ({ src, alt }) => {
 };
 
 const FurnishAd = ({banner}) => {
-  console.log(banner,"banner in promotional add")
+
   return (
 <div className="mt-8 mb-8 flex flex-col md:flex-row items-center relative">
   {/* Text Section */}

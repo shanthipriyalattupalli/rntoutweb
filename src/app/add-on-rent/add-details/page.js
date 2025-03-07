@@ -22,7 +22,6 @@ const upload = "/Assets/upload.png";
 const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const router = useRouter();
-  //console.log(subCategoryId, "ghbnm,lpoiuyghvb nmkiuyghvb");
   const [products, setProducts] = useState([]);
 
   const [productName, setProductName] = useState("");
@@ -59,7 +58,7 @@ const MainContent = () => {
   }, []);
   
 
-  console.log(categoryId, subCategoryId, "fetchProducts ")
+
 
 
 
@@ -110,7 +109,6 @@ const MainContent = () => {
     );
   };
 
-  console.log(selectedOption, "selectedoption");
   const [prices, setPrices] = useState({
     perDay: 0,
     perWeek: 0,
@@ -170,7 +168,7 @@ const MainContent = () => {
       };
     });
 
-    console.log(formData.rentalPrice)// Ensure state update reflects
+
   };
 
 
@@ -251,7 +249,7 @@ const MainContent = () => {
           const response = await axios.get(
             `${BASE_URL}/products/categoryProducts/?categoryId=${categoryId}&subCategoryId=${subCategoryId}`
           );
-          console.log(response.data, "Fetched Products by subCategoryId");
+
           setProducts(response.data);
         }
       } catch (error) {
@@ -366,7 +364,7 @@ const MainContent = () => {
       return acc;
     }, {});
 
-    console.log("Mapped itemDetails: ", mappedDetails);
+
     setFormData((prev) => ({
       ...prev,
       itemDetails: mappedDetails,
@@ -391,7 +389,7 @@ const MainContent = () => {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${MAP_API}`
       );
-      console.log(response.data, "google maps");
+
       if (response.data.results[0]) {
         setFormData((prevData) => ({
           ...prevData,
@@ -404,7 +402,7 @@ const MainContent = () => {
   };
 
 
-  console.log(formData.images)
+
   const handlePublishProduct = async () => {
     try {
       const formDataToSend = new FormData();
@@ -458,14 +456,14 @@ const MainContent = () => {
           formDataToSend.append(`itemDetails[${key}]`, formData.itemDetails[key]);
         }
       }
-      console.log("Payload to be sent:", formDataToSend);
+
       const response = await axios.post(`${BASE_URL}/variants`, formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response,"response of variant")
+
       if (response.data.success) {
         toast.success("Product published successfully!");
         setFormData(initialFormData); 
@@ -490,11 +488,6 @@ const MainContent = () => {
 
 
 
-  console.log(productDetails, "productDetails");
-  console.log(formData.itemDetails, "formdata itemDetails");
-  console.log({ categoryId, subCategoryId }, "ouytrtdfgcvb");
-
-  console.log(formData, "formData");
 
   const [selectedDate, setSelectedDate] = useState(null);
 

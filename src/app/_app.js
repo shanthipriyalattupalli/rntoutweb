@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }) {
       navigator.serviceWorker
         .register("../../public/firebase-messaging-sw")
         .then((registration) => {
-          console.log("Service Worker registered:", registration);
+
         })
         .catch((err) => console.log("Service Worker registration failed:", err));
     }
