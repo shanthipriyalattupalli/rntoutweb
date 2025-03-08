@@ -11,7 +11,7 @@ const LazyImage = memo(({ src, alt }) => {
     <img
       src={src}
       alt={alt}
-      className='w-full h-64 object-cover rounded-lg'
+      className='w-full h-[200px] object-cover rounded-lg'
       loading='lazy'
     />
   );
