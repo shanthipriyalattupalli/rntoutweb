@@ -53,7 +53,7 @@ const Banner = ({ banners, isLoading }) => {
             pagination={{ clickable: true }}
             modules={[Navigation, Pagination, Autoplay]}
             autoplay={{ delay: 3000 }}
-            className="rounded-lg md:rounded-[40px] border border-gray-200 h-[300px] sm:h-[400px] md:h-[500px]"
+            className="rounded-lg md:rounded-[40px] border border-gray-200 h-[536px] sm:h-[536px] md:h-[536px]"
           >
             {banner.images?.map((image, idx) => (
               <SwiperSlide key={idx} className="h-full">
@@ -61,7 +61,7 @@ const Banner = ({ banners, isLoading }) => {
                   <img
                     src={image}
                     alt={`Slide ${idx + 1}`}
-                    className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover rounded-lg"
+                    className="w-full h-[536px] sm:h-[536px] md:h-[536px] object-cover rounded-lg"
                   />
                   <div className="absolute inset-0 bg-black opacity-0"></div>
                   <div className="absolute top-16 sm:top-24 md:top-28 left-4 sm:left-10 text-slate-600 text-sm sm:text-base md:text-lg">

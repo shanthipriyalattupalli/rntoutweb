@@ -39,7 +39,7 @@ const FurnishAd = ({banner}) => {
     <img
       src={banner?.image}
       alt="Promotional Banner"
-      className="w-full h-[400px] object-cover"
+      className="w-full h-[300px] object-cover"
     />
   </div>
 </div>
