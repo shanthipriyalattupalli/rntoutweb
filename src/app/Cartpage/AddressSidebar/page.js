@@ -515,7 +515,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
             onClose();
           }}
         >
-          <h4>{address.name}</h4>
+          <h4 className="truncate w-full">{address.name}</h4>
           <p>|</p>
           <p>{address.mobile}</p>
         </div>

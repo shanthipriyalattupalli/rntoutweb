@@ -8,7 +8,7 @@ const MobileApp = () => {
     <section className="mt-4 relative flex flex-row lg:flex-row items-center lg:items-stretch w-full">
       {/* Background Gradient and Image */}
       <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-red-50 to-blue-50">
-        <img src={mobileapp} alt="Mobile App" className="w-full h-full object-cover" />
+        <img src={mobileapp} alt="Mobile App" className="w-full h-full" />
       </div>
 
       {/* Content */}
@@ -36,14 +36,13 @@ const MobileApp = () => {
       </div>
 
       {/* Mobile Phone Image */}
-      <div className="relative w-full lg:w-1/2 flex justify-center lg:justify-end mt-6 lg:mt-0">
-        {/* Uncomment if you have an image */}
-        {/* <img
+      {/* <div className="relative w-full lg:w-1/2 flex justify-center lg:justify-end mt-6 lg:mt-0">
+        <img
           src="https://www.nicepng.com/png/full/83-833946_mobile-phone-png-transparent-images-iphone-png-white.png"
           alt="Mobile Phone"
           className="w-32 sm:w-40 md:w-48 lg:w-64"
-        /> */}
-      </div>
+        />
+      </div> */}
     </section>
   );
 };

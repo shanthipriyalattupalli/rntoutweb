@@ -11,8 +11,9 @@ const logo = "/Assets/Rntout_Logo.png";
 const Photo = "/Assets/Photo.png";
 const locations = '/Assets/location_fill.svg'
 const nearby = '/Assets/nearby.svg'
-const cart = '/Assets/cart.svg'
+const cart = '/Assets/Button.svg'
 const cartitems = '/Assets/cartitems.svg'
+
 
 
 function Header() {
@@ -224,7 +225,8 @@ setProfilePic(profile);
   };
 
   return (
-<header className="flex items-center justify-between px-6 md:px-10 lg:px-20 py-3 bg-white shadow-md">
+    <>
+<header className="flex items-center justify-between px-6 md:px-10 lg:px-20 py-3 bg-white border ">
   {/* Left Section - Logo */}
   <div className="flex items-center cursor-pointer">
     <Link href="/" style={{all:"unset"}}>
@@ -233,7 +235,7 @@ setProfilePic(profile);
   </div>
 
   {/* Center Section - Search Input */}
-  <div className="hidden sm:flex items-center relative w-full max-w-xs ml-4 cursor-pointer">
+  <div className="hidden lg:flex items-center relative w-full max-w-xs ml-4 cursor-pointer">
   <SearchInput  
     value={searchValue} 
     onChange={(e) => handleSearchInputChange(e.target.value)}  
@@ -242,7 +244,7 @@ setProfilePic(profile);
   {showSuggestions && (
     <ul className="absolute left-0 w-full bg-white border rounded shadow top-[40px] z-40">
       {variants.length > 0 ? (
-        variants.slice(0, 10).map((variant) => (
+        variants.map((variant) => (
           <li
             key={variant._id}
             onClick={() => handleSuggestionClick(variant)}
@@ -270,13 +272,13 @@ setProfilePic(profile);
   {/* Right Section - Location, Distance, Cart, Profile, and Buttons */}
   <div className="flex items-center gap-3 md:gap-4 cursor-pointer">
     {/* Location */}
-    <div className="hidden sm:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 gap-2">
+    <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 gap-2">
       <Image src={locations} alt="location" width={18} height={18} />
       <span className="text-sm font-medium text-blacky">{address.suburb}</span>
     </div>
 
     {/* Distance Selection */}
-    <div className="hidden sm:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
+    <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
       <Image src={nearby} alt="location" width={18} height={18} />
       <select className="bg-transparent text-sm cursor-pointer" value={selectedDistance} onChange={handleDistanceChange}>
         <option className="cursor-pointer" value="20">20 km</option>
@@ -292,15 +294,17 @@ setProfilePic(profile);
     <div className="relative cursor-pointer" onClick={() => router.push("/Cartpage")}>
       {cartItems > 0 ? (
         <>
-          <Image src={cartitems} width={28} height={28} alt="cart"  className="min-w-[28px] min-h-[28px]"/>
+          <Image src={cartitems} width={30} height={30} alt="cart"  className="min-w-[34px] min-h-[34px]"/>
           <span className="absolute -top-2 -top-2 -right-2  bg-red-500 rounded-full w-5 h-5 text-xs font-semibold text-white flex items-center justify-center">
             {cartItems}
           </span>
         </>
       ) : (
-        <button className="bg-white border border-gray-300 rounded-lg p-2 hover:bg-gray-100">
-       <Image src={cartitems} width={28} height={28} alt="cart" className="min-w-[28px] min-h-[28px]" />
-        </button>
+
+        <button className="bg-white border border-blue-300 rounded-lg p-2 hover:bg-gray-100">
+        <Image src={cart} width={22} height={22} alt="cart" className="min-w-[22px] min-h-[22px]" />
+         </button>
+     
       )}
     </div>
     {/* Rent Button */}
@@ -348,6 +352,58 @@ setProfilePic(profile);
     </nav>
   </div>
 </header>
+<div className="sm:flex md:flex lg:hidden  w-full flex md:flex gap-3 px-2 py-4" >
+<div className="items-center  w-full relative cursor-pointer sm:block md:block lg:hidden">
+  <SearchInput  
+    value={searchValue} 
+    onChange={(e) => handleSearchInputChange(e.target.value)}  
+    className="w-[120px] md:w-[400px]" 
+  />
+  {showSuggestions && (
+    <ul className="absolute left-0 w-full bg-white border rounded shadow top-[40px] z-40">
+      {variants.length > 0 ? (
+        variants.map((variant) => (
+          <li
+            key={variant._id}
+            onClick={() => handleSuggestionClick(variant)}
+            className="p-2 cursor-pointer hover:bg-gray-200"
+          >
+            {variant.title}
+          </li>
+        ))
+      ) : (
+        <li className="flex items-center gap-2 p-2 text-gray-500 cursor-default">
+          {/* Search Icon */}
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          No search results for <strong>{searchValue}</strong>
+        </li>
+      )}
+    </ul>
+  )}
+</div>
+<div className="sm:flex md:flex lg:hidden w-full flex h-10 px-1 items-center bg-white border border-gray-300 rounded-lg hover:bg-gray-100 gap-2">
+      <Image src={locations} alt="location" width={18} height={18} />
+      <span className="text-sm font-medium text-blacky truncate w-full block">
+  {address.suburb}
+</span>
+
+    </div>
+    <div className="sm:flex md:flex lg:hidden  w-1/2 h-10 flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
+      <Image src={nearby} alt="location" width={16} height={16} />
+      <select className="bg-transparent text-xs cursor-pointer mr-2" value={selectedDistance} onChange={handleDistanceChange}>
+        <option className="cursor-pointer" value="20">20 km</option>
+        <option className="cursor-pointer" value="30">30 km</option>
+        <option value="40">40 km</option>
+        <option value="50">50 km</option>
+        <option value="60">60 km</option>
+        <option value="100">100 + km</option>
+      </select>
+    </div>
+    </div>
+</>
 
   );
 }

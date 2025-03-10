@@ -311,7 +311,12 @@
         font-size: 14px;
     }
 }
+@media (min-width: 320px) and (max-width: 767px) {
+    .summary-section{
+        padding: 0;
+    }
 
+}
 @media (max-width: 425px) {
     .cart-page {
         flex-direction: column;
@@ -393,9 +398,9 @@
 }
 
 /* Responsive: Laptops & Small Desktops (769px - 1024px) */
-@media (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1024) {
     .cart-page {
-        flex-direction: column;
+        flex-direction: row;
         padding: 28px;
     }
 
@@ -404,7 +409,7 @@
     }
 
     .summary-section {
-        width: 90%;
+        width: 46%;
         margin-left: 0;
     }
 

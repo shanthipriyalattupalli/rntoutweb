@@ -119,6 +119,9 @@
     background-color: #cccccc; /* Gray color for disabled state */
     cursor: not-allowed;
   }
+  .otp-timer{
+    color: red;
+  }
   
   .button1{
     width: 100%;

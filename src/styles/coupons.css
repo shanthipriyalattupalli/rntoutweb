@@ -19,3 +19,23 @@
     flex-direction: column;
     gap:10px;
 }
+@media (min-width: 320px) and (max-width: 424px) {
+    .sidebar{
+        width: 80%;
+    }
+}
+@media (min-width: 425px) and (max-width: 768px) {
+    .sidebar{
+        width: 70%;
+    }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar{
+        width: 50%;
+    }
+}
+@media (min-width: 1025px) and (max-width: 1440px) {
+    .sidebar{
+        width: 40%;
+    }
+}

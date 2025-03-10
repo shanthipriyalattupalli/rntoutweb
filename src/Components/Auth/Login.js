@@ -213,7 +213,7 @@ const Login = ({ setIsLoginOpen }) => {
         <button className="close-button" onClick={() => setIsOtpOpen(false)}>
           ✕
         </button>
-        <Otp mobileNumber={mobileNumber} setIsOtpOpen={setIsOtpOpen} />
+        <Otp mobileNumber={mobileNumber} setIsOtpOpen={setIsOtpOpen} setIsLoginOpen={setIsLoginOpen}/>
       </div>
     </div>
   )}

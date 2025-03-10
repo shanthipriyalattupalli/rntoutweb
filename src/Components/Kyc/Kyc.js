@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { FaCloudUploadAlt, FaCheckCircle, FaTimes } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
@@ -63,6 +63,26 @@ const KYCVerification = ({ setIsKyc }) => {
             setIsVerifying(false);
         }
     };
+
+
+const fetchAadharKyc=async()=>{
+    try {
+        const response=await axios.get(`${BASE_URL}/kyc/aadhaar/details`,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        });
+        console.log(response,"response in aadhar")
+        
+    } catch (error) {
+    console.log(error,"error")
+        
+    }
+}
+
+useEffect(()=>{
+    fetchAadharKyc();
+},[])
 
 
 

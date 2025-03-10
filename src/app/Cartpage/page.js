@@ -526,21 +526,30 @@ useEffect(() => {
               </Link>
 
               <div className="item-details">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold text-gray-900">{item.variant_id.title}</h3>
-                  <button
-                    className="flex items-center justify-center p-2 rounded-md  transition duration-200"
-                    onClick={() => handleRemove(item._id, item.variant_id._id)}
-                  >
-                    <img src={deleteicon} alt="Delete" className="w-5 h-5" />
-                  </button>
-                </div>
+              <div className="flex justify-between items-center gap-2 sm:gap-4">
+  <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 line-clamp-1">
+    {item.variant_id.title}
+  </h3>
+
+  <button
+    className="flex items-center justify-center p-1 sm:p-2 rounded-md transition duration-200"
+    onClick={() => handleRemove(item._id, item.variant_id._id)}
+  >
+    <img 
+      src={deleteicon} 
+      alt="Delete"  
+      className="w-5 h-5" 
+    />
+  </button>
+</div>
+
 
                 <div className="flex justify-between items-center">
                   <div>
-                    <p className="text-lg font-semibold text-[#2F6FED]">
-                      ₹{item.unitPrice}/{item.rentalPeriod}
-                    </p>
+                  <p className="text-base sm:text-lg font-semibold text-[#2F6FED]">
+  ₹{item.unitPrice}/{item.rentalPeriod}
+</p>
+
                   </div>
                   <div className="flex items-center gap-2">
                     <img src={cube} alt="Cube Icon" className="w-5 h-5" />
@@ -589,7 +598,7 @@ useEffect(() => {
             <div className="flex flex-col justify-center items-center h-3/4">
               <img src={emptycart} className="w-auto h-auto" />
               <h1 className="text-lg font-semibold">Empty Orders</h1>
-              <span>you haven’t place any order, to place order <span className="text-md font-semibold">"Browse Products" </span>button.</span>
+              <span className="px-6 py-4">you haven’t place any order, to place order <span className="text-md font-semibold">"Browse Products" </span>button.</span>
             </div>
 
           </>
@@ -615,7 +624,7 @@ useEffect(() => {
                 <p>{selectedAddress.mobile}</p>
                 <span>{selectedAddress.type}</span>
               </div>
-              <p>{selectedAddress.flatOrHouseNo},{selectedAddress.street},{selectedAddress.city},{selectedAddress.state},{selectedAddress.country},({selectedAddress.zip})</p>
+              <p>{selectedAddress.flatOrHouseNo}, {selectedAddress.street}, {selectedAddress.city}, {selectedAddress.state}, {selectedAddress.country}, ({selectedAddress.zip})</p>
 
             </>
           )}

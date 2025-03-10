@@ -202,3 +202,16 @@ box-shadow: 0px -1px 0.5px 1px var(--OverlaysBlackAlpha8) inset;
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
 }
+
+
+@media (min-width: 320px) and (max-width: 424px) {
+    .address-card{
+        height: 145px;
+    }
+}
+
+@media (min-width: 425px) and (max-width: 768px) {
+    .address-card{
+        height: 145px;
+    }
+}

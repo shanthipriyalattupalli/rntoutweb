@@ -61,7 +61,7 @@ const Banner = ({ banners, isLoading }) => {
                   <img
                     src={image}
                     alt={`Slide ${idx + 1}`}
-                    className="w-full h-[536px] sm:h-[536px] md:h-[536px] object-cover rounded-lg"
+                    className="w-full h-[536px] sm:h-[536px] md:h-[536px] rounded-lg"
                   />
                   <div className="absolute inset-0 bg-black opacity-0"></div>
                   <div className="absolute top-16 sm:top-24 md:top-28 left-4 sm:left-10 text-slate-600 text-sm sm:text-base md:text-lg">

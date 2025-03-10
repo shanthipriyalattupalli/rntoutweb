@@ -12,7 +12,7 @@ import Signup from "./Signup";
 
 const Rntout = "/Assets/Rntout_Logo.png";
 
-const Otp = ({mobileNumber,setIsOtpOpen}) => {
+const Otp = ({mobileNumber,setIsOtpOpen,setIsLoginOpen}) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [errorMessage, setErrorMessage] = useState("");
@@ -23,12 +23,24 @@ const Otp = ({mobileNumber,setIsOtpOpen}) => {
     const [otpError, setOtpError] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [timer,setTimer]=useState(60)
 //   const mobileNumber = searchParams.get("mobileNumber");
 const userName = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
 const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
 const fcmToken = typeof window !== 'undefined' ? localStorage.getItem("FCMToken") : null;
 
 const profilepic = typeof window !== 'undefined'? localStorage.getItem("profilePic"):null;
+
+
+useEffect(() => {
+  if (timer > 0) {
+    const countdown = setTimeout(() => setTimer(timer - 1), 1000);
+    return () => clearTimeout(countdown);
+  } else {
+    setIsOtpOpen(true); 
+  }
+}, [timer]);
+
 
   const handleChange = (index, value) => {
     if (/^\d*$/.test(value)) {
@@ -61,6 +73,10 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
     if (otpCode.length < 4) {
       setErrorMessage("Please enter a valid 4-digit OTP.");
       setOtpError(true); // Apply red border
+      return;
+    }
+
+    if(timer === 0){
       return;
     }
   
@@ -134,8 +150,10 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
       toast.error("Please enter a valid mobile number.");
       return;
     }
+
     setIsLoading(true);
-    setOtp(["", "", "", ""])
+    setOtp(["", "", "", ""]);
+    setTimer(60);
 
     try {
       const response = await axios.post(`${BASE_URL}/users/send-otp`, {
@@ -145,13 +163,7 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
 
       if (response.status === 200) {
         toast.success(response.data.message || "OTP sent successfully!");
-        // router.push({
-        //   pathname: "/Otp",
-        //   query: { mobileNumber: mobileNumber },
-        // });
-        // setIsLoginOpen(false)
-        // setIsOtpOpen(true)
-        // router.push(`/Otp?mobileNumber=${encodeURIComponent(mobileNumber)}`);
+
       } else {
         toast.error(response.data.error || "Failed to send OTP. Try again.");
       }
@@ -180,7 +192,7 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
           number above. Please enter it to complete verification.
         </p>
         <p className="otp-number">
-          {phoneNumber} <span className="otp-change">Change</span>
+       +91 {mobileNumber}<span className="otp-change">  Change</span>
         </p>
 
         <div className="otp-inputs">
@@ -202,7 +214,7 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
 
     {errorMessage && <p className={`error-message ${errorMessage && "text-red"}`}>{errorMessage}</p>}
 
-    <button className="button" onClick={handleOtpVerify}   disabled={isLoading || otp.some((digit) => digit === "")}>
+    <button className="button" onClick={handleOtpVerify}   disabled={isLoading || otp.some((digit) => digit === "" || timer === 0)}>
       {isLoading ? "Verifying..." : "Continue"}
     </button>
 
@@ -215,19 +227,18 @@ const profilepic = typeof window !== 'undefined'? localStorage.getItem("profileP
       </div>
     )}
         <p className="otp-resend" onClick={handleSendOtp}>
-          <span className="otp-resend-link">Resend OTP</span>
+          <span className="otp-resend-link">Resend OTP  <span className="otp-timer">{timer}s</span></span>
         </p>
-        {/* <p className="or-text">or</p>
-        <button className="button1">Sign in with your password</button> */}
+
+
+         
+
+
       </div>
     </div>
   );
 };
 
-// const Otp = () => (
-//   <Suspense fallback={<div>Loading...</div>}>
-//     <OtpComponent />
-//   </Suspense>
-// );
+
 
 export default Otp;

@@ -161,7 +161,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
-    margin-left: 20px;
+    /* margin-left: 20px; */
 }
 
 .form-section2 select {
@@ -666,38 +666,98 @@ bottom: -6px;
 }
 
 
-@media (min-width: 320px) and (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1024px) {
 
 .product-form-page {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     /* font-family: Arial, sans-serif; */
     /* border: 1px solid #0707071A; */
     border-radius: 10px;
     margin: 40px 80px;
 
 }
-.sidebar-menu{
-  width: 100%;
-  border-right: 1px solid #e0e0e0;
-  border-radius: 16px 16px 0px 0px; 
-}
-.menu-item:last-child{
-    border-left: none;
-    border-bottom: none;
-}
+
+
 .date-picker-container{
     display: flex;
     flex-direction: column;
+    gap: 40px;
 }
-.date-picker-wrapper{
-    width: 100%;
+.basic-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
 }
+.pricing-section{
+    display: flex;
+    flex-direction: column;
+}
+.calendar-icon {
+    left: 37%;
+
+}
+.detail-row{
+    display: flex;
+    flex-direction: column;
+}
+.add-section-btn {
+  width: 100%;
 }
 
-@media (min-width: 800px) and (max-width: 1024px) {
-    /* .calendar-icon{
-        right: 40%;
-    } */
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .product-form-page{
+        display: flex;
+        flex-direction: column;
+    }
+    .sidebar-menu{
+        width: 100%;
+        border-right: 1px solid #e0e0e0;
+        border-radius: 16px 16px 0px 0px; 
+      }
+    .menu-item:last-child{
+        border-left: none;
+        border-bottom: none;
+    }
+    .basic-details {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    
+    }
+    
+.date-picker-container{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+.calendar-icon {
+    left: 37%;
+
+}
+.detail-row{
+    display: flex;
+    flex-direction: column;
+}
+.pricing-section{
+    display: flex;
+    flex-direction: column;
+}
+.add-section-btn {
+    width: 100%;
+  }
+  .publish-button{
+    width: 80%;
+  }
+  .detail-row input{
+    width: 100%;
+  }
+  .product-form-page{
+  
+  margin: 10%;
+  }
 }
 
