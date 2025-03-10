@@ -613,9 +613,8 @@ const MainContent = () => {
             <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </label>
         <div className='date-picker-container'>
-          <div className="w-full">
+          <div className="w-full flex flex-col">
           <label>Product Availability  <span className="text-gray-400">(Start)</span></label>
-          <div className='date-picker-input'>
             <DatePicker
               selected={formData.rentalAvailability.startDate}
               name='startDate'
@@ -627,10 +626,8 @@ const MainContent = () => {
             />
             <FaRegCalendarAlt className='calendar-icon' />
           </div>
-          </div>
-          <div className="w-full">
+          <div className="w-full flex flex-col">
           <label>Product Availability <span className="text-gray-400">(end)</span></label>
-          <div className='date-picker-input'>
             <DatePicker
               selected={formData.rentalAvailability.endDate}
               name='endDate'
@@ -641,7 +638,6 @@ const MainContent = () => {
               dateFormat='MMMM d, yyyy'
             />
             <FaRegCalendarAlt className='calendar-icon' />
-          </div>
           </div>
         </div>
         </div>
