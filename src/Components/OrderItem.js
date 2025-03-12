@@ -84,7 +84,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
       {orderData.subOrders.map((item) => (
         <div className="order-item" key={item._id}>
           {/* Order Product */}
-          <div className="flex justify-between">
+          <div className="flex flex-col sm:flex-row justify-between">
           <div className="order-product">
             <img
               src={item.variantId.images?.[0] || "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"}
@@ -98,7 +98,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                   <span>₹{item.price || "0"}</span> / {item.rentalPeriod}
                   <span>{item.quantity} item(s)</span>
                 </p>
-                |
+               <span className="hidden sm:flex">|</span>
                 {(item.orderStatus === "delivered" || item.orderStatus === "canceled") &&
                   Array.isArray(subOrderHistories[item._id]) &&
                   subOrderHistories[item._id].length === 0 && (
@@ -112,11 +112,12 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
 
                 {(item.orderStatus === "placed" || item.orderStatus === "confirmed" || item.orderStatus === "shipped") && (
                   <a
-                    className="inline-flex gap-1.5 items-center justify-center no-underline text-red-500 font-medium cursor-pointer"
-                    onClick={() => setIsCanceled(true)}
-                  >
-                    Cancel Order
-                  </a>
+  className="inline-flex w-full sm:w-auto items-center gap-1.5 justify-start no-underline text-red-500 font-medium cursor-pointer text-left"
+  onClick={() => setIsCanceled(true)}
+>
+  Cancel Order
+</a>
+
                 )}
                 {isCanceled && (
                   <div className="modal-overlays" onClick={() => setIsCanceled(false)}>
@@ -130,7 +131,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                 )}
 
                 <button
-                  className="text-blue-500 font-semibold px-4 rounded"
+                  className="text-blue-500 font-semibold sm:px-4 px-0 rounded items-left text-left"
                   onClick={() => handleShowTracking(item)}
                 >
                   {expandedSubOrderId === item._id ? (

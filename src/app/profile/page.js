@@ -145,6 +145,7 @@ export default function ProfileSettings() {
   };
 
   const router = useRouter();
+  console.log(profile,"profile")
 
   return (
   isKyc?<KYCVerification setIsKyc={setIsKyc}/>:  <div className="profile-settings bg-white ">

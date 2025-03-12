@@ -319,13 +319,13 @@ setProfilePic(profile);
 
     {/* Profile & Sign In/Sign Up */}
     <nav>
-      {name || !token === "undefined"? (
+      {name || token ? (
         <div
           onClick={() => router.push("/profile")}
           className="w-full md:w-[110px] flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 cursor-pointer"
         >
           <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" />
-          <p className="hidden sm:flex hidden md:flex text-sm">{name}</p>
+          {name ?<p className="hidden sm:flex hidden md:flex text-sm">{name}</p> : <p className="hidden sm:flex hidden md:flex text-sm">Hi!</p>}
         </div>
       ) : (
 <button
