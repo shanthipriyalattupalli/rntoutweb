@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import "@/styles/Signup.css";
 import '../../styles/Signup.css'
 import { ToastContainer, toast } from "react-toastify";
@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 const Rntout = "/Assets/Rntout_Logo.png";
 const profile_avatar = "/Assets/profile_avatar.png";
 
-const Signup = ({setIsRegisterOpen}) => {
+const Signup = ({ setIsRegisterOpen }) => {
   const [profile, setProfile] = useState({
     user: {
       name: "",
@@ -41,25 +41,55 @@ const Signup = ({setIsRegisterOpen}) => {
     });
   };
 
+  const fetchProfile = async () => {
+
+    try {
+      const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const profileData = response.data.profile;
+      console.log(profileData, "profiledata")
+      // Convert dateOfBirth to YYYY-MM-DD format if it exists
+      const formattedDate = profileData.dateOfBirth
+        ? profileData.dateOfBirth.split("T")[0]  // Extract only the YYYY-MM-DD part
+        : "";
+
+      setProfile({
+        ...profileData,
+        dateOfBirth: formattedDate, // Store in the correct format
+      });
+
+      // setAvatar(profileData.profilePic || profile_avatar);
+    } catch (error) {
+      console.error(error);
+      // toast.error("Failed to fetch profile.");
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      fetchProfile();
+    }
+  }, [token]);
 
 
-
-  const handleSubmitProfile=async()=>{
+  const handleSubmitProfile = async () => {
     try {
       const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, profile, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log(response, "profile updated");
-      const user=response.data.user
-      const profiles=response.data.profile
+      const user = response.data.user
+      const profiles = response.data.profile
       toast.success("Profile updated successfully!");
       localStorage.setItem("gender", profiles.gender);
-      localStorage.setItem("userName", user.name );
+      localStorage.setItem("userName", user.name);
       localStorage.setItem("userEmail", user.email);
-      localStorage.setItem("profilePic", profile_avatar);
+      localStorage.setItem("profilePic", profile.profilePic || profile_avatar);
 
-  
-          router.push("/");
+
+      router.push("/");
       window.location.reload();
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -68,10 +98,12 @@ const Signup = ({setIsRegisterOpen}) => {
   }
 
 
-  const handleSkip=()=>{
+  const handleSkip = () => {
     router.push("/");
-    // window.location.reload();
+    window.location.reload();
   }
+
+  console.log(profile, "profile")
 
   return (
     <div>
@@ -134,13 +166,16 @@ const Signup = ({setIsRegisterOpen}) => {
 
           <p className='login-p1 m-0'>Date Of Birth</p>
           <input
-            type='date'
-            placeholder='Confirm Password'
-            className='input'
-            name='dateOfBirth'
+            type="date"
+            className="input"
+            name="dateOfBirth"
             value={profile.dateOfBirth}
             onChange={handleChange}
+            max={new Date(new Date().setFullYear(new Date().getFullYear() - 18))
+              .toISOString()
+              .split("T")[0]}
           />
+
           <button
             className='button'
             onClick={handleSubmitProfile}
@@ -148,7 +183,7 @@ const Signup = ({setIsRegisterOpen}) => {
           >
             {isLoading ? "Creating..." : "Continue"}
           </button>
-          <button className="font-medium text-semibold text-md text-blue-300" onClick={()=>handleSkip()}>Skip</button>
+          <button className="font-medium text-semibold text-md text-blue-300" onClick={() => handleSkip()}>Skip</button>
           {/* <p className='or-text'>or</p> */}
           {/* <button className='google-button'>
             <img

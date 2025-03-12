@@ -211,7 +211,7 @@
     flex-direction: row;
   }
 
-  @media (min-width: 320px) and (max-width: 768px) {
+  @media (min-width: 320px) and (max-width: 769px) {
     .order-header{
         display: flex;
         flex-direction: column;
@@ -221,7 +221,7 @@
     .order-actions-price-status {
         display: flex;
        flex-direction: column;
-       gap:10px
+       gap:10px;
     }
     .order-actions-price-status .progress {
         font-weight: bold;
@@ -237,7 +237,6 @@
 
 
   @media (max-width: 575.98px) { 
-
     .sidebar {
         display: none;
     }

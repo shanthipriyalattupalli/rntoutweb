@@ -312,7 +312,7 @@
     flex-direction: row;
   }
 
-  @media (min-width: 320px) and (max-width: 768px) {
+  @media (min-width: 320px) and (max-width: 769px) {
 .order-header{
     display: flex;
     flex-direction: column;
@@ -332,5 +332,10 @@
 .order-actions-price-status > p {
     display: flex;
     flex-direction: row;
+}
+.product_info_detail_name{
+    display: flex;
+    flex-direction: column;
+    align-items: normal;
 }
   }

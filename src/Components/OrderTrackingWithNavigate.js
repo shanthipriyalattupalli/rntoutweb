@@ -257,7 +257,7 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
           </div>
           <div className='shipping_address_sec'>
             <span class='icon'>
-              <img src={shipping} alt='Icon' />
+              <img src={shipping} alt='Icon' className="w-[59px] sm:w-[59px] md:w-auto"/>
             </span>
 
             <div class='payment-details'>
