@@ -45,10 +45,12 @@ export default function Profile({ }) {
 
   return (
     <>
-      <div className='item-header'>
-        <ToastContainer/>
-        <h2>Favorites</h2>
-      </div>
+       <h2 className='item-header'>
+              <div>
+               Favorites
+              </div>
+             
+            </h2>
       <div className='products-container'>
         {products?.map((product, index) => (
           // <div key={product._id} className='product-card'>

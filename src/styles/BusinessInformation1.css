@@ -1,6 +1,7 @@
-.busi-ness-page{
+.busi-ness-page {
   border: 1px solid #0707071A;
 }
+
 .bi-main-div {
   display: flex;
   flex-direction: column;
@@ -22,13 +23,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
 }
+
 .preview-image {
   max-width: 100%;
   max-height: 100%;
   object-fit: cover;
- 
+
 }
 
 .image-preview-container {
@@ -36,12 +38,12 @@
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 20px;
-  
+
 }
 
 .bi-head {
   font-size: 16px;
-  margin:0;
+  margin: 0;
   font-family: sans-serif;
   font-weight: 600;
   line-height: 20px;
@@ -54,7 +56,6 @@
 
 .bi-1-div img {
   max-width: 300px;
-  /* Adjust the image size */
   height: auto;
   margin-bottom: 20px;
 }
@@ -70,13 +71,11 @@
   text-align: center;
   padding: 0;
   margin: 0;
-  /* Title/7 - 14px */
   font-family: sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
   line-height: 18px;
-  /* 128.571% */
 }
 
 .description-text {
@@ -84,20 +83,15 @@
   text-align: center;
   padding: 0;
   margin: 0;
-  /* Text XS - 12px/Regular */
   font-family: sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: 18px;
-  /* 150% */
 }
 
 .description-text span {
   color: var(--text-icon-secondary, rgba(7, 7, 7, 0.80));
-
-  /* Text XS - 12px/Medium */
-  /* font-family: Poppins; */
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -115,12 +109,134 @@
   border-radius: 10px;
   border: 1px solid var(--Primary-700, #FF2D55);
   background: var(--Primary-700, #FF2D55);
-
-  /* Shadows/shadow-button */
   box-shadow: 0px -1px 0.5px 1px var(--Overlays-Black-Alpha-8, rgba(0, 0, 0, 0.27)) inset, 0px 6px 4px -4px var(--Overlays-White-Alpha-8, rgba(255, 255, 255, 0.31)) inset, 0px 1px 0px 1px var(--Overlays-White-Alpha-10, rgba(255, 255, 255, 0.46)) inset;
 }
 
 .add-business-button:hover {
   background-color: #e04e4e;
-  /* Darker red on hover */
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  .bi-main-div {
+    padding: 15px;
+  }
+
+  .image-preview-box {
+    width: 100px;
+    height: 100px;
+  }
+
+  .bi-head {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .title-text {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .bi-main-div {
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .image-preview-container {
+    justify-content: center;
+  }
+
+  .bi-head {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .title-text {
+    font-size: 13px;
+  }
+
+  .add-business-button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .image-preview-box {
+    width: 80px;
+    height: 80px;
+  }
+
+  .bi-head {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .title-text {
+    font-size: 12px;
+  }
+
+  .description-text {
+    font-size: 12px;
+  }
+
+  .add-business-button {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .bi-main-div {
+    gap: 10px;
+    padding: 8px;
+  }
+
+  .image-preview-box {
+    width: 70px;
+    height: 70px;
+  }
+
+  .bi-head {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .title-text {
+    font-size: 11px;
+  }
+
+  .description-text {
+    font-size: 11px;
+  }
+
+  .add-business-button {
+    font-size: 11px;
+    padding: 5px 12px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .bi-main-div {
+    padding: 5px;
+  }
+
+  .bi-head {
+    font-size: 11px;
+    padding: 5px;
+  }
+
+  .title-text {
+    font-size: 10px;
+  }
+
+  .description-text {
+    font-size: 10px;
+  }
+
+  .add-business-button {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
 }

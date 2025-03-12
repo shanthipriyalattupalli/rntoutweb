@@ -144,7 +144,7 @@ export default function BusinessInformation2() {
     //   toast.error("This fields are required");
     //   return;
     // }
-    if (!formData.contactPhone  || formData.contactPhone.length !== 10) {
+    if (!formData.contactPhone || formData.contactPhone.length !== 10) {
       setErrorMessage("Mobile number must be 10 digits.");
       return;
     }
@@ -251,73 +251,71 @@ export default function BusinessInformation2() {
           <div>
             <h2 className='item-header'>
               <div className='back-business' onClick={() => router.back()}>
-                {/* <IoMdArrowRoundBack style={{ marginRight: "12px" }} /> */}
                 Business Information
               </div>
               <a className="kyc-btn" onClick={() => router.push("/profile/business-information/Kyc")} >Business KYC ?</a>
               <h3 className="cursor-pointer" onClick={toggleEdit}>Edit Details</h3>
             </h2>
-            <div className=" flex justify-center">
-              <div className="w-full bg-white p-6 rounded-lg shadow-md">
+            <div className="flex justify-center md:p-6">
+              <div className="w-full max-w-6xl bg-white p-2 md:p-6 ">
                 {/* Owner Info */}
                 <div className="mb-6">
                   <h3 className="text-md font-semibold text-yellow-600">OWNER INFO</h3>
                   <div className="p-4 rounded-md">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4">
                       <p className="flex flex-col">
-                        <div className="flex gap-2">
-                          <FaUser className="text-gray-500" /> <strong>Owner Name</strong>
-                        </div>
-                        <div className="text-[14px] font-normal leading-[20px] text-left">
-                          {userName}
-                        </div>
+                        <div className="flex gap-2"><FaUser className="text-gray-500" /> <strong>Owner Name</strong></div>
+                        <div className="text-sm font-normal text-left">{userName}</div>
                       </p>
-
                       <p className="flex flex-col">
-                        <div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong>Email:</strong>
-                        </div> <div>{userEmail}</div></p>
-                      <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong>  </div><div className="text-[14px] font-normal leading-[20px] text-left">8374801954</div></p>
+                        <div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong>Email:</strong></div>
+                        <div className="text-sm">{userEmail}</div>
+                      </p>
+                      <p className="flex flex-col">
+                        <div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong></div>
+                        <div className="text-sm">8374801954</div>
+                      </p>
                     </div>
                   </div>
                 </div>
+
                 {/* Bank Details */}
                 <div className="mb-6">
                   <h3 className="text-md font-semibold text-yellow-600">BANK DETAILS</h3>
-                  <div className=" p-4 rounded-md">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Bank Name:</strong></div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.bankName}</div></p>
-                      <p className="flex flex-col"><div className="flex gap-2"><FaCreditCard className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">IFSC Code:</strong> </div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.ifsc}</div></p>
-                      <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Account Number:</strong></div><div className="text-[14px] font-normal leading-[20px] text-left"> {formData.accountNumber}</div></p>
+                  <div className="p-4 rounded-md">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4">
+                      <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Bank Name:</strong></div><div className="text-sm">{formData.bankName}</div></p>
+                      <p className="flex flex-col"><div className="flex gap-2"><FaCreditCard className="text-gray-500" /> <strong>IFSC Code:</strong></div><div className="text-sm">{formData.ifsc}</div></p>
+                      <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Account Number:</strong></div><div className="text-sm">{formData.accountNumber}</div></p>
                     </div>
-                    <p className="flex items-center gap-2 mt-2"><FaMapMarkerAlt className="text-gray-500" /> {formData.bankBranchAddress.full}</p>
+                    <p className="flex items-center gap-2 mt-2 text-sm"><FaMapMarkerAlt className="text-gray-500" /> {formData.bankBranchAddress.full}</p>
                   </div>
                 </div>
+
                 {/* Business Info */}
                 <div className="mb-6">
                   <h3 className="text-md font-semibold text-yellow-600">BASIC INFO</h3>
-                  <div className=" p-4 rounded-md">
-                    <div className="flex flex-col gap-4 mb-4">
+                  <div className="p-4 rounded-md">
+                    <div className="flex flex-col sm:flex-row gap-4 items-center">
                       <img src={formData.profileImage} alt="Profile" className="w-16 h-16 rounded-full" />
-                      <div className="flex gap-8">
-                        <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500 h-6" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Business Name:</strong> </div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.businessName}</div></p>
-                        <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500 h-6" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Store Name:</strong> </div><div className="text-[14px] font-normal leading-[20px] text-left">Codefacts Furniss Shop</div></p>
-                        <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Mobile:</strong></div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.contactPhone}</div></p>
-                        <p className="flex flex-col"><div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong className="text-[14px] font-medium leading-[18px] text-left text-gray-500">Email:</strong></div><div className="text-[14px] font-normal leading-[20px] text-left">{formData.contactEmail}</div></p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4 w-full">
+                        <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Business Name:</strong></div><div className="text-sm">{formData.businessName}</div></p>
+                        <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Store Name:</strong></div><div className="text-sm">Codefacts Furniss Shop</div></p>
+                        <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong></div><div className="text-sm">{formData.contactPhone}</div></p>
+                        <p className="flex flex-col"><div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong>Email:</strong></div><div className="text-sm">{formData.contactEmail}</div></p>
                       </div>
                     </div>
-                    <p className="text-gray-700 text-[14px] font-normal leading-[20px] text-left">
-                      {formData.storeDescription}
-                    </p>
+                    <p className="text-gray-700 text-sm mt-2">{formData.storeDescription}</p>
                   </div>
                 </div>
+
                 {/* Advertisement Banner */}
                 <div>
                   <h3 className="text-md font-semibold text-yellow-600">ADVERTISEMENT BANNER</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    {formData.bannerImages
-                      .map((src, index) => (
-                        <img key={index} src={src.imageUrl} alt={`Ad ${index + 1}`} className="rounded-md shadow-md w-full h-40" />
-                      ))}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+                    {formData.bannerImages.map((src, index) => (
+                      <img key={index} src={src.imageUrl} alt={`Ad ${index + 1}`} className="rounded-md shadow-md w-full h-40 object-cover" />
+                    ))}
                   </div>
                 </div>
               </div>
@@ -330,59 +328,8 @@ export default function BusinessInformation2() {
               <IoMdArrowRoundBack style={{ marginRight: "12px" }} />
               Business Information
             </div>
-            {/* <h3 className="cursor-pointer" onClick={toggleEdit}>edit</h3> */}
           </h2>
           <div className="bi2-main-div">
-
-            {/* Owner Info Section */}
-            {/* <div className="section">
- 
-      <h3 className="section-title">Owner Info</h3>
-      <div className="input-group">
-<div className="input-item">
-  <label htmlFor="owner-name">Owner Name</label>
-  <input id="owner-name" 
-  type="text" 
-  placeholder="Enter name"  
-  name='title'
-  value={formData.title}
-  onChange={handleInputChange}/>
-</div>
-<div className="input-item">
-  <label htmlFor="owner-email">Owner Email Address</label>
-  <input id="owner-email" 
-  type="email" 
-  placeholder="Enter email address" 
-  name='title'
-  value={formData.title}
-  onChange={handleInputChange}/>
-</div>
-<div className="input-item">
-  <label htmlFor="owner-mobile">Owner Mobile Number</label>
-  <input id="owner-mobile" 
-  type="text" 
-  placeholder="Enter mobile number" 
-  name='title'
-  value={formData.title}
-  onChange={handleInputChange}/>
-</div>
-</div>
-<div className='address-bar'>
-<div className="input-item">
-      <label htmlFor="Address">Address</label>
-      <input type="text" 
-      placeholder="Address" 
-      className="full-width"
-      name='title'
-      value={formData.title}
-      onChange={handleInputChange} />
-      </div>
-      </div>
-      <label className="checkbox-label">
-        <input type="checkbox" />
-        Same address as the store
-      </label>
-    </div> */}
 
 
             {/* Business Details Section */}
@@ -417,15 +364,15 @@ export default function BusinessInformation2() {
                   <input id="mobile-number"
                     type="number"
                     placeholder="Enter mobile number"
-                className={`${errorMessage ? "border-red-500" : ""}`}
+                    className={`${errorMessage ? "border-red-500" : ""}`}
                     name='contactPhone'
                     value={formData.contactPhone}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
-              {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+                  {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
 
                 </div>
-                
+
                 <div className="input-item">
                   <label htmlFor="email-address">Email Address</label>
                   <input id="email-address"
