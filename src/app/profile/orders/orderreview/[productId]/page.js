@@ -178,7 +178,7 @@ toast.error(error?.response?.data?.message)
                 <h4>{orderData?.variantId?.title}</h4>
                 <div className="product_info_detail_name">
                   <p>
-                    <span>₹{orderData.price}</span> / {orderData.rentalPeriod} | Rented for:{" "}
+                    <span>₹{orderData.price}</span> / {orderData.rentalPeriod}
                     <span>{orderData.quantity} item(s)</span>
                   </p>
                 </div>
@@ -199,6 +199,8 @@ toast.error(error?.response?.data?.message)
                     )} */}
               </div>
             </div>
+
+
           </div>}
         </div>
 

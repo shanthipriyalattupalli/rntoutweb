@@ -235,11 +235,11 @@ setProfilePic(profile);
   </div>
 
   {/* Center Section - Search Input */}
-  <div className="hidden lg:flex items-center relative w-full max-w-xs ml-4 cursor-pointer">
+  <div className="hidden lg:flex items-center relative w-full max-w-xs  ml-4 cursor-pointer">
   <SearchInput  
     value={searchValue} 
     onChange={(e) => handleSearchInputChange(e.target.value)}  
-    className="w-[250px]"
+    className="w-[250px] md:w-[200px] "
   />
   {showSuggestions && (
     <ul className="absolute left-0 w-full bg-white border rounded shadow top-[40px] z-40">
@@ -270,7 +270,7 @@ setProfilePic(profile);
 
 
   {/* Right Section - Location, Distance, Cart, Profile, and Buttons */}
-  <div className="flex items-center gap-3 md:gap-4 cursor-pointer">
+  <div className="flex items-center gap-4 md:gap-4 cursor-pointer">
     {/* Location */}
     <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 gap-2">
       <Image src={locations} alt="location" width={18} height={18} />
@@ -278,9 +278,9 @@ setProfilePic(profile);
     </div>
 
     {/* Distance Selection */}
-    <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
+    <div className="hidden lg:flex md:mr-2 items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
       <Image src={nearby} alt="location" width={18} height={18} />
-      <select className="bg-transparent text-sm cursor-pointer" value={selectedDistance} onChange={handleDistanceChange}>
+      <select className="bg-transparent text-sm cursor-pointer md:mr-3" value={selectedDistance} onChange={handleDistanceChange}>
         <option className="cursor-pointer" value="20">20 km</option>
         <option className="cursor-pointer" value="30">30 km</option>
         <option value="40">40 km</option>
@@ -322,7 +322,7 @@ setProfilePic(profile);
       {name || !token === "undefined"? (
         <div
           onClick={() => router.push("/profile")}
-          className="w-full flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 cursor-pointer"
+          className="w-full md:w-[110px] flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 cursor-pointer"
         >
           <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" />
           <p className="hidden sm:flex hidden md:flex text-sm">{name}</p>
@@ -352,7 +352,7 @@ setProfilePic(profile);
     </nav>
   </div>
 </header>
-<div className="sm:flex md:flex lg:hidden  w-full flex md:flex gap-3 px-2 py-4" >
+<div className="sm:flex md:flex lg:hidden  w-full flex md:flex gap-3 px-2 py-4 md:px-16 sm:px-12" >
 <div className="items-center  w-full relative cursor-pointer sm:block md:block lg:hidden">
   <SearchInput  
     value={searchValue} 
@@ -386,7 +386,7 @@ setProfilePic(profile);
 </div>
 <div className="sm:flex md:flex lg:hidden w-full flex h-10 px-1 items-center bg-white border border-gray-300 rounded-lg hover:bg-gray-100 gap-2">
       <Image src={locations} alt="location" width={18} height={18} />
-      <span className="text-sm font-medium text-blacky truncate w-full block">
+      <span className="text-sm font-medium text-blacky md:mr-3 truncate w-full block">
   {address.suburb}
 </span>
 

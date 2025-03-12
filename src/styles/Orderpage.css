@@ -22,6 +22,9 @@
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
     color: #070707CC;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
 }
 
@@ -307,4 +310,27 @@
 .back-product{
     display: flex;
     flex-direction: row;
+  }
+
+  @media (min-width: 320px) and (max-width: 768px) {
+.order-header{
+    display: flex;
+    flex-direction: column;
+    align-items: normal;
+    margin-bottom: 10px;
+}
+.order-actions-price-status {
+    display: flex;
+   flex-direction: column;
+   gap:10px
+}
+.order-actions-price-status .progress {
+    font-weight: bold;
+    display: flex;
+    align-items: normal;
+}
+.order-actions-price-status > p {
+    display: flex;
+    flex-direction: row;
+}
   }

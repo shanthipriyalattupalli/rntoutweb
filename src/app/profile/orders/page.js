@@ -38,32 +38,7 @@ const orders = [
 
 
 
-// const OrderItem = () => {
-//   return (
-//     <div className="order-item">
-//       <div className="order-header">
-//         <span>ID: #{`1234567890`}</span>
-//         <span>Date: {`27/08/2024`}</span>
-//       </div>
-//       <div class="order-product">
-//         <img
-//           src={orderHistoryImage}
-//           alt="Dell 27 inch Monitor"
-//           class="product-image"
-//         />
-//         <div class="product-info">
-//           <h4>
-//             Dell 27 inch P2725H Monitor | Anti-Glare With 3H Hardness | 100Hz |
-//             5ms gray-to-gray (Fast mode)
-//           </h4>
-//           <p>
-//             <span>₹1,500</span> /month | Rented for: <span>3 months</span>
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
+
 
 export default function Orders() {
 
@@ -139,6 +114,7 @@ const [isOn, setIsOn] = useState(false);
     });
   };
 
+  console.log(orderItems,"orderitems")
 
   return (
 
@@ -149,8 +125,15 @@ const [isOn, setIsOn] = useState(false);
         <h2>Order History</h2>
 
         <label className="edit-btn flex items-center gap-2">
-  <Switch checked={isOn} onChange={setIsOn}  onColor="#22c55e" 
-    offColor="#ccc"  />
+  <Switch 
+    checked={isOn} 
+    onChange={setIsOn}  
+    onColor="#22c55e" 
+    offColor="#ccc"
+    uncheckedIcon={false} 
+    checkedIcon={false} 
+    height={window.innerWidth < 640 ? 24 : 20}
+  />
   Cancelled Orders
 </label>
 
@@ -264,7 +247,7 @@ const [isOn, setIsOn] = useState(false);
                  {item.variantId.title}
                   </h4>
                   <p>
-                    <span>{item.price}</span> /{item.rentalPeriod} | Rented for: <span>3 months</span>
+                    <span>{item.price}</span> /{item.rentalPeriod} 
                   </p>
                 </div>
 

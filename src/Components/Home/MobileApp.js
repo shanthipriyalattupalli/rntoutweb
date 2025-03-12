@@ -1,17 +1,23 @@
-"use client";
 import React from "react";
-const mobileAppImg = "/Assets/mobile-app.jpg";
+
 const mobileapp = "/Assets/mobileapp.svg";
 
 const MobileApp = () => {
   return (
-    <section className="mt-4 relative flex flex-row lg:flex-row items-center lg:items-stretch w-full">
+    <section className="mt-4 relative flex flex-col lg:flex-row items-center lg:items-stretch w-full">
       {/* Background Gradient and Image */}
       <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-red-50 to-blue-50">
-        <img src={mobileapp} alt="Mobile App" className="w-full h-full" />
+        <img
+          src={mobileapp}
+          alt="Mobile App"
+          className="w-full h-full cursor-pointer"
+          onClick={() => {
+            document.getElementById("downloadPopup").classList.remove("hidden");
+          }}
+        />
       </div>
 
-      {/* Content */}
+      {/* Content (Kept on the left) */}
       <div className="relative z-10 w-full lg:w-1/2 bg-white px-6 sm:px-10 md:px-16 py-8 md:py-16 text-center lg:text-left">
         <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-4 text-black">
           Download RntOut Mobile App
@@ -35,14 +41,42 @@ const MobileApp = () => {
         </div>
       </div>
 
-      {/* Mobile Phone Image */}
-      {/* <div className="relative w-full lg:w-1/2 flex justify-center lg:justify-end mt-6 lg:mt-0">
-        <img
-          src="https://www.nicepng.com/png/full/83-833946_mobile-phone-png-transparent-images-iphone-png-white.png"
-          alt="Mobile Phone"
-          className="w-32 sm:w-40 md:w-48 lg:w-64"
-        />
-      </div> */}
+      {/* Popup Modal (Fixed and Centered) */}
+      <div
+        id="downloadPopup"
+        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50"
+      >
+        <div className="bg-white p-6 rounded-lg shadow-lg text-center w-96 relative">
+          <h2 className="text-xl font-bold mb-4">Download RntOut Mobile App</h2>
+          <p className="text-gray-600 mb-4">Choose your platform to download:</p>
+          <div className="flex justify-center gap-4">
+            <a
+              href="https://play.google.com/store/apps/details?id=com.rntout"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-green-500 text-white px-4 py-2 rounded"
+            >
+              Google Play
+            </a>
+            <a
+              href="https://apps.apple.com/us/app/rntout/id123456789"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              App Store
+            </a>
+          </div>
+          <button
+            className="mt-4 px-4 py-2 bg-gray-400 text-white rounded"
+            onClick={() => {
+              document.getElementById("downloadPopup").classList.add("hidden");
+            }}
+          >
+            Close
+          </button>
+        </div>
+      </div>
     </section>
   );
 };

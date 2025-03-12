@@ -140,3 +140,14 @@
   display: flex;
   gap: 15px;
 }
+
+
+
+@media (min-width: 320px) and (max-width: 768px) {
+  .modal-content {
+    width:70%;
+  }
+  .login-logo{
+    margin-left: 10%;
+  }
+}

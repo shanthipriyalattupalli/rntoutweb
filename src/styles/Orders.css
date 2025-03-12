@@ -210,10 +210,34 @@
     display: flex;
     flex-direction: row;
   }
-  @media (max-width: 575.98px) { 
-    .order-actions-price-status > p {
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    .order-header{
+        display: flex;
         flex-direction: column;
+        align-items: normal;
+        margin-bottom: 10px;
     }
+    .order-actions-price-status {
+        display: flex;
+       flex-direction: column;
+       gap:10px
+    }
+    .order-actions-price-status .progress {
+        font-weight: bold;
+        display: flex;
+        align-items: normal;
+    }
+    .order-actions-price-status > p {
+        display: flex;
+        flex-direction: row;
+    }
+      }
+
+
+
+  @media (max-width: 575.98px) { 
+
     .sidebar {
         display: none;
     }

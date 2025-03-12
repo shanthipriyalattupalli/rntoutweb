@@ -155,7 +155,7 @@ export default function ProfileSettings() {
 
         <div className="flex items-center space-x-4">
           <a className="text-green-600 font-medium text-sm cursor-pointer" onClick={() => setIsKyc(true)}>
-            Personal KYC
+            Personal KYC ?
           </a>
 
           <a className="text-blue-600 font-medium text-sm cursor-pointer" onClick={() => {

@@ -183,7 +183,7 @@ useEffect(() => {
       <div className="otp-card">
       <div className='login-first'>
         <img src={Rntout} alt='RentOut Logo' className='login-logo' />
-        <h2 className='subtitle'>Sign in to RntOut</h2>
+        <h2 className='subtitle'>Sign in to rntout</h2>
       </div>
         <h2 className="otp-heading">OTP Verification</h2>
         <p className="otp-subtext">

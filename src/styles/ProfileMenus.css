@@ -26,3 +26,12 @@
     overflow: hidden;
     
 }
+
+
+
+@media (min-width: 320px) and (max-width: 427px) {
+    .app_wbgeubeqb{
+        display: flex;
+        flex-direction: column;
+    }
+  }

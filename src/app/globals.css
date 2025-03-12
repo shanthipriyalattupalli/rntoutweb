@@ -87,3 +87,8 @@ body {
   scrollbar-width: none; /* Hides scrollbar in Firefox */
 }
 
+@media (min-width: 320px) and (max-width: 768px) {
+  .item-header{
+    font-size: 12px;
+  }
+}

@@ -7,6 +7,7 @@ const Testimonials = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [itemsPerSlide, setItemsPerSlide] = useState(3);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -32,19 +33,36 @@ const Testimonials = () => {
     fetchTestimonials();
   }, []);
 
+  // Track screen size to determine number of items per slide
+  useEffect(() => {
+    const updateItemsPerSlide = () => {
+      if (window.innerWidth <= 425) {
+        setItemsPerSlide(1);
+      } else {
+        setItemsPerSlide(3);
+      }
+    };
+
+    updateItemsPerSlide(); // Initial check
+    window.addEventListener("resize", updateItemsPerSlide);
+    return () => window.removeEventListener("resize", updateItemsPerSlide);
+  }, []);
+
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 3) % testimonials.length);
+    setCurrentSlide((prev) => (prev + itemsPerSlide) % testimonials.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 3 + testimonials.length) % testimonials.length);
+    setCurrentSlide(
+      (prev) => (prev - itemsPerSlide + testimonials.length) % testimonials.length
+    );
   };
 
   const currentTestimonials = Array.isArray(testimonials)
     ? [
-      ...testimonials.slice(currentSlide),
-      ...testimonials.slice(0, (currentSlide + 3) % testimonials.length),
-    ].slice(0, 3)
+        ...testimonials.slice(currentSlide),
+        ...testimonials.slice(0, (currentSlide + itemsPerSlide) % testimonials.length),
+      ].slice(0, itemsPerSlide)
     : [];
 
   if (loading) return <p className="text-center">Loading testimonials...</p>;
@@ -61,37 +79,39 @@ const Testimonials = () => {
             Real Stories from Satisfied Customers
           </h2>
           <p className="text-gray-600 text-sm sm:text-base max-w-3xl mx-auto">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.
+            "Success Stories from Renters & Owners"
           </p>
         </div>
 
         {/* Testimonials Grid */}
         <div className="relative">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {currentTestimonials.map((testimonial, index) => {
-              const isMiddle = index === 1;
-              return (
-                <div
-                  key={index}
-                  className={`p-4 sm:p-6 md:p-8 rounded-xl shadow-md ${isMiddle ? "bg-gradient-to-br from-red-50 to-blue-50" : "bg-white border border-slate-200"
-                    }`}
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <img
-                      src={testimonial.image || "/Assets/Photo.png"}
-                      alt={testimonial.name}
-                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mb-2 sm:mb-4"
-                    />
-                    <h3 className="text-lg sm:text-xl font-semibold mb-1">
-                      {testimonial.name}
-                    </h3>
-                    <p className="text-gray-600 text-xs sm:text-sm mb-4">{testimonial.role}</p>
-                    <p className="text-gray-700 text-sm sm:text-base italic">{testimonial.testimonial}</p>
-                    <p className="text-gray-500 text-xs sm:text-sm">{testimonial.description}</p>
-                  </div>
+          <div
+            className={`grid gap-4 md:gap-6 ${
+              itemsPerSlide === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+            }`}
+          >
+            {currentTestimonials.map((testimonial, index) => (
+              <div
+                key={index}
+                className="p-4 sm:p-6 md:p-8 rounded-xl shadow-md bg-white border border-slate-200"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <img
+                    src={testimonial.image || "/Assets/Photo.png"}
+                    alt={testimonial.name}
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mb-2 sm:mb-4"
+                  />
+                  <h3 className="text-lg sm:text-xl font-semibold mb-1">
+                    {testimonial.name}
+                  </h3>
+                  <p className="text-gray-600 text-xs sm:text-sm mb-4">{testimonial.role}</p>
+                  <p className="text-gray-700 text-sm sm:text-base italic">
+                    {testimonial.testimonial}
+                  </p>
+                  <p className="text-gray-500 text-xs sm:text-sm">{testimonial.description}</p>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
 
           {/* Navigation Buttons */}
@@ -114,8 +134,9 @@ const Testimonials = () => {
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${currentSlide === index ? "bg-red-800" : "bg-red-200"
-                  }`}
+                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${
+                  currentSlide === index ? "bg-red-800" : "bg-red-200"
+                }`}
               ></button>
             ))}
           </div>

@@ -154,7 +154,7 @@ const Login = ({ setIsLoginOpen }) => {
           <div>
             <div className='login-first'>
               <img src={Rntout} alt='RentOut Logo' className='login-logo' />
-              <h2 className='subtitle'>Sign in to rntOut</h2>
+              <h2 className='subtitle'>Sign in to rntout</h2>
             </div>
             {/* <div className='tab-container'>
               <button

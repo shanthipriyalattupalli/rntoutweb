@@ -155,9 +155,9 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
       <h2 className='item-header' onClick={() => router.back()}>
         <div className='back-product'><IoMdArrowRoundBack style={{ marginRight: "12px" }} /> Order detail
         </div>
-        <a href="#" className="download-invoice" onClick={null}>
+        {/* <a href="#" className="download-invoice" onClick={null}>
           Download Invoice
-        </a>
+        </a> */}
       </h2>
 
       <div className='order-tracking-container'>
@@ -295,13 +295,15 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
               ₹ {calculateGST().toFixed(2)} ({rentData.gstRate}%)
             </div> */}
 
-              <div class='label grand-total'>Rent Grand Total</div>
+
+            </div>
+            <div class='label value grand-total'>Rent Grand Total</div>
               <div class='value grand-total'>
                 {/* ₹ {calculateGrandTotal().toFixed(2)} */}
                 ₹ {orders.totalAmount}/-
-              </div>
-            </div>
+              </div>  
           </div>
+
           {/* <div class='payment-info enterprice'>
           <span class='icon'>
             <AiFillShop />

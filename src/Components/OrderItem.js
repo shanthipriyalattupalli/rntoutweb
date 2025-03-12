@@ -2,13 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Image from "next/image";
 import { CiStar } from "react-icons/ci";
 import OrderTracking from "./OrderTracking";
+import '../styles/OrderTrackingWithNavigate.css';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CancelOrder from "./Orders/CancelOrder";
 import { Edit, Edit2Icon } from "lucide-react";
 const stars = "/Assets/stars.svg";
+const download="/Assets/download.svg";
 
 
 const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, steps, getCurrentStep }) => {
@@ -81,6 +84,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
       {orderData.subOrders.map((item) => (
         <div className="order-item" key={item._id}>
           {/* Order Product */}
+          <div className="flex justify-between">
           <div className="order-product">
             <img
               src={item.variantId.images?.[0] || "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"}
@@ -91,7 +95,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
               <h4>{item.variantId.title || "Apple 14 pro"}</h4>
               <div className="product_info_detail_name">
                 <p>
-                  <span>₹{item.price || "0"}</span> / {item.rentalPeriod} | Rented for:{" "}
+                  <span>₹{item.price || "0"}</span> / {item.rentalPeriod}
                   <span>{item.quantity} item(s)</span>
                 </p>
                 |
@@ -115,8 +119,8 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                   </a>
                 )}
                 {isCanceled && (
-                  <div className="modal-overlay">
-                    <div className="modal-content">
+                  <div className="modal-overlays" onClick={() => setIsCanceled(false)}>
+                    <div className="modal-contents" onClick={(e)=>e.stopPropagation()}>
                       <button className="close-button" onClick={() => setIsCanceled(false)}>
                         ✕
                       </button>
@@ -183,6 +187,13 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
               )}
             </div>
           </div>
+          <div className="flex gap-2">
+            <Image src={download} alt="" width={20} height={20} className="mb-10"/>
+          <a href="#" className="font-semibold text-[#0b827c] " onClick={null}>
+          Download Invoice
+        </a>
+        </div>
+</div>
           {expandedSubOrderId === item._id && (
             <OrderTracking selectedSubOrder={selectedSubOrder} steps={steps} getCurrentStep={getCurrentStep} />
           )}

@@ -14,8 +14,8 @@ const downArrow = "/Assets/down_line.png";
 
 const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, distance, rating }) => {
   const [activeIndex, setActiveIndex] = useState(null);
-  const [priceRange, setPriceRange] = useState(0); // Current slider value
-  const [ratings, setRating] = useState(0)
+  const [priceRange, setPriceRange] = useState(25); // Current slider value
+  const [ratings, setRating] = useState(5)
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(2000);
   const [discount, setDiscount] = useState(null);
@@ -135,8 +135,11 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
   const handleClearFilters = () => {
     setMinPrice(0);
     setMaxPrice(2000);
-    setPriceRange(0);
-    setRating(0);
+    setPriceRange(25);
+    setRating(5);
+    onPriceChange(0,2000);
+    distance(25);
+    rating(5)
   };
 
 
@@ -312,8 +315,9 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                           // onChange={(e) => setPriceRange(e.target.value)} 
                           className="w-[200px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
                           style={{
-                            WebkitAppearance: 'none',
-                            MozAppearance: 'none',
+                            background: `linear-gradient(to right, #ef4444 0%, #ef4444 ${(priceRange / 25) * 100}%, #fecaca ${(priceRange / 25) * 100}%, #fecaca 100%)`,
+                            WebkitAppearance: "none",
+                            MozAppearance: "none",
                           }}
                         />
 
@@ -381,8 +385,9 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                           // onChange={(e) => setPriceRange(e.target.value)} 
                           className="w-[200px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
                           style={{
-                            WebkitAppearance: 'none',
-                            MozAppearance: 'none',
+                            background: `linear-gradient(to right, #ef4444 0%, #ef4444 ${(ratings / 5) * 100}%, #fecaca ${(ratings / 5) * 100}%, #fecaca 100%)`,
+                            WebkitAppearance: "none",
+                            MozAppearance: "none",
                           }}
                         />
 

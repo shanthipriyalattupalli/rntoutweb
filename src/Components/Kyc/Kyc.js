@@ -54,6 +54,7 @@ const KYCVerification = ({ setIsKyc }) => {
                     "Content-Type": "multipart/form-data",
                 },
             });
+            console.log(response,"kyc verification")
             setIsKycSuccess(response.data.success)
             toast.success("KYC Verified Successfully!");
         } catch (error) {
@@ -72,7 +73,9 @@ const fetchAadharKyc=async()=>{
                 Authorization: `Bearer ${token}`
             }
         });
-        console.log(response,"response in aadhar")
+        console.log(response.data.data,"response in aadhar")
+        setIsPreview(response.data.data.aadhaarPhoto);
+        setIsKycSuccess(response.data.data.status)
         
     } catch (error) {
     console.log(error,"error")
@@ -196,9 +199,13 @@ useEffect(()=>{
                         <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                         <p className="text-blue-500 font-medium">Verifying Aadhaar...</p>
                     </div>)}
-                {isKycSuccess === true && <div className="mt-4 flex justify-center">
+                {isKycSuccess === "VERIFIED" ? <div className="mt-4 flex justify-center">
                     <span className="flex items-center gap-1 text-green-600 font-medium bg-green-100 px-3 py-1 rounded-md">
                         <FaCheckCircle /> Verified
+                    </span>
+                </div>:<div className="mt-4 flex justify-center">
+                    <span className="flex items-center gap-1 text-green-600 font-medium bg-green-100 px-3 py-1 rounded-md">
+                        <FaCheckCircle /> {isKycSuccess}
                     </span>
                 </div>}
                 {/* Submit Button */}
