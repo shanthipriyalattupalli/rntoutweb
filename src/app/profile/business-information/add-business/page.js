@@ -288,7 +288,8 @@ export default function BusinessInformation2() {
                       <p className="flex flex-col"><div className="flex gap-2"><FaCreditCard className="text-gray-500" /> <strong>IFSC Code:</strong></div><div className="text-sm">{formData.ifsc}</div></p>
                       <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Account Number:</strong></div><div className="text-sm">{formData.accountNumber}</div></p>
                     </div>
-                    <p className="flex items-center gap-2 mt-2 text-sm"><FaMapMarkerAlt className="text-gray-500" /> {formData.bankBranchAddress.full}</p>
+                    <strong className="flex mt-4">Address :</strong>
+                    <p className="flex items-center gap-2 mt-2 text-sm"><FaMapMarkerAlt className="text-gray-500" />{formData.bankBranchAddress.full}</p>
                   </div>
                 </div>
 

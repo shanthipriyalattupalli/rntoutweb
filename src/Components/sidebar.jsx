@@ -4,7 +4,8 @@
 import '../styles/Sidemenubar.css';
 import { useRouter, usePathname } from "next/navigation";
 import { PiCirclesFourFill } from "react-icons/pi";
-import { FaUser } from "react-icons/fa";
+import { FaDigitalTachograph, FaUser } from "react-icons/fa";
+import { BiWallet, BiCreditCardAlt, BiMoney } from "react-icons/bi";
 import { FiShoppingBag } from "react-icons/fi";
 import { GrCubes, GrSettingsOption, GrNotes } from "react-icons/gr";
 import {
@@ -18,6 +19,7 @@ import {
   IoMdInformationCircleOutline,
 } from "react-icons/io";
 import { BsShieldCheck } from "react-icons/bs";
+import { FileDigitIcon } from 'lucide-react';
 
 const buttonsData = [
   { id: 1, title: "Profile", icon: <FaUser />, route: "/profile" },
@@ -37,41 +39,47 @@ const buttonsData = [
   },
   {
     id: 6,
+    title: "Digital Wallet",
+    icon: <BiWallet/>,
+    route: "/profile/digitalwallet",
+  },
+  {
+    id: 7,
     title: "Notifications",
     icon: <MdOutlineNotificationsActive />,
     route: "/profile/notifications",
   },
   {
-    id: 7,
+    id: 8,
     title: "Manage Addresses",
     icon: <HiOutlineLocationMarker />,
     route: "/profile/manage-address",
   },
   {
-    id: 8,
+    id: 9,
     title: "Help & Support",
     icon: <IoIosHelpCircleOutline />,
     route: "/profile/support",
   },
   {
-    id: 9,
+    id: 10,
     title: "About us",
     icon: <IoMdInformationCircleOutline />,
     route: "/profile/aboutus",
   },
   {
-    id: 10,
+    id: 11,
     title: "Terms and conditions",
     icon: <GrNotes />,
     route: "/profile/terms-and-conditions",
   },
   {
-    id: 11,
+    id: 12,
     title: "Privacy Policy",
     icon: <BsShieldCheck />,
     route: "/profile/privacy-policy",
   },
-  { id: 12, title: "Log Out", icon: <MdOutlineLogout />, route: "/" },
+  { id: 13, title: "Log Out", icon: <MdOutlineLogout />, route: "/" },
 ];
 
 function Sidebar() {
