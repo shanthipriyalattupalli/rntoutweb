@@ -74,7 +74,7 @@ const Blog = () => {
         <p className='text-gray-600 text-left mb-8 px-16'>"Smart Renting, Happy Living!"</p>
 
         {/* Carousel Section */}
-        <div className='relative'>
+        <div className='relative px-12'>
           <div className={`grid grid-cols-1 ${itemsPerPage > 1 ? "md:grid-cols-3 lg:grid-cols-4" : ""} gap-6`}>
             {currentBlogs?.map((blog, index) => (
               <div key={index} className='bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden'>

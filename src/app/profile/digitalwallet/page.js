@@ -19,9 +19,14 @@ const WithdrawalRequest = () => {
       {/* Header */}
       <div className="flex justify-between items-center border-b pb-2">
         <h2 className="text-blue-600 font-semibold text-lg">Withdrawal Request</h2>
+        <div className="flex gap-2 items-center justify-center">
         <span className="text-gray-800 font-bold text-lg">
           Balance: <span className="text-blue-600">₹35,000</span>
         </span>
+        <button className="bg-red-600 p-2 text-white border border-red-300 rounded-lg font-semibold">
+         Withdrawal
+        </button>
+        </div>
       </div>
 
       {/* Transaction List (Filtered for Credit Transactions) */}

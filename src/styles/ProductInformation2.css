@@ -80,6 +80,8 @@
 }
 
 .dashboard-top {
+  display: flex;
+  justify-content: space-between;
   padding: 16px;
   margin: 20px 0;
   border-radius: 16px;
@@ -89,9 +91,23 @@
   /* Product Card Shadow */
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.06);
 }
+.dashboard-top1{
+display: flex;
+flex-direction: column;
+gap: 10px;
+  padding: 16px;
+  margin: 20px 0;
+  border-radius: 16px;
+  border: 1px solid var(--Neutral-200, rgba(7, 7, 7, 0.10));
+  background: var(--Neutral-BG, #FCFCFC);
 
+  /* Product Card Shadow */
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.06);
+
+}
 .dashboard-header {
   display: flex;
+  width: 95%;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;

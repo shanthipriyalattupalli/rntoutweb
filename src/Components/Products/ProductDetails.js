@@ -52,19 +52,14 @@ const upgrading = '/Assets/upgrading.svg';
 const sample = '/Assets/Sample.png';
 
 
-const ProductPage = ({ setIsModelOpen, productId }) => {
+const ProductPage = ({ setIsModelOpen, productId,product,rentalPrice,rentalAvailability,otherDetail,images }) => {
     const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
     const [quantity, setQuantity] = useState(1);
     const [selectedDuration, setSelectedDuration] = useState("monthly");
     const [selectedcustomDuration, setselectedcustomDuration] = useState(null)
     const [selectedImage, setSelectedImage] = useState(0);
     const [expandedFaq, setExpandedFaq] = useState(null);
-    const [product, setProduct] = useState([]);
-    const [rentalPrice, setRentalPrice] = useState([]);
-    const [rentalAvailability, setRentalAvailability] = useState({});
-    const [otherDetail, setOtherDetails] = useState({});
     const [owner, setOwner] = useState({});
-    const [images, setImages] = useState([]);
     const [relatedItems, setRelatedItems] = useState([])
     const [isFavorite, setIsFavorite] = useState(false)
     const [userRatings, setUserRatings] = useState([]);
@@ -74,42 +69,10 @@ const ProductPage = ({ setIsModelOpen, productId }) => {
     const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
 
-    const fetchProductById = async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/variants/${productId}?includeRelated=false`);
-
-            const data = response.data.variant;
-            setProduct(data);
-            setRentalPrice(data.rentalPrice);
-            setRentalAvailability(data.rentalAvailability);
-            setOtherDetails(data.itemDetails);
-            setImages(data.images);
-            setOwner(data.owner);
-            setRelatedItems(response.data.relatedItems)
-        } catch (error) {
-            console.error("Error fetching product:", error);
-        }
-    };
-    useEffect(() => {
-        if (productId) {
-            fetchProductById();
-        }
-    }, [productId]);
 
 
-    const fetchProductRatings = async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/reviews/variant/${productId}`);
 
-            const data = response.data;
-            setUserRatings(data.data)
-        } catch (error) {
-            console.error("Error fetching product:", error);
-        }
-    };
-    useEffect(() => {
-        fetchProductRatings();
-    }, [productId]);
+
 
 
     let daily = rentalPrice.daily;

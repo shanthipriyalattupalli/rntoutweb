@@ -468,6 +468,7 @@ const MainContent = () => {
         toast.success("Product published successfully!");
         setFormData(initialFormData); 
         setPreviewImages([]);
+        router.push('/profile/products')
       } else {
         toast.error("Failed to publish the product. Please try again.");
       }
@@ -636,6 +637,7 @@ const MainContent = () => {
               placeholderText='Select End date'
               className='date-picker-wrapper'
               dateFormat='MMMM d, yyyy'
+              minDate={new Date()} // Restricts past dates
             />
             <FaRegCalendarAlt className='calendar-icon' />
           </div>

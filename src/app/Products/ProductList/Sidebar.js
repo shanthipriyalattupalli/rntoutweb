@@ -405,9 +405,9 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                           ))}
                         </div>
 
-                        <div className="price0">
+                        {/* <div className="price0">
                           {ratings && ratings}
-                        </div>
+                        </div> */}
 
 
 

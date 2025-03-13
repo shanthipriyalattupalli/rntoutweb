@@ -14,13 +14,24 @@ import { useRouter } from "next/navigation";
 const prodimg = "/Assets/dummy-image.svg";
 const vector = "/Assets/Vector-icon.svg";
 import Link from "next/link";
+const logo = "/Assets/Rntout_Logo.png";
+
 
 export default function Dashboard({ products }) {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isdetailsOpen, setIsdetailsOpen] = useState(false)
   const [productId, setProductId] = useState(null)
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
-  const [userProducts, setUserProducts] = useState([])
+  const [userProducts, setUserProducts] = useState([]);
+    const [product, setProduct] = useState([]);
+    const [rentalPrice, setRentalPrice] = useState([]);
+    const [rentalAvailability, setRentalAvailability] = useState({});
+    const [otherDetail, setOtherDetails] = useState({});
+    const [owner, setOwner] = useState({});
+    const [images, setImages] = useState([]);
+    const [relatedItems, setRelatedItems] = useState([])
+
+
   const fetchUserProducts = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/variants/userVariants`, {
@@ -56,24 +67,60 @@ export default function Dashboard({ products }) {
     }
   }
 
+
+
+
+  const fetchProductById = async (productId) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/variants/${productId}?includeRelated=false`);
+
+        const data = response.data.variant;
+        setProduct(data);
+        setRentalPrice(data.rentalPrice);
+        setRentalAvailability(data.rentalAvailability);
+        setOtherDetails(data.itemDetails);
+        setImages(data.images);
+        setOwner(data.owner);
+        setRelatedItems(response.data.relatedItems)
+    } catch (error) {
+        console.error("Error fetching product:", error);
+    }
+};
+useEffect(() => {
+    if (productId) {
+        fetchProductById();
+    }
+}, [productId]);
+
+
+const approvedCount = userProducts.filter(product => product.isApproved).length;
+const notApprovedCount = userProducts.filter(product => !product.isApproved).length;
+
+console.log("Approved Products:", approvedCount);
+console.log("Not Approved Products:", notApprovedCount);
+
+
   return (
     <div className='prod-container-page'>
       <div className='item-header'>
         <h2>Products</h2>
-        <div className='filters'>Filters</div>
+        {/* <div className='filters'>Filters</div> */}
       </div>
       <div className='dashboard'>
         <div className='dashboard-top'>
+          <div>
           <header className='dashboard-header'>
+
             <div className='logo'>
-              <img src={vector} alt='Logo' />
-              Rntout
+            <img src={logo} alt="RNT Out Logo" className="h-8 sm:h-10 border-none border-0" />
+             
             </div>
-            <div className='view-transactions'>view all transactions</div>
+     
+            {/* <div className='view-transactions'>view all transactions</div> */}
           </header>
           <div className='price-section'>
             <div>
-              <div className='total-earning'>TOTAL EARNING:</div>
+              <div className='total-earning'>TOTAL PRODUCTS : {userProducts.length}</div>
               <div className="joined-date">
                 Joined at {new Date(userProducts[0]?.owner?.createdAt).toLocaleDateString("en-US", {
                   month: "short",
@@ -83,8 +130,14 @@ export default function Dashboard({ products }) {
               </div>
 
             </div>
-            <div className='total-price'>₹1,59,237</div>
+  
           </div>
+        </div>
+               <div className="flex flex-col gap-4 items-center justify-center">
+            <div className='bg-green-700 text-white p-2 rounded-xl font-semibold'><span>Approved : </span>{approvedCount}</div>
+            <div className='bg-orange-400 text-white p-2 rounded-xl font-semibold'><span>InReview : </span> {notApprovedCount}</div>
+            </div>
+        
         </div>
 
         <div className='items-grid'>
@@ -131,7 +184,7 @@ export default function Dashboard({ products }) {
                   </p>
                   <p
                     onClick={() => {
-                      setProductId(item._id);
+                      fetchProductById(item._id);
                       setIsdetailsOpen(true);
                     }}>
                     <FaEye />
@@ -146,7 +199,7 @@ export default function Dashboard({ products }) {
                         >
                           ✕
                         </button>
-                        <ProductDetails setIsdetailsOpen={setIsdetailsOpen} productId={productId} />
+                        <ProductDetails setIsdetailsOpen={setIsdetailsOpen} productId={productId} product={product} rentalPrice={rentalPrice} rentalAvailability={rentalAvailability} otherDetail={otherDetail} owner={owner} images={images} relatedItems={relatedItems}/>
                       </div>
                     </div>
                   )}

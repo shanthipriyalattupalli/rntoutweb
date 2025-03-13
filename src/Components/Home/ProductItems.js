@@ -175,7 +175,11 @@ const ProductItem = ({ product }) => {
     }
   }
 
-
+  const periodMapping = {
+    quarterly: "3 Months",
+    semiannual: "6 Months",
+    annual: "Year",
+  };
 
   const currentDate = new Date();
   const startDate = new Date(rentalAvailability?.startDate);
@@ -260,7 +264,7 @@ const ProductItem = ({ product }) => {
 
             {/* Rating and Fav Icon positioned on top */}
             <div className="absolute top-[14px] right-4 z-10 flex flex-col items-center space-x-2">
-              {averageRating && <p className="flex items-center bg-green-700 px-2 rounded-full text-white">
+              {averageRating && <p className={`flex items-center bg-green-700 px-2 rounded-full text-white  ${averageRating >= 4 ? "bg-green-700" : averageRating >= 2 ? "bg-orange-500" : "bg-red-500"}`}>
                 <img src={stars} alt="Rating stars" className="w-4 h-3" />
                 <span className="ml-1">{averageRating}</span>
               </p>}
@@ -307,7 +311,7 @@ const ProductItem = ({ product }) => {
         {isView ? (
           <div className='p-4'>
             <h2 className="product-title text-gray-800 truncate w-full overflow-hidden whitespace-nowrap">
-              {title}
+              {title || title.charAt(0).toUpperCase() + title.slice(1)}
             </h2>
 
 
@@ -414,16 +418,20 @@ const ProductItem = ({ product }) => {
           <div>
             <div className='w-full'>
               <div className='grid grid-cols-2 text-center'>
-                {rentalPrice.slice(0, -2)?.map((detail) => (
+                {rentalPrice?.map((detail) => (
                   <div
                     key={detail._id}
-                    className={`border p-2.5 cursor-pointer ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""
+                    className={`border p-1 cursor-pointer ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""
                       }`}
                     onClick={() => setSelectedRentalPeriod(detail.period)}
                   >
-                    <span className={`block font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"}`}>
-                      {detail.period.charAt(0).toUpperCase() + detail.period.slice(1)}
-                    </span>
+    <span
+      className={`block font-[500] text-[14px] ${
+        selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"
+      }`}
+    >
+      {periodMapping[detail.period] || detail.period.charAt(0).toUpperCase() + detail.period.slice(1)}
+    </span>
                     <span className={`block text-lg font-[500] text-[16px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-black"}`}>
                       ₹
                       {detail.price ? detail.price.toLocaleString() : "Not Available"}
@@ -433,13 +441,13 @@ const ProductItem = ({ product }) => {
 
               </div>
               {/* Additional rows like "6 Months" */}
-              <div className="mt-4">
-                <div className="text-blue-500 font-[500] text-center text-[12px]">
-                  {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}
+              <div className="mt-2">
+                <div className="text-blue-500 font-[500] text-center text-[16px]">
+                  {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}  
+                  <span className="text-center text-gray-600 text-[16px] font-[500]"> Available
+                </span>
                 </div>
-                <div className="text-center text-gray-600 text-[16px] font-[500]">
-                  Available
-                </div>
+
               </div>
             </div>
           </div>

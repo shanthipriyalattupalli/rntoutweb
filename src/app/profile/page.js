@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Link from 'next/link'
+import Image from "next/image";
 import '../../styles/ProfileSettings.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,6 +12,7 @@ const Photo = "/Assets/Photo.png";
 import { useRouter } from 'next/navigation';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import KYCVerification from "@/Components/Kyc/Kyc";
+const verified ='/Assets/verified.svg'
 
 
 export default function ProfileSettings() {
@@ -29,7 +31,7 @@ export default function ProfileSettings() {
     profilePic: ""
   });
 
-
+  const [errors, setErrors] = useState({ name: "", dateOfBirth: "" });
 
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -117,6 +119,23 @@ export default function ProfileSettings() {
 
 
   const handleSubmitProfile = async () => {
+
+    let validationErrors = {};
+
+    if (!profile.user.name.trim()) {
+      validationErrors.name = "Name is required.";
+      
+    }
+    if (!profile.dateOfBirth.trim()) {
+      validationErrors.dateOfBirth = "Date of Birth is required.";
+    }
+  
+    // If there are errors, update state and stop submission
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     const formData = new FormData();
     formData.append("profilePic", profile.profilePic);
     formData.append("name", profile.user.name);
@@ -169,6 +188,10 @@ export default function ProfileSettings() {
           </a>
         </div>
       </div>
+      <div className="w-max-screen flex justify-between p-1 px-2 bg-green-100 rounded ">
+        <span className="flex gap-2 text-green-700 font-semibold"><Image src={verified} width={20} height={20}/>  Kyc Verified</span>
+        <span className="text-green-700 font-sm">Your account is KYC Verified, Now you can take things on rent</span>
+      </div>
 
       <div className="flex flex-col space-y-6  p-4 md:p-6 lg:p-8">
         {/* Avatar Section */}
@@ -194,18 +217,19 @@ export default function ProfileSettings() {
         {/* Profile Information Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Name Input */}
-          <div className="flex flex-col">
-            <label className="text-sm font-semibold">Name</label>
-            <input
-              type="text"
-              name="user.name"
-              value={profile.user.name}
-              onChange={handleChange}
-              placeholder="Enter your name"
-              disabled={!isEditable}
-              className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-          </div>
+<div className="flex flex-col">
+  <label className="text-sm font-semibold">Name <span className="text-red-500">*</span></label>
+  <input
+    type="text"
+    name="user.name"
+    value={profile.user.name}
+    onChange={handleChange}
+    placeholder="Enter your name"
+    disabled={!isEditable}
+    className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+  />
+  {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+</div>
 
           {/* Email Input */}
           <div className="flex flex-col">
@@ -245,17 +269,17 @@ export default function ProfileSettings() {
 
         {/* Date of Birth */}
         <div className="flex flex-col">
-          <label className="text-sm font-semibold">Date of Birth</label>
-          <input
-            type="date"
-            name="dateOfBirth"
-            value={profile.dateOfBirth} // Should now be in 'YYYY-MM-DD' format
-            onChange={handleChange}
-            disabled={!isEditable}
-            className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-          />
-
-        </div>
+  <label className="text-sm font-semibold">Date of Birth <span className="text-red-500">*</span></label>
+  <input
+    type="date"
+    name="dateOfBirth"
+    value={profile.dateOfBirth}
+    onChange={handleChange}
+    disabled={!isEditable}
+    className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+  />
+  {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
+</div>
       </div>
     </div>
 

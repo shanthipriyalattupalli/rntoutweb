@@ -254,12 +254,12 @@ export default function BusinessInformation2() {
                 Business Information
               </div>
               <a className="kyc-btn" onClick={() => router.push("/profile/business-information/Kyc")} >Business KYC ?</a>
-              <h3 className="cursor-pointer" onClick={toggleEdit}>Edit Details</h3>
+              <h3 className="cursor-pointer text-blue-400" onClick={toggleEdit}>Edit Details</h3>
             </h2>
-            <div className="flex justify-center md:p-6">
-              <div className="w-full max-w-6xl bg-white p-2 md:p-6 ">
+            <div className="flex justify-center bg-[rgba(7,7,7,0.05)]">
+              <div className="w-full max-w-6xl">
                 {/* Owner Info */}
-                <div className="mb-6">
+                <div className="mb-2 p-6 bg-white">
                   <h3 className="text-md font-semibold text-yellow-600">OWNER INFO</h3>
                   <div className="p-4 rounded-md">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4">
@@ -280,7 +280,7 @@ export default function BusinessInformation2() {
                 </div>
 
                 {/* Bank Details */}
-                <div className="mb-6">
+                <div className="mb-2 p-6 bg-white">
                   <h3 className="text-md font-semibold text-yellow-600">BANK DETAILS</h3>
                   <div className="p-4 rounded-md">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4">
@@ -294,7 +294,7 @@ export default function BusinessInformation2() {
                 </div>
 
                 {/* Business Info */}
-                <div className="mb-6">
+                <div className="mb-2 p-6 bg-white">
                   <h3 className="text-md font-semibold text-yellow-600">BASIC INFO</h3>
                   <div className="p-4 rounded-md">
                   <div className="flex flex-col sm:flex-row md:flex-col lg:flex-col xl:flex-col gap-4">

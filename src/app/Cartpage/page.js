@@ -134,42 +134,10 @@ const router=useRouter();
     }
   }, [cartItems]);
 
-  // useEffect(() => {
-  //   if (cartItems?.length) {
-  //     const updatedOptions = { ...selectedOptions };
-  //     // cartItems.forEach((item) => {
-  //     //   if (!updatedOptions[item.variant_id._id]) {
-  //     //     updatedOptions[item.variant_id._id] = { 
-  //     //       period: item?.variant_id?.rentalPrice?.[0]?.period 
-  //     //     };
-  //     //   }
-  //     // });
-  //     setSelectedOptions(updatedOptions);
-  //   }
-  // }, [cartItems]);
+
   const storedOptions = (typeof window !== 'undefined') ? localStorage.getItem("selectedOptions") : null;
 
-  // Retrieve persisted selected options on component load
-  // useEffect(() => {
-  //   // const storedOptions = localStorage.getItem("selectedOptions");
-  //   if (storedOptions) {
-  //     setSelectedOptions(JSON.parse(storedOptions));
-  //   }
-  // }, []);
 
-
-  // useEffect(() => {
-  //     const initialOptions = {};
-  //     cartItems.forEach((item) => {
-  //         if (item.variant_id?.rentalPrice?.length > 0) {
-  //             initialOptions[item.variant_id._id] = {
-  //                 period: item.variant_id.rentalPrice[0].period,
-  //                 price:item.variant_id.rentalPrice[0].price // Default to the first period
-  //             };
-  //         }
-  //     });
-  //     setSelectedOptions(initialOptions);
-  // }, [cartItems]);
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -346,27 +314,6 @@ useEffect(() => {
 
 
 
-
-  const handlePaymentStatus = async (orderDetails) => {
-    try {
-      const payload = {
-        orderId: orderId,
-        paymentId: orderDetails.paymentId
-      }
-      const response = await axios.post(`${BASE_URL}/payments/status`, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } catch (error) {
-      toast.error(error.message || "Error status payment.");
-      console.error("Error status payment:", error);
-
-    }
-  }
-
-
-
   const handleOrderCheckout = async () => {
     try {
       const payload = {
@@ -442,7 +389,6 @@ useEffect(() => {
   };
 
 
-
   const createPayment = async () => {
     if (!userId) {
       toast.error("Please login to proceed with payment.");
@@ -490,7 +436,11 @@ useEffect(() => {
     0
   );
 
-
+  const periodMapping = {
+    quarterly: "3 Months",
+    semiannual: "6 Months",
+    annual: "Year",
+  };
 
 
 
@@ -548,7 +498,8 @@ useEffect(() => {
                 <div className="flex justify-between items-center">
                   <div>
                   <p className="text-base sm:text-lg font-semibold text-[#2F6FED]">
-  ₹{item.unitPrice}/{item.rentalPeriod}
+  ₹{item.unitPrice}/{periodMapping[item.rentalPeriod] || item.rentalPeriod.charAt(0).toUpperCase() + item.rentalPeriod.slice(1)}
+
 </p>
 
                   </div>
@@ -579,12 +530,12 @@ useEffect(() => {
                     value={selectedOptions[item.variant_id._id]?.period || item.rentalPeriod}
                     onChange={(e) => handleSelectChange(item.variant_id._id, e.target.value)}
                   >
-                    <option key={item._id} value={item.rentalPeriod}>
-                      {item.rentalPeriod}
-                    </option>
+
                     {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
                       <option key={rentalPrice._id} value={rentalPrice.period}>
-                        {rentalPrice.period}
+                        {/* {rentalPrice.period} */}
+      {periodMapping[rentalPrice.period] || rentalPrice.period.charAt(0).toUpperCase() + rentalPrice.period.slice(1)}
+
                       </option>
                     ))}
                   </select>

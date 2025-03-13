@@ -1,6 +1,8 @@
 import React from "react";
-
+import Image from "next/image";
 const mobileapp = "/Assets/mobileapp.svg";
+const playstore="/Assets/playstore.png"
+const appstore="/Assets/appstore.webp"
 
 const MobileApp = () => {
   return (
@@ -46,26 +48,16 @@ const MobileApp = () => {
         id="downloadPopup"
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50"
       >
-        <div className="bg-white p-6 rounded-lg shadow-lg text-center w-96 relative">
+        <div className="bg-white p-6 rounded-lg shadow-lg text-center w-1/3 relative">
           <h2 className="text-xl font-bold mb-4">Download RntOut Mobile App</h2>
           <p className="text-gray-600 mb-4">Choose your platform to download:</p>
-          <div className="flex justify-center gap-4">
-            <a
-              href="https://play.google.com/store/apps/details?id=com.rntout"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-green-500 text-white px-4 py-2 rounded"
-            >
-              Google Play
-            </a>
-            <a
-              href="https://apps.apple.com/us/app/rntout/id123456789"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              App Store
-            </a>
+          <div className="flex justify-evenly gap-4">
+
+              <img src={playstore} className="w-[200px] h-[200px]" />
+      
+              <img src={appstore} className="w-[200px] h-[80px] mt-14" />
+
+
           </div>
           <button
             className="mt-4 px-4 py-2 bg-gray-400 text-white rounded"

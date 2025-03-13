@@ -14,6 +14,7 @@ import {
   Settings,
   Smartphone,
   ChevronDown,
+  StarIcon,
 } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,6 +27,7 @@ import { useRouter, useSearchParams, useParams } from "next/navigation";
 import { formatDistanceToNow } from 'date-fns';
 import Link from "next/link";
 import ProductItem from "@/Components/Home/ProductItems";
+import { GrStarOutline } from "react-icons/gr";
 const productimg = "/Assets/pi-1.png";
 const AvailIcon = "/Assets/Icons/ava-stock.png";
 const AvailtyIcon = "/Assets/Icons/availability.png";
@@ -45,6 +47,7 @@ const star6 = "/Assets/star6.png";
 const star7 = "/Assets/star7.png";
 const left = '/Assets/leftarrow.svg';
 const startfill = '/Assets/star_fill.svg'
+const starline='/Assets/star_line.svg'
 const quality = '/Assets/quality.svg';
 const relocation = '/Assets/relocation.svg';
 const maintenance = '/Assets/maintenance.svg';
@@ -595,16 +598,25 @@ const ProductPage = () => {
             </div>
           </div>
         </div>}
-        <div className="flex flex-col w-full md:w-1/2 gap-2 border b-black-200 bg-white-500 p-6 md:p-10 rounded-lg text-center justify-center">
-          <h2 className="text-black-500 text-5xl md:text-5xl font-bold">4.7</h2>
-          <div className="flex gap-2 justify-center ">
-            <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
-            <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
-            <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
-            <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
-            <img src={startfill} alt="Rating stars" className="w-6 h-6 md:w-8 md:h-8" />
-          </div>
-        </div>
+        {product.averageRating && (
+  <div className="flex flex-col w-full md:w-1/2 gap-2 border border-black-200 bg-white p-6 md:p-10 rounded-lg text-center justify-center">
+    <h2 className="text-black-500 text-5xl md:text-5xl font-bold">
+      {product.averageRating}
+    </h2>
+    <div className="flex gap-2 justify-center">
+      {[...Array(5)].map((_, index) => (
+        <img
+          key={index}
+          src={index < Math.round(product.averageRating) ? startfill :starline } 
+          alt="Rating star"
+          className="w-6 h-6 md:w-8 md:h-8"
+        />
+      ))}
+    </div>
+  </div>
+)}
+
+
 
         {isReview && (
           <div className="modal-overlay">

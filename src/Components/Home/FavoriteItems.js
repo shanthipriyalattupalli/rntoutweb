@@ -150,7 +150,7 @@ const monthsDifference =
         },
       });
       fetchFavorites()
-      toast.success(response.data.message);
+      toast.success(response.data.message || "Item removed from favourites");
     } catch (error) {
       console.error("Error removing product from favorites:", error);
       // toast.error(
@@ -160,7 +160,11 @@ const monthsDifference =
     }
   }
 
-
+  const periodMapping = {
+    quarterly: "3 Months",
+    semiannual: "6 Months",
+    annual: "Year",
+  };
 
   const currentDate = new Date();
   const startDate = new Date(rentalAvailability?.startDate);
@@ -358,22 +362,6 @@ const monthsDifference =
               </span>
             </div>
 
-
-            {/* Add to Cart Button */}
-            {/* <button
-          className="cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        > */}
-            {/* {
-              rentalStartDate > new Date() ? ( // Compare raw Date objects
-                <button
-                  className="notify-btn border-blue-500 border  text-blue-400 font-medium px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2"
-                  onClick={() => handleNotifyMe()}
-                >
-                  <span className="text-sm">Notify Me Availability</span>
-                </button>
-              ) : ( */}
             <button
               className={`${stockQuantity > 0
                 ? "cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
@@ -399,15 +387,15 @@ const monthsDifference =
           <div>
             <div className='w-full'>
               <div className='grid grid-cols-2 text-center'>
-                {rentalPrice.slice(0, -2)?.map((detail) => (
+                {rentalPrice?.map((detail) => (
                   <div
                     key={detail._id}
-                    className={`border p-2.5 cursor-pointer ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""
+                    className={`border p-1 cursor-pointer ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""
                       }`}
                     onClick={() => setSelectedRentalPeriod(detail.period)}
                   >
                     <span className={`block font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"}`}>
-                      {detail.period.charAt(0).toUpperCase() + detail.period.slice(1)}
+                    {periodMapping[detail.period] || detail.period.charAt(0).toUpperCase() + detail.period.slice(1)}
                     </span>
                     <span className={`block text-lg font-[500] text-[16px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-black"}`}>
                       ₹
@@ -418,13 +406,13 @@ const monthsDifference =
 
               </div>
               {/* Additional rows like "6 Months" */}
-              <div className="mt-4">
-                <div className="text-blue-500 font-[500] text-center text-[12px]">
-                  {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}
+              <div className="mt-2">
+                <div className="text-blue-500 font-[500] text-center text-[16px]">
+                  {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}  
+                  <span className="text-center text-gray-600 text-[16px] font-[500]"> Available
+                </span>
                 </div>
-                <div className="text-center text-gray-600 text-[16px] font-[500]">
-                  Available
-                </div>
+
               </div>
             </div>
           </div>

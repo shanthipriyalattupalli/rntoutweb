@@ -84,7 +84,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
       {orderData.subOrders.map((item) => (
         <div className="order-item" key={item._id}>
           {/* Order Product */}
-          <div className="flex flex-col sm:flex-row justify-between">
+          <div className="flex flex-col sm:flex-row justify-between w-full">
           <div className="order-product">
             <img
               src={item.variantId.images?.[0] || "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"}
@@ -189,7 +189,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
             </div>
           </div>
           <div className="flex gap-2">
-            <Image src={download} alt="" width={20} height={20} className="mb-10"/>
+            <Image src={download} alt="" width={20} height={20} className="mb-20"/>
           <a href="#" className="font-semibold text-[#0b827c] " onClick={null}>
           Download Invoice
         </a>

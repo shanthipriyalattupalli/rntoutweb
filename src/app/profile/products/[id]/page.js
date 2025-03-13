@@ -21,6 +21,8 @@ const star6 = "/Assets/star6.png";
 const star7 = "/Assets/star7.png";
 const badge = "/Assets/badge.png";
 const rouimg = "/Assets/rouimg.png";
+const logo = "/Assets/Rntout_Logo.png";
+
 
 export default function ProductInformation2() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -179,13 +181,13 @@ export default function ProductInformation2() {
         <div className='product-info'>
           <img src={images[0]} alt='Product' className='product-image' />   
           <div className='product-details'>
-            <h2>
+            <h2 className="font-semibold">
               {/* Dell 24 inch P2425H Monitor | 100Hz | 5ms G-to-G (Fast Mode) | 99%
               sRGB */}
               {product.title}
             </h2>
-            <p>Available Stock: {product.stockQuantity}</p>
-            <p>Rating & Reviews: ⭐ 4.5 (154 Reviews)</p>
+            <p className="font-semibold">Available Stock: {product.stockQuantity}</p>
+           {product.averageRating && <p>Rating & Reviews: ⭐{product.averageRating} </p>}
             <a
               className='view-details-link'
               onClick={() => {
@@ -198,18 +200,17 @@ export default function ProductInformation2() {
         </div>
 
         {/* Summary Header Section */}
-        <div className='dashboard-top'>
-          <header className='dashboard-header'>
-            <div className='logo'>Rntout</div>
-            <div className='view-transactions'>view all transactions</div>
-          </header>
-          <div className='price-section'>
-            <div>
+        <div className='dashboard-top1'>
+         
+          <div className='logo'>
+            <img src={logo} alt="RNT Out Logo" className="h-8 w-[100%] sm:h-10 border-none border-0" />
+             
+            </div>
+   
               <div className='total-earning'>TOTAL EARNING:</div>
               <div className='joined-date'>Joined at Nov 05th 2024</div>
-            </div>
-            <div className='total-price'>₹1,59,237</div>
-          </div>
+            
+
         </div>
 
         {/* Tab Navigation */}
