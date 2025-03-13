@@ -33,7 +33,9 @@ const customStyles = `
 const FavoriteItem = ({ product,fetchFavorites}) => {
   const swiperRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
-
+    const [selectedRentalPeriod, setSelectedRentalPeriod] = useState("daily");
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
   // const { imgSrc, name, price, dateRange, availability, stock } = product;
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   // const [userId, setUserId] = useState("");
@@ -172,44 +174,57 @@ const monthsDifference =
       {/* <ToastContainer /> */}
       <style>{customStyles}</style>
 
-      <div className='w-[300px] bg-white rounded-lg border border-slate-200'
+      <div className="w-full max-w-[350px] xl:max-w-[330px] sm:max-w-[260px] 2xl:max-w-[330px] xl:h-[436px] bg-white rounded-lg border border-slate-200"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
-        <div className="relative rounded-lg">
+        <div className="relative rounded-xl">
           <div className="border-b-2 border-bottom-color: rgb(209 213 219 / var(--tw-border-opacity, 1))">
             {isHovered ? (
               <>
                 <div
-                  className="absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
-                  onClick={() => swiperRef.current?.slidePrev()} // Navigate to the previous slide
+                  className={`absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer ${isBeginning ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  onClick={() => {
+                    if (!isBeginning) swiperRef.current?.slidePrev();
+                  }}
                 >
                   <img src={left} alt="Previous" className="rotate-360" />
                 </div>
+
                 <div
-                  className="absolute right-[0px] top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
-                  onClick={() => swiperRef.current?.slideNext()} // Navigate to the next slide
+                  className={`absolute right-0 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer ${isEnd ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  onClick={() => {
+                    if (!isEnd) swiperRef.current?.slideNext();
+                  }}
                 >
                   <img src={left} alt="Next" className="rotate-180" />
                 </div>
+
                 <Swiper
-                  onSwiper={(swiper) => (swiperRef.current = swiper)} // Set the Swiper instance to the ref
-                  navigation={false} // Disable default navigation as we are using custom buttons
+                  onSwiper={(swiper) => {
+                    swiperRef.current = swiper;
+                    setIsBeginning(swiper.isBeginning);
+                    setIsEnd(swiper.isEnd);
+                  }}
+                  onSlideChange={(swiper) => {
+                    setIsBeginning(swiper.isBeginning);
+                    setIsEnd(swiper.isEnd);
+                  }}
+                  navigation={false}
                   pagination={{ clickable: true }}
                   modules={[Navigation]}
                   autoplay={{ delay: 3000 }}
-                // className="rounded-[40px] border border-gray-200"
-                // className="h-44"
                 >
                   {images.map((img, index) => (
                     <SwiperSlide key={index}>
                       <Link href={{ pathname: `/Products/${title}`, query: { id: _id } }} key={_id}>
-
                         <Image
                           src={img}
                           alt={`${title} - ${index + 1}`}
-                          className="w-full h-44 object-cover rounded-lg"
-                          width={500}
-                          height={300}
+                          className="w-full h-[220px] object-cover rounded-lg"
+                          width={308}
+                          height={220}
                         />
                       </Link>
                     </SwiperSlide>
@@ -217,14 +232,13 @@ const monthsDifference =
                 </Swiper>
               </>
             ) : (
-              // Show single image when not hovered
               <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
                 <Image
                   src={images[0]}
                   alt={title}
-                  className="w-full h-44 object-cover rounded-lg"
-                  width={500}
-                  height={300}
+                  className="w-full h-[220px] object-cover rounded-lg"
+                  width={308}
+                  height={220}
                 />
               </Link>
             )}
@@ -245,26 +259,26 @@ const monthsDifference =
               </p>
             </div>
             <div className="absolute top-[0px] left-4 z-10 flex flex-col items-center space-x-2">
-            {isOneWeekBefore && (
-        <img src={Badge} className="badge-icon" alt="Favorite icon" />
-      )}
+              {isOneWeekBefore && (
+                <img src={Badge} className="badge-icon" alt="Favorite icon" />
+              )}
 
 
 
             </div>
 
             {/* View All Details Button */}
-            <div className="absolute top-[159px]  z-10 flex items-center justify-center w-full">
+            <div className="absolute top-[200px]  z-10 flex items-center justify-center w-full">
               {isView ? (
                 <span
-                  className="bg-white text-black w-54 text-center rounded-full border-2 p-1 cursor-pointer"
+                  className="bg-white text-black w-54 font-sm text-center rounded-full border-2  px-2 py-1 cursor-pointer"
                   onClick={handleclick}
                 >
                   View all packages
                 </span>
               ) : (
                 <span
-                  className="bg-white text-black w-54 text-center rounded-full border-2 p-1 cursor-pointer"
+                  className="bg-white text-black w-54  text-center rounded-full border-2 px-2 py-1 cursor-pointer"
                   onClick={handleBack}
                 >
                   Back to details
@@ -277,10 +291,14 @@ const monthsDifference =
 
         {isView ? (
           <div className='p-4'>
-           <h1 className="text-[16px] font-medium truncate w-full">{title}</h1>
+            <h2 className="product-title text-gray-800 truncate w-full overflow-hidden whitespace-nowrap">
+              {title}
+            </h2>
+
+
             {/* Product Price */}
             <p className='cart-price text-bold text-lg mt-2'>
-              <span className='text-blue-500 text-s font-medium'>
+              <span className='text-[#FF2D55] font-[600] text-[14px]'>
                 ₹{rentalPrice[0]?.price && `${rentalPrice[0].price}`}
                 <span className='text-[#070707A6] font-[400] text-[12]'>
                   /day
@@ -297,9 +315,10 @@ const monthsDifference =
                 width={16}
                 height={16}
               />
-              <span className='text-gray-500 text-xs'>
-                Delivery: {dateRange}
+              <span className="text-gray-500 text-xs">
+                <span className="hidden sm:inline">Free Delivery for: </span>5 km
               </span>
+
             </div>
 
             {/* Availability */}
@@ -311,32 +330,34 @@ const monthsDifference =
                 width={16}
                 height={16}
               />
-{rentalAvailability && formattedDate && !isNaN(new Date(rentalAvailability?.endDate)) ? (
-  <span className="text-gray-500 text-xs">
-    Availability: {formattedDate} - {formattedendDate}
-  </span>
-) : rentalAvailability && formattedDate ? (
-  <span className="text-gray-500 text-xs">
-    Availability: {formattedDate}
-  </span>
-) : null}
-
+              {rentalAvailability && formattedDate && !isNaN(new Date(rentalAvailability?.endDate)) ? (
+                <span className='text-gray-500 text-xs truncate w-full'>
+                  <span className="hidden sm:inline">Availability:</span> {formattedDate}-{formattedendDate}
+                </span>
+              ) : rentalAvailability && formattedDate ? (
+                <span className="text-gray-500 text-xs hidden sm:inline">
+                  Availability: {formattedDate}
+                </span>) : null}
             </div>
-
-            {/* Stock Information */}
-            <div className='flex items-center mt-2'>
-              <Image
+            {/* <Image
                 src={AvailabilIcon}
                 alt='Check icon'
                 className='w-4 h-4 text-blue-500'
                 width={16}
                 height={16}
-              />
-              <span className='text-blue-500 text-s font-medium'>
-                {" "}
-                {stockQuantity} Stock available
+              /> */}
+            {/* Stock Information */}
+            <div className="flex items-center mt-2">
+              <span
+                className={`text-xs border px-1 py rounded-full ${stockQuantity > 0
+                  ? "text-blue-500 border-blue-200 bg-blue-100"
+                  : "text-red-500 border-red-200 bg-red-100"
+                  }`}
+              >
+                {stockQuantity > 0 ? "In stock" : "Out of stock"}
               </span>
             </div>
+
 
             {/* Add to Cart Button */}
             {/* <button
@@ -344,47 +365,67 @@ const monthsDifference =
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         > */}
+            {/* {
+              rentalStartDate > new Date() ? ( // Compare raw Date objects
+                <button
+                  className="notify-btn border-blue-500 border  text-blue-400 font-medium px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2"
+                  onClick={() => handleNotifyMe()}
+                >
+                  <span className="text-sm">Notify Me Availability</span>
+                </button>
+              ) : ( */}
             <button
-              className={`cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group ${isHovered ? "bg-red-600 text-white" : ""}`}
-              onClick={() => handleAddCart()}
+              className={`${stockQuantity > 0
+                ? "cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+                : "cart-btn border-red-100 border text-black font-bold px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+                } ${isHovered && stockQuantity > 0 ? "bg-red-600 text-white" : ""}`}
+              onClick={() => stockQuantity > 0 && handleAddCart()}
+              disabled={stockQuantity <= 0}
             >
               <Image
-                src={isHovered ? cartIconHov : cartIcon}
-                alt='Cart icon'
-                className='w-4 h-4'
+                src={isHovered && stockQuantity > 0 ? cartIconHov : cartIcon}
+                alt="Cart icon"
+                className="w-4 h-4"
                 width={500}
                 height={300}
               />
-              <span className='text-sm'>Add to cart</span>
+              <span className={`text-sm ${stockQuantity > 0 ? "" : "text-gray-400"}`}>Add to cart</span>
             </button>
+            {/* ) */}
+            {/* } */}
+
           </div>
         ) : (
           <div>
             <div className='w-full'>
               <div className='grid grid-cols-2 text-center'>
                 {rentalPrice.slice(0, -2)?.map((detail) => (
-                  <div key={rentalPrice._id} className='border p-2.5'>
-                    <span className='block text-blue-500 font-[500] text-[12px]'>
-                      {detail.period}
+                  <div
+                    key={detail._id}
+                    className={`border p-2.5 cursor-pointer ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""
+                      }`}
+                    onClick={() => setSelectedRentalPeriod(detail.period)}
+                  >
+                    <span className={`block font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"}`}>
+                      {detail.period.charAt(0).toUpperCase() + detail.period.slice(1)}
                     </span>
-                    <span className='block text-black text-lg font-[500] text-[16px]'>
+                    <span className={`block text-lg font-[500] text-[16px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-black"}`}>
                       ₹
-                      {detail.price
-                        ? detail.price.toLocaleString()
-                        : "Not Available"}
+                      {detail.price ? detail.price.toLocaleString() : "Not Available"}
                     </span>
                   </div>
                 ))}
+
               </div>
               {/* Additional rows like "6 Months" */}
               <div className="mt-4">
-    <div className="text-blue-500 font-[500] text-center text-[12px]">
-      {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}
-    </div>
-    <div className="text-center text-gray-600 text-[16px] font-[500]">
-      Available
-    </div>
-  </div>
+                <div className="text-blue-500 font-[500] text-center text-[12px]">
+                  {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}
+                </div>
+                <div className="text-center text-gray-600 text-[16px] font-[500]">
+                  Available
+                </div>
+              </div>
             </div>
           </div>
         )}
