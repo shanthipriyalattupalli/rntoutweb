@@ -132,7 +132,7 @@ const [isOn, setIsOn] = useState(false);
     offColor="#ccc"
     uncheckedIcon={false} 
     checkedIcon={false} 
-    height={window.innerWidth < 640 ? 24 : 20}
+    // height={window.innerWidth < 640 ? 24 : 20}
   />
   Cancelled Orders
 </label>
