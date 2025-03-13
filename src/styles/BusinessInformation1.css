@@ -34,8 +34,8 @@
 }
 
 .image-preview-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
   gap: 10px;
   margin-top: 20px;
 
@@ -215,6 +215,7 @@
     font-size: 11px;
     padding: 5px 12px;
   }
+  
 }
 
 @media screen and (max-width: 320px) {
@@ -238,5 +239,31 @@
   .add-business-button {
     font-size: 10px;
     padding: 4px 10px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 887px) {
+  .image-preview-container {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media (min-width: 880px) and (max-width: 1024px) {
+  .image-preview-container {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+  }
+}
+@media (min-width: 1026px) and (max-width: 1440px) {
+  .image-preview-container {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+  }
+}
+@media (min-width: 1441px) and (max-width: 2560px) {
+  .image-preview-container {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
   }
 }

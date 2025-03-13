@@ -120,12 +120,12 @@ useEffect(()=>{
                                         alt="Aadhar Preview"
                                         className="w-full h-40 object-cover rounded-lg"
                                     />
-                                    <button
+                  { !isKycSuccess === "VERIFIED"        &&          <button
                                         onClick={removeImage}
                                         className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
                                     >
                                         <FaTimes />
-                                    </button>
+                                    </button>}
                                 </>
                             ) : (
                                 <>
@@ -152,7 +152,7 @@ useEffect(()=>{
                         </p>
                     </div>
                     {/* PAN Card Upload */}
-                    <div>
+                    {/* <div>
                         <h3 className="text-sm font-semibold text-gray-700 mb-2">PAN Card</h3>
                         <label className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center cursor-pointer relative">
                             {panImage ? (
@@ -191,7 +191,7 @@ useEffect(()=>{
                         <p className="text-xs text-gray-500 mt-1">
                             Image size should be less than 2MB
                         </p>
-                    </div>
+                    </div> */}
                 </div>
                 {/* Verified Badge */}
                 {isVerifying && (
@@ -209,11 +209,11 @@ useEffect(()=>{
                     </span>
                 </div>}
                 {/* Submit Button */}
-                <div className="mt-6 flex justify-center" onClick={() => handleUploadKyc()}>
+{ !isKycSuccess === "VERIFIED"      &&         <div className="mt-6 flex justify-center" onClick={() => handleUploadKyc()}>
                     <button className="bg-red-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-600 transition">
                         Submit
                     </button>
-                </div>
+                </div>}
             </div>
         </>
     );

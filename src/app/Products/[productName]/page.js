@@ -427,10 +427,66 @@ const ProductPage = () => {
                     <div className="font-bold text-sm sm:text-base md:text-lg">₹{price.price}</div>
                   </button>
                 ))}
-
+           {/* <button
+                  className={`p-3 rounded-lg border text-center ${selectedcustomDuration === "Custom"
+                    ? "border-[#F48003] bg-[#FFF5EB]"
+                    : "border-gray-200"
+                    }`}
+                  onClick={() => handleCustomSelection()}
+                >
+                  <div className='text-xs'>Custom</div>
+                </button> */}
 
               </div>
             </div>
+                        {/* {selectedcustomDuration === "Custom" && <div className="w-2">
+              <div className="flex gap-20 text-center">
+                <div>
+                  <span className="ml-2 text-gray-200 ">|</span>
+                  <span>₹0</span>
+                </div>
+                <div>
+                  <span className="ml-2 text-gray-200 ">|</span>
+                  <span>30d</span>
+                </div>
+                <div>
+                  <span className="ml-2 text-gray-200 ">|</span>
+                  <span>60d</span>
+                </div>
+                <div>
+                  <span className="ml-2 text-gray-200 ">|</span>
+                  <span>90d</span>
+                </div>
+                <div>
+                  <span className="ml-2 text-gray-200 ">|</span>
+                  <span>180d</span>
+                </div>
+                <div>
+                  <span className="ml-2 text-gray-200 ">|</span>
+                  <span>360d</span>
+                </div>
+              </div>
+              <input
+                type="range"
+                id="price"
+                min="0"
+                max="360"
+                step="1"
+                value={priceRange}
+                onInput={handlePriceRange} // Trigger on input
+                className="w-[620px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
+                style={{
+                  WebkitAppearance: "none",
+                  MozAppearance: "none",
+                  background: `linear-gradient(to right, #ef4444 0%,rgb(165, 162, 162) 0%)`, // Initial background
+                }}
+              />
+
+              <div className="price0">
+                {priceRange && `Selected Price: ₹${priceRange}`}
+              </div>
+            </div>} */}
+ 
 
             <div className='flex items-center space-x-4'>
               <div className='flex items-center border border-red-500 text-white font-[600] rounded-lg bg-[#FF2D55]'>

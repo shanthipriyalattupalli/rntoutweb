@@ -296,7 +296,7 @@ export default function BusinessInformation2() {
                 <div className="mb-6">
                   <h3 className="text-md font-semibold text-yellow-600">BASIC INFO</h3>
                   <div className="p-4 rounded-md">
-                    <div className="flex flex-col sm:flex-row gap-4 items-center">
+                  <div className="flex flex-col sm:flex-row md:flex-col lg:flex-col xl:flex-col gap-4">
                       <img src={formData.profileImage} alt="Profile" className="w-16 h-16 rounded-full" />
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4 w-full">
                         <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Business Name:</strong></div><div className="text-sm">{formData.businessName}</div></p>
@@ -489,6 +489,7 @@ export default function BusinessInformation2() {
                     // style={{ display: "none" }}
                     onChange={handleFileUpload}
                     disabled={!isEditable}
+                    className="ml-28"
                   />
 
                   {/* Preview uploaded files */}
