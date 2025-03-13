@@ -4,13 +4,13 @@
     height: 600x;
     padding: 20px;
     background-color: #f7faff;
-    max-height: 600px; 
+    max-height: 600px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 10px; 
+    gap: 10px;
     padding: 10px;
-   
+
 
 
 }
@@ -102,6 +102,7 @@
 .delete-option button:hover {
     color: #d9363e;
 }
+
 .notification-meta {
     position: relative;
 }
@@ -122,5 +123,130 @@
 
     .notification-meta .time {
         font-size: 11px;
+    }
+}
+
+/* Tablets and Small Laptops */
+@media (max-width: 1024px) {
+    .notifications-container {
+        max-height: 500px;
+        padding: 15px;
+    }
+
+    .notification-item {
+        padding: 10px 14px;
+    }
+}
+
+/* Tablets and Large Phones */
+@media (max-width: 768px) {
+    .notifications-container {
+        max-height: 400px;
+        padding: 10px;
+    }
+
+    .notification-item {
+        padding: 8px 12px;
+    }
+
+    .notification-content h3 {
+        font-size: 13px;
+    }
+
+    .notification-content p {
+        font-size: 11px;
+    }
+
+    .notification-meta {
+        gap: 8px;
+    }
+
+    .notification-meta .time {
+        font-size: 11px;
+    }
+}
+
+/* Small Phones (425px and below) */
+@media (max-width: 425px) {
+    .notifications-container {
+        max-height: 350px;
+        padding: 8px;
+    }
+
+    .notification-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px;
+    }
+
+    .notification-icon {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .notification-content h3 {
+        font-size: 12px;
+    }
+
+    .notification-content p {
+        font-size: 10px;
+    }
+
+    .notification-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+}
+
+/* Extra Small Phones (375px and below) */
+@media (max-width: 375px) {
+    .notifications-container {
+        max-height: 320px;
+    }
+
+    .notification-item {
+        padding: 6px;
+    }
+
+    .notification-content h3 {
+        font-size: 11px;
+    }
+
+    .notification-content p {
+        font-size: 9px;
+    }
+
+    .notification-meta .time {
+        font-size: 10px;
+    }
+}
+
+/* Very Small Phones (320px and below) */
+@media (max-width: 320px) {
+    .notifications-container {
+        max-height: 280px;
+        padding: 5px;
+    }
+
+    .notification-item {
+        padding: 5px;
+        border-radius: 6px;
+    }
+
+    .notification-content h3 {
+        font-size: 10px;
+    }
+
+    .notification-content p {
+        font-size: 8px;
+    }
+
+    .notification-meta {
+        gap: 4px;
+    }
+
+    .options-icon {
+        font-size: 14px;
     }
 }
