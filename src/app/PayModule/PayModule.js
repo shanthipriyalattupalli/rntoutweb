@@ -51,7 +51,7 @@ const RenderRazorpay = ({ orderId,razorpayOrderId, keyId, currency, amount, hand
             Swal.fire({
               icon: "success",
               title: "Payment Completed!",
-              text: "Your payment was successfully processed.",
+              text: "Payment is Successfull.",
               confirmButtonColor: "#d33", // Optional: Customize button color
             });            // window.location.href = '/payment-success';
           } else {

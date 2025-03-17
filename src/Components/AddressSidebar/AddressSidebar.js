@@ -100,7 +100,7 @@ useEffect(() => {
       Swal.fire({
         icon: "success",
         title: "Address Added!",
-        text: response.data.message || "Your address has been added successfully.",
+        text: response.data.message || "Address added successfully",
         confirmButtonColor: "#d33",
       });
   

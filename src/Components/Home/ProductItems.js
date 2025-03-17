@@ -67,6 +67,8 @@ const ProductItem = ({ product }) => {
     averageRating,
     _id,
   } = product;
+  // const productId = _id;
+  const [productID,setProductId] = useState(_id)
 
 
   const formattedDate = new Date(
@@ -235,9 +237,11 @@ const ProductItem = ({ product }) => {
                   modules={[Navigation]}
                   autoplay={{ delay: 3000 }}
                 >
-                  {images.map((img, index) => (
+                  {images.map((img, index) => 
+                  {
+                    return(
                     <SwiperSlide key={index}>
-                      <Link href={{ pathname: `/Products/${title}`, query: { id: _id } }} key={_id}>
+                      <Link href={`/Products/${_id}`}>
                         <Image
                           src={img}
                           alt={`${title} - ${index + 1}`}
@@ -247,7 +251,7 @@ const ProductItem = ({ product }) => {
                         />
                       </Link>
                     </SwiperSlide>
-                  ))}
+                  )})}
                 </Swiper>
               </>
             ) : (

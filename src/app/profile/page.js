@@ -188,10 +188,10 @@ export default function ProfileSettings() {
           </a>
         </div>
       </div>
-      <div className="w-max-screen flex justify-between p-1 px-2 bg-green-100 rounded ">
+      {/* <div className="w-max-screen flex justify-between p-1 px-2 bg-green-100 rounded ">
         <span className="flex gap-2 text-green-700 font-semibold"><Image src={verified} width={20} height={20}/>  Kyc Verified</span>
         <span className="text-green-700 font-sm">Your account is KYC Verified, Now you can take things on rent</span>
-      </div>
+      </div> */}
 
       <div className="flex flex-col space-y-6  p-4 md:p-6 lg:p-8">
         {/* Avatar Section */}

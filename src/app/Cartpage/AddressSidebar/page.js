@@ -134,8 +134,8 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       );
       Swal.fire({
         icon: "success",
-        title: "Address Added!",
-        text: "Your address was successfully added.",
+        title: "Done!",
+        text: "Address added successfully",
         confirmButtonColor: "#d33", // Optional: Customize button color
       });
       setFormData(initialFormData); // Reset the form
@@ -160,7 +160,18 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       });
       return;
     }
+
+        // Validate mobile number
+        if (!formData.mobile || formData.mobile.length !== 10) {
+          setErrorMessage("Mobile number must be 10 digits.");
+          return;
+        }
+        if(!token){
+          toast.error("Please login to add address.");
+          return;
+        }
   
+        setErrorMessage(""); 
     // Prepare the payload
     const payload = {
       addressId: editingAddressId,
@@ -205,8 +216,8 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
         // Show success message
         Swal.fire({
           icon: "success",
-          title: "Address Updated!",
-          text: "Your address has been successfully updated.",
+          title: "Updated!",
+          text: "Address updated successfully",
           confirmButtonColor: "#d33",
         });
   

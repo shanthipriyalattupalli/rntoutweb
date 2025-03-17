@@ -565,7 +565,7 @@ useEffect(() => {
         <div className='summary-item address' onClick={handleAddressToggle}>
           <div className='address-content'>
             <img src={location} />
-            <span>Select Address</span>
+            <span>Choose Address</span>
             <i className='fas fa-chevron-right'></i>
           </div>
           {selectedAddress && (
@@ -649,20 +649,7 @@ useEffect(() => {
             onDiscountedPrice={handleDiscountedPrice}
           />
         )}
-        {/* <div>
-          <div className='summary-item address' onClick={handleSidebarToggle}>
-            <div className='address-content'>
-              <img src={insurance} alt='Insurance' />
-              <span>RntOut Insurance</span>
-              <i className='fas fa-chevron-right'></i>
-            </div>
-          </div>
-          <Sidebar
-            isOpen={isSidebarOpen}
-            onClose={handleSidebarToggle}
-            products={cartItems}
-          />
-        </div> */}
+
         <div className="mx-auto bg-white shadow-lg rounded-xl p-5 border mb-4">
           {/* Header with Dropdown Toggle */}
           <div

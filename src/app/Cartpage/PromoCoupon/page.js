@@ -71,8 +71,9 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
             { code: couponcode, rentAmount: totalPrice },
             { headers: { Authorization: `Bearer ${token}` } }
           );
+          console.log(response.data.data,"coupon apllied")
 
-          onDiscountedPrice(response.data.data.finalAmount, couponcode);
+          onDiscountedPrice(response.data.data.finalAmount, couponcode,response.data.data.coupon.discountValue);
           toast.success(
             response.data.message || "Coupon applied successfully!"
           );
