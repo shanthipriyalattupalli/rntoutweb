@@ -125,13 +125,13 @@ export default async function ServerSideImageTabs({ images, searchParams }) {
       </div>
 
       {/* Image List */}
-      <div className="flex space-x-4 border-b pb-2">
+      <div className="flex space-x-4 ">
         {images.map((image, index) => (
           <a
             key={index}
             href={`?selectedImage=${index}`}
-            className={`px-4 py-2 cursor-pointer border-b-2 rounded-lg overflow-hidden ${
-              selectedIndex === index ? "border-red-500" : "border-transparent"
+            className={`w-[80px] h-[80px] cursor-pointer border rounded-lg overflow-hidden ${
+              selectedIndex === index ? "border-[#ff2d55]" : "border-gray-900/10"
             }`}
           >
             <img

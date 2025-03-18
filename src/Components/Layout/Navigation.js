@@ -11,6 +11,7 @@ const Navigation = () => {
   const categoryRefs = useRef({});
   const router = useRouter();
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+  let timeoutId;
 
   const fetchCategories = async () => {
     try {
@@ -43,6 +44,7 @@ const Navigation = () => {
   };
 
   const handleMouseLeave = () => {
+    clearTimeout(timeoutId);
     setActiveCategory(null);
   };
 
@@ -79,12 +81,15 @@ const handleSubmenuMouseEnter = () => {
 const handleSubmenuMouseLeave = () => {
   timeoutId = setTimeout(() => {
     setActiveCategory(null);
-  }, 300);
+  }, 200);
 };
 
   return (
-    <nav className="px-4 sm:px-20 bg-white border border-slate-200 relative">
-      <div className="relative" onMouseLeave={handleMouseLeave}>
+    <nav className="px-4 sm:px-20 bg-white border border-slate-200 relative"   onMouseLeave={() => {
+      handleMouseLeave();
+      handleSubmenuMouseLeave();
+    }} >
+      <div className="relative" >
         <div
           id="category-container"
           className="flex items-center h-12 gap-3 2xl:gap-32 overflow-x-auto overflow-visible whitespace-nowrap scrollbar-hide relative"

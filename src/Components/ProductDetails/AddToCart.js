@@ -11,10 +11,10 @@ import "react-toastify/dist/ReactToastify.css";
 
     const rentalPrice=product.rentalPrice
 const userId =Cookies.get("userId");
-console.log(userId,"userId")
+
 const token =Cookies.get("userToken");
 
-console.log(userId,"userId")
+
 
     const [selectedDuration, setSelectedDuration] = useState("monthly");
     const handleselectedDuration = (period) => {
@@ -59,6 +59,11 @@ console.log(userId,"userId")
       toast.error("You must be logged in to add items to cart.");
     }
   };
+  const periodMapping = {
+    quarterly: "3 Months",
+    semiannual: "6 Months",
+    annual: "Year",
+  };
 
 
   return (
@@ -70,12 +75,12 @@ console.log(userId,"userId")
                 {rentalPrice.map((price) => (
                   <button
                     key={price._id}
-                    className={`flex flex-col items-center justify-center px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 rounded-lg border text-center w-full sm:w-auto 
+                    className={`flex flex-col items-center justify-center px-3 py-2 sm:px-2 sm:py-2 rounded-lg border text-center w-full sm:w-auto 
    ${selectedDuration === price.period ? "border-[#F48003] bg-[#FFF5EB]" : "border-gray-200"}`}
                     onClick={() => handleselectedDuration(price.period)}
                   >
                     <div className="text-[10px] sm:text-xs md:text-sm">
-                      {price.period.charAt(0).toUpperCase() + price.period.slice(1)}
+                    {periodMapping[price.period] || price.period.charAt(0).toUpperCase() + price.period.slice(1)}
                     </div>
                     <div className="font-bold text-sm sm:text-base md:text-lg">₹{price.price}</div>
                   </button>

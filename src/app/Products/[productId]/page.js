@@ -118,8 +118,7 @@ const services = [
               <nav className='text-sm text-gray-500'>
                 Home/ Furniture/ DROGO Throne Ergonomic Gaming Chair
               </nav>
-              <h1 className='text-2xl font-bold'>{product.title}</h1>
-
+              <h1 className="text-2xl font-bold line-clamp-2">{product.title}</h1>
               <div className='flex items-center space-x-2 cursor-pointer'>
                 {product.owner && (
                   <Link href={`/SellerProfile/${product.owner._id}`}>
@@ -274,7 +273,7 @@ const services = [
         </div>
 
         {/* Bottom Section */}
-        {productDetails.length > 0 && <div className='grid md:grid-cols-2 gap-8 py-6'>
+        {productDetails.length > 0 && <div className='flex flex-col w-1/2'>
 
           <div className='space-y-6'>
      
