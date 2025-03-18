@@ -6,6 +6,19 @@
     /* height: 392px; */
     /* border: solid red; */
 }
+.store-image-container {
+    position: absolute;
+    bottom: 30%;
+    left: 60px; /* Adjust as needed */
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: white; /* Optional: for visibility */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
 
 .seller-carousel-slide {
     display: flex;
@@ -20,33 +33,47 @@
     object-fit: revert;
 }
 
-.seller-carousel-prev-button,
+.seller-carousel-prev-button{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+   background: rgba(255, 255, 255, 1);
+    color: black;
+    border: none;
+    cursor: pointer;
+    padding: 10px 10px;
+    font-size: 18px;
+    border-radius:0px 12px 12px 0px;
+    z-index: 10;
+    transition: background 0.3s ease;
+
+}
 .seller-carousel-next-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
+   background: rgba(255, 255, 255, 1);
+    color: black;
     border: none;
     cursor: pointer;
-    padding: 10px 15px;
+    padding: 10px 10px;
     font-size: 18px;
-    border-radius: 50%;
+    border-radius:12px 0px 0px 12px;
     z-index: 10;
     transition: background 0.3s ease;
 }
 
 .seller-carousel-prev-button:hover,
 .seller-carousel-next-button:hover {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(255, 255, 255, 1);
 }
 
 .seller-carousel-prev-button {
-    left: 15px;
+    left: 0px;
 }
 
 .seller-carousel-next-button {
-    right: 15px;
+    right: 0px;
 }
 
 .seller-carousel-indicators {
@@ -88,7 +115,7 @@
     display: flex;
     align-items: flex-start;
     margin-bottom: 20px;
-    padding:0px 40px;
+    padding:18px 40px;
 }
 
 .seller-company-info h1 {

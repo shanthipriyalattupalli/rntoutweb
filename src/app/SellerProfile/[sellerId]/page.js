@@ -7,9 +7,12 @@ import axios from "axios";
 import SellerProfile from '../../../Components/Seller/SellerProducts'
 import '../../../styles/Sellerprofile.css'
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 const startfill='/Assets/star_fill.svg'
 const stars = "/Assets/stars.svg";
-const userProfile = '/Assets/userProfile.svg'
+const userProfile = '/Assets/userProfile.svg';
+const storeimage="/Assets/store_2_fill.svg";
+const storename="/Assets/storeimage.svg"
 
 // Lazy load components
 const Aboutus = lazy(() => import("@/Pages/Aboutus"));
@@ -238,7 +241,7 @@ const SellerCarouselProfile = () => {
   return (
     <>
  <div className="seller-carousel-container">
-    {bannerImages.length > 0 ? (
+    {bannerImages.length > 0 && (
       <>
         <div className="seller-carousel-slide">
           <img
@@ -263,9 +266,10 @@ const SellerCarouselProfile = () => {
           ))}
         </div>
       </>
-    ) : (
-      <p>Loading banners...</p> // Placeholder for when images are not yet available
-    )}
+    ) }
+  </div>
+  <div className="store-image-container">
+  <Image src={storeimage} width={20} height={20} className=""/>
   </div>
 
       <div className='seller-profile-container'>
@@ -278,6 +282,7 @@ const SellerCarouselProfile = () => {
             </h1>
             <p>
               {/* <span className='seller-contact-item'>📞{sellerDetails.name}</span> |{" "} */}
+              {/* <Image src={storename} width={20} height={20}/> */}
               <span className='seller-contact-item'>{sellerDetails?.businessInfo?.storeName}</span> {" "}
 
               {/* <span className='seller-contact-item'>
@@ -295,12 +300,12 @@ const SellerCarouselProfile = () => {
         {/* About Us Section */}
         <div className='seller-about-us'>
           <h2>About Us</h2>
-          <p>
+ {!sellerDetails?.businessInfo?.storeDescription === "string" &&   <p>
       {sellerDetails?.businessInfo?.storeDescription}{" "}
             <a href='#' className='seller-read-more'>
               read more...
             </a>
-          </p>
+          </p>}
           <p className='seller-business-name'>
             <strong>Business Name : </strong>{sellerDetails?.businessInfo?.businessName}
             Co Ltd
@@ -308,7 +313,7 @@ const SellerCarouselProfile = () => {
         </div>
 
         {/* Reviews Section */}
-        <div className='seller-store-reviews'>
+        {/* <div className='seller-store-reviews'>
           <p>
             <strong>Store Reviews:</strong>{" "}
             <span className='seller-rating'>4.4 out of 5</span>{" "}
@@ -316,7 +321,7 @@ const SellerCarouselProfile = () => {
               (19,997 ratings and 1,273 reviews)
             </span>
           </p>
-        </div>
+        </div> */}
 
         {/* Tab Navigation */}
         <div className='seller-tabs'>
