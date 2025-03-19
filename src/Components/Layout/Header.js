@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
+import Cookies from "js-cookie";
 import SearchInput from "../SearchInput";
 import { useRouter,usePathname} from "next/navigation";
 import { MAP_API } from '../../services/GMap'
@@ -22,9 +23,13 @@ function Header() {
 
   const [locationError, setLocationError] = useState(null);
   const [locationName, setLocationName] = useState("");
-  const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
-  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
-  const name = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
+  // const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  // const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  // const name = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
+  
+  const userId=Cookies.get("userId");
+const token =Cookies.get("userToken");
+const name =Cookies.get("userName");
   const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
   const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
   const [profilePic, setProfilePic] = useState( (typeof window !== 'undefined') ? localStorage.getItem("profilePic") : null || Photo);

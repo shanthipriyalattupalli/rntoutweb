@@ -96,8 +96,7 @@ useEffect(() => {
 const approvedCount = userProducts.filter(product => product.isApproved).length;
 const notApprovedCount = userProducts.filter(product => !product.isApproved).length;
 
-console.log("Approved Products:", approvedCount);
-console.log("Not Approved Products:", notApprovedCount);
+
 
 
   return (

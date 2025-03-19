@@ -9,6 +9,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const profile_avatar = "/Assets/profile_avatar.png";
 import Signup from "./Signup";
+import Cookies from "js-cookie";
+
 
 const Rntout = "/Assets/Rntout_Logo.png";
 
@@ -99,6 +101,12 @@ useEffect(() => {
       localStorage.setItem("userName", user.name || ""); // Ensuring it's never null
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("role", user.role);
+
+      
+      Cookies.set("userId", user.id, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userName", user.name, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userEmail", user.email, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userToken", response.data.token, { expires: 7, secure: true, sameSite: "Strict" });
       
       if (!profilepic) {
         localStorage.setItem("profilePic", profile_avatar);

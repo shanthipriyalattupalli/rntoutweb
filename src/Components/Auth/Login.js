@@ -73,53 +73,7 @@ const Login = ({ setIsLoginOpen }) => {
   
   
 
-  // Handle Email and Password Login
-  const handleEmailLogin = async () => {
-    if (!email || !password) {
-      toast.error("Please enter both email and password.");
-      return;
-    }
 
-    setIsLoading(true);
-
-    try {
-      const response = await axios.post(`${BASE_URL}/api/users/login`, {
-        email,
-        password,
-      });
-      setIsLoading(false);
-
-      if (response.status === 200) {
-        const { user, message } = response.data;
-
-        toast.success(message || "Login successful!");
-
-        localStorage.setItem("userId", user.id);
-        localStorage.setItem("userName", user.name);
-        localStorage.setItem("userEmail", user.email);
-        localStorage.setItem("userToken", response.data.token);
-        router.push("/"); // Redirect to home page
-      } else {
-        toast.error(response.data.error || "Login failed. Please try again.");
-      }
-    } catch (error) {
-      console.error(error.response?.data?.message || error.message, "Error");
-
-      if (error.response?.data?.message) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("An unexpected error occurred. Please try again.");
-      }
-
-      const detailsMessage =
-        error.response?.data?.message?.details?.[0]?.message;
-      if (detailsMessage) {
-        toast.error(detailsMessage);
-      }
-
-      setIsLoading(false);
-    }
-  };
   return (
     <div className='login-container'>
       <ToastContainer position='top-right' autoClose={3000} />

@@ -109,7 +109,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                       Write Product Review
                     </a>
                   )}
-
+{/* 
                 {(item.orderStatus === "placed" || item.orderStatus === "confirmed" || item.orderStatus === "shipped") && (
                   <a
   className="inline-flex w-full sm:w-auto items-center gap-1.5 justify-start no-underline text-red-500 font-medium cursor-pointer text-left"
@@ -128,7 +128,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                       <CancelOrder setIsCanceled={setIsCanceled} subOrderId={item._id} suborder={item} />
                     </div>
                   </div>
-                )}
+                )} */}
 
                 <button
                   className="text-blue-500 font-semibold sm:px-4 px-0 rounded items-left text-left"

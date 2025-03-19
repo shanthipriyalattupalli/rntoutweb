@@ -15,7 +15,7 @@ const emptyaddress = "/Assets/emptyaddress.svg";
 const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isAddAddress, setIsAddAddress] = useState(false);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState("Home");
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
   const [addresses, setAddresses] = useState([]);
   const [editingAddressId, setEditingAddressId] = useState(null);
@@ -23,22 +23,17 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
   const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
   const [activeModalIndex, setActiveModalIndex] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  // const [token, setToken] = useState("");
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("userToken");
-  //   setToken(token);
-  // }, []);
 
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
   useEffect(() => {
     if (addresses.length > 0) {
-      onAddressSelect(addresses[0]); // Select first address by default
+      onAddressSelect(addresses[0]);
     }
   }, [addresses, onAddressSelect]);
 
-  
+
 
   const fetchAddress = async () => {
 
@@ -49,7 +44,6 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       setAddresses(response.data.profile.addresses);
     } catch (error) {
       console.error(error);
-      // toast.error("Failed to fetch addresses.");
     }
   };
   useEffect(() => {
@@ -59,7 +53,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
   }, [token]);
 
   const initialFormData = {
-    type: "",
+    type: "Home",
     name: "",
     mobile: "",
     flatOrHouseNo: "",
@@ -67,13 +61,12 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
     landmark: "",
     city: "",
     state: "",
-    country: "",
+    country: "India",
     zip: "",
     location: {
       latitude: latitude,
       longitude: longitude,
-      // lat: latitude,
-      // lng: longitude,
+
     },
   }
 
@@ -86,41 +79,45 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
     setIsAddAddress(true);
   };
   const handleEditAddress = (address) => {
-    setEditingAddressId(address._id); // Track the address being edited
-    setFormData({ ...address }); // Populate form data
+    setEditingAddressId(address._id);
+    setFormData({ ...address });
     setSelected(address.type);
     setIsAddAddress(true);
   };
 
   const handleSelect = (item) => {
     setSelected(item);
-    setFormData((prev) => ({ ...prev, type: item })); // Update the 'type' field
+    setFormData((prev) => ({ ...prev, type: item }));
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (name === "name") {
+      const regex = /^[A-Za-z\s]*$/;
+      if (!regex.test(value)) return; 
+    }
 
-    // Prevent entering more than 10 digits for mobile number
     if (name === "mobile" && value.length > 10) return;
 
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
+      ...(name === "state" ? { city: "" } : {}),
     }));
   };
 
   const handleSaveAddress = async () => {
-    // Validate mobile number
+
     if (!formData.mobile || formData.mobile.length !== 10) {
       setErrorMessage("Mobile number must be 10 digits.");
       return;
     }
-    if(!token){
+    if (!token) {
       toast.error("Please login to add address.");
       return;
     }
 
-    setErrorMessage(""); // Reset error message if valid
+    setErrorMessage("");
 
     try {
       const response = await axios.post(
@@ -136,10 +133,10 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
         icon: "success",
         title: "Done!",
         text: "Address added successfully",
-        confirmButtonColor: "#d33", // Optional: Customize button color
+        confirmButtonColor: "#d33",
       });
-      setFormData(initialFormData); // Reset the form
-      setIsAddAddress(false); // Return to address list view
+      setFormData(initialFormData);
+      setIsAddAddress(false);
       fetchAddress();
     } catch (error) {
       const errorResponse = error.response.data.message;
@@ -149,7 +146,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       toast.error(errorMessages);
     }
   };
- 
+
   const handleUpdateAddress = async () => {
     if (!editingAddressId) {
       Swal.fire({
@@ -161,18 +158,18 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       return;
     }
 
-        // Validate mobile number
-        if (!formData.mobile || formData.mobile.length !== 10) {
-          setErrorMessage("Mobile number must be 10 digits.");
-          return;
-        }
-        if(!token){
-          toast.error("Please login to add address.");
-          return;
-        }
-  
-        setErrorMessage(""); 
-    // Prepare the payload
+    // Validate mobile number
+    if (!formData.mobile || formData.mobile.length !== 10) {
+      setErrorMessage("Mobile number must be 10 digits.");
+      return;
+    }
+    if (!token) {
+      toast.error("Please login to add address.");
+      return;
+    }
+
+    setErrorMessage("");
+
     const payload = {
       addressId: editingAddressId,
       type: formData.type,
@@ -190,9 +187,9 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
         lng: longitude,
       },
     };
-  
 
-  
+
+
     try {
       const token = typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
       if (!token) {
@@ -204,15 +201,15 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
         });
         return;
       }
-  
+
       const response = await axios.put(`${BASE_URL}/profile/update-address`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
-  
+
       if (response.status === 200) {
         fetchAddress();
         setActiveModalIndex(null);
-  
+
         // Show success message
         Swal.fire({
           icon: "success",
@@ -220,7 +217,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
           text: "Address updated successfully",
           confirmButtonColor: "#d33",
         });
-  
+
         // Reset the form and state after successful update
         setEditingAddressId(null);
         setFormData(initialFormData);
@@ -235,12 +232,12 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       }
     } catch (error) {
       console.error("Error updating address:", error);
-  
+
       let errorMessage = "An unexpected error occurred.";
       if (error.response && error.response.data) {
         errorMessage = error.response.data.message || errorMessage;
       }
-  
+
       Swal.fire({
         icon: "error",
         title: "Update Failed",
@@ -249,8 +246,8 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       });
     }
   };
-  
-  
+
+
   const handleDeleteAddress = async (addressId) => {
     try {
       const token = typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
@@ -263,7 +260,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
         });
         return;
       }
-  
+
       // Show confirmation alert before deleting
       const result = await Swal.fire({
         title: "Are you sure?",
@@ -274,15 +271,15 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
         cancelButtonColor: "#3085d6",
         confirmButtonText: "Yes, delete it!",
       });
-  
+
       if (result.isConfirmed) {
         const response = await axios.delete(`${BASE_URL}/profile/delete-address`, {
           headers: { Authorization: `Bearer ${token}` },
           params: { addressId: addressId },
         });
-  
 
-  
+
+
         // Show success alert
         Swal.fire({
           icon: "success",
@@ -290,7 +287,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
           text: "Address deleted successfully!",
           confirmButtonColor: "#d33",
         });
-  
+
         fetchAddress();
       }
     } catch (error) {
@@ -303,7 +300,46 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       });
     }
   };
-  
+
+
+
+
+  const citiesByState = {
+    "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Tirupati"],
+    "Arunachal Pradesh": ["Itanagar", "Naharlagun", "Pasighat", "Tawang"],
+    "Assam": ["Guwahati", "Dibrugarh", "Silchar", "Jorhat"],
+    "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur"],
+    "Chhattisgarh": ["Raipur", "Bhilai", "Bilaspur", "Korba"],
+    "Goa": ["Panaji", "Margao", "Vasco da Gama", "Mapusa"],
+    "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot"],
+    "Haryana": ["Chandigarh", "Gurgaon", "Faridabad", "Panipat"],
+    "Himachal Pradesh": ["Shimla", "Manali", "Dharamshala", "Kullu"],
+    "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro"],
+    "Karnataka": ["Bangalore", "Mysore", "Mangalore", "Hubli"],
+    "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur"],
+    "Madhya Pradesh": ["Bhopal", "Indore", "Gwalior", "Jabalpur"],
+    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik"],
+    "Manipur": ["Imphal", "Bishnupur", "Thoubal", "Churachandpur"],
+    "Meghalaya": ["Shillong", "Tura", "Jowai", "Nongstoin"],
+    "Mizoram": ["Aizawl", "Lunglei", "Champhai", "Serchhip"],
+    "Nagaland": ["Kohima", "Dimapur", "Mokokchung", "Zunheboto"],
+    "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Sambalpur"],
+    "Punjab": ["Chandigarh", "Ludhiana", "Amritsar", "Jalandhar"],
+    "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota"],
+    "Sikkim": ["Gangtok", "Namchi", "Mangan", "Gyalshing"],
+    "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli"],
+    "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar"],
+    "Tripura": ["Agartala", "Dharmanagar", "Udaipur", "Kailashahar"],
+    "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi", "Agra"],
+    "Uttarakhand": ["Dehradun", "Haridwar", "Rishikesh", "Haldwani"],
+    "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Siliguri"],
+    "Andaman and Nicobar Islands": ["Port Blair"],
+    "Chandigarh": ["Chandigarh"],
+    "Dadra and Nagar Haveli and Daman and Diu": ["Daman", "Silvassa"],
+    "Lakshadweep": ["Kavaratti"],
+    "Delhi": ["New Delhi", "Old Delhi"],
+    "Puducherry": ["Pondicherry", "Karaikal", "Mahe", "Yanam"],
+  };
 
 
   return (
@@ -333,7 +369,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                   </span>
                 ))}
               </div>
-              <label className="pt-8">Name <span className="text-red-500">*</span></label>
+              <label className="pt-4">Name <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 placeholder="Receiver’s name"
@@ -400,34 +436,43 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                     value={formData.country}
                     onChange={handleInputChange}
                     required
+                    readOnly
                   />
                 </div>
                 <div className="pt-4">
-                  <label>State<span className="text-red-500">*</span></label>
-                  <input
-                    type='text'
-                    placeholder='State'
-                    className='text-input'
-                    name='state'
-                    value={formData.state}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
+        <label>State<span className="text-red-500">*</span></label>
+        <select
+          className="text-input"
+          name="state"
+          value={formData.state}
+          onChange={handleInputChange}
+          required
+        >
+          <option value="" disabled>Select State</option>
+          {Object.keys(citiesByState).map((state, index) => (
+            <option key={index} value={state}>{state}</option>
+          ))}
+        </select>
+      </div>
               </div>
               <div className='flex gap-2'>
-                <div className="pt-4">
-                  <label>City<span className="text-red-500">*</span></label>
-                  <input
-                    type='text'
-                    placeholder='City'
-                    className='text-input'
-                    name='city'
-                    value={formData.city}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
+              <div className="pt-4">
+        <label>City<span className="text-red-500">*</span></label>
+        <select
+          className="text-input"
+          name="city"
+          value={formData.city}
+          onChange={handleInputChange}
+          required
+          disabled={!formData.state} // Disable until state is selected
+        >
+          <option value="" disabled>Select City</option>
+          {formData.state &&
+            citiesByState[formData.state]?.map((city, index) => (
+              <option key={index} value={city}>{city}</option>
+            ))}
+        </select>
+      </div>
                 <div className="pt-4">
                   <label>PostCode<span className="text-red-500">*</span></label>
                   <input
@@ -459,94 +504,94 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
               </button>
             </div>
             <div className="flex flex-col gap-4">
-  {addresses.length > 0 ? (
-    addresses.map((address, index) => (
-      <div key={index} className="container address-card cursor-pointer">
-        <div className="delivery-content">
-          <div className="delivery-context flex items-center gap-2">
-            {/* Custom Checkbox */}
-            <label className="relative flex items-center ">
-              <input
-                type="checkbox"
-                checked={selectedAddressIndex === index}
-                onChange={() => {
-                  setSelectedAddressIndex(index);
-                  onAddressSelect(address);
-                }}
-                className="peer hidden"
-              />
-              <div className=" cursor-pointer w-5 h-5 border-2 border-gray-400 rounded-md flex items-center justify-center peer-checked:bg-red-500 peer-checked:border-red-500">
-                {selectedAddressIndex === index && (
-                  <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 13l4 4L19 7"></path>
-                  </svg>
-                )}
-              </div>
-            </label>
+              {addresses.length > 0 ? (
+                addresses.map((address, index) => (
+                  <div key={index} className="container address-card cursor-pointer">
+                    <div className="delivery-content">
+                      <div className="delivery-context flex items-center gap-2">
+                        {/* Custom Checkbox */}
+                        <label className="relative flex items-center ">
+                          <input
+                            type="checkbox"
+                            checked={selectedAddressIndex === index}
+                            onChange={() => {
+                              setSelectedAddressIndex(index);
+                              onAddressSelect(address);
+                            }}
+                            className="peer hidden"
+                          />
+                          <div className=" cursor-pointer w-5 h-5 border-2 border-gray-400 rounded-md flex items-center justify-center peer-checked:bg-red-500 peer-checked:border-red-500">
+                            {selectedAddressIndex === index && (
+                              <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M5 13l4 4L19 7"></path>
+                              </svg>
+                            )}
+                          </div>
+                        </label>
 
-            <div>
-              <h5 className="delivery-to">DELIVERS TO</h5>
-              <span>{address.type}</span>
+                        <div>
+                          <h5 className="delivery-to">DELIVERS TO</h5>
+                          <span>{address.type}</span>
+                        </div>
+                      </div>
+
+                      {/* Edit Icon with Modal */}
+                      <div className="relative inline-block">
+                        <img
+                          src={edit}
+                          alt="edit"
+                          className="w-6 h-6 cursor-pointer"
+                          onClick={() => setActiveModalIndex(activeModalIndex === index ? null : index)}
+                        />
+
+                        {activeModalIndex === index && (
+                          <div className="absolute right-0 mt-2 w-32 bg-white border shadow-lg rounded-md p-2 z-50">
+                            <button
+                              className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200"
+                              onClick={() => handleEditAddress(address)}
+                            >
+                              ✏️ Edit
+                            </button>
+                            <button
+                              className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200 text-red-600"
+                              onClick={() => handleDeleteAddress(address._id)}
+                            >
+                              🗑️ Delete
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div
+                      className="address-context cursor-pointer"
+                      onClick={() => {
+                        setSelectedAddressIndex(index);
+                        onAddressSelect(address);
+                        onClose();
+                      }}
+                    >
+                      <h4 className="truncate w-full">{address.name}</h4>
+                      <p>|</p>
+                      <p>{address.mobile}</p>
+                    </div>
+
+                    <div>
+                      <p>
+                        {address.flatOrHouseNo}, {address.street}, {address.city}, {address.state},{" "}
+                        {address.country}
+                      </p>
+                      <p>({address.zip})</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="flex flex-col justify-center text-center">
+                  <img src={emptyaddress} alt="No Address Found" />
+                  <h1 className="font-semibold text-lg">No address added</h1>
+                </div>
+              )}
             </div>
-          </div>
-
-          {/* Edit Icon with Modal */}
-          <div className="relative inline-block">
-            <img
-              src={edit}
-              alt="edit"
-              className="w-6 h-6 cursor-pointer"
-              onClick={() => setActiveModalIndex(activeModalIndex === index ? null : index)}
-            />
-
-            {activeModalIndex === index && (
-              <div className="absolute right-0 mt-2 w-32 bg-white border shadow-lg rounded-md p-2 z-50">
-                <button
-                  className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200"
-                  onClick={() => handleEditAddress(address)}
-                >
-                  ✏️ Edit
-                </button>
-                <button
-                  className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200 text-red-600"
-                  onClick={() => handleDeleteAddress(address._id)}
-                >
-                  🗑️ Delete
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div
-          className="address-context cursor-pointer"
-          onClick={() => {
-            setSelectedAddressIndex(index);
-            onAddressSelect(address);
-            onClose();
-          }}
-        >
-          <h4 className="truncate w-full">{address.name}</h4>
-          <p>|</p>
-          <p>{address.mobile}</p>
-        </div>
-
-        <div>
-          <p>
-            {address.flatOrHouseNo}, {address.street}, {address.city}, {address.state},{" "}
-            {address.country}
-          </p>
-          <p>({address.zip})</p>
-        </div>
-      </div>
-    ))
-  ) : (
-    <div className="flex flex-col justify-center text-center">
-      <img src={emptyaddress} alt="No Address Found" />
-      <h1 className="font-semibold text-lg">No address added</h1>
-    </div>
-  )}
-</div>
 
 
             <button className="address-button" onClick={handleAddAddress}>

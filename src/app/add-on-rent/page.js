@@ -132,7 +132,7 @@ const CategoryGrid = () => {
     <div className='category-container'>
       <ToastContainer/>
       <h1>🔥 Got something cool? Rent it out! 😎</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <p>Got something cool? Rent it out! </p>
       <div className='category-grid'>
         {categories?.map((category, index) => (
       <div

@@ -1,5 +1,5 @@
 
-"use client"
+
 const ToggleSwitch = ({ isToggled, onToggle }) => (
   <div className="toggle-container" onClick={onToggle}>
     <div className={`toggle-switch ${isToggled ? "toggled" : ""}`}>

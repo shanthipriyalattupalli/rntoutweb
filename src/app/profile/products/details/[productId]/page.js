@@ -288,10 +288,10 @@ const MainContent = () => {
 
 
   const fetchProducts = async () => {
-
+console.log(productId,"productId")
     try {
       const response = await axios.get(`${BASE_URL}/variants/${productId}`);
-
+console.log(response.data,"productIds")
       setFormData(response.data);
       setFormData(
         (prevData) => ({
@@ -434,7 +434,7 @@ const MainContent = () => {
       if (response.data.results[0]) {
         setFormData((prevData) => ({
           ...prevData,
-          address: response.data.results[0].formatted_address,
+          pickupAddress: response.data.results[0].formatted_address,
         }));
       }
     } catch (error) {
@@ -442,7 +442,7 @@ const MainContent = () => {
     }
   };
 
-
+console.log(formData,"formdata")
 
   const handlePublishProduct = async () => {
     try {

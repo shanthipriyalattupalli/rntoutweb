@@ -14,6 +14,7 @@ const userProfile = '/Assets/userProfile.svg';
 const storeimage="/Assets/store_2_fill.svg";
 const storename="/Assets/storeimage.svg"
 
+
 // Lazy load components
 const Aboutus = lazy(() => import("@/Pages/Aboutus"));
 const Fqa = lazy(() => import("@/Pages/Fqa"));

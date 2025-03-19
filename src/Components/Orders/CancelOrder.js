@@ -4,8 +4,9 @@ import { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const CancelOrder = ({ setIsCanceled, subOrderId, suborder }) => {
+import Swal from "sweetalert2";
+const CancelOrder = ({ setIsCanceled, OrderId, order }) => {
+  console.log(OrderId,"suborderId")
   const [selectedReason, setSelectedReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -35,22 +36,25 @@ const CancelOrder = ({ setIsCanceled, subOrderId, suborder }) => {
 
     try {
       const response = await axios.patch(
-        `${BASE_URL}/orders/cancel/${subOrderId}`,
+        `${BASE_URL}/orders/cancel/${OrderId}`,
         { cancelReason: selectedReason }, // Pass selected reason
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
+console.log(response,"repsonse of order")
       // Show success message
+      if(response.data.success === true){
       Swal.fire({
         icon: "success",
         title: "Order Canceled",
         text: response.data.message || "Your order has been canceled successfully.",
         confirmButtonColor: "#d33",
       });
+    }
 
       setIsCanceled(false); // Close modal after success
+      window.location.reload()
     } catch (error) {
       let errorMessage = "Failed to cancel order. Please try again.";
       if (error.response?.data?.message) {
@@ -83,7 +87,7 @@ const CancelOrder = ({ setIsCanceled, subOrderId, suborder }) => {
         </div>
 
         <h2 className="text-lg font-semibold text-center mt-2">Cancel Order</h2>
-        <p className="text-sm text-gray-500 text-center">{suborder.variantId.title}</p>
+        {/* <p className="text-sm text-gray-500 text-center">{suborder.variantId.title}</p> */}
         <hr className="my-4" />
 
         <p className="text-sm font-medium mb-2">Select Reason</p>

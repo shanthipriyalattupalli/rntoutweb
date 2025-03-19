@@ -15,8 +15,10 @@ import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { MAP_API } from '../../../services/GMap'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
-import { GrLocation} from "react-icons/gr";
+
+import { GrLocation } from "react-icons/gr";
 const upload = "/Assets/upload.png";
 
 const MainContent = () => {
@@ -28,12 +30,22 @@ const MainContent = () => {
   const [productQuality, setProductQuality] = useState("");
   const [availableStock, setAvailableStock] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [productDetails, setProductDetails] = useState([
     {
 
       details: [{ key: "", value: "" }],
     },
   ]);
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    images: "",
+    productId: "",
+    rentalAvailability: "",
+    stockQuantity: "",
+    pickupAddress: "",
+  });
 
 
   const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
@@ -52,11 +64,11 @@ const MainContent = () => {
         subCategoryId: localStorage.getItem("selectedSubCategoryId"), // Fetch latest value
       }));
     };
-  
+
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
-  
+
 
 
 
@@ -175,35 +187,16 @@ const MainContent = () => {
   const [previewImages, setPreviewImages] = useState([]); // To store the preview images
   const fileInputRef = useRef();
 
-  // const handleFileChange = (event) => {
-  //   const files = event.target.files; // Get selected files
-  //   const previews = [];
-
-  //   // Generate previews for display
-  //   Array.from(files).forEach((file) => {
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       previews.push(reader.result);
-  //       if (previews.length === files.length) {
-  //         setPreviewImages(previews);
-  //       }
-  //     };
-  //     reader.readAsDataURL(file);
-  //   });
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     images: files,
-  //   }));
-  // };
+ 
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-        const previews = [];
+    const previews = [];
     if (!files.length) {
       toast.error("No files selected");
       return;
     }
-        Array.from(files).forEach((file) => {
+    Array.from(files).forEach((file) => {
       const reader = new FileReader();
       reader.onload = () => {
         previews.push(reader.result);
@@ -231,7 +224,7 @@ const MainContent = () => {
       ...prev,
       images: prev.images.filter((_, index) => index !== indexToRemove),
     }));
-  
+
     // toast.info("Image removed!");
   };
 
@@ -251,6 +244,13 @@ const MainContent = () => {
           );
 
           setProducts(response.data);
+          if (response.data.length > 0) {
+            setSelectedOption(response.data[0]._id);
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              productId: response.data[0]._id,
+            }));
+          }
         }
       } catch (error) {
         console.error("Error fetching products by subCategoryId:", error);
@@ -264,11 +264,12 @@ const MainContent = () => {
 
   const handleOptionChange = (option) => {
     setSelectedOption(option);
-    setFormData({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       productId: option,
-    });
+    }));
   };
+
 
   const initialFormData = {
     owner: userId,
@@ -295,10 +296,10 @@ const MainContent = () => {
     isForSale: true,
     salePrice: 0,
     stockQuantity: 0,
-    pickupAddress:"",
+    pickupAddress: "",
     location: {
       type: "Point",
-      coordinates: [0,0]
+      coordinates: [0, 0]
     },
     pickupAvailable: true,
     itemDetails: {},
@@ -320,7 +321,7 @@ const MainContent = () => {
       rentalAvailability: {
         ...prevData.rentalAvailability,
         startDate: date,
-    
+
       },
     }));
   };
@@ -330,7 +331,7 @@ const MainContent = () => {
       rentalAvailability: {
         ...prevData.rentalAvailability,
         endDate: date,
-    
+
       },
     }));
   };
@@ -403,7 +404,37 @@ const MainContent = () => {
 
 
 
+console.log(formData,"formdata");
+
   const handlePublishProduct = async () => {
+
+    setErrors({
+      title: "",
+      description: "",
+      images: "",
+      productId: "",
+      rentalAvailability: "",
+      stockQuantity: "",
+      pickupAddress: "",
+    });
+    let newErrors = {};
+
+    if (!formData.title.trim()) newErrors.title = "This field is required";
+    if (!formData.description.trim()) newErrors.description = "This field is required";
+    if (formData.images.length === 0) newErrors.images = "This field is required";
+    if (!formData.productId.trim()) newErrors.productId = "This field is required";
+    if (!formData.rentalAvailability.startDate || !formData.rentalAvailability.endDate) {
+      newErrors.rentalAvailability = "Start date and end date are required";
+    }
+    if (!formData.stockQuantity) newErrors.stockQuantity = "This field is required";
+    if (!formData.pickupAddress.trim()) newErrors.pickupAddress = "This field is required";
+
+    // If there are errors, update the state and stop the function
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('owner', userId);
@@ -435,21 +466,21 @@ const MainContent = () => {
       formDataToSend.append('salePrice', formData.salePrice);
       formDataToSend.append('stockQuantity', formData.stockQuantity);
       formDataToSend.append('pickupAddress', formData.pickupAddress);
-      
+
       const coordinates = formData.location.coordinates;
-      const validCoordinates = Array.isArray(coordinates) && 
+      const validCoordinates = Array.isArray(coordinates) &&
         coordinates.length === 2 &&
         !isNaN(coordinates[0]) && !isNaN(coordinates[1]);
-  
+
       formDataToSend.append(
         "location",
         JSON.stringify({
           type: formData.location.type || "Point",
-          coordinates: validCoordinates ? coordinates : [0, 0], 
+          coordinates: validCoordinates ? coordinates : [0, 0],
         })
       );
-  
-      
+
+
       formDataToSend.append('pickupAvailable', formData.pickupAvailable);
       for (const key in formData.itemDetails) {
         if (formData.itemDetails.hasOwnProperty(key)) {
@@ -465,24 +496,40 @@ const MainContent = () => {
       });
 
       if (response.data.success) {
-        toast.success("Product published successfully!");
-        setFormData(initialFormData); 
-        setPreviewImages([]);
-        router.push('/profile/products')
+        setFormData(initialFormData);
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Product published successfully!",
+          confirmButtonColor: "#3085d6",
+        }).then(() => {
+          router.push("/profile/products");
+          setPreviewImages([]);
+        });
       } else {
-        toast.error("Failed to publish the product. Please try again.");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Failed to publish the product. Please try again.",
+        });
       }
     } catch (error) {
       if (error.response?.status === 401) {
-        toast.error("Session expired. Please log in again.");
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 2000);
+        Swal.fire({
+          icon: "warning",
+          title: "Session Expired",
+          text: "Please log in again.",
+          confirmButtonColor: "#d33",
+        }).then(() => {
+          setIsLoginOpen(true);
+        });
       } else {
         console.error("Error while publishing product:", error);
-        toast.error(`Error: ${error.response?.data?.message || error.message}`);
-        router.push("/profile/business-information/add-business")
-       
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: error.response?.data?.message || error.message,
+        });
       }
     }
   };
@@ -495,6 +542,18 @@ const MainContent = () => {
   return (
     <div className='main-content'>
       <ToastContainer />
+
+      {isLoginOpen && (
+  <div className="modal-overlay">
+    <div className="modal-content">
+      <button className="close-button" onClick={() => setIsLoginOpen(false)}>
+        ✕
+      </button>
+      <Login setIsLoginOpen={setIsLoginOpen} />
+    </div>
+  </div>
+)}
+
       <div className='radio-button-group'>
         {products?.length > 0 ? (
           products?.map((option) => (
@@ -506,14 +565,18 @@ const MainContent = () => {
                 checked={selectedOption === option._id}
                 onChange={() => handleOptionChange(option._id)}
               />
+
               <span className='custom-radio'></span>
-              {option.productName} 
+              {option.productName}
             </label>
+            
           ))
         ) : (
           <p>No products found for the selected subcategory.</p>
         )}
       </div>
+      {errors.productId && <p className="text-red-500 text-sm">{errors.productId}</p>}
+      
       <div className='product-form'>
         <h2 className='ba-in'>BASICS INFO</h2>
         <div className='basic-details '>
@@ -529,6 +592,7 @@ const MainContent = () => {
               onChange={handleInputChange}
               placeholder='Enter name'
             />
+            {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
           </div>
 
           <div className='form-section2'>
@@ -537,9 +601,9 @@ const MainContent = () => {
               <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
             </label>
             <select
-              // name='description'
-              // value={formData.description}
-              // onChange={handleInputChange}
+            // name='description'
+            // value={formData.description}
+            // onChange={handleInputChange}
             >
               <option value=''>Select product quality</option>
               <option value='New'>New</option>
@@ -561,6 +625,8 @@ const MainContent = () => {
               onChange={handleInputChange}
               placeholder='Enter number'
             />
+            {errors.stockQuantity && <p className="text-red-500 text-sm">{errors.stockQuantity}</p>}
+
           </div>
         </div>
 
@@ -586,122 +652,129 @@ const MainContent = () => {
             </p>
             <p className='file-note'>Image format will be a JPEG, PNG, JPG</p>
           </div>
-<p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 4 images. 📸</p>
+          <p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 4 images. 📸</p>
+          {errors.images && <p className="text-red-500 text-sm">{errors.images}</p>}
           {/* Render Preview Images */}
           <div className='image-preview-container'>
-  {previewImages.map((src, index) => (
-    <div key={index} className='image-preview-box relative'>
-      <img
-        src={src}
-        alt={`Preview ${index + 1}`}
-        className='preview-image'
-      />
-      {/* Remove button with cross icon */}
-      <button
-        onClick={() => handleRemoveImage(index)}
-        className='absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-700'
-      >
-        <X size={14} /> {/* Icon from lucide-react */}
-      </button>
-    </div>
-  ))}
-</div>
+            {previewImages.map((src, index) => (
+              <div key={index} className='image-preview-box relative'>
+                <img
+                  src={src}
+                  alt={`Preview ${index + 1}`}
+                  className='preview-image'
+                />
+                {/* Remove button with cross icon */}
+                <button
+                  onClick={() => handleRemoveImage(index)}
+                  className='absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-700'
+                >
+                  <X size={14} /> {/* Icon from lucide-react */}
+                </button>
+              </div>
+            ))}
+          </div>
+
+
 
         </div>
         <div className="flex flex-col">
-        <label className='ba-in'>
+          <label className='ba-in'>
             Product Availability{" "}
             <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </label>
-        <div className='date-picker-container'>
-          <div className="w-full flex flex-col">
-          <label>Product Availability  <span className="text-gray-400">(Start)</span></label>
-            <DatePicker
-              selected={formData.rentalAvailability.startDate}
-              name='startDate'
-              value={formData.rentalAvailability.startDate}
-              onChange={(date) => handleDateChange(date)}
-              placeholderText='Select start date'
-              className='date-picker-wrapper'
-              dateFormat='MMMM d, yyyy'
-            />
-            <FaRegCalendarAlt className='calendar-icon' />
+          <div className='date-picker-container'>
+
+            <div className="w-full flex flex-col">
+              <label>Product Availability  <span className="text-gray-400">(Start)</span></label>
+              <DatePicker
+                selected={formData.rentalAvailability.startDate}
+                name='startDate'
+                value={formData.rentalAvailability.startDate}
+                onChange={(date) => handleDateChange(date)}
+                placeholderText='Select start date'
+                className='date-picker-wrapper'
+                dateFormat='MMMM d, yyyy'
+              />
+              <FaRegCalendarAlt className='calendar-icon' />
+            </div>
+            <div className="w-full flex flex-col">
+              <label>Product Availability <span className="text-gray-400">(end)</span></label>
+              <DatePicker
+                selected={formData.rentalAvailability.endDate}
+                name='endDate'
+                value={formData.rentalAvailability.endDate}
+                onChange={(date) => handleEndDateChange(date)}
+                placeholderText='Select End date'
+                className='date-picker-wrapper'
+                dateFormat='MMMM d, yyyy'
+                minDate={new Date()} // Restricts past dates
+              />
+              <FaRegCalendarAlt className='calendar-icon' />
+            </div>
           </div>
-          <div className="w-full flex flex-col">
-          <label>Product Availability <span className="text-gray-400">(end)</span></label>
-            <DatePicker
-              selected={formData.rentalAvailability.endDate}
-              name='endDate'
-              value={formData.rentalAvailability.endDate}
-              onChange={(date) => handleEndDateChange(date)}
-              placeholderText='Select End date'
-              className='date-picker-wrapper'
-              dateFormat='MMMM d, yyyy'
-              minDate={new Date()} // Restricts past dates
-            />
-            <FaRegCalendarAlt className='calendar-icon' />
-          </div>
-        </div>
+          <span> {errors.rentalAvailability && <p className="text-red-500 text-sm mt-10">{errors.rentalAvailability}</p>}</span>
         </div>
         <div className="mt-12">
-  <label>Location</label>
-  <div className="relative">
-    <input 
-      type="search" 
-      placeholder="Select a location" 
-      className="location-input pl-8" 
-    />
-    
-   <GrLocation className="absolute left-96 ml-20 top-1/2 transform -translate-y-1/2 h-1/2"/>
-  </div>
-</div>
+          <label>Location</label>
+          <div className="relative">
+            <input
+              type="search"
+              placeholder="Select a location"
+              className="location-input pl-8"
+            />
 
-<div className="mt-4 mb-4 flex flex-col gap-3">
-  <label className="text-[14px] font-semibold">Select Pick up address</label>
-  <div className="google-content">
-        <LoadScript googleMapsApiKey={MAP_API}>
-          <GoogleMap
-            mapContainerStyle={{
-              height: "300px",
-              width: "100%",
-              borderRadius: "16px",
-            }}
-            center={mapCenter}
-            zoom={10}
-            onClick={handleMapClick}
-          >
-            {formData.location.coordinates && formData.location.coordinates.length === 2 && (
-              <Marker
-                position={{
-                  lat: parseFloat(formData.location.coordinates[1]), // latitude
-                  lng: parseFloat(formData.location.coordinates[0]), // longitude
-                }}
-              />
-            )}
-          </GoogleMap>
-        </LoadScript>
+            <GrLocation className="absolute left-96 ml-20 top-1/2 transform -translate-y-1/2 h-1/2" />
+          </div>
         </div>
-      </div>
-      <p name='pickupAddress'
-              value={formData.pickupAddress}
-              onChange={handleInputChange}>
+
+        <div className="mt-4 mb-4 flex flex-col gap-3">
+          <label className="text-[14px] font-semibold">Select Pick up address</label>
+          <div className="google-content">
+            <LoadScript googleMapsApiKey={MAP_API}>
+              <GoogleMap
+                mapContainerStyle={{
+                  height: "300px",
+                  width: "100%",
+                  borderRadius: "16px",
+                }}
+                center={mapCenter}
+                zoom={10}
+                onClick={handleMapClick}
+              >
+                {formData.location.coordinates && formData.location.coordinates.length === 2 && (
+                  <Marker
+                    position={{
+                      lat: parseFloat(formData.location.coordinates[1]), // latitude
+                      lng: parseFloat(formData.location.coordinates[0]), // longitude
+                    }}
+                  />
+                )}
+              </GoogleMap>
+            </LoadScript>
+          </div>
+        </div>
+        <p name='pickupAddress'
+          value={formData.pickupAddress}
+          onChange={handleInputChange}>
           <strong>Address:</strong> {formData.pickupAddress}
+          {errors.pickupAddress && <p className="text-red-500 text-sm">{errors.pickupAddress}</p>}
           {/* {errors.address && <p style={{ color: "red" }}>{errors.address}</p>} */}
 
         </p>
         <div className="mt-3 flex flex-col relative">
-  <label className="left-3 text-gray-500 text-sm bg-white">Description</label>
-  <textarea 
-    placeholder="Enter product details" 
-    className="border rounded-2xl h-40 p-3 pt-6 focus:border-red-500 focus:ring-blue-500 focus:outline-none"
-    name="description"
-    value={formData.description}
-    onChange={handleInputChange}
-    // style={{
-    //   background: 'linear-gradient(0deg, #FFEBEB 0%, #FFF 100%)',
-    // }}
-  />
-</div>
+          <label className="left-3 text-gray-500 text-sm bg-white">Description</label>
+          <textarea
+            placeholder="Enter product details"
+            className="border rounded-2xl h-40 p-3 pt-6 focus:border-red-500 focus:ring-blue-500 focus:outline-none"
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+          // style={{
+          //   background: 'linear-gradient(0deg, #FFEBEB 0%, #FFF 100%)',
+          // }}
+          />
+          {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+        </div>
 
 
 
@@ -740,7 +813,7 @@ const MainContent = () => {
       <div className='details-section'>
         <h2 className='ba-in'>
           Product Details{" "}
-          <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+          {/* <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span> */}
         </h2>
         {productDetails?.map((section) => (
           <div className='product-details-card' key={section._id}>
@@ -792,7 +865,7 @@ const MainContent = () => {
           <FiPlus /> Add New Product Description
         </button>
       </div>
-   
+
 
 
 

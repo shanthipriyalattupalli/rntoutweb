@@ -71,7 +71,7 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
             { code: couponcode, rentAmount: totalPrice },
             { headers: { Authorization: `Bearer ${token}` } }
           );
-          console.log(response.data.data,"coupon apllied")
+
 
           onDiscountedPrice(response.data.data.finalAmount, couponcode,response.data.data.coupon.discountValue);
           toast.success(
@@ -116,7 +116,7 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
             const remainingUsage = coupon.usageLimit - coupon.usedCount;
             const isUnavailable = remainingUsage === 0;
             const buttonText = isUnavailable
-              ? "Unavailable"
+              ? "Inactive"
               : coupon.isActive
               ? "Apply"
               : "Inactive";

@@ -6,7 +6,7 @@ import HomeComponent from "../Pages/Home";
 import FirebaseComponent from "@/Pages/FirebaseComponent";
 export default function Home() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  console.log(BASE_URL,"baseurl")
+
 
 
   return (

@@ -7,6 +7,8 @@ import { Images } from "@/Components/ProductDetails/Images";
 import ServerSideImageTabs from '../../../Components/ProductDetails/Images'
 import  AddToCart  from "../../../Components/ProductDetails/AddToCart";
 import Ratings from "@/Components/ProductDetails/Ratings";
+import ProductItem from "@/Components/Home/ProductItems";
+import RelatedItems from "@/Components/ProductDetails/RelatedItems";
 const truck = "/Assets/truck.svg"
 const estimation = "/Assets/estimation.svg"
 const stars = "/Assets/stars.svg";
@@ -29,7 +31,6 @@ const stock = '/Assets/stock.svg';
       const response = await axios.get(`${BASE_URL}/variants/${productId}?includeRelated=false`);
 
       const data = response.data;
-console.log(data,"repsonse of products")
       return response.data;
 
     } catch (error) {
@@ -53,9 +54,8 @@ console.log(data,"repsonse of products")
 
 
 const ProductPage =async ({params,searchParams})=>{
-  console.log(params)
+
   const {productId}=await params
-  console.log(productId,"productId")
   const variant=await fetchProductById(productId)
 const userRatings=await fetchProductRatings(productId)
 
@@ -108,8 +108,9 @@ const services = [
          {/* Top Section */}
          <div className='grid grid-cols-1 md:grid-cols-2 gap-8 py-6'>
            {/* Product Images */}
-           <ServerSideImageTabs images={product?.images} searchParams={searchParams} />
-           {/* <Images product={product}/> */}
+           {/* <ServerSideImageTabs images={product?.images} searchParams={searchParams} /> */}
+
+           <Images product={product} productId={productId}/>
         
 
           {/* Product Details */}
@@ -144,84 +145,11 @@ const services = [
               </div>
             </div>
 
-            {/* Duration Selection */}
-            {/* <div>
-              <h3 className='font-medium mb-3 text-sm'>Select Duration</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 bg-white">
-                {product.rentalPrice.map((price) => (
-                  <button
-                    key={price._id}
-                    className={`flex flex-col items-center justify-center px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 rounded-lg border text-center w-full sm:w-auto 
-   ${selectedDuration === price.period ? "border-[#F48003] bg-[#FFF5EB]" : "border-gray-200"}`}
-                    onClick={() => handleselectedDuration(price.period)}
-                  >
-                    <div className="text-[10px] sm:text-xs md:text-sm">
-                      {price.period.charAt(0).toUpperCase() + price.period.slice(1)}
-                    </div>
-                    <div className="font-bold text-sm sm:text-base md:text-lg">₹{price.price}</div>
-                  </button>
-                ))}
-              </div>
-            </div> */}
+
 
              <AddToCart product={product}/>
 
  
-
-            {/* <div className='flex items-center space-x-4'>
-              <div className='flex items-center border border-red-500 text-white font-[600] rounded-lg bg-[#FF2D55]'>
-                <button className='p-2 w-64' onClick={() => handleAddCart()}>
-                  Add to cart
-                </button>
-              </div>
-            </div> */}
-
-            {/* Delivery Info */}
-            {/* <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-around bg-white p-3 border border-slate-200 rounded-xl gap-3 sm:gap-0">
-              <div className="flex gap-2 items-center text-center justify-center">
-                <img src={truck} className="w-4 sm:w-5 h-4 sm:h-5" />
-                <span className="text-xs sm:text-sm text-[#070707CC] font-[600]">within 2 days</span>
-              </div>
-
-              <span className="hidden sm:block">|</span>
-
-              <div className="flex gap-2 items-center text-center justify-center">
-                <img src={estimation} className="w-4 sm:w-5 h-4 sm:h-5" />
-                <span className="text-xs sm:text-sm text-[#070707CC] font-[600]">
-                  {formattedStartDate} {formattedEndDate === "NaN Invalid Date ‘aN" ? "" : "-"}{formattedEndDate === "NaN Invalid Date ‘aN" ? "" : formattedEndDate}
-                </span>
-              </div>
-
-              <span className="hidden sm:block">|</span>
-
-              {product.stockQuantity > 0 ? (
-                <div className="flex gap-2 items-center text-blue-600 text-[#070707CC] font-[600] text-xs sm:text-sm">
-                  <img src={stock} className="w-4 sm:w-5 h-4 sm:h-5" />
-                  In stock
-                </div>
-              ) : (
-                <div className="flex gap-2 items-center text-red-500 text-[#070707CC] font-[600] text-xs sm:text-sm">
-                  <img src={stock} className="w-4 sm:w-5 h-4 sm:h-5" />
-                  Out of stock
-                </div>
-              )}
-            </div> */}
-
-
-            {/* Services */}
-            {/* <div>
-              <h3 className="font-medium mb-3 text-sm">SERVICES</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                {services.map((service, index) => (
-                  <div key={index} className="text-center border rounded-md py-4">
-                    <div className="flex justify-center text-blue-600 mb-2">
-                      <img src={service.icon} className="w-6 sm:w-8 h-6 sm:h-8" />
-                    </div>
-                    <div className="text-xs sm:text-sm">{service.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div> */}
                         {/* Delivery Info */}
                         <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-around bg-white p-3 border border-slate-200 rounded-xl gap-3 sm:gap-0">
               <div className="flex gap-2 items-center text-center justify-center">
@@ -273,7 +201,7 @@ const services = [
         </div>
 
         {/* Bottom Section */}
-        {productDetails.length > 0 && <div className='flex flex-col w-1/2'>
+        {productDetails.length > 0 && <div className='flex flex-col w-full sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2 2xl:w-1/2'>
 
           <div className='space-y-6'>
      
@@ -337,134 +265,9 @@ const services = [
     </div>
   </div>
 )}
-
-
-        {/* {isReview && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <button className="close-button" onClick={() => setIsReview(false)}>
-                ✕
-              </button>
-              <Reviews product={product} />
-            </div>
-          </div>
-
-        )} */}
-
         <Ratings userRatings={userRatings}/>
+          <RelatedItems relatedItems={relatedItems}/>
 
-        {/* {currentRatings.length > 0 && (
-          <>
-            <h2 className='pb-4 pt-8 font-semibold text-black-700'>
-              Community Feedback
-            </h2>
-            <div>
-              {currentRatings.map((rating) => (
-                <div key={rating._id} className="flex flex-col gap-3">
-                  <table className="flex flex-col gap-2 w-[610px] border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4">
-                    <tbody>
-                      <tr>
-                        <div className="flex flex-col gap-2">
-                          <div className="flex gap-3">
-                            <p
-                              className={`flex gap-1 items-center px-2 rounded-full text-white 
-                      ${rating.rating >= 4 ? "bg-green-700" : rating.rating >= 2 ? "bg-orange-500" : "bg-red-500"}`}
-                            >
-                              <img src={stars} alt="Rating stars" className="w-4 h-4" />
-                              <span className="ml-1">{rating.rating}</span>
-                            </p>
-                            <p className="text-[14px] font-medium leading-[20px] ">{rating.comment}</p>
-                          </div>
-                          <p className="text-[14px] font-medium leading-[20px] ">{rating.comment}</p>
-                        </div>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div className="flex gap-2 p-2">
-                    <img src={userProfile} alt="User Profile" />
-                    <p className="flex gap-2 text-[14px] font-medium text-gray-500 text-left">
-                      {formatDistanceToNow(new Date(rating.createdAt), { addSuffix: true })}
-                    </p>
-                  </div>
-                </div>
-              ))}
-
-        
-              <div className="flex mt-4 gap-2">
-            
-                <button
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-                >
-                  Prev
-                </button>
-
-       
-                {getPaginationNumbers().map((page, index) => (
-                  <button
-                    key={index}
-                    onClick={() => typeof page === "number" && setCurrentPage(page)}
-                    className={`px-3 py-1 border rounded-full ${currentPage === page ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
-                      }`}
-                    disabled={page === "..."}
-                  >
-                    {page}
-                  </button>
-                ))}
-
-                <button
-                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                  disabled={currentPage === totalPages}
-                  className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          </>)} */}
-        {/* {relatedItems.length > 3 &&
-          <div className="py-10">
-            <h2 className="font-medium text-xl">Related products</h2>
-            <div className="relative flex gap-5 pt-10">
-              <div
-                className="absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
-                onClick={() => swiperRef.current?.slidePrev()} 
-              >
-                <img src={left} alt="Previous" className="rotate-360" />
-              </div>
-              <div
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer"
-                onClick={() => swiperRef.current?.slideNext()}
-              >
-                <img src={left} alt="Next" className="rotate-180" />
-              </div>
-              <Swiper
-                onSwiper={(swiper) => (swiperRef.current = swiper)}
-                spaceBetween={20}
-                slidesPerView={4} 
-                navigation={false}
-                pagination={false}
-                modules={[Navigation, Pagination]}
-                style={{ width: '100%' }}
-                breakpoints={{
-                  320: { slidesPerView: 1 }, 
-                  375: { slidesPerView: 1 },
-                  425: { slidesPerView: 2 }, 
-                  768: { slidesPerView: 3 }, 
-                  1024: { slidesPerView: 4 }, 
-                }}
-              >
-                {relatedItems.map((product) => (
-                  <SwiperSlide key={product._id} className="flex justify-center">
-                    <ProductItem product={product} />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-
-            </div>
-          </div>
-        } */}
       </div>
 
     

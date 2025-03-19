@@ -15,6 +15,8 @@ const owner = '/Assets/owner.svg'
 const Userprofile = "../../Assets/User-icon.svg";
 const card = "../../Assets/card-img1.svg";
 const card1 = "../../Assets/card-img2.svg";
+const storeimage = "/Assets/store_2_fill.svg";
+
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaBuilding, FaCreditCard } from "react-icons/fa";
 export default function BusinessInformation2() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -88,21 +90,38 @@ export default function BusinessInformation2() {
     walletBalance: 0,
   }
   const [formData, setFormData] = useState(initialFormData);
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const keys = name.split(".");
+
+    if (name === "storeName" || name === "businessName") {
+      const nameRegex = /^[A-Za-z\s]*$/;
+      if (!nameRegex.test(value)) return;
+    }
+
+
+
     if (name === "contactPhone" && value.length > 10) return;
+
+
+
+
     setFormData((prevFormData) => {
       const updatedFormData = { ...prevFormData };
       let temp = updatedFormData;
+
       for (let i = 0; i < keys.length - 1; i++) {
         temp = temp[keys[i]];
       }
+
       temp[keys[keys.length - 1]] = value;
 
       return updatedFormData;
     });
   };
+
 
   useEffect(() => {
     if (formData.bannerImages?.length) {
@@ -140,12 +159,24 @@ export default function BusinessInformation2() {
 
 
   const handleBusinessInformation = async () => {
-    // if (!formData.businessName ||!formData.storeName ||!formData.businessAddress.full ||!formData.taxId ||!formData.contactEmail ||!formData.contactPhone ||!formData.storeDescription ||!formData.bankName ||!formData.accountNumber ||!formData.ifsc ||!formData.bankBranchAddress.full) {
-    //   toast.error("This fields are required");
-    //   return;
-    // }
-    if (!formData.contactPhone || formData.contactPhone.length !== 10) {
-      setErrorMessage("Mobile number must be 10 digits.");
+
+    let errors = {};
+
+    // Validate required fields
+    if (!formData.businessName) errors.businessName = "This field is required";
+    if (!formData.storeName) errors.storeName = "This field is required";
+    if (!formData.contactEmail) errors.contactEmail = "This field is required";
+    if (!formData.contactPhone || formData.contactPhone.length !== 10)
+      errors.contactPhone = "Mobile number must be 10 digits";
+    if (!formData.storeDescription) errors.storeDescription = "This field is required";
+    if (!formData.bankName) errors.bankName = "This field is required";
+    if (!formData.accountNumber) errors.accountNumber = "This field is required";
+    if (!formData.ifsc) errors.ifsc = "This field is required";
+    // if (!formData.profileImage) errors.profileImage = "This field is required";
+
+    // If errors exist, set error state and return
+    if (Object.keys(errors).length > 0) {
+      setErrorMessage(errors);
       return;
     }
     try {
@@ -176,11 +207,37 @@ export default function BusinessInformation2() {
       formDataToSend.append("bankBranchAddress[country]", formData.bankBranchAddress.country);
       formDataToSend.append("bankBranchAddress[full]", formData.bankBranchAddress.full);
       formDataToSend.append("profileImage", formData.profileImage);
-      if (formData.bannerImages.length > 0) {
-        formData.bannerImages.forEach((file) => {
-          formDataToSend.append("bannerImages", file);
-        })
+
+      if (Array.isArray(formData.bannerImages) && formData.bannerImages.length > 0) {
+        formData.bannerImages.forEach((banner, index) => {
+          if (banner instanceof File) {
+            formDataToSend.append("bannerImages", banner);
+            console.log(`Banner Image ${index + 1} Added (Web):`, banner.name);
+          } else if (banner.uri || banner.imageUrl) {
+            let bannerUri = banner.imageUrl || banner.uri;
+            if (bannerUri.startsWith("file://") || bannerUri.startsWith("content://")) {
+              let fileType = banner.type || "image/jpeg";
+              let fileName = `banner-${Date.now()}-${index}.${fileType.split("/")[1] || "jpg"}`;
+
+              let fileToSend = {
+                uri: bannerUri,
+                type: fileType,
+                name: fileName,
+              };
+
+              formDataToSend.append("bannerImages", fileToSend);
+              console.log(`Banner Image ${index + 1} Added (Mobile):`, fileToSend);
+            } else {
+              console.log(`Skipping Banner Image ${index + 1}: Not a valid file`, bannerUri);
+            }
+          } else {
+            console.log(`Skipping Banner Image ${index + 1}: Invalid format`, banner);
+          }
+        });
+      } else {
+        console.log("No Banner Images Found");
       }
+
       // formData.walletTransactions.forEach((transaction, index) => {
       //   if (transaction.orderId) {
       //     formDataToSend.append(`walletTransactions[${index}][orderId]`, transaction.orderId);
@@ -260,7 +317,7 @@ export default function BusinessInformation2() {
               <div className="w-full max-w-6xl">
                 {/* Owner Info */}
                 <div className="mb-2 p-6 bg-white">
-                  <h3 className="text-md font-semibold text-yellow-600">OWNER INFO</h3>
+                  <h3 className="text-md font-semibold text-yellow-600">OWNER INFO </h3>
                   <div className="p-4 rounded-md">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4">
                       <p className="flex flex-col">
@@ -297,7 +354,7 @@ export default function BusinessInformation2() {
                 <div className="mb-2 p-6 bg-white">
                   <h3 className="text-md font-semibold text-yellow-600">BASIC INFO</h3>
                   <div className="p-4 rounded-md">
-                  <div className="flex flex-col sm:flex-row md:flex-col lg:flex-col xl:flex-col gap-4">
+                    <div className="flex flex-col sm:flex-row md:flex-col lg:flex-col xl:flex-col gap-4">
                       <img src={formData.profileImage} alt="Profile" className="w-16 h-16 rounded-full" />
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4 w-full">
                         <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Business Name:</strong></div><div className="text-sm">{formData.businessName}</div></p>
@@ -311,8 +368,8 @@ export default function BusinessInformation2() {
                 </div>
 
                 {/* Advertisement Banner */}
-                <div>
-                  <h3 className="text-md font-semibold text-yellow-600">ADVERTISEMENT BANNER</h3>
+                <div className="bg-white px-6">
+                  <h3 className="text-md justify-center pt-6 font-semibold text-yellow-600 ">ADVERTISEMENT BANNER</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
                     {formData.bannerImages.map((src, index) => (
                       <img key={index} src={src.imageUrl} alt={`Ad ${index + 1}`} className="rounded-md shadow-md w-full h-40 object-cover" />
@@ -337,7 +394,10 @@ export default function BusinessInformation2() {
             <div className="section">
               <div className='address-bar'>
                 <div className="input-item">
-                  <label htmlFor="business-name">Business Name</label>
+                  <label htmlFor="business-name">Business Name
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
                   <input id="business-name"
                     type="text"
                     placeholder="Enter name"
@@ -346,12 +406,16 @@ export default function BusinessInformation2() {
                     value={formData.businessName}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
+                  {errorMessage.businessName && <p className="text-red-500 text-sm">{errorMessage.businessName}</p>}
 
                 </div>
               </div>
               <div className="input-group">
                 <div className="input-item">
-                  <label htmlFor="store-name">Store Name</label>
+                  <label htmlFor="store-name">Store Name
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
                   <input id="store-name"
                     type="text"
                     placeholder="Enter name"
@@ -359,9 +423,14 @@ export default function BusinessInformation2() {
                     value={formData.storeName}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
+                  {errorMessage.storeName && <p className="text-red-500 text-sm">{errorMessage.storeName}</p>}
+
                 </div>
                 <div className="input-item">
-                  <label htmlFor="mobile-number">Mobile Number</label>
+                  <label htmlFor="mobile-number">Mobile Number
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
                   <input id="mobile-number"
                     type="number"
                     placeholder="Enter mobile number"
@@ -370,12 +439,15 @@ export default function BusinessInformation2() {
                     value={formData.contactPhone}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
-                  {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+                  {errorMessage.contactPhone && <p className="text-red-500 text-sm">{errorMessage.contactPhone}</p>}
 
                 </div>
 
                 <div className="input-item">
-                  <label htmlFor="email-address">Email Address</label>
+                  <label htmlFor="email-address">Email Address
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
                   <input id="email-address"
                     type="email"
                     placeholder="Enter email address"
@@ -383,6 +455,8 @@ export default function BusinessInformation2() {
                     value={formData.contactEmail}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
+                  {errorMessage.contactEmail && <p className="text-red-500 text-sm">{errorMessage.contactEmail}</p>}
+
                 </div>
               </div>
               <div className='address-bar'>
@@ -405,7 +479,10 @@ export default function BusinessInformation2() {
 
               <div className='address-bar'>
                 <div className="input-item ">
-                  <label htmlFor="store-description">Store Description</label>
+                  <label htmlFor="store-description">Store Description
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
                   <textarea id="store-description"
                     placeholder="Enter description"
                     className="full-width"
@@ -414,6 +491,8 @@ export default function BusinessInformation2() {
                     value={formData.storeDescription}
                     onChange={handleInputChange}
                     disabled={!isEditable}></textarea>
+                  {errorMessage.storeDescription && <p className="text-red-500 text-sm">{errorMessage.storeDescription}</p>}
+
                 </div></div>
             </div>
 
@@ -427,12 +506,19 @@ export default function BusinessInformation2() {
                     {/* Display uploaded image preview if available */}
                     {previewProfileImage ? (
                       <img src={previewProfileImage} alt="Profile Preview" className="w-[7rem] h-[5.5rem] rounded-full" />
+                    ) : formData.profileImage ? (
+                      <img src={formData.profileImage} alt="Default Icon" className="w-[7rem] h-[5.5rem] rounded-full" />
                     ) : (
-                      <img src={formData.profileImage} alt="Default Icon" className="w-[7rem] h-[5.5rem] rounded-full" /> // Fallback image
+                      <div className="rounded-full">
+                        <img src={storeimage} alt="Default Icon" className="ml-2  px-4 py-5" />
+                      </div>
                     )}
+
+
                   </div>
 
                 </div>
+                {errorMessage.profileImage && <p className="text-red-500 text-sm">{errorMessage.profileImage}</p>}
                 <div className="icon-button">
                   <input
                     type="file"
@@ -458,7 +544,7 @@ export default function BusinessInformation2() {
                     className="edit-image-button"
                     onClick={() => document.getElementById("upload-profile-image").click()}
                   >
-                    Edit Image
+                    Upload Image
                   </button>
                 </div>
 
@@ -524,7 +610,10 @@ export default function BusinessInformation2() {
               <h3 className="section-title">Bank Details</h3>
               <div className="input-group">
                 <div className="input-item">
-                  <label htmlFor="bank-select">Bank</label>
+                  <label htmlFor="bank-select">Bank
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
                   <select id="bank-select" name='bankName'
                     value={formData.bankName}
                     onChange={handleInputChange}
@@ -533,9 +622,14 @@ export default function BusinessInformation2() {
                     <option>State Bank of India</option>
                     <option>ICICI Bank</option>
                   </select>
+                  {errorMessage.bankName && <p className="text-red-500 text-sm">{errorMessage.bankName}</p>}
+
                 </div>
                 <div className="input-item">
-                  <label htmlFor="accountNumber">Account Number</label>
+                  <label htmlFor="accountNumber">Account Number
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
                   <input id="accountNumber"
                     type="text"
                     placeholder="Enter code"
@@ -543,9 +637,14 @@ export default function BusinessInformation2() {
                     value={formData.accountNumber}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
+                  {errorMessage.accountNumber && <p className="text-red-500 text-sm">{errorMessage.accountNumber}</p>}
+
                 </div>
                 <div className="input-item">
-                  <label htmlFor="ifsc">IFSC</label>
+                  <label htmlFor="ifsc">IFSC
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
                   <input id="ifsc"
                     type="text"
                     placeholder="Enter code"
@@ -553,9 +652,14 @@ export default function BusinessInformation2() {
                     value={formData.ifsc}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
+                  {errorMessage.ifsc && <p className="text-red-500 text-sm">{errorMessage.ifsc}</p>}
+
                 </div>
                 <div className="input-item">
-                  <label htmlFor="bank-mobile">Owner Mobile Number</label>
+                  <label htmlFor="bank-mobile">Owner Mobile Number
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
                   <input id="bank-mobile"
                     type="text"
                     placeholder="Enter mobile number"
@@ -563,11 +667,16 @@ export default function BusinessInformation2() {
                     value={formData.contactPhone}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
+                  {errorMessage.contactPhone && <p className="text-red-500 text-sm">{errorMessage.contactPhone}</p>}
+
                 </div>
               </div>
               <div className='address-bar'>
                 <div className="input-item">
-                  <label htmlFor="bank-address">Address</label>
+                  <label htmlFor="bank-address">Address
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
                   <input
                     id="bank-address"
                     type="text"

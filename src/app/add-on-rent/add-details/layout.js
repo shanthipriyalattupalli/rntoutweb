@@ -13,8 +13,8 @@ const Layout = ({ children }) => (
     <>
     <ScrollToTop/>
      <div className="container-para">
-                <h1> Go ahead and pick the subcategories! 🚀</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <h1>    Rent Out Your Items & Earn Easily! 🚀</h1>
+                <p>List your items for rent and start earning today.</p>
             </div>
     <div className="product-form-page">
         <MenuItems />

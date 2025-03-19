@@ -1,5 +1,4 @@
 // src/components/SearchInput.js
-"use client";
 import React from "react";
 
 function SearchInput({ placeholder = "Search", value, onChange, className }) {

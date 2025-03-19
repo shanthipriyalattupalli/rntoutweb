@@ -12,7 +12,9 @@ const Photo = "/Assets/Photo.png";
 import { useRouter } from 'next/navigation';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import KYCVerification from "@/Components/Kyc/Kyc";
-const verified ='/Assets/verified.svg'
+const verified ='/Assets/verified.svg';
+import Cookies from "js-cookie";
+
 
 
 export default function ProfileSettings() {
@@ -44,7 +46,7 @@ export default function ProfileSettings() {
       const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+console.log(response.data,"profile")
       const profileData = response.data.profile;
 
       // Convert dateOfBirth to YYYY-MM-DD format if it exists
@@ -58,6 +60,16 @@ export default function ProfileSettings() {
       });
 
       setAvatar(profileData.profilePic || profile_avatar);
+      localStorage.setItem("gender", profileData.gender);
+      localStorage.setItem("userName", profileData.user.name);
+      localStorage.setItem("userEmail", profileData.user.email);
+      localStorage.setItem("profilePic", profileData.profilePic || profile_avatar);
+
+            Cookies.set("gender", profileData.gender, { expires: 7, secure: true, sameSite: "Strict" });
+            Cookies.set("userName", profileData.user.name, { expires: 7, secure: true, sameSite: "Strict" });
+            Cookies.set("userEmail", profileData.user.email, { expires: 7, secure: true, sameSite: "Strict" });
+            Cookies.set("profilePic", profileData.profilePic || profile_avatar, { expires: 7, secure: true, sameSite: "Strict" });
+
     } catch (error) {
       console.error(error);
       // toast.error("Failed to fetch profile.");
@@ -107,7 +119,7 @@ export default function ProfileSettings() {
         profilePic: file,
       }));
 
-      toast.success("Profile picture updated successfully!");
+      // toast.success("Profile picture updated successfully!");
     }
   };
 
@@ -129,6 +141,8 @@ export default function ProfileSettings() {
     if (!profile.dateOfBirth.trim()) {
       validationErrors.dateOfBirth = "Date of Birth is required.";
     }
+
+    
   
     // If there are errors, update state and stop submission
     if (Object.keys(validationErrors).length > 0) {
@@ -156,6 +170,7 @@ export default function ProfileSettings() {
       window.dispatchEvent(new CustomEvent("profileUpdated", {
         detail: { profilePic: response.data.profile.profilePic }
       }));
+
 
     } catch (error) {
       console.error("Error updating profile:", error);

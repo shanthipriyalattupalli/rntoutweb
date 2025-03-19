@@ -7,6 +7,7 @@ import { PiCirclesFourFill } from "react-icons/pi";
 import { FaDigitalTachograph, FaUser } from "react-icons/fa";
 import { BiWallet, BiCreditCardAlt, BiMoney } from "react-icons/bi";
 import { FiShoppingBag } from "react-icons/fi";
+import Cookies from 'js-cookie';
 import { GrCubes, GrSettingsOption, GrNotes } from "react-icons/gr";
 import {
   MdOutlineBookmarks,
@@ -92,6 +93,11 @@ function Sidebar() {
       localStorage.removeItem("userId");
       localStorage.removeItem("userName");
       localStorage.removeItem("userToken");
+
+      Cookies.remove("userEmail");
+      Cookies.remove("userId");
+      Cookies.remove("userName");
+      Cookies.remove("userToken");
 
 
     }

@@ -5,7 +5,7 @@ import '../../styles/Cart.css';
 import { FaReceipt } from "react-icons/fa";
 import { IoIosArrowDown, IoIosArrowDropleft, IoIosArrowDropleftCircle, IoIosArrowUp } from "react-icons/io";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import axios from "axios";
 import Sidebar from "./Sidebar/page";
 import AddressSidebar from "./AddressSidebar/page";
@@ -37,8 +37,6 @@ const CartPage = () => {
   const [isCoupon, setIsCoupon] = useState(false)
   const [quantities, setQuantities] = useState({});
   const [displayRazorpay, setDisplayRazorpay] = useState(false);
-  const [selectedPrice, setSelectedPrice] = useState("");
-  const [selectedPeriod, setSelectedPeriod] = useState("");
   const [selectedOptions, setSelectedOptions] = useState({});
   const [discountedPrice, setDiscountedPrice] = useState(0);
   const [couponcode, setCouponCode] = useState("");
@@ -48,16 +46,8 @@ const CartPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [disValue, setDisValue] = useState(0)
   const [razorpayOrderId, setRazorpayOrderId] = useState()
-const router=useRouter();
-  // const [userId, setUserId] = useState("");
-  // const [token, setToken] = useState("");
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   const userId = localStorage.getItem("userId");
-  //   const token = localStorage.getItem("userToken");
-  //   setUserId(userId);
-  //   setToken(token);
-  // }, []);
   const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
 
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
@@ -135,14 +125,6 @@ const router=useRouter();
   }, [cartItems]);
 
 
-  const storedOptions = (typeof window !== 'undefined') ? localStorage.getItem("selectedOptions") : null;
-
-
-
-  const handleSidebarToggle = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
   const handleCouponToggle = () => {
     setIsCoupon(!isCoupon)
   }
@@ -179,12 +161,6 @@ const router=useRouter();
   const decreaseQuantity = async (variantId) => {
     const newQuantity = - 1;
 
-    // if (newQuantity < 1) {
-    //   toast.error("Quantity cannot be less than 1.");
-    //   return;
-    // }
-
-    // Get the selected rental period for this variant
     const selectedRentalPeriod = selectedOptions[variantId]?.period;
 
     if (!selectedRentalPeriod) {
@@ -235,68 +211,68 @@ const router=useRouter();
 
   const fetchCartDetails = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}/cart/${userId}`);
-        const cartData = response.data.cartItems || [];
+      const response = await axios.get(`${BASE_URL}/cart/${userId}`);
+      const cartData = response.data.cartItems || [];
 
 
 
-        setCartItems(cartData); // Set updated cart items
+      setCartItems(cartData);
 
-        if (cartData.length === 0) {
-            setQuantities({}); // Clear quantities if cart is empty
-        } else {
-            const initialQuantities = cartData.reduce((acc, item) => {
-                acc[item.variant_id._id] = item.quantity || 1;
-                return acc;
-            }, {});
-            setQuantities(initialQuantities);
-        }
+      if (cartData.length === 0) {
+        setQuantities({});
+      } else {
+        const initialQuantities = cartData.reduce((acc, item) => {
+          acc[item.variant_id._id] = item.quantity || 1;
+          return acc;
+        }, {});
+        setQuantities(initialQuantities);
+      }
     } catch (error) {
-        console.error("Error fetching cart details:", error);
+      console.error("Error fetching cart details:", error);
     }
-};
-
+  };
 
   useEffect(() => {
     fetchCartDetails();
   }, [userId]);
 
+
+
   const handleRemove = async (cartId, variantId) => {
     try {
       const response = await axios.delete(`${BASE_URL}/cart/remove/${cartId}`);
-  
+
       setCartItems((prevItems) => {
         const updatedItems = prevItems.filter((item) => item._id !== cartId);
-  
+
         // ✅ Ensure event fires when cart is empty
         if (updatedItems.length === 0) {
 
           window.dispatchEvent(new CustomEvent("cartUpdated", { detail: 0 }));
         }
-  
+
         return updatedItems;
       });
-  
+
       setSelectedOptions((prevOptions) => {
         const updatedOptions = { ...prevOptions };
         delete updatedOptions[variantId];
         localStorage.setItem("selectedOptions", JSON.stringify(updatedOptions));
         return updatedOptions;
       });
-  
+
       // ✅ Force re-fetch to ensure UI updates correctly
       fetchCartDetails();
-  
+
       toast.success(response.data.message || "Removed successfully");
     } catch (error) {
       toast.error(error.response?.data?.message || "Error removing item from cart.");
       console.error("Error removing item from cart:", error);
     }
   };
-  
+
   useEffect(() => {
 
-    // ✅ Only dispatch when cart is empty
     if (cartItems.length === 0) {
 
       window.dispatchEvent(new CustomEvent("cartUpdated", { detail: 0 }));
@@ -304,13 +280,12 @@ const router=useRouter();
 
       window.dispatchEvent(new CustomEvent("cartUpdated", { detail: cartItems.length }));
     }
-  }, [cartItems]);  // ✅ Runs whenever cartItems changes
-  
+  }, [cartItems]); 
 
-useEffect(() => {
-  // Ensure event is dispatched only after cartItems is updated
-  window.dispatchEvent(new CustomEvent("cartUpdated"));
-}, [cartItems]);
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("cartUpdated"));
+  }, [cartItems]);
 
 
 
@@ -320,7 +295,7 @@ useEffect(() => {
         userId: String(userId),
         couponCode: String(couponcode),
         addressId: String(selectedAddress._id),
-        desiredStartDate:"2025-03-13"
+        desiredStartDate: "2025-03-13"
       };
 
 
@@ -329,7 +304,7 @@ useEffect(() => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }); 
+      });
       const { orderId, finalAmount } = response.data;
 
 
@@ -338,7 +313,7 @@ useEffect(() => {
 
         setOrderId(orderId); // Save orderId for future use
         await handleContinueClick(orderId, finalAmount);
-    router.push('/profile/orders')
+        router.push('/profile/orders')
       }
 
 
@@ -349,7 +324,7 @@ useEffect(() => {
       //   text: "Your order was successfully placed.",
       //   confirmButtonColor: "#d33", // Optional: Customize button color
       // });  
-      } catch (error) {
+    } catch (error) {
       // Extract and display error message safely
       const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";
       toast.warn(errorMessage);
@@ -477,30 +452,30 @@ useEffect(() => {
               </Link>
 
               <div className="item-details">
-              <div className="flex justify-between items-center gap-2 sm:gap-4">
-  <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 line-clamp-1">
-    {item.variant_id.title}
-  </h3>
+                <div className="flex justify-between items-center gap-2 sm:gap-4">
+                  <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 line-clamp-1">
+                    {item.variant_id.title}
+                  </h3>
 
-  <button
-    className="flex items-center justify-center p-1 sm:p-2 rounded-md transition duration-200"
-    onClick={() => handleRemove(item._id, item.variant_id._id)}
-  >
-    <img 
-      src={deleteicon} 
-      alt="Delete"  
-      className="w-5 h-5" 
-    />
-  </button>
-</div>
+                  <button
+                    className="flex items-center justify-center p-1 sm:p-2 rounded-md transition duration-200"
+                    onClick={() => handleRemove(item._id, item.variant_id._id)}
+                  >
+                    <img
+                      src={deleteicon}
+                      alt="Delete"
+                      className="w-5 h-5"
+                    />
+                  </button>
+                </div>
 
 
                 <div className="flex justify-between items-center">
                   <div>
-                  <p className="text-base sm:text-lg font-semibold text-[#2F6FED]">
-  ₹{item.unitPrice}/{periodMapping[item.rentalPeriod] || item.rentalPeriod.charAt(0).toUpperCase() + item.rentalPeriod.slice(1)}
+                    <p className="text-base sm:text-lg font-semibold text-[#2F6FED]">
+                      ₹{item.unitPrice}/{periodMapping[item.rentalPeriod] || item.rentalPeriod.charAt(0).toUpperCase() + item.rentalPeriod.slice(1)}
 
-</p>
+                    </p>
 
                   </div>
                   <div className="flex items-center gap-2">
@@ -534,7 +509,7 @@ useEffect(() => {
                     {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
                       <option key={rentalPrice._id} value={rentalPrice.period}>
                         {/* {rentalPrice.period} */}
-      {periodMapping[rentalPrice.period] || rentalPrice.period.charAt(0).toUpperCase() + rentalPrice.period.slice(1)}
+                        {periodMapping[rentalPrice.period] || rentalPrice.period.charAt(0).toUpperCase() + rentalPrice.period.slice(1)}
 
                       </option>
                     ))}
@@ -549,8 +524,8 @@ useEffect(() => {
           )) : <>
             <div className="flex flex-col justify-center items-center h-3/4">
               <img src={emptycart} className="w-auto h-auto" />
-              <h1 className="text-lg font-semibold">Empty Orders</h1>
-              <span className="px-6 py-4">you haven’t place any order, to place order <span className="text-md font-semibold">"Browse Products" </span>button.</span>
+              <h1 className="text-lg font-semibold">Empty Cart</h1>
+              <span className="px-6 py-4">you haven’t place any item to cart , to place an item <a href="/" className="text-md font-semibold">"Browse Products" </a>button.</span>
             </div>
 
           </>

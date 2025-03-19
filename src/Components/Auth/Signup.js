@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const Rntout = "/Assets/Rntout_Logo.png";
 const profile_avatar = "/Assets/profile_avatar.png";
@@ -29,7 +30,21 @@ const Signup = ({ setIsRegisterOpen }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const keys = name.split("."); // Split keys by dot notation
+    const keys = name.split("."); 
+    let isValid = true;
+  
+    if (name === "user.name") {
+      const nameRegex = /^[A-Za-z\s]*$/; 
+      isValid = nameRegex.test(value);
+    }
+  
+    if (name === "user.email") {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/; 
+      isValid = emailRegex.test(value);
+    }
+  
+    if (!isValid) return; 
+  
     setProfile((prev) => {
       let updatedProfile = { ...prev };
       let temp = updatedProfile;
@@ -40,6 +55,7 @@ const Signup = ({ setIsRegisterOpen }) => {
       return updatedProfile;
     });
   };
+  
 
   const fetchProfile = async () => {
 
@@ -49,21 +65,20 @@ const Signup = ({ setIsRegisterOpen }) => {
       });
 
       const profileData = response.data.profile;
-      console.log(profileData, "profiledata")
-      // Convert dateOfBirth to YYYY-MM-DD format if it exists
+
       const formattedDate = profileData.dateOfBirth
-        ? profileData.dateOfBirth.split("T")[0]  // Extract only the YYYY-MM-DD part
+        ? profileData.dateOfBirth.split("T")[0]
         : "";
 
       setProfile({
         ...profileData,
-        dateOfBirth: formattedDate, // Store in the correct format
+        dateOfBirth: formattedDate,
       });
 
-      // setAvatar(profileData.profilePic || profile_avatar);
+
     } catch (error) {
       console.error(error);
-      // toast.error("Failed to fetch profile.");
+
     }
   };
 
@@ -79,7 +94,7 @@ const Signup = ({ setIsRegisterOpen }) => {
       const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, profile, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response, "profile updated");
+
       const user = response.data.user
       const profiles = response.data.profile
       toast.success("Profile updated successfully!");
@@ -88,6 +103,10 @@ const Signup = ({ setIsRegisterOpen }) => {
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("profilePic", profile.profilePic || profile_avatar);
 
+      Cookies.set("gender", profiles.gender, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userName", user.name, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userEmail", user.email, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("profilePic", profile.profilePic || profile_avatar, { expires: 7, secure: true, sameSite: "Strict" });
 
       router.push("/");
       window.location.reload();
@@ -103,7 +122,7 @@ const Signup = ({ setIsRegisterOpen }) => {
     window.location.reload();
   }
 
-  console.log(profile, "profile")
+
 
   return (
     <div>
@@ -124,15 +143,7 @@ const Signup = ({ setIsRegisterOpen }) => {
             value={profile.user.name}
             onChange={handleChange}
           />
-          {/* <p className='login-p1 m-0'>Role</p>
-          <input
-            type='text'
-            placeholder='Enter role'
-            className='input'
-            name='role'
-            value={formData.role}
-            onChange={handleInputChange}
-          /> */}
+
           <p className='login-p1 m-0'>Email Address</p>
           <input
             type='email'
@@ -142,15 +153,7 @@ const Signup = ({ setIsRegisterOpen }) => {
             value={profile.user.email}
             onChange={handleChange}
           />
-          {/* <p className='login-p1 m-0'>Mobile Number</p>
-          <input
-            type='tel'
-            placeholder='Enter Mobile Number'
-            className='input'
-            name='mobile'
-            value={profile.mobile}
-            onChange={handleChange}
-          /> */}
+
           <p className='login-p1 m-0'>Gender</p>
           <select
             name='gender'
@@ -184,21 +187,6 @@ const Signup = ({ setIsRegisterOpen }) => {
             {isLoading ? "Creating..." : "Continue"}
           </button>
           <button className="font-medium text-semibold text-md text-blue-300" onClick={() => handleSkip()}>Skip</button>
-          {/* <p className='or-text'>or</p> */}
-          {/* <button className='google-button'>
-            <img
-              src='https://img.icons8.com/color/48/000000/google-logo.png'
-              alt='Google'
-              className='google-icon'
-            />
-            Google
-          </button>
-          <p className='footer-text mb-0'>
-            Already have an account?{" "}
-            <span className='link' >
-              Log In
-            </span>
-          </p> */}
         </div>
       </div>
     </div>

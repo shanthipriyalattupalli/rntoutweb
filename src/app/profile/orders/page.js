@@ -7,6 +7,8 @@ import axios from "axios";
 import { FaTruck } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { MdPayments } from "react-icons/md";
+import CancelOrder from "../../../Components/Orders/CancelOrder";
+
 import OrderItem from "@/Components/OrderItem";
 
 const orderHistoryImage = "/Assets/orderHistoryImage.png";
@@ -51,6 +53,9 @@ export default function Orders() {
 const [selectedSubOrder, setSelectedSubOrder] = useState(null);
 const [isOn, setIsOn] = useState(false);
   const router = useRouter();
+    const [isCanceled, setIsCanceled] = useState(false);
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
+  
 
 
   const fetchOrderHistory = async () => {
@@ -114,7 +119,6 @@ const [isOn, setIsOn] = useState(false);
     });
   };
 
-  console.log(orderItems,"orderitems")
 
   return (
 
@@ -188,6 +192,7 @@ const [isOn, setIsOn] = useState(false);
             <a href="#" class="download-invoice">
               Download Invoice
             </a>
+
           </div>
           <div class="order-actions-price-status">
             <p class="download-invoice">
@@ -266,6 +271,30 @@ const [isOn, setIsOn] = useState(false);
             <a href="#" class="download-invoice">
               Download Invoice
             </a>
+            {(order.orderStatus === "placed" || order.orderStatus === "confirmed" || order.orderStatus === "shipped") && (
+                  <a
+  className="inline-flex w-full sm:w-auto items-center gap-1.5 justify-start no-underline text-red-500 font-medium cursor-pointer text-left"
+  onClick={() => {
+    console.log("Clicked order ID:", order._id); 
+    setSelectedOrderId(order._id); 
+    setIsCanceled(true);
+  }}
+>
+  Cancel Order
+</a>
+
+                )}
+                {isCanceled && (
+                  <div className="modal-overlays" onClick={() => setIsCanceled(false)}>
+                    <div className="modal-contents" onClick={(e)=>e.stopPropagation()}>
+                      <button className="close-button" onClick={() => setIsCanceled(false)}>
+                        ✕
+                      </button>
+                      <CancelOrder setIsCanceled={setIsCanceled} OrderId={selectedOrderId} order={order} />
+                    </div>
+                  </div>
+                )}
+
           </div>
           <div class="order-actions-price-status">
             <p class="download-invoice">
