@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { X } from "lucide-react";
 // import "@/styles/Adddetail.css";
+import Image from "next/image";
 import '../../../styles/Adddetail.css';
 import { useRouter } from "next/navigation";
 import { FaUpload, FaRegCalendarAlt } from "react-icons/fa";
@@ -16,15 +17,19 @@ import { MAP_API } from '../../../services/GMap'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
+import { IoIosInformationCircleOutline } from "react-icons/io";
+
 
 
 import { GrLocation } from "react-icons/gr";
+import LocationSearch from "@/Components/Location/LocationSearch";
 const upload = "/Assets/upload.png";
 
 const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const router = useRouter();
   const [products, setProducts] = useState([]);
+
 
   const [productName, setProductName] = useState("");
   const [productQuality, setProductQuality] = useState("");
@@ -373,6 +378,7 @@ const MainContent = () => {
   };
 
 
+
   const handleMapClick = async (event) => {
     const lat = event.latLng.lat();
     const lng = event.latLng.lng();
@@ -526,9 +532,28 @@ console.log(formData,"formdata");
       } else {
         console.error("Error while publishing product:", error);
         Swal.fire({
-          icon: "error",
-          title: "Error!",
-          text: error.response?.data?.message || error.message,
+          icon: "warning",
+          title: "Note!",
+          html: `
+            <p>${error.response?.data?.message || error.message}</p>
+            <p><b>Click OK to add a business.</b></p>
+          `,
+          showCancelButton: true,
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          customClass: {
+            confirmButton: "swal-confirm-button", 
+          },
+          didOpen: () => {
+            document.querySelector(".swal-confirm-button").style.backgroundColor = "red";
+          },
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            if (error.response?.data?.message === "You must have a business profile to place a product for rent.") {
+            // router.push("profile/business-information/add-business")
+            }
+          }
         });
       }
     }
@@ -536,8 +561,7 @@ console.log(formData,"formdata");
 
 
 
-
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null); 
 
   return (
     <div className='main-content'>
@@ -694,6 +718,7 @@ console.log(formData,"formdata");
                 placeholderText='Select start date'
                 className='date-picker-wrapper'
                 dateFormat='MMMM d, yyyy'
+                minDate={new Date()}
               />
               <FaRegCalendarAlt className='calendar-icon' />
             </div>
@@ -714,18 +739,7 @@ console.log(formData,"formdata");
           </div>
           <span> {errors.rentalAvailability && <p className="text-red-500 text-sm mt-10">{errors.rentalAvailability}</p>}</span>
         </div>
-        <div className="mt-12">
-          <label>Location</label>
-          <div className="relative">
-            <input
-              type="search"
-              placeholder="Select a location"
-              className="location-input pl-8"
-            />
 
-            <GrLocation className="absolute left-96 ml-20 top-1/2 transform -translate-y-1/2 h-1/2" />
-          </div>
-        </div>
 
         <div className="mt-4 mb-4 flex flex-col gap-3">
           <label className="text-[14px] font-semibold">Select Pick up address</label>
@@ -757,21 +771,25 @@ console.log(formData,"formdata");
           value={formData.pickupAddress}
           onChange={handleInputChange}>
           <strong>Address:</strong> {formData.pickupAddress}
+    
+        {/* <LocationSearch /> */}
+
           {errors.pickupAddress && <p className="text-red-500 text-sm">{errors.pickupAddress}</p>}
           {/* {errors.address && <p style={{ color: "red" }}>{errors.address}</p>} */}
 
         </p>
         <div className="mt-3 flex flex-col relative">
-          <label className="left-3 text-gray-500 text-sm bg-white">Description</label>
+          <label className="left-3 text-gray-500 text-sm bg-white">Description 
+          <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+          </label>
           <textarea
             placeholder="Enter product details"
             className="border rounded-2xl h-40 p-3 pt-6 focus:border-red-500 focus:ring-blue-500 focus:outline-none"
             name="description"
             value={formData.description}
             onChange={handleInputChange}
-          // style={{
-          //   background: 'linear-gradient(0deg, #FFEBEB 0%, #FFF 100%)',
-          // }}
+
           />
           {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
         </div>
@@ -815,8 +833,8 @@ console.log(formData,"formdata");
           Product Details{" "}
           {/* <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span> */}
         </h2>
-        {productDetails?.map((section) => (
-          <div className='product-details-card' key={section._id}>
+        {productDetails?.map((section,index) => (
+          <div className='product-details-card' key={index}>
             Title
             {section.details?.map((detail) => (
               <div key={detail._id} className='detail-row'>

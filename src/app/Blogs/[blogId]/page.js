@@ -60,18 +60,22 @@ const BlogPage = () => {
           <h1 className="text-2xl font-bold">
             {blogs.title}
           </h1>
+          {blogs?.images?.map((image,index)=>(
           <img
-            src={blogs?.images?.[0]} // Replace with actual image URL
-            alt="Furniture"
-            className="rounded-lg my-4"
-          />
-          <p className="text-gray-700 leading-relaxed">
+          key={index}
+          src={image} // Replace with actual image URL
+          alt="Furniture"
+          className="rounded-lg my-4"
+        />
+          ))}
+
+          <p className="text-gray-700 leading-relaxed text-justify">
 {blogs.description}
           </p>
-          <p className="text-gray-700 leading-relaxed mt-4">
+          <p className="text-gray-700 leading-relaxed mt-4 text-justify">
           We’ll also discuss the benefits rental provides, like easy upgrades, storage solutions, and experimenting with new styles. Together, we’ll determine when renting furniture makes more sense than buying so you can make informed furniture decisions. Whether you’re accommodating guests, revamping your home office, or prepping for a special event, renting furniture may be the right call for furniture that’s only temporarily needed or likely to need replacement after heavy use.
           </p>
-          <p className="text-gray-700 leading-relaxed mt-4">
+          <p className="text-gray-700 leading-relaxed mt-4 text-justify">
           You know how some furniture is just not worth buying? We’re talking pieces that get worn out, damaged, or just feel outdated after a few years of use. As much as you want a stylish living room or a decked out patio, renting furniture can be a more practical approach instead of buying and making a long-term costly commitment. In this article, we’ll explore furniture that’s better off rented based on factors like usage, maintenance, and the need for flexibility. From sofa sets that show wear and tear to seasonal outdoor items used only part of the year, read on to learn which pieces you’re better off renting.
           </p>
           {/* <p className="text-gray-700 leading-relaxed mt-4">

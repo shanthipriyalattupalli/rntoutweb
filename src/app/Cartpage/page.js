@@ -183,6 +183,7 @@ const CartPage = () => {
   };
 
   const handleAddToCart = async (variantId, quantity, rentalPeriod) => {
+    console.log(variantId, quantity, rentalPeriod,"in handlecart")
     try {
       const payload = {
         user_id: userId,
@@ -316,18 +317,29 @@ const CartPage = () => {
         router.push('/profile/orders')
       }
 
-
-      // Display success toast for order placement
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "Order Placed!",
-      //   text: "Your order was successfully placed.",
-      //   confirmButtonColor: "#d33", // Optional: Customize button color
-      // });  
     } catch (error) {
       // Extract and display error message safely
-      const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";
-      toast.warn(errorMessage);
+      const errorMessage = error.response?.data?.error|| "Something went wrong. Please try again!";
+      Swal.fire({
+        icon: "warning",
+        title: "Note",
+        text: errorMessage,
+        showCancelButton: true,  
+        confirmButtonText: "OK", 
+        cancelButtonText: "Cancel", 
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6", 
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log("User clicked OK");
+          if (errorMessage === "KYC verification is required before checkout.") {
+            router.push("/profile/kyc");
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          console.log("User clicked Cancel");
+          // Handle cancel action if needed
+        }
+      });
       console.error("Error during order checkout:", error.response?.data);
     }
   };
@@ -346,7 +358,7 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
+console.log(response,"resonde of paymnet")
       // Axios response data is already parsed
       if (response.data.order && response.data.order.id) {
         setDisplayRazorpay(true);
@@ -366,17 +378,30 @@ const CartPage = () => {
 
   const createPayment = async () => {
     if (!userId) {
-      toast.error("Please login to proceed with payment.");
+      Swal.fire({
+        icon: "error",
+        title: "Login Required",
+        text: "Please login to proceed with payment.",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#d33",
+      });
       return;
     }
-
+  
     if (!selectedAddress) {
-      toast.error("Please select an address before proceeding with checkout.");
+      Swal.fire({
+        icon: "warning",
+        title: "Address Required",
+        text: "Please select an address before proceeding with checkout.",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#d33",
+      });
       return;
     }
-
+  
     await handleOrderCheckout();
   };
+  
 
   const handlePayment = async (status, orderDetails) => {
     if (status === "succeeded") {
@@ -440,7 +465,7 @@ const CartPage = () => {
 
               <Link
                 href={{
-                  pathname: `/Products/${item.variant_id.title}`,
+                  pathname: `/Products/${item.variant_id._id }`,
                   query: { id: item.variant_id._id },
                 }}
               >

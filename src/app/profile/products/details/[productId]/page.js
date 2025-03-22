@@ -24,7 +24,7 @@ const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const params = useParams();
   const productId = params.productId;
-
+  console.log(productId, "productIdsd")
   const [products, setProducts] = useState([]);
   const router = useRouter();
   const [productName, setProductName] = useState("");
@@ -288,10 +288,10 @@ const MainContent = () => {
 
 
   const fetchProducts = async () => {
-console.log(productId,"productId")
+    console.log(productId, "productId")
     try {
       const response = await axios.get(`${BASE_URL}/variants/${productId}`);
-console.log(response.data,"productIds")
+      console.log(response.data, "productIds")
       setFormData(response.data);
       setFormData(
         (prevData) => ({
@@ -442,7 +442,7 @@ console.log(response.data,"productIds")
     }
   };
 
-console.log(formData,"formdata")
+  console.log(formData, "formdata")
 
   const handlePublishProduct = async () => {
     try {
@@ -462,15 +462,13 @@ console.log(formData,"formdata")
       formDataToSend.append('productId', formData.productId);
       formDataToSend.append('available', formData.available);
 
-      formData.rentalPrice.forEach((item, index) => {
-        formDataToSend.append(`rentalPrice[${index}][period]`, item.period);
-        formDataToSend.append(`rentalPrice[${index}][price]`, item.price);
-      });
+      formDataToSend.append("rentalPrice", JSON.stringify(formData.rentalPrice));
 
       formDataToSend.append(
-        'rentalAvailability',
-        JSON.stringify(formData.rentalAvailability),
+        "rentalAvailability",
+        JSON.stringify(formData.rentalAvailability)
       );
+
       formDataToSend.append('seoTags', formData.seoTags);
       formDataToSend.append('isForSale', formData.isForSale);
       formDataToSend.append('salePrice', formData.salePrice);
@@ -488,17 +486,8 @@ console.log(formData,"formdata")
           coordinates: validCoordinates ? coordinates : [0, 0],
         })
       );
-
-
       formDataToSend.append('pickupAvailable', formData.pickupAvailable);
-      for (const key in formData.itemDetails) {
-        if (formData.itemDetails.hasOwnProperty(key)) {
-          formDataToSend.append(`itemDetails[${key}]`, formData.itemDetails[key]);
-        }
-      }
-
-
-
+      formDataToSend.append("itemDetails", JSON.stringify(formData.itemDetails));
 
       const response = await axios.put(`${BASE_URL}/variants/${productId}`, formDataToSend, {
         headers: {
@@ -507,6 +496,7 @@ console.log(formData,"formdata")
         },
       });
 
+      console.log(response, "response for variant update")
 
       if (response.data.success) {
         toast.success("Product published successfully!");
@@ -519,10 +509,9 @@ console.log(formData,"formdata")
     } catch (error) {
       if (error.response?.status === 401) {
         toast.error("Session expired. Please log in again.");
-        // Redirect to login page
         setTimeout(() => {
-          window.location.href = "/login"; // Adjust the path as per your routing setup
-        }, 2000); // Delay to let the toast message display
+          window.location.href = "/login"; 
+        }, 2000); 
       } else {
         console.error("Error while publishing product:", error);
         toast.error(`Error: ${error.response?.data?.message || error.message}`);
@@ -536,12 +525,12 @@ console.log(formData,"formdata")
     }
   }, [formData.images]);
 
-  
+
   return (
     <div className='main-content'>
       <ToastContainer />
       <div className='radio-button-group bg-blue-100'>
-        <div  className='item-header2'onClick={() => router.back()}>
+        <div className='item-header2' onClick={() => router.back()}>
           <div className='back-product22 flex gap-2 h-6'>
             <IoMdArrowRoundBack className="mt-1 ml-3" />
             <p>

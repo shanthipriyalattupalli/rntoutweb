@@ -31,7 +31,7 @@ const Home = () => {
   const [banners, setBanners] = useState([])
   const [banner, setBanner] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+const [categoryId,setCategoryId]=useState(true)
   const categoryIds = (typeof window !== 'undefined') ? localStorage.getItem("categoryId") : null;
   const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
   const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
@@ -147,12 +147,21 @@ const Home = () => {
   }, []);
 
 
+  const handleCategoryClick =(categoryId)=>{
+    console.log(categoryId,"categoryIdssssssssss")
+
+    setCategoryId(categoryId)
+  }
+
+  useEffect(()=>{
+    setCategoryId(categories[0]?._id)
+  })
   return (
     <main className='tmp-bg'>
       <Banner banners={banners} isLoading={isLoading} />
       <CategoryList categories={categories} isLoading={isLoading} />
-      <ProductGrid categories={categories} isLoading={isLoading} />
-      <Products products={categoryProducts[categoryIds] || []} categoryId={categoryIds} />
+      <ProductGrid categories={categories} isLoading={isLoading} categoryIds={handleCategoryClick}/>
+      <Products products={categoryProducts[categoryId] || []} categoryId={categoryId} />
       <CuratedCollections />
 
       <ITInfrastructure products={categoryProducts[CATEGORY_IDS.IT_INFRASTRUCTURE] || []} categoryId={CATEGORY_IDS.IT_INFRASTRUCTURE} isLoading={isLoading} />

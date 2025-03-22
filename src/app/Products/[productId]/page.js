@@ -24,12 +24,24 @@ const favorite = "/Assets/favorite.svg"
 const favorited = '/Assets/favoritedicon.svg';
 const stock = '/Assets/stock.svg';
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+import { cookies } from "next/headers";
+import { FaGrinTongueWink } from "react-icons/fa";
+
+  
 
 
-  const fetchProductById = async (productId) => {
+  const fetchProductById = async (productId,token) => {
+    
     try {
-      const response = await axios.get(`${BASE_URL}/variants/${productId}?includeRelated=false`);
-
+      const response = await axios.get(
+        `${BASE_URL}/variants/${productId}?includeRelated=false`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        }
+      );
+console.log(response,"response")
       const data = response.data;
       return response.data;
 
@@ -43,7 +55,7 @@ const stock = '/Assets/stock.svg';
       const response = await axios.get(`${BASE_URL}/reviews/variant/${productId}`);
 
       const data = response.data;
-      return data.data;
+      return response.data.data;
     } catch (error) {
       console.error("Error fetching product:", error);
     }
@@ -54,11 +66,14 @@ const stock = '/Assets/stock.svg';
 
 
 const ProductPage =async ({params,searchParams})=>{
-
-  const {productId}=await params
-  const variant=await fetchProductById(productId)
+  const cookieStore = cookies();
+  let token = cookieStore.get(`userToken`)?.value;
+  console.log(token,"token");
+  const {productId}=await params;
+  console.log(productId,"productId")
+  const variant=await fetchProductById(productId,token)
 const userRatings=await fetchProductRatings(productId)
-
+console.log(variant,"variants")
 const product=variant.variant;
 const relatedItems=variant.relatedItems;
 

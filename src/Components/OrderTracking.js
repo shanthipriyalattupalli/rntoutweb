@@ -62,7 +62,7 @@ export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep 
               {/* Horizontal Line for Large Screens */}
               {index < steps.length - 1 && (
                 <div
-                  className={`absolute top-1/2 md:top-[69%] lg:top-[69%l left-[100%] transform -translate-x-1/2 w-full h-0.5 border-t-2 border-dashed hidden md:block md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[23rem] ${
+                  className={`absolute top-1/2 md:top-[69%] lg:top-[69%l left-[100%] transform -translate-x-1/2 w-full h-0.5 border-t-2 border-dashed hidden md:block md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[14rem] ${
                     isCanceled
                       ? "border-red-500"
                       : isDelivered

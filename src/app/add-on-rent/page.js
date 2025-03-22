@@ -148,6 +148,10 @@ const CategoryGrid = () => {
         src={category.image}
         className='category-icon'
         alt={category.categoryName}
+        style={{
+          backgroundColor: getCategoryColor(index, selectedCategory === category._id),
+          color: getTextColor(selectedCategory === category._id),
+        }}
       />
       <p>{category.categoryName}</p>
       {selectedCategory === category._id && <MdCheckCircle className='check-icon' />}

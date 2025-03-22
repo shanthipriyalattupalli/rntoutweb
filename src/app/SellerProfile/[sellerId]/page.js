@@ -32,7 +32,7 @@ const SellerCarouselProfile = () => {
       const response = await axios.get(`${BASE_URL}/business-info/sellerInfo?ownerId=${sellerId}`);
 
       const data = response.data.data;
-
+console.log(response.data.data,"seller details")
       setSellerDetails(data)
       setproducts(data.variants)
     } catch (error) {
@@ -57,6 +57,7 @@ const SellerCarouselProfile = () => {
   const [activeTab, setActiveTab] = useState("products");
 
   const bannerImages = sellerDetails?.bannerImages || []; 
+  
 
   useEffect(() => {
     if (bannerImages.length > 1) {
@@ -246,8 +247,7 @@ const SellerCarouselProfile = () => {
       <>
         <div className="seller-carousel-slide">
           <img
-            src={bannerImages[currentSlide]} // Directly using the URL from array
-            alt={`Slide ${currentSlide + 1}`}
+            src={bannerImages[currentSlide]} 
             className="seller-carousel-image"
           />
         </div>
@@ -261,7 +261,7 @@ const SellerCarouselProfile = () => {
           {bannerImages.map((_, index) => (
             <span
               key={index}
-              className={`seller-carousel-indicator ${index === currentSlide ? "active" : ""}`}
+              className={`seller-carousel-indicator  ${index === currentSlide ? "active" : ""}`}
               onClick={() => setCurrentSlide(index)}
             ></span>
           ))}
@@ -269,8 +269,8 @@ const SellerCarouselProfile = () => {
       </>
     ) }
   </div>
-  <div className="store-image-container">
-  <Image src={storeimage} width={20} height={20} className=""/>
+  <div className="store-image-container ">
+ {sellerDetails.businessInfo.profileImage? <Image src={sellerDetails.businessInfo.profileImage} width={60} height={80}  className="h-[60px] rounded-full"/> :<Image src={storeimage} width={20} height={20} />}
   </div>
 
       <div className='seller-profile-container'>

@@ -49,9 +49,9 @@ export default function ProfileSettings() {
 console.log(response.data,"profile")
       const profileData = response.data.profile;
 
-      // Convert dateOfBirth to YYYY-MM-DD format if it exists
+
       const formattedDate = profileData.dateOfBirth
-        ? profileData.dateOfBirth.split("T")[0]  // Extract only the YYYY-MM-DD part
+        ? profileData.dateOfBirth.split("T")[0]  
         : "";
 
       setProfile({
@@ -88,6 +88,7 @@ console.log(response.data,"profile")
   const handleChange = (e) => {
     const { name, value } = e.target;
     const keys = name.split(".");
+    
     setProfile((prev) => {
       let updatedProfile = { ...prev };
       let temp = updatedProfile;
@@ -97,7 +98,32 @@ console.log(response.data,"profile")
       temp[keys[0]] = value;
       return updatedProfile;
     });
+  
+    let newErrors = { ...errors };
+  
+    // Name Validation
+    if (name === "user.name") {
+      const namePattern = /^[A-Za-z\s]+$/;
+      if (!namePattern.test(value) && value !== "") {
+        newErrors.name = "Only letters and spaces are allowed.";
+      } else {
+        delete newErrors.name;
+      }
+    }
+  
+    // Email Validation
+    if (name === "user.email") {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(value)) {
+        newErrors.email = "Invalid email format.";
+      } else {
+        delete newErrors.email;
+      }
+    }
+  
+    setErrors(newErrors);
   };
+  
 
   const toggleEdit = () => {
     setIsEditable(!isEditable);
@@ -182,14 +208,14 @@ console.log(response.data,"profile")
   console.log(profile,"profile")
 
   return (
-  isKyc?<KYCVerification setIsKyc={setIsKyc}/>:  <div className="profile-settings bg-white ">
+  <div className="profile-settings bg-white ">
       <ToastContainer />
 
       <div className="item-header">
    <Link href='/' className='flex flex-row gap-1'> Profile Settings</Link>
 
         <div className="flex items-center space-x-4">
-          <a className="text-green-600 font-medium text-sm cursor-pointer" onClick={() => setIsKyc(true)}>
+          <a href = "/profile/kyc" className="text-green-600 font-medium text-sm cursor-pointer" >
             Personal KYC ?
           </a>
 
@@ -258,6 +284,8 @@ console.log(response.data,"profile")
               disabled={!isEditable}
               className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
+  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+
           </div>
         </div>
 
@@ -292,6 +320,9 @@ console.log(response.data,"profile")
     onChange={handleChange}
     disabled={!isEditable}
     className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+    max={new Date(new Date().setFullYear(new Date().getFullYear() - 18))
+      .toISOString()
+      .split("T")[0]}
   />
   {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
 </div>

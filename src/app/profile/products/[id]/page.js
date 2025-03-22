@@ -203,7 +203,7 @@ export default function ProductInformation2() {
         <div className='dashboard-top1'>
          
           <div className='logo'>
-            <img src={logo} alt="RNT Out Logo" className="h-8 w-[100%] sm:h-10 border-none border-0" />
+            <img src={logo} alt="RNT Out Logo" className="h-8 w-[10%] sm:h-10 border-none border-0" />
              
             </div>
    

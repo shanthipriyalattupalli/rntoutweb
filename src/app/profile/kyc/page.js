@@ -4,12 +4,12 @@ import axios from "axios";
 import { FaCloudUploadAlt, FaCheckCircle, FaTimes } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
 import { IoMdArrowRoundBack } from "react-icons/io";
-import '../../styles/BusinessInformation2.css'
+import '../../../styles/BusinessInformation2.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 
-const KYCVerification = ({ setIsKyc }) => {
+const KYCVerification = () => {
     const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
     const [aadharImage, setAadharImage] = useState("");
     const [Preview, setIsPreview] = useState(null);
@@ -91,9 +91,9 @@ const KYCVerification = ({ setIsKyc }) => {
                 <ToastContainer />
                 <div
                     className="flex items-center gap-2 mr-auto text-left text-gray-700 hover:text-gray-900 cursor-pointer"
-                    onClick={() => setIsKyc(false)}
+                    
                 >
-                    <IoMdArrowRoundBack className="w-5 h-5 text-gray-600" />
+                   <a href="/profile"><IoMdArrowRoundBack className="w-5 h-5 text-gray-600"  /></a> 
                     <span className="text-lg font-bold">KYC Verification</span>
                 </div>
             </h2>
@@ -106,6 +106,7 @@ const KYCVerification = ({ setIsKyc }) => {
                         <h3 className="text-sm font-semibold text-gray-700 mb-2">
                             Aadhar Card
                         </h3>
+                        <span className="text-red font-semibold mb-2">{isKycSuccess === "VERIFIED" ? "":"Note: user can have only 3 changes to upload"}</span>
                         <label className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center cursor-pointer relative">
                             {Preview ? (
                                 <>

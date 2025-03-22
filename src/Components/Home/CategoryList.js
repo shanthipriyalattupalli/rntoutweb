@@ -4,9 +4,14 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import PropTypes from "prop-types";
 import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
 import classNames from "classnames";
 import Categories from "../Shimmer/Categories";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+const left = '/Assets/leftarrow.svg';
+
 
 const bgColors = [
   "#008A000D",
@@ -19,65 +24,77 @@ const bgColors = [
   "#A200250D",
 ];
 
-const CategoryList = ({ products = [], categories,isLoading }) => {
+const CategoryList = ({ products = [], categories, isLoading }) => {
   const router = useRouter();
 
   const handleCategoryClick = (categoryId) => {
     router.push(`/Product-list/${categoryId}`);
   };
 
+
+  const shimmerArray = new Array(8).fill(null);
+  const NextArrow = ({ onClick }) => (
+    <button
+      className="absolute top-1/2 right-[5px] transform -translate-y-1/2 z-10"
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (onClick) onClick();
+      }}
+    >
+      <img src={left} alt="Next" className="rotate-180" />
+    </button>
+  );
+  
+  const PrevArrow = ({ onClick }) => (
+    <button
+      className="absolute top-1/2 left-[5px]  transform -translate-y-1/2 z-10"
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (onClick) onClick();
+      }}
+    >
+      <img src={left} alt="Previous" />
+    </button>
+  );
+  
+  
+  
+
+
   const settings = {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 6,
+    slidesToShow: 8,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: true,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 1,
+          slidesToShow: 3,
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 425,
-        settings: {
           slidesToShow: 2,
-          slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 375,
+        breakpoint: 480,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 320,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
         },
       },
     ],
   };
 
-  const shimmerArray = new Array(8).fill(null);
-
   return (
-<div className="bg-white py-4 flex flex-col">
+    <div className="bg-white py-4 flex flex-col">
       <div className="h-auto sm:px-8 md:px-10 lg:px-24 xl:px-20">
         <h1 className="text-xl sm:text-2xl font-bold pb-4 text-center sm:text-left">
           Rent Furniture & Appliances
@@ -96,18 +113,18 @@ const CategoryList = ({ products = [], categories,isLoading }) => {
           //     </div>
           //   ))}
           // </div>
-          <Categories shimmerArray={shimmerArray}/>
+          <Categories shimmerArray={shimmerArray} />
         ) : categories?.length > 8 ? (
-          <Slider {...settings}>
-            {categories?.map((category, index) => (
-              <div key={category._id}>
+          <Slider {...settings} className="relative">
+            {categories.map((category, index) => (
+              <div key={category._id} className="px-2">
                 <div
                   className="text-sm font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer"
                   onClick={() => handleCategoryClick(category._id)}
                   style={{
                     backgroundColor: bgColors[index % bgColors.length],
                     borderRadius: "20px",
-                    width: "140px",
+                    width: "150px",
                     height: "100px",
                     margin: "0 auto",
                   }}
@@ -119,11 +136,21 @@ const CategoryList = ({ products = [], categories,isLoading }) => {
                     height={48}
                     className="w-12 h-12"
                   />
-                  <span className="text-center pt-2">{category.categoryName}</span>
+                  <div className="relative group">
+                    <span className="text-center pt-2 w-[120px] truncate block">
+                      {category.categoryName}
+                    </span>
+                    {/* <div className="absolute left-1/2 -translate-x-1/2 top-[10px] mb-2 hidden group-hover:block bg-gray-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                      {category.categoryName}
+                    </div> */}
+                  </div>
+
+
                 </div>
               </div>
             ))}
           </Slider>
+
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 mt-4">
             {categories?.map((category, index) => (

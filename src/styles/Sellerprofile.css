@@ -10,8 +10,8 @@
     position: absolute;
     bottom: 30%;
     left: 60px; /* Adjust as needed */
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background-color: white; /* Optional: for visibility */
     display: flex;
@@ -31,7 +31,7 @@
 .seller-carousel-image {
     width: 100%;
     height: 350px;
-    object-fit: revert;
+    object-fit:fill;
 }
 
 .seller-carousel-prev-button{
@@ -84,6 +84,7 @@
     transform: translateX(-50%);
     display: flex;
     gap: 8px;
+  
 }
 
 .seller-carousel-indicator {
@@ -93,6 +94,7 @@
     border-radius: 50%;
     cursor: pointer;
     transition: background 0.3s ease;
+ 
 }
 
 .seller-carousel-indicator.active {

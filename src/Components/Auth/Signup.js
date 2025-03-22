@@ -22,29 +22,33 @@ const Signup = ({ setIsRegisterOpen }) => {
     gender: "",
     profilePic: ""
   });
+
+  console.log(profile, "profileformdata")
   const [isLoading, setIsLoading] = useState(false); // For loading state
   const router = useRouter();
+
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
+  const [errors, setErrors] = useState({ name: "", dateOfBirth: "" });
 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const keys = name.split("."); 
+    const keys = name.split(".");
     let isValid = true;
-  
+
     if (name === "user.name") {
-      const nameRegex = /^[A-Za-z\s]*$/; 
+      const nameRegex = /^[A-Za-z\s]*$/;
       isValid = nameRegex.test(value);
     }
-  
+
     if (name === "user.email") {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/; 
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
       isValid = emailRegex.test(value);
     }
-  
-    if (!isValid) return; 
-  
+
+    if (!isValid) return;
+
     setProfile((prev) => {
       let updatedProfile = { ...prev };
       let temp = updatedProfile;
@@ -55,7 +59,7 @@ const Signup = ({ setIsRegisterOpen }) => {
       return updatedProfile;
     });
   };
-  
+
 
   const fetchProfile = async () => {
 
@@ -63,7 +67,7 @@ const Signup = ({ setIsRegisterOpen }) => {
       const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+      console.log(response.data, "profile data");
       const profileData = response.data.profile;
 
       const formattedDate = profileData.dateOfBirth
@@ -90,6 +94,25 @@ const Signup = ({ setIsRegisterOpen }) => {
 
 
   const handleSubmitProfile = async () => {
+    let validationErrors = {};
+
+    if (!profile.user.name.trim()) {
+      validationErrors.name = "Name is required.";
+
+    }
+    if (!profile.dateOfBirth.trim()) {
+      validationErrors.dateOfBirth = "Date of Birth is required.";
+    }
+
+
+
+    // If there are errors, update state and stop submission
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+
     try {
       const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, profile, {
         headers: { Authorization: `Bearer ${token}` },
@@ -125,59 +148,76 @@ const Signup = ({ setIsRegisterOpen }) => {
 
 
   return (
-    <div>
-      <ToastContainer position='top-right' autoClose={3000} />
+    
       <div className='signup-container'>
+      <ToastContainer position='top-right' autoClose={3000} />
 
         <div className='signup-card'>
           <div className='login-first'>
             <img src={Rntout} alt='RentOut Logo' className='login-logo' />
             <h2 className='subtitle'>Sign up for RntOut</h2>
           </div>
-          <p className='login-p1 m-0'>Name</p>
-          <input
-            type='text'
-            placeholder='Enter First Name'
-            className='input'
-            name='user.name'
-            value={profile.user.name}
-            onChange={handleChange}
-          />
+          <div className="flex text-left flex-col">
+            <p className='login-p1 m-0'>Name
+            <span className="text-red-500">*</span>
+            </p>
+            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
 
-          <p className='login-p1 m-0'>Email Address</p>
-          <input
-            type='email'
-            placeholder='Enter Email Address'
-            className='input'
-            name='user.email'
-            value={profile.user.email}
-            onChange={handleChange}
-          />
+            <input
+              type='text'
+              placeholder='Enter First Name'
+              className='input'
+              name='user.name'
+              value={profile.user.name}
+              onChange={handleChange}
+            />
+          </div>
 
-          <p className='login-p1 m-0'>Gender</p>
-          <select
-            name='gender'
-            className='input'
-            value={profile.gender}
-            onChange={handleChange}
-          >
-            <option value='' disabled>Select Gender</option>
-            <option value='Male' name="gender">Male</option>
-            <option value='Female' name="gender">Female</option>
-            <option value='Other' name="gender">Other</option>
-          </select>
 
-          <p className='login-p1 m-0'>Date Of Birth</p>
-          <input
-            type="date"
-            className="input"
-            name="dateOfBirth"
-            value={profile.dateOfBirth}
-            onChange={handleChange}
-            max={new Date(new Date().setFullYear(new Date().getFullYear() - 18))
-              .toISOString()
-              .split("T")[0]}
-          />
+          <div>
+            <p className='login-p1 m-0'>Email Address
+            <span className="text-red-500">*</span>
+            </p>
+            <input
+              type='email'
+              placeholder='Enter Email Address'
+              className='input'
+              name='user.email'
+              value={profile.user.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div  >
+            <p className='login-p1 m-0'>Gender</p>
+            <select
+              name='gender'
+              className='input'
+              value={profile.gender}
+              onChange={handleChange}
+            >
+              <option value='' disabled>Select Gender</option>
+              <option value='Male' name="gender">Male</option>
+              <option value='Female' name="gender">Female</option>
+              <option value='Other' name="gender">Other</option>
+            </select>
+          </div>
+          <div>
+            <p className='login-p1 m-0'>Date Of Birth
+            <span className="text-red-500">*</span>
+            </p>
+            {errors.dateOfBirth && <p className="text-red-500 text-left text-sm mt-1">{errors.dateOfBirth}</p>}
+
+            <input
+              type="date"
+              className="input"
+              name="dateOfBirth"
+              value={profile.dateOfBirth}
+              onChange={handleChange}
+              max={new Date(new Date().setFullYear(new Date().getFullYear() - 18))
+                .toISOString()
+                .split("T")[0]}
+            />
+          </div>
 
           <button
             className='button'
@@ -189,7 +229,7 @@ const Signup = ({ setIsRegisterOpen }) => {
           <button className="font-medium text-semibold text-md text-blue-300" onClick={() => handleSkip()}>Skip</button>
         </div>
       </div>
-    </div>
+  
   );
 };
 

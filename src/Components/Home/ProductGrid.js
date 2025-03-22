@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Image from "next/image";
 
-const CategorySection = ({ categories, isLoading }) => {
+const CategorySection = ({ categories, isLoading,categoryIds }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
@@ -19,9 +19,10 @@ const CategorySection = ({ categories, isLoading }) => {
   }, [categories]);
 
   const handleCategoryClick = (categoryId) => {
-    localStorage.setItem("categoryId", categoryId);
+    categoryIds(categoryId);
+    // localStorage.setItem("categoryId", categoryId);
     setSelectedCategory(categoryId);
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (
@@ -36,42 +37,47 @@ const CategorySection = ({ categories, isLoading }) => {
       </div>
 
       <div className="bg-white-100 py-6">
-        <div className="flex flex-wrap justify-center gap-2">
-          {isLoading
-            ? Array.from({ length: 8}).map((_, index) => (
-                <div
-                  key={index}
-                  className="w-[150px] h-[40px] bg-gray-300 rounded-lg animate-pulse"
-                ></div>
-              ))
-            : categories?.map((category) => (
-                <button
-                  key={category._id}
-                  onClick={() => handleCategoryClick(category._id)}
-                  className={`flex items-center py-1 text-sm px-1 rounded-lg transition duration-300 ${
-                    selectedCategory === category._id
-                      ? "bg-[#F0F5FF] border border-[#2F6FED] text-blue-700"
-                      : "bg-white text-gray-800 border border-slate-300 hover:bg-blue-100"
-                  }`}
-                  style={{
-                    boxShadow:
-                      selectedCategory === category._id
-                        ? "0px 1px 1px rgba(0, 0, 255, 0.1)"
-                        : "none",
-                  }}
-                >
-                  <Image
-                    src={category.image || "/default-icon.png"}
-                    alt={`${category.categoryName} icon`}
-                    className="h-5 w-5 mr-2"
-                    width={16}
-                    height={16}
-                  />
-                  {category.categoryName}
-                </button>
-              ))}
-        </div>
-      </div>
+  <div
+    className={`flex gap-2 px-8 scrollbar-hide ${
+      categories?.length > 8 ? "overflow-x-auto whitespace-nowrap" : "flex-wrap justify-center"
+    }`}
+  >
+    {isLoading
+      ? Array.from({ length: 8 }).map((_, index) => (
+          <div
+            key={index}
+            className="w-[150px] h-[40px] bg-gray-300 rounded-lg animate-pulse flex-shrink-0"
+          ></div>
+        ))
+      : categories?.map((category) => (
+          <button
+            key={category._id}
+            onClick={() => handleCategoryClick(category._id)}
+            className={`flex items-center py-1 text-sm px-1 rounded-lg transition duration-300 flex-shrink-0 ${
+              selectedCategory === category._id
+                ? "bg-[#F0F5FF] border border-[#2F6FED] text-blue-700"
+                : "bg-white text-gray-800 border border-slate-300 hover:bg-blue-100"
+            }`}
+            style={{
+              boxShadow:
+                selectedCategory === category._id
+                  ? "0px 1px 1px rgba(0, 0, 255, 0.1)"
+                  : "none",
+            }}
+          >
+            <Image
+              src={category.image || "/default-icon.png"}
+              alt={`${category.categoryName} icon`}
+              className="h-5 w-5 mr-2"
+              width={16}
+              height={16}
+            />
+            {category.categoryName}
+          </button>
+        ))}
+  </div>
+</div>
+
     </div>
   );
 };

@@ -1,6 +1,7 @@
 .manage-addresses-container {
     padding:  0 20px;
     margin-top: 20px;
+    
     /* border: 1px solid #0707071A;
     border-radius: 0px 8px 8px 8px;
     width: 100%;
@@ -9,6 +10,7 @@
 }
 
 .manage-addresses-container h2 {
+
     font-size: 24px;
     color: #333;
     border-bottom: 1px solid #0707071A;

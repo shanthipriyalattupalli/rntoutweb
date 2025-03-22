@@ -1,6 +1,6 @@
 .category-container {
     text-align: center;
-    padding: 2rem;
+    padding: 6rem;
     /* font-family: Arial, sans-serif; */
 }
 
@@ -54,6 +54,8 @@
 }
 
 .category-icon {
+    padding: 20px;
+    border-radius: 50%;
     font-size: 2rem;
     margin-bottom: 0.5rem;
 
@@ -204,7 +206,7 @@
 /* Large Screens (1201px and above) */
 @media (min-width: 1201px) {
     .category-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         /* 4 columns for extra-large screens */
     }
 

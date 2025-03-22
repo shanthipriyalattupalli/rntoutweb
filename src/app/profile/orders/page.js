@@ -242,14 +242,14 @@ const [isOn, setIsOn] = useState(false);
               <div class="order-product" key={item._id} onClick={()=>  router.push(`/Products/${item.variantId._id}?id=${item.variantId._id}`)}>
                 <div>
                 <img
-                  src={item.variantId.images?.[0]}
+                  src={item.variantId?.images?.[0]}
                   alt="Dell 27 inch Monitor"
                   class="product-image"
                 />
 </div>
                 <div class="product-info">
                   <h4>
-                 {item.variantId.title}
+                 {item.variantId?.title}
                   </h4>
                   <p>
                     <span>{item.price}</span> /{item.rentalPeriod} 

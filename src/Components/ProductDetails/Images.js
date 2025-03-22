@@ -72,7 +72,7 @@ export const Images = ({ product, productId }) => {
           showConfirmButton: false,
         });
       }
-      window.location.reload()
+      
     } catch (error) {
       console.error("Error removing product from favorites:", error);
       Swal.fire({
@@ -86,9 +86,7 @@ export const Images = ({ product, productId }) => {
   return (
     <div className="space-y-4">
       <div className="relative">
-        <span className="absolute top-4 left-4 bg-blue-500 text-white px-3 py-1 rounded-md text-sm">
-          NEW ARRIVALS
-        </span>
+
         {isFavorite ? (
           <span
             className="absolute top-4 right-4 cursor-pointer"

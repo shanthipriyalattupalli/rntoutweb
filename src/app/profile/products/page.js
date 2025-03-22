@@ -14,7 +14,9 @@ import { useRouter } from "next/navigation";
 const prodimg = "/Assets/dummy-image.svg";
 const vector = "/Assets/Vector-icon.svg";
 import Link from "next/link";
+const kycimage="/Assets/kyc.svg"
 const logo = "/Assets/Rntout_Logo.png";
+import Cookies from "js-cookie";
 
 
 export default function Dashboard({ products }) {
@@ -29,7 +31,9 @@ export default function Dashboard({ products }) {
     const [otherDetail, setOtherDetails] = useState({});
     const [owner, setOwner] = useState({});
     const [images, setImages] = useState([]);
-    const [relatedItems, setRelatedItems] = useState([])
+    const [relatedItems, setRelatedItems] = useState([]);
+
+    const kyc =Cookies.get("kycstatus");
 
 
   const fetchUserProducts = async () => {
@@ -99,6 +103,7 @@ const notApprovedCount = userProducts.filter(product => !product.isApproved).len
 
 
 
+
   return (
     <div className='prod-container-page'>
       <div className='item-header'>
@@ -139,106 +144,85 @@ const notApprovedCount = userProducts.filter(product => !product.isApproved).len
         
         </div>
 
-        <div className='items-grid'>
-          {userProducts?.map((item) => (
-            <div className='item-card' key={item._id}>
-              {/* <div
-                className={`status ${
-                  item.status.includes("Out of Stock")
-                    ? "out-of-stock"
-                    : item.status.includes("On Rent")
-                    ? "on-rent"
-                    : item.status.includes("Available")
-                    ? "all-available"
-                    : ""
-                }`}
-              >
-                {item.status}
-              </div> */}
+        {kyc !== "VERIFIED" ? (
+          <div className="flex flex-col items-center justify-center">
+  <img src={kycimage} className="w-full h-80" />
+  <Link href="/profile/kyc" className="bg-red-500 p-2 rounded-lg w-[200px] text-center text-white font-bold text-lg mt-4 cursor-pointer">
+    Complete your KYC
+  </Link>
+</div>
 
-              <div className="action-menu2">
-                {item.
-                  isApproved ? <span className="px-2 py-1 bg-green-700 font-xl text-sm text-white rounded-full">Approved</span> :
-                  <span className="px-2 py-1 bg-orange-400 font-xl text-md text-white rounded-full">In Review</span>}
+):(
+  userProducts && userProducts.length > 0 ? (
+    <div className='items-grid'>
+      {userProducts.map((item) => (
+        <div className='item-card' key={item._id}>
+          <div className="action-menu2">
+            {item.isApproved ? (
+              <span className="px-2 py-1 bg-green-700 font-xl text-sm text-white rounded-full">Approved</span>
+            ) : (
+              <span className="px-2 py-1 bg-orange-400 font-xl text-md text-white rounded-full">In Review</span>
+            )}
+          </div>
 
-              </div>
+          <img src={item.images[0]} alt={item.title} className='item-image' />
 
-              <img
-                src={item.images[0]}
-                alt={item.title}
-                className='item-image'
-
-              />
-
-              <div className='item-card-details'>
-                <div className='item-det-section'>
-                  <div className="flex justify-between">
-                  <h3 className='item-title'>{item.title}</h3>
-                  <div className='action-menu'>
-                <button className='menu-button'>...</button>
-                <div className='dropdown-menu'>
-                  <p onClick={() => router.push(`/profile/products/details/${item._id}`)} >
-                    <LuPencil />
-                    Edit
-                  </p>
-                  <p
-                    onClick={() => {
+          <div className='item-card-details'>
+            <div className='item-det-section'>
+              <div className="flex justify-between">
+                <h3 className='item-title'>{item.title}</h3>
+                <div className='action-menu'>
+                  <button className='menu-button'>...</button>
+                  <div className='dropdown-menu'>
+                    <p onClick={() => router.push(`/profile/products/details/${item._id}`)}>
+                      <LuPencil /> Edit
+                    </p>
+                    <p onClick={() => {
                       fetchProductById(item._id);
                       setIsdetailsOpen(true);
                     }}>
-                    <FaEye />
-                    View
-                  </p>
-                  {isdetailsOpen && (
-                    <div className="modal-overlay"   onClick={() => setIsdetailsOpen(false)}>
-                      <div className="modal-content" onClick={(e)=>e.stopPropagation()}>
-                        <button
-                          className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl"
-                          onClick={() => setIsdetailsOpen(false)}
-                        >
-                          ✕
-                        </button>
-                        <ProductDetails setIsdetailsOpen={setIsdetailsOpen} productId={productId} product={product} rentalPrice={rentalPrice} rentalAvailability={rentalAvailability} otherDetail={otherDetail} owner={owner} images={images} relatedItems={relatedItems}/>
+                      <FaEye /> View
+                    </p>
+                    {isdetailsOpen && (
+                      <div className="modal-overlay" onClick={() => setIsdetailsOpen(false)}>
+                        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                          <button className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl"
+                            onClick={() => setIsdetailsOpen(false)}>✕</button>
+                          <ProductDetails setIsdetailsOpen={setIsdetailsOpen} productId={productId} product={product} 
+                            rentalPrice={rentalPrice} rentalAvailability={rentalAvailability} otherDetail={otherDetail} 
+                            owner={owner} images={images} relatedItems={relatedItems} />
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  {/* <p>
-                    <MdToggleOff />
-                    Inactive?
-                  </p> */}
-                  <p style={{ color: "red" }} onClick={()=>handleProductDelete(item._id)}>
-                    <RiDeleteBinLine />
-                    Delete
-                  </p>
+                    )}
+                    <p style={{ color: "red" }} onClick={() => handleProductDelete(item._id)}>
+                      <RiDeleteBinLine /> Delete
+                    </p>
+                  </div>
                 </div>
               </div>
-                  </div>
-                  <div className='item-details'>
-                    <p>Available Stock: {item.stockQuantity}/{item.totalStock}</p>
-                    <p>
-                      Earning: <span>{item.earning}</span>
-                    </p>
-                    <p>
-                      Rating & Reviews: {item.rating} ★ ({item.reviews} Reviews)
-                    </p>
-                  </div>
-                </div>
-                <div className='item-actions'>
-                  <Link href={{ pathname: `/profile/products/${item._id}`, query: { id: item._id } }} key={item._id}>
-                    <button
-                      className='view-insight'
-                    // onClick={() => {
-                    //   router.push(`/profile/products/${item._id}` ,);
-                    // }}
-                    >
-                      View Rent Insight
-                    </button>
-                  </Link>
-                </div>
+              <div className='item-details'>
+                <p>Available Stock: {item.stockQuantity}/{item.totalStock}</p>
+                <p>Earning: <span>{item.earning}</span></p>
+                <p>Rating & Reviews: {item.rating} ★ ({item.reviews} Reviews)</p>
               </div>
             </div>
-          ))}
+            <div className='item-actions'>
+              <Link href={{ pathname: `/profile/products/${item._id}`, query: { id: item._id } }} key={item._id}>
+                <button className='view-insight'>View Rent Insight</button>
+              </Link>
+            </div>
+          </div>
         </div>
+      ))}
+    </div>
+  ) : (
+    <div className="flex flex-col items-center justify-center">
+      <p className="text-lg font-semibold text-gray-600 mb-4">No products found</p>
+      <img src="/images/no-products.png" alt="No Products" className="w-60 h-60 object-cover" />
+    </div>
+  )
+)}
+
       </div>
     </div>
   );

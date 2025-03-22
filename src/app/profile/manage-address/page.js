@@ -8,6 +8,8 @@ import "@/styles/Address.css";
 import { FaEllipsisV } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
+
 
 const edit = "/Assets/editicon.svg";
 const emptyaddress = "/Assets/emptyaddress.svg";
@@ -15,8 +17,12 @@ const emptyaddress = "/Assets/emptyaddress.svg";
 export default function ManageAddresses() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isAddressOpen, setIsAddressOpen] = useState(false);
+    const [selected, setSelected] = useState("Home");
+
+    
   const [addresses, setAddresses] = useState([]);
   const [activeModalIndex, setActiveModalIndex] = useState(null);
+  const [editingAddressId, setEditingAddressId] = useState(null);
 
 
   // const [token, setToken] = useState("");
@@ -50,7 +56,7 @@ export default function ManageAddresses() {
 
 
   const initialFormData = {
-    type: "",
+    type: "Home",
     name: "",
     mobile: "",
     flatOrHouseNo: "",
@@ -58,7 +64,7 @@ export default function ManageAddresses() {
     landmark: "",
     city: "",
     state: "",
-    country: "",
+    country: "India",
     zip: "",
     location: {
       latitude: 0,
@@ -67,24 +73,83 @@ export default function ManageAddresses() {
   }
 
   const [formData, setFormData] = useState(initialFormData);
-  const [showForm, setShowForm] = useState(false);
 
   const handleAddressToggle = () => {
     setIsAddressOpen(!isAddressOpen);
   };
 
-  const handleDeleteAddress = (id) => {
-    setAddresses(addresses.filter((address) => address.id !== id));
+  const handleDeleteAddress = async (addressId) => {
+    try {
+      const token = typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
+      if (!token) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "User token is missing.",
+          confirmButtonColor: "#d33",
+        });
+        return;
+      }
+
+      // Show confirmation alert before deleting
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to recover this address!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      if (result.isConfirmed) {
+        const response = await axios.delete(`${BASE_URL}/profile/delete-address`, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { addressId: addressId },
+        });
+
+
+
+        // Show success alert
+   const result =  await Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "Address deleted successfully!",
+          confirmButtonColor: "#d33",
+        });
+
+        if(result.isConfirmed){
+          window.location.reload();
+        }
+// window.location.reload();
+        // fetchAddress();
+      }
+    } catch (error) {
+      console.error("Error deleting address:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! Please try again.",
+        confirmButtonColor: "#d33",
+      });
+    }
   };
 
+  const handleEditAddress = (address) => {
+    setIsAddressOpen(!isAddressOpen);
+    setEditingAddressId(address._id);
+    setFormData({ ...address });
+    setSelected(address.type);
 
+  };
 
   return (
     <>
       <h2 className='item-header'>Manage Addresses</h2>
-
+      <ToastContainer />
       <div className='manage-addresses-container'>
-        {addresses?.map((address, index) => (
+        {addresses.length >0 ?
+        addresses?.map((address, index) => (
           <div key={address.id} className='address-item'>
             <div className='address-header'>
               <span className='delivers-to'>DELIVERS TO</span>
@@ -97,7 +162,7 @@ export default function ManageAddresses() {
               />
 
               {activeModalIndex === index && (
-                <div className="absolute right-0 top-[30%] left-[10%] w-32 bg-white border shadow-lg rounded-md p-2 z-50">
+                <div className="absolute right-0 top-[30%] left-[85%] w-32 bg-white border shadow-lg rounded-md p-2 z-50">
                   <button
                     className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-200"
                     onClick={() => handleEditAddress(address)}
@@ -122,19 +187,31 @@ export default function ManageAddresses() {
               <p>({address.zip})</p>
             </div>
           </div>
-        ))}
-        <ToastContainer />
+        )):(
+          <>
+
         <div className="flex flex-col items-center justify-center h-full w-full">
           <div className="w-[50%] flex flex-col items-center text-center">
             <img src={emptyaddress} alt="No Address Found" className="mb-4" />
             {/* <h1 className="font-semibold text-lg">No address added</h1> */}
           </div>
-          <button className="add-address-button mt-4" onClick={handleAddressToggle}>
+        </div>
+        </>
+        )}
+        <button className=" items-center justify-center add-address-button mt-4" onClick={handleAddressToggle}>
             Add Address
           </button>
-        </div>
 
-        <AddressSidebar isOpen={isAddressOpen} onClose={handleAddressToggle} />
+        <AddressSidebar isOpen={isAddressOpen} 
+        onClose={handleAddressToggle} 
+        setEditingAddressId={setEditingAddressId} 
+        editingAddressId={editingAddressId} 
+        setSelected={setSelected} 
+        selected={selected} 
+        setFormData={setFormData}
+        formData={formData} 
+        initialFormData={initialFormData}
+        setActiveModalIndex={setActiveModalIndex}/>
 
 
       </div>

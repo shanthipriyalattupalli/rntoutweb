@@ -529,7 +529,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                           </div>
                         </label>
 
-                        <div>
+                        <div className="flex gap-2 justify-center items-center">
                           <h5 className="delivery-to">DELIVERS TO</h5>
                           <span>{address.type}</span>
                         </div>

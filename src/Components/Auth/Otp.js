@@ -98,14 +98,10 @@ useEffect(() => {
   
       localStorage.setItem("userToken", response.data.token);
       localStorage.setItem("userId", user.id);
-      localStorage.setItem("userName", user.name || ""); // Ensuring it's never null
-      localStorage.setItem("userEmail", user.email);
       localStorage.setItem("role", user.role);
 
       
       Cookies.set("userId", user.id, { expires: 7, secure: true, sameSite: "Strict" });
-      Cookies.set("userName", user.name, { expires: 7, secure: true, sameSite: "Strict" });
-      Cookies.set("userEmail", user.email, { expires: 7, secure: true, sameSite: "Strict" });
       Cookies.set("userToken", response.data.token, { expires: 7, secure: true, sameSite: "Strict" });
       
       if (!profilepic) {

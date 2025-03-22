@@ -24,63 +24,70 @@ import { FileDigitIcon } from 'lucide-react';
 
 const buttonsData = [
   { id: 1, title: "Profile", icon: <FaUser />, route: "/profile" },
-  { id: 2, title: "Orders", icon: <FiShoppingBag />, route: "/profile/orders" },
+  { id: 2, title: "Profile Kyc", icon: <FaUser />, route: "/profile/kyc" },
   {
     id: 3,
+    title: "Business Kyc",
+    icon: <FiShoppingBag />,
+    route: "/profile/business-information/kyc",
+  },
+  { id: 4, title: "Orders", icon: <FiShoppingBag />, route: "/profile/orders" },
+  {
+    id: 5,
     title: "Business Information",
     icon: <FiShoppingBag />,
     route: "/profile/business-information/add-business",
   },
-  { id: 4, title: "Products", icon: <GrCubes />, route: "/profile/products" },
+  { id: 6, title: "Products", icon: <GrCubes />, route: "/profile/products" },
   {
-    id: 5,
+    id: 7,
     title: "Favorites",
     icon: <MdOutlineBookmarks />,
     route: "/profile/favorites",
   },
   {
-    id: 6,
+    id: 8,
     title: "Digital Wallet",
     icon: <BiWallet/>,
     route: "/profile/digitalwallet",
   },
   {
-    id: 7,
+    id: 9,
     title: "Notifications",
     icon: <MdOutlineNotificationsActive />,
     route: "/profile/notifications",
   },
   {
-    id: 8,
+    id: 10,
     title: "Manage Addresses",
     icon: <HiOutlineLocationMarker />,
     route: "/profile/manage-address",
   },
   {
-    id: 9,
+    id: 11,
     title: "Help & Support",
     icon: <IoIosHelpCircleOutline />,
     route: "/profile/support",
   },
   {
-    id: 10,
+    id: 12,
     title: "About us",
     icon: <IoMdInformationCircleOutline />,
     route: "/profile/aboutus",
   },
   {
-    id: 11,
+    id: 13,
     title: "Terms and conditions",
     icon: <GrNotes />,
     route: "/profile/terms-and-conditions",
   },
   {
-    id: 12,
+    id: 14,
     title: "Privacy Policy",
     icon: <BsShieldCheck />,
     route: "/profile/privacy-policy",
   },
-  { id: 13, title: "Log Out", icon: <MdOutlineLogout />, route: "/" },
+  { id: 15, title: "Log Out", icon: <MdOutlineLogout />, route: "/" },
 ];
 
 function Sidebar() {

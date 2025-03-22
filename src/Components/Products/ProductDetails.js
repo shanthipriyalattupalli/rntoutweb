@@ -52,7 +52,7 @@ const upgrading = '/Assets/upgrading.svg';
 const sample = '/Assets/Sample.png';
 
 
-const ProductPage = ({ setIsModelOpen, productId,product,rentalPrice,rentalAvailability,otherDetail,images }) => {
+const ProductPage = ({ setIsModelOpen, productId, product, rentalPrice, rentalAvailability, otherDetail, images }) => {
     const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
     const [quantity, setQuantity] = useState(1);
     const [selectedDuration, setSelectedDuration] = useState("monthly");
@@ -125,6 +125,11 @@ const ProductPage = ({ setIsModelOpen, productId,product,rentalPrice,rentalAvail
         : [];
 
 
+    const periodMapping = {
+        quarterly: "3 Months",
+        semiannual: "6 Months",
+        annual: "Year",
+    };
 
     return (
         <>
@@ -157,14 +162,15 @@ const ProductPage = ({ setIsModelOpen, productId,product,rentalPrice,rentalAvail
                 <div className='space-y-2 w-full'>
                     <h1 className='text-2xl font-bold'>{product.title}</h1>
                     <div>
-                        <h3 className='font-medium mb-3 text-sm'>SELECT DURATION</h3>
+                        {/* <h3 className='font-medium mb-3 text-sm'>SELECT DURATION</h3> */}
                         <div className='grid grid-cols-2 md:grid-cols-3  gap-3 bg-white'>
                             {rentalPrice.map((price) => (
                                 <button
                                     key={price._id}
                                     className={`flex flex-col items-center justify-center px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 rounded-lg border text-center w-full sm:w-auto "`}
                                 >
-                                    <div className='text-[10px] sm:text-xs md:text-sm'>{price.period}</div>
+                                    {periodMapping[price.period] || price.period.charAt(0).toUpperCase() + price.period.slice(1)}
+
                                     <div className='font-bold text-sm sm:text-md md:text-sm'>₹{price.price}</div>
                                 </button>
                             ))}

@@ -198,7 +198,7 @@ const ProductItem = ({ product }) => {
       <div className="2xl:w-full xl:w-full xl:h-[436px] bg-white rounded-lg border border-slate-200"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
-        <div className="relative rounded-xl">
+        <div className="relative rounded-t-lg">
           <div className="border-b-2 border-bottom-color: rgb(209 213 219 / var(--tw-border-opacity, 1))">
             {isHovered ? (
               <>
@@ -245,7 +245,7 @@ const ProductItem = ({ product }) => {
                         <Image
                           src={img}
                           alt={`${title} - ${index + 1}`}
-                          className="w-full h-[220px] object-cover rounded-lg"
+                          className="w-full h-[220px] object-cover rounded-t-lg"
                           width={308}
                           height={220}
                         />
@@ -259,7 +259,7 @@ const ProductItem = ({ product }) => {
                 <Image
                   src={images[0]}
                   alt={title}
-                  className="w-full h-[220px] object-cover rounded-lg"
+                  className="w-full h-[220px] object-cover rounded-t-lg"
                   width={308}
                   height={220}
                 />
