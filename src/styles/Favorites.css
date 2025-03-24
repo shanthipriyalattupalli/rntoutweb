@@ -129,6 +129,17 @@
     top: 20px;
 }
 
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  
+  .animate-blink {
+    animation: blink 1s infinite;
+  }
+  
+
 @media (min-width: 320px) and (max-width: 769px) {
     .products-container {
         width: 100%;

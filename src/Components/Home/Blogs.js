@@ -2,11 +2,15 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+const left = '/Assets/leftarrow.svg';
+
 
 const Blog = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [blogs, setBlogs] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(0);
+
   const [itemsPerPage, setItemsPerPage] = useState(4); // Default 4 items per slide
   const router = useRouter();
   const token = (typeof window !== "undefined") ? localStorage.getItem("userToken") : null;
@@ -80,23 +84,37 @@ const Blog = () => {
               <div key={index} className='bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden'>
                 <img src={blog.images} alt={blog.title} className='w-full h-40 2xl:h-[350px]' />
                 <div className='p-4'>
-                  <h3 className='text-lg font-medium text-gray-800 mb-2'>{blog.title}</h3>
-                  <p className='text-gray-600 text-sm mb-4 line-clamp-3'>{blog.description}</p>
-                  <button onClick={() => router.push(`/Blogs/${blog._id}`)} className='text-blue-500 hover:text-blue-700 text-sm font-medium'>
+                  <div className="h-[82px]">
+                  <h3 className='h-[40px] text-[14px] font-medium text-gray-800 mb-2'>{blog.title}</h3>
+                  <p className='h-[36px] text-gray-600 text-[12px] mb-4 line-clamp-2'>{blog.description}</p>
+                  </div>
+                  <div className="flex justify-center pt-3 ">
+                  <button onClick={() => router.push(`/Blogs/${blog._id}`)} className='text-blue-500 hover:text-blue-700 text-[12px] jusify-center font-medium'>
                     Read More
                   </button>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Carousel Navigation Buttons */}
-          <button onClick={prevSlide} className='absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full'>
+          {/* <button onClick={prevSlide} className='absolute left-[46px] top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full'>
             &#8592;
           </button>
-          <button onClick={nextSlide} className='absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full'>
+          <button onClick={nextSlide} className='absolute right-[46px] top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full'>
             &#8594;
-          </button>
+          </button> */}
+          <button
+              className={`absolute left-2 sm:left-[3rem] md:left-[3rem] lg:left-[3rem] top-1/2 transform -translate-y-1/2 z-10`}
+              onClick={prevSlide}
+            >
+              <img src={left} alt="Previous" className="rotate-360" />
+            </button>
+            <button className={`absolute right-2  sm:right-[3rem] md:right-[3rem] lg:right-[3rem] top-1/2 transform -translate-y-1/2 z-20 `} 
+            onClick={nextSlide} >
+             <img src={left} alt="Next" className="rotate-180 " />
+             </button>
 
           {/* Carousel Dots */}
           <div className='absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2'>

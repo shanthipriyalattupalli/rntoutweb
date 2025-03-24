@@ -497,7 +497,7 @@ console.log(response,"resonde of paymnet")
 
                 <div className="flex justify-between items-center">
                   <div>
-                    <p className="text-base sm:text-lg font-semibold text-[#2F6FED]">
+                    <p className="text-base sm:text-md font-semibold text-[#2F6FED]">
                       ₹{item.unitPrice}/{periodMapping[item.rentalPeriod] || item.rentalPeriod.charAt(0).toUpperCase() + item.rentalPeriod.slice(1)}
 
                     </p>

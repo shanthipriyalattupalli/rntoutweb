@@ -9,6 +9,7 @@ const favorited = "/Assets/favoritedicon.svg";
 
 export const Images = ({ product, productId }) => {
   const images = product.images;
+  const isFavorites=product.isFavorite
 
 
   const token = Cookies.get("userToken");
@@ -16,7 +17,7 @@ export const Images = ({ product, productId }) => {
 
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(isFavorites);
   const [selectedImage, setSelectedImage] = useState(0);
 
   const handleAddToFavorites = async () => {

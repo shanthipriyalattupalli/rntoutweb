@@ -310,7 +310,7 @@ export default function BusinessInformation2() {
               <div className='back-business' onClick={() => router.back()}>
                 Business Information
               </div>
-              <a className="kyc-btn" onClick={() => router.push("/profile/business-information/Kyc")} >Business KYC ?</a>
+              <a className="kyc-btn" onClick={() => router.push("/profile/business-information/kyc")} >Business KYC ?</a>
               <h3 className="cursor-pointer text-blue-400" onClick={toggleEdit}>Edit Details</h3>
             </h2>
             <div className="flex justify-center bg-[rgba(7,7,7,0.05)]">

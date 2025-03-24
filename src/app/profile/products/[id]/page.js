@@ -158,6 +158,7 @@ export default function ProductInformation2() {
       const response = await axios.get(`${BASE_URL}/variants/${productId}`);
 
       const data = response.data;
+      console.log(data,"response in product")
       setProduct(data)
       setImages(response.data.images)
 
@@ -188,14 +189,14 @@ export default function ProductInformation2() {
             </h2>
             <p className="font-semibold">Available Stock: {product.stockQuantity}</p>
            {product.averageRating && <p>Rating & Reviews: ⭐{product.averageRating} </p>}
-            <a
+ {product?.isApproved === true &&           <a
               className='view-details-link'
               onClick={() => {
                 router.push(`/Products/${productId}?id=${productId}`);
               }}
             >
               View all product details
-            </a>
+            </a>}
           </div>
         </div>
 

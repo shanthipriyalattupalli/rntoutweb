@@ -1,6 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
+import ProductCard from "@/Components/Shimmer/ProductCard";
 
 
 // import "@/styles/ProductInformation.css";
@@ -17,6 +18,7 @@ import Link from "next/link";
 const kycimage="/Assets/kyc.svg"
 const logo = "/Assets/Rntout_Logo.png";
 import Cookies from "js-cookie";
+const emptyproducts = "/Assets/emptyproducts.svg";
 
 
 export default function Dashboard({ products }) {
@@ -32,12 +34,14 @@ export default function Dashboard({ products }) {
     const [owner, setOwner] = useState({});
     const [images, setImages] = useState([]);
     const [relatedItems, setRelatedItems] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const kyc =Cookies.get("kycstatus");
 
 
   const fetchUserProducts = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`${BASE_URL}/variants/userVariants`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -45,6 +49,9 @@ export default function Dashboard({ products }) {
 
     } catch (error) {
       console.error("Error fetching products:", error);
+    }
+    finally {
+      setLoading(false); // Hide shimmer after loading
     }
   }
 
@@ -125,13 +132,13 @@ const notApprovedCount = userProducts.filter(product => !product.isApproved).len
           <div className='price-section'>
             <div>
               <div className='total-earning'>TOTAL PRODUCTS : {userProducts.length}</div>
-              <div className="joined-date">
+{userProducts[0]?.owner?.createdAt &&              <div className="joined-date">
                 Joined at {new Date(userProducts[0]?.owner?.createdAt).toLocaleDateString("en-US", {
                   month: "short",
                   day: "2-digit",
                   year: "numeric",
                 }).replace(",", "").replace(/(\d)(st|nd|rd|th)/, "$1th")}
-              </div>
+              </div>}
 
             </div>
   
@@ -153,10 +160,13 @@ const notApprovedCount = userProducts.filter(product => !product.isApproved).len
 </div>
 
 ):(
+ loading?
+<Suspense fallback={<ProductCard/>}></Suspense>:
+
   userProducts && userProducts.length > 0 ? (
     <div className='items-grid'>
       {userProducts.map((item) => (
-        <div className='item-card' key={item._id}>
+        <div className='item-card' key={item._id} >
           <div className="action-menu2">
             {item.isApproved ? (
               <span className="px-2 py-1 bg-green-700 font-xl text-sm text-white rounded-full">Approved</span>
@@ -165,7 +175,17 @@ const notApprovedCount = userProducts.filter(product => !product.isApproved).len
             )}
           </div>
 
-          <img src={item.images[0]} alt={item.title} className='item-image' />
+ <img
+  src={item.images[0]} 
+  alt={item.title} 
+  className='item-image cursor-pointer' 
+  onClick={() => {
+    fetchProductById(item._id);
+    setProductId(item._id);
+    setIsdetailsOpen(true);
+  }}
+/>
+
 
           <div className='item-card-details'>
             <div className='item-det-section'>
@@ -215,11 +235,19 @@ const notApprovedCount = userProducts.filter(product => !product.isApproved).len
         </div>
       ))}
     </div>
+    
   ) : (
-    <div className="flex flex-col items-center justify-center">
-      <p className="text-lg font-semibold text-gray-600 mb-4">No products found</p>
-      <img src="/images/no-products.png" alt="No Products" className="w-60 h-60 object-cover" />
-    </div>
+    <div className="flex flex-col items-center justify-center w-80 mx-auto h-[500px] text-center">
+    <img
+      src={emptyproducts}
+      alt="No products available"
+      className="w-full animate-float"
+    />
+    <span className="pt-10 font-medium text-xl">No Rental Items found</span>
+    <span className="font-poppins font-normal text-[12px] leading-[18px] tracking-normal text-center text-[rgba(7,7,7,0.8)]">
+      No product found in this category so meanwhile you can explore our other categories.
+    </span>
+  </div>
   )
 )}
 

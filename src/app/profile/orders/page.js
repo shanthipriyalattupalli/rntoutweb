@@ -8,6 +8,8 @@ import { FaTruck } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { MdPayments } from "react-icons/md";
 import CancelOrder from "../../../Components/Orders/CancelOrder";
+const emptycart = "/Assets/emptycart.svg";
+
 
 import OrderItem from "@/Components/OrderItem";
 
@@ -148,7 +150,8 @@ const [isOn, setIsOn] = useState(false);
 
       </div>
 
-{isOn ? orderItems.map((orderItem,index) => (
+{isOn ?
+orderItems.length > 0 ? orderItems.map((orderItem,index) => (
         <div class="order-item" key={orderItem._id}>
           <div className="order-header">
             <span>ID: {orderItem._id}</span>
@@ -225,9 +228,16 @@ const [isOn, setIsOn] = useState(false);
             </p>}
           </div>
         </div>
-      )):     
+      )):            <div className="flex flex-col justify-center items-center h-screen">
+      <img src={emptycart} className="w-1/3 h-1/3" />
+      <h1 className="text-lg font-semibold">Empty Orders</h1>
+      <span className="px-6 py-4 text-center">
+        You haven’t placed any item in your cart. To add items, click 
+        <a href="/" className="text-md font-semibold text-blue-600">  Browse Products</a>.
+      </span>
+    </div>:     
       
-      orders.map((order,index) => (
+      orderItems.length > 0 ?     orders.map((order,index) => (
         <div class="order-item" key={order._id}>
           <div className="order-header">
             <span>ID: {order._id}</span>
@@ -327,7 +337,15 @@ const [isOn, setIsOn] = useState(false);
             </p>}
           </div>
         </div>
-      ))
+      )) : <div className="flex flex-col justify-center items-center h-screen">
+  <img src={emptycart} className="w-1/3 h-1/3" />
+  <h1 className="text-lg font-semibold">Empty Orders</h1>
+  <span className="px-6 py-4 text-center">
+    You haven’t placed any item in your cart. To add items, click 
+    <a href="/" className="text-md font-semibold text-blue-600">  Browse Products</a>.
+  </span>
+</div>
+
 
 }
 

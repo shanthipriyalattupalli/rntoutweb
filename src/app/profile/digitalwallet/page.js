@@ -1,4 +1,11 @@
 import React from "react";
+import axios from "axios";
+import { formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";
+import { cookies } from "next/headers";
+
+const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL
+
 
 const transactions = [
   { id: 1, name: "John Doe", number: "#123456789", duration: "2 days", amount: 1000, type: "credit", date: "16 Sep 2023", time: "11:21 AM" },
@@ -13,7 +20,25 @@ const transactions = [
 ];
 
 
-const WithdrawalRequest = () => {
+const fetchWalletTransaction=async(userId)=>{
+  try {
+    const response=await axios.get(`${BASE_URL}/business-info/sellerInfo?ownerId=${userId}`);
+    console.log(response.data,"response of wallet");
+    return response.data?.data?.businessInfo
+
+
+    
+  } catch (error) {
+    console.log(error,"error in wallet")
+    
+  }
+}
+
+const WithdrawalRequest = async() => {
+  const cookieStore=cookies();
+  let userId = cookieStore.get(`userId`)?.value;
+  console.log(userId,"userId")
+  const transactionsWallet=await fetchWalletTransaction(userId);
   return (
     <div className="mx-auto p-4 bg-white">
       {/* Header */}
@@ -21,7 +46,7 @@ const WithdrawalRequest = () => {
         <h2 className="text-blue-600 font-semibold text-lg">Withdrawal Request</h2>
         <div className="flex gap-2 items-center justify-center">
         <span className="text-gray-800 font-bold text-lg">
-          Balance: <span className="text-blue-600">₹35,000</span>
+          Balance: <span className="text-blue-600">₹{transactionsWallet?.walletBalance ? transactionsWallet?.walletBalance :"0"}</span>
         </span>
         <button className="bg-red-600 p-2 text-white border border-red-300 rounded-lg font-semibold">
          Withdrawal
@@ -29,27 +54,26 @@ const WithdrawalRequest = () => {
         </div>
       </div>
 
-      {/* Transaction List (Filtered for Credit Transactions) */}
       <div className="mt-4 space-y-4">
-        {transactions
-          .filter(transaction => transaction.type === "credit") // Filter only credit transactions
-          .map((transaction) => (
+        {transactionsWallet?.walletTransactions
+          .map((transaction) => {
+            const duration = formatDistanceToNow(new Date(transaction.createdAt), { addSuffix: true });
+            return(
             <div key={transaction.id} className="flex items-center justify-between border border-[#E1E6EF] p-4 rounded-lg shadow-sm">
-              {/* Left Side */}
               <div>
-                <h3 className="text-gray-800 font-semibold">{transaction.name}</h3>
-                <p className="text-gray-500 text-sm">{transaction.number} • Duration: {transaction.duration}</p>
+                <h3 className="text-gray-800 font-semibold">{transaction.productId}</h3>
+                <p className="text-gray-500 text-sm">{transaction.productId} • Duration: {duration}</p>
               </div>
-
-              {/* Right Side */}
               <div className="text-right">
                 <span className="text-sm font-semibold text-green-500">
-                  + ₹{transaction.amount}.0
+                  + ₹{transaction.amount}
                 </span>
-                <p className="text-gray-500 text-xs">{transaction.date} • {transaction.time}</p>
+                <div className="text-gray-500 text-xs">
+  {format(new Date(transaction.createdAt), "dd-MM-yyyy")} • {format(new Date(transaction.createdAt), "hh:mm a")}
+</div>
               </div>
             </div>
-          ))}
+  )})}
       </div>
     </div>
   );

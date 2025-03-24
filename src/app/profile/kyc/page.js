@@ -144,9 +144,9 @@ const KYCVerification = () => {
                                 </>
                             )}
                         </label>
-                        <p className="text-xs text-gray-500 mt-1">
+                        {/* <p className="text-xs text-gray-500 mt-1">
                             Image size should be less than 2MB
-                        </p>
+                        </p> */}
                     </div>
                 </div>
 

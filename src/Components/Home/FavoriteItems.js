@@ -15,7 +15,7 @@ const cartIconHov = "/Assets/Icons/add-to-cart-white.png";
 const stars = "/Assets/stars.svg";
 const favIcon = "/Assets/bookmarks_line.svg"
 const Badge = '/Assets/Offer Badge.svg';
-const favorited='/Assets/favoritedicon.svg'
+const favorited = '/Assets/heart_fill.svg'
 import Link from "next/link";
 // import DeliveryIcon from '/public/Assets/Icons/delivery.png';
 // import AvailabilityIcon from '/public/Assets/Icons/availability.png';
@@ -30,10 +30,10 @@ const customStyles = `
   .cart-btn {    font-size: 13px;    font-weight: 500;  }
   .cart-price {    color: #FF2D55;  }`;
 
-const FavoriteItem = ({ product,fetchFavorites}) => {
+const FavoriteItem = ({ product, fetchFavorites }) => {
   const swiperRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
-    const [selectedRentalPeriod, setSelectedRentalPeriod] = useState("daily");
+  const [selectedRentalPeriod, setSelectedRentalPeriod] = useState("daily");
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   // const { imgSrc, name, price, dateRange, availability, stock } = product;
@@ -85,12 +85,12 @@ const FavoriteItem = ({ product,fetchFavorites}) => {
 
 
   const startdate = new Date(rentalAvailability?.startDate);
-const endDate = new Date(rentalAvailability?.endDate);
+  const endDate = new Date(rentalAvailability?.endDate);
 
-// Calculate the difference in months
-const monthsDifference =
-  (endDate.getFullYear() - startdate.getFullYear()) * 12 +
-  (endDate.getMonth() - startdate.getMonth());
+  // Calculate the difference in months
+  const monthsDifference =
+    (endDate.getFullYear() - startdate.getFullYear()) * 12 +
+    (endDate.getMonth() - startdate.getMonth());
 
 
   const Details = [
@@ -170,8 +170,8 @@ const monthsDifference =
   const startDate = new Date(rentalAvailability?.startDate);
 
   const isOneWeekBefore =
-  startDate &&
-  currentDate.getTime() - startDate.getTime() === 7 * 24 * 60 * 60 * 1000;
+    startDate &&
+    currentDate.getTime() - startDate.getTime() === 7 * 24 * 60 * 60 * 1000;
   return (
 
     <div>
@@ -254,13 +254,14 @@ const monthsDifference =
                 <span className="ml-1">4.5</span>
               </p> */}
 
-              <p
-                className="cursor-pointer"
-                onClick={() => handleRemoveFavorites()}
+              <button
+                className="cursor-pointer w-8 h-8 rounded-full flex items-center justify-center"
+                onClick={handleRemoveFavorites}
+                style={{ backgroundColor: "rgba(255, 45, 85, 1)" }}
               >
+                <img src={favorited} className="w-5" alt="Favorite icon" />
+              </button>
 
-                <img src={favorited} className="w-7" alt="Favorite icon" />
-              </p>
             </div>
             <div className="absolute top-[0px] left-4 z-10 flex flex-col items-center space-x-2">
               {isOneWeekBefore && (
@@ -395,7 +396,7 @@ const monthsDifference =
                     onClick={() => setSelectedRentalPeriod(detail.period)}
                   >
                     <span className={`block font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"}`}>
-                    {periodMapping[detail.period] || detail.period.charAt(0).toUpperCase() + detail.period.slice(1)}
+                      {periodMapping[detail.period] || detail.period.charAt(0).toUpperCase() + detail.period.slice(1)}
                     </span>
                     <span className={`block text-lg font-[500] text-[16px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-black"}`}>
                       ₹
@@ -408,9 +409,9 @@ const monthsDifference =
               {/* Additional rows like "6 Months" */}
               <div className="mt-2">
                 <div className="text-blue-500 font-[500] text-center text-[16px]">
-                  {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}  
+                  {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}
                   <span className="text-center text-gray-600 text-[16px] font-[500]"> Available
-                </span>
+                  </span>
                 </div>
 
               </div>

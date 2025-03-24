@@ -8,12 +8,14 @@ import SearchInput from "../SearchInput";
 import { useRouter, usePathname } from "next/navigation";
 import { MAP_API } from '../../services/GMap'
 import Login from "../Auth/Login";
+import Subscription from "../Home/Subscription";
 const logo = "/Assets/Rntout_Logo.png";
 const Photo = "/Assets/Photo.png";
 const locations = '/Assets/location_fill.svg'
 const nearby = '/Assets/nearby.svg'
 const cart = '/Assets/Button.svg'
 const cartitems = '/Assets/cartitems.svg'
+const subscription='/Assets/subscription.svg'
 
 
 
@@ -23,6 +25,7 @@ function Header() {
 
   const [locationError, setLocationError] = useState(null);
   const [locationName, setLocationName] = useState("");
+  const [isSubscription,setIsSubscription]=useState(false)
   // const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
   // const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   // const name = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
@@ -213,7 +216,7 @@ function Header() {
   const handleSuggestionClick = (variant) => {
     setSearchValue(variant.title);
     setShowSuggestions(false); // Close suggestions
-    router.push(`/Products/${variant.title}?id=${variant._id}`);
+    router.push(`/Products/${variant._id}?id=${variant._id}`);
 
 
   };
@@ -283,7 +286,7 @@ function Header() {
           </div>
 
           {/* Distance Selection */}
-          <div className="hidden lg:flex md:mr-2 items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
+          <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
             <Image src={nearby} alt="location" width={18} height={18} />
             <select className="bg-transparent text-sm cursor-pointer md:mr-3" value={selectedDistance} onChange={handleDistanceChange}>
               <option className="cursor-pointer" value="20">20 km</option>
@@ -295,6 +298,22 @@ function Header() {
             </select>
           </div>
 
+
+<div className="border border-orange-400 rounded-lg p-2">
+  <Image src={subscription} width={20} height={20} alt="subscription" onClick={()=>setIsSubscription(true)}/>
+</div>
+
+{isSubscription && (
+  <div className="modal-overlay">
+    <div className="modal-content" onClick={(e)=>e.stopPropagation()}>
+      <button className="close-button" onClick={() => setIsSubscription(false)}>
+        ✕
+      </button>
+ 
+      <Subscription setIsSubscription={setIsSubscription}/>
+    </div>
+  </div>
+)}
           {/* Cart Button */}
           <div className="relative cursor-pointer" onClick={() => router.push("/Cartpage")}>
             {cartItems > 0 ? (
@@ -331,7 +350,7 @@ function Header() {
               >
                 <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" />
                 <p className="hidden sm:flex md:flex text-sm truncate max-w-[80px]">
-                  {name === undefined ? "Hi!" : name}
+                  {name === undefined || name==="undefined" ? "Hi!" : name}
                 </p>
 
 

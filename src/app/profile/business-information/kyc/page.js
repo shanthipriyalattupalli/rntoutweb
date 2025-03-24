@@ -1,193 +1,109 @@
-'use client';
-import { useState, useRef, useEffect } from "react";
+"use client";
+import { useState } from "react";
 import axios from "axios";
-import { FaCloudUploadAlt, FaCheckCircle, FaTimes } from "react-icons/fa";
-import { useRouter } from 'next/navigation';
-import { IoMdArrowRoundBack } from "react-icons/io";
-import '../../../../styles/BusinessInformation2.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const KYCVerification = () => {
-    const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-    const [aadharImage, setAadharImage] = useState("");
-    const [Preview, setIsPreview] = useState(null);
-    const [isVerifying, setIsVerifying] = useState(false);
-    const [isKycSuccess, setIsKycSuccess] = useState();
-    const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
-    const fileInputRef = useRef(null); 
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+  const token = Cookies.get("userToken");
 
-    // Function to handle file upload
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            setIsPreview(URL.createObjectURL(file)); 
-            setAadharImage(file);
+  const [formData, setFormData] = useState({
+    gstin: "",
+  });
+
+  const [gstDetails, setGstDetails] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // Handle input change
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleGstVerify = async () => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/kyc/verify/gstin`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-    };
+      );
+      console.log(response, "response of gst");
 
-    // Function to remove uploaded image
-    const removeImage = () => {
-        setIsPreview(null);
-        setAadharImage(null);
-    };
+      if (response.data && response.data.success) {
+        setGstDetails(response.data.data);
+        setErrorMessage("");
+        toast.success("GST Verified Successfully!");
+      } else {
+        setGstDetails(null);
+        setErrorMessage("Invalid GST Number. Please try again.");
+        toast.error("Invalid GST Number!");
+      }
+    } catch (error) {
+      console.error(error, "error in gst");
+      setGstDetails(null);
+      setErrorMessage("Something went wrong. Please try again.");
+      toast.error("Something went wrong!");
+    }
+  };
 
-    // Function to handle KYC upload
-    const handleUploadKyc = async () => {
-        if (!aadharImage) {
-            toast.error("Aadhaar image is required");
-            return;
-        }
+  return (
+    <>
+      <h2 className="item-header">
+        <ToastContainer />
+        <div className="flex items-center gap-2 mr-auto text-left text-gray-700 hover:text-gray-900 cursor-pointer">
+          <a href="/profile">
+            <IoMdArrowRoundBack className="w-5 h-5 text-gray-600" />
+          </a>
+          <span className="text-lg font-bold">KYC Verification</span>
+        </div>
+      </h2>
 
-        setIsVerifying(true);
-        const formData = new FormData();
-        formData.append("aadhaarPhoto", aadharImage);
+      <div className="max-w-md mx-auto p-6 text-center justify-center h-screen">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">
+          GST Verification
+        </h2>
 
-        try {
-            const response = await axios.post(`${BASE_URL}/kyc/aadhaar/verify`, formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-            setIsKycSuccess(response.data.success);
-            fetchAadharKyc()
-            toast.success("KYC Verified Successfully!");
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Verification failed");
-        } finally {
-            setIsVerifying(false);
-        }
-    };
+        <input
+          type="text"
+          placeholder="Enter GST Number"
+          name="gstin"
+          value={formData.gstin}
+          onChange={handleChange}
+          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          onClick={handleGstVerify}
+          className="w-full bg-blue-600 text-white py-2 rounded-md mt-4 hover:bg-blue-700 transition"
+        >
+          Verify GST
+        </button>
+
+        {/* Success Message */}
+        <div className="mt-4 p-4 bg-green-100 rounded-md">
+        <h3 className="text-lg font-semibold text-green-700">GST Details</h3>
+        <p className="text-gray-700"><strong>Business Name:</strong> ABC Pvt Ltd</p>
+        <p className="text-gray-700"><strong>State:</strong> Maharashtra</p>
+        <p className="text-gray-700"><strong>Registration Date:</strong> 01-Jan-2023</p>
+        <p className="text-gray-700"><strong>Status:</strong> Active</p>
+      </div>
+
+      {/* Error Message */}
+      <p className="text-red-500 text-sm mt-2 hidden">
+        Invalid GST Number. Please try again.
+      </p>
 
 
-    const fetchAadharKyc = async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/kyc/aadhaar/details`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            console.log(response.data,"response of aadhar")
-            setIsPreview(response.data.data.aadhaarPhoto);
-            setIsKycSuccess(response.data.data.status);
-            if(response.data.data.status){
-  Cookies.set("kycstatus", response.data.data.status, { expires: 7, secure: true, sameSite: "Strict" });
-                
-            }
-        } catch (error) {
-            console.log(error, "error");
-        }
-    };
-
-    useEffect(() => {
-        fetchAadharKyc();
-    }, []);
-
-    return (
-        <>
-            <h2 className='item-header'>
-                <ToastContainer />
-                <div
-                    className="flex items-center gap-2 mr-auto text-left text-gray-700 hover:text-gray-900 cursor-pointer"
-                    
-                >
-                   <a href="/profile"><IoMdArrowRoundBack className="w-5 h-5 text-gray-600"  /></a> 
-                    <span className="text-lg font-bold">KYC Verification</span>
-                </div>
-            </h2>
-
-            <div className="bg-white rounded-lg p-6">
-                {/* Upload Sections */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
-                    {/* Aadhar Card Upload */}
-                    <div>
-                        <h3 className="text-sm font-semibold text-gray-700 mb-2">
-                            Aadhar Card
-                        </h3>
-                        <span className="text-red font-semibold mb-2">{isKycSuccess === "VERIFIED" ? "":"Note: user can have only 3 changes to upload"}</span>
-                        <label className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center cursor-pointer relative">
-                            {Preview ? (
-                                <>
-                                    <img
-                                        src={Preview}
-                                        alt="Aadhar Preview"
-                                        className="w-full h-40 object-cover rounded-lg"
-                                    />
-                                    {/* Show Remove Button only if status is PENDING */}
-                                    {isKycSuccess !== "VERIFIED" && (
-                                        <button
-                                            onClick={removeImage}
-                                            className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
-                                        >
-                                            <FaTimes />
-                                        </button>
-                                    )}
-                                </>
-                            ) : (
-                                <>
-                                    <FaCloudUploadAlt className="text-blue-500 text-3xl mb-2" />
-                                    <p className="text-gray-600 text-sm">
-                                        Drag your file(s) or{" "}
-                                        <span className="text-blue-600">browse</span>
-                                    </p>
-                                    <p className="text-xs text-gray-500 mt-1">
-                                        Image format: JPEG, PNG, JPG
-                                    </p>
-                                    <input
-                                        type="file"
-                                        accept="image/png, image/jpeg, image/jpg"
-                                        className="hidden"
-                                        onChange={handleFileChange}
-                                    />
-                                </>
-                            )}
-                        </label>
-                        <p className="text-xs text-gray-500 mt-1">
-                            Image size should be less than 2MB
-                        </p>
-                    </div>
-                </div>
-
-                {/* Verification Status */}
-                {isVerifying && (
-                    <div className="flex flex-col items-center justify-center space-y-2">
-                        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                        <p className="text-blue-500 font-medium">Verifying Aadhaar...</p>
-                    </div>
-                )}
-
-                {isKycSuccess === "VERIFIED" && (
-                    <div className="mt-4 flex justify-center">
-                        <span className="flex items-center gap-1 text-green-600 font-medium bg-green-100 px-3 py-1 rounded-md">
-                            <FaCheckCircle /> Verified
-                        </span>
-                    </div>
-                )}
-
-                {isKycSuccess === "PENDING" && (
-                    <div className="mt-4 flex justify-center">
-                        <span className="flex items-center gap-1 text-yellow-600 font-medium bg-yellow-100 px-3 py-1 rounded-md">
-                            <FaCheckCircle /> Pending
-                        </span>
-                    </div>
-                )}
-
-                {/* Show Submit Button only if status is PENDING */}
-                {isKycSuccess !== "VERIFIED" && (
-                    <div className="mt-6 flex justify-center">
-                        <button
-                            onClick={handleUploadKyc}
-                            className="bg-red-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-600 transition"
-                        >
-                            Submit
-                        </button>
-                    </div>
-                )}
-            </div>
-        </>
-    );
+        {/* Error Message */}
+        {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
+      </div>
+    </>
+  );
 };
 
 export default KYCVerification;

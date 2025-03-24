@@ -42,7 +42,7 @@ import ScrollToTop from "@/app/ScrollToTop";
           },
         }
       );
-console.log(response,"response")
+console.log(response.data,"response")
       const data = response.data;
       return response.data;
 
@@ -90,21 +90,18 @@ const services = [
 
 
 
-
-
-  const productDetails = product?.itemDetails
+const itemDetailsArray = product?.itemDetails 
   ? Object.entries(product.itemDetails).map(([key, value]) => ({
-    label: key.charAt(0).toUpperCase() + key.slice(1),
-    value,
-  }))
+      label: key.charAt(0).toUpperCase() + key.slice(1),
+      value,
+    }))
   : [];
 
-  const otherDetails =  product?.itemDetails
-  ? Object.entries( product.itemDetails).map(([key, value]) => ({
-    label: key.charAt(0).toUpperCase() + key.slice(1),
-    value,
-  }))
-  : [];
+
+  const midIndex = Math.ceil(itemDetailsArray.length / 2); 
+
+  const productDetails = itemDetailsArray.slice(0, midIndex); 
+  const otherDetails = itemDetailsArray.slice(midIndex);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

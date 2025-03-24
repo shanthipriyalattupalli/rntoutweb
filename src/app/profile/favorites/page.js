@@ -15,102 +15,59 @@ const pro5 = "/Assets/laptop-5.jpg";
 const hp33 = "/Assets/hp33.png";
 const hp34 = "/Assets/hp34.png";
 const vector = "/Assets/Vector.png";
+import { Heart } from "lucide-react";
 
 export default function Profile({ }) {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
-  const [products,setProducts]=useState([])
-  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const [products, setProducts] = useState([])
+  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
-  const fetchFavorites=async()=>{
+  const fetchFavorites = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/favorites/all`,{
+      const response = await axios.get(`${BASE_URL}/favorites/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-    setProducts(response.data.favoriteItems)
+      setProducts(response.data.favoriteItems)
 
     } catch (error) {
       console.error("Error fetching favorite details:", error);
     }
   };
-    useEffect(() => {
-      if(token){
-        fetchFavorites();
-      }
-  
+  useEffect(() => {
+    if (token) {
+      fetchFavorites();
+    }
+
   }, [token]);
-  
+
 
   return (
     <>
-       <h2 className='item-header'>
-              <div>
-               Favorites
-              </div>
-             
-            </h2>
-      <div className='products-container'>
+      <h2 className='item-header'>
+        <div>
+          Favorites
+        </div>
+
+      </h2>
+      {products.length > 0 ? <div className='products-container'>
         {products?.map((product, index) => (
-          // <div key={product._id} className='product-card'>
-          //   <div className='product-image-container'>
-          //     <img
-          //       src={product.image}
-          //       alt={product.title}
-          //       className='product-image'
-          //       layout='fill'
-          //       objectFit='cover'
-          //     />{" "}
-          //     {/* Use Image component */}
-          //     <div className='badge-icon'>
-          //       <img
-          //         src='/Assets/bookmark.png'
-          //         alt='Bookmark Icon'
-          //         className='book'
-          //         layout='fixed'
-          //         width={20}
-          //         height={20}
-          //       />
-          //     </div>
-          //   </div>
-          //   <div className='product-details'>
-          //     <h3 className='product-title'>{product.title}</h3>
-          //     <p className='product-price'>
-          //       {product.price} <span className='pro-span'>/day</span>
-          //     </p>
-          //     <div className='pro-date'>
-          //       <img
-          //         src='/Assets/hp33.png'
-          //         alt='Calendar Icon'
-          //         className='vector1'
-          //       />
-          //       <p className='product-dates m-0'>{product.dates}</p>
-          //     </div>
-          //     <div className='pro-stock'>
-          //       <img
-          //         src='/Assets/hp34.png'
-          //         alt='Stock Icon'
-          //         className='vector1'
-          //       />
-          //       <p className='product-stock m-0'>
-          //         {product.stockQuantity} stock available
-          //       </p>
-          //     </div>
-          //     <div className='pro-last'>
-          //       <img
-          //         src='/Assets/Vector.png'
-          //         alt='Cart Icon'
-          //         className='vector'
-          //       />
-          //       <button className='add-to-cart-btn'>Add to cart</button>
-          //     </div>
-          //   </div>
-          // </div>
-          // <ProductItem  key={product._id} product={product} />
-          <FavoriteItem key={product._id} product={product} fetchFavorites={fetchFavorites}/>
+          <FavoriteItem key={product._id} product={product} fetchFavorites={fetchFavorites} />
         ))}
-      </div>
+      </div> :
+      <div className="flex flex-col justify-center items-center h-3/4">
+  <span className="text-6xl animate-blink">❤️</span>
+  <span className="text-lg font-semibold">No Favorites Yet</span>
+  <p className="text-center px-6 py-2">
+    Browse our collection and click the ❤️ icon to save your favorite items.
+  </p>
+  <a href="/" className="px-4 py-2 bg-red-500 text-white rounded-md mt-3">
+    Browse Products
+  </a>
+</div>
+}
     </>
   );
 }

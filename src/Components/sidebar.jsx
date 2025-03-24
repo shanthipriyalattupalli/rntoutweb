@@ -7,8 +7,12 @@ import { PiCirclesFourFill } from "react-icons/pi";
 import { FaDigitalTachograph, FaUser } from "react-icons/fa";
 import { BiWallet, BiCreditCardAlt, BiMoney } from "react-icons/bi";
 import { FiShoppingBag } from "react-icons/fi";
+import { AiTwotoneShop } from "react-icons/ai";
+import { TiBusinessCard } from "react-icons/ti";
+import { FaUserShield } from "react-icons/fa";
+import { FaBuilding } from "react-icons/fa";
 import Cookies from 'js-cookie';
-import { GrCubes, GrSettingsOption, GrNotes } from "react-icons/gr";
+import { GrCubes, GrSettingsOption, GrNotes, GrBusinessService } from "react-icons/gr";
 import {
   MdOutlineBookmarks,
   MdOutlineNotificationsActive,
@@ -22,20 +26,22 @@ import {
 import { BsShieldCheck } from "react-icons/bs";
 import { FileDigitIcon } from 'lucide-react';
 
+
+
 const buttonsData = [
   { id: 1, title: "Profile", icon: <FaUser />, route: "/profile" },
-  { id: 2, title: "Profile Kyc", icon: <FaUser />, route: "/profile/kyc" },
+  { id: 2, title: "Profile Kyc", icon: <FaUserShield />, route: "/profile/kyc" },
   {
     id: 3,
     title: "Business Kyc",
-    icon: <FiShoppingBag />,
+    icon: <FaBuilding  />,
     route: "/profile/business-information/kyc",
   },
   { id: 4, title: "Orders", icon: <FiShoppingBag />, route: "/profile/orders" },
   {
     id: 5,
     title: "Business Information",
-    icon: <FiShoppingBag />,
+    icon:<AiTwotoneShop />,
     route: "/profile/business-information/add-business",
   },
   { id: 6, title: "Products", icon: <GrCubes />, route: "/profile/products" },
