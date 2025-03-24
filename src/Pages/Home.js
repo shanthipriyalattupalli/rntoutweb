@@ -147,15 +147,25 @@ const [categoryId,setCategoryId]=useState(true)
   }, []);
 
 
-  const handleCategoryClick =(categoryId)=>{
-    console.log(categoryId,"categoryIdssssssssss")
+  const handleCategoryClick = (categoryId) => {
+    console.log(categoryId, "categoryIdssssssssss");
+    setCategoryId(categoryId);
+    localStorage.setItem("categoryId", categoryId);
+  };
+  
+  useEffect(() => {
+    const storedCategoryId =
+      typeof window !== "undefined" ? localStorage.getItem("categoryId") : null;
+    const defaultCategoryId =
+      storedCategoryId || (categories.length > 0 ? categories[0]._id : null);
+  
+    if (defaultCategoryId) {
+      setCategoryId(defaultCategoryId);
+      localStorage.setItem("categoryId", defaultCategoryId);
+    }
+  }, [categories]);
 
-    setCategoryId(categoryId)
-  }
 
-  useEffect(()=>{
-    setCategoryId(categories[0]?._id)
-  })
   return (
     <main className='tmp-bg'>
       <Banner banners={banners} isLoading={isLoading} />
@@ -163,7 +173,6 @@ const [categoryId,setCategoryId]=useState(true)
       <ProductGrid categories={categories} isLoading={isLoading} categoryIds={handleCategoryClick}/>
       <Products products={categoryProducts[categoryId] || []} categoryId={categoryId} />
       <CuratedCollections />
-
       <ITInfrastructure products={categoryProducts[CATEGORY_IDS.IT_INFRASTRUCTURE] || []} categoryId={CATEGORY_IDS.IT_INFRASTRUCTURE} isLoading={isLoading} />
       <Furniture products={categoryProducts[CATEGORY_IDS.FURNITURE] || []} categoryId={CATEGORY_IDS.FURNITURE} isLoading={isLoading} />
       <PromotionalAd banner={banner[0]} />

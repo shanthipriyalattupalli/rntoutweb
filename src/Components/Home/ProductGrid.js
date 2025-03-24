@@ -20,9 +20,7 @@ const CategorySection = ({ categories, isLoading,categoryIds }) => {
 
   const handleCategoryClick = (categoryId) => {
     categoryIds(categoryId);
-    // localStorage.setItem("categoryId", categoryId);
     setSelectedCategory(categoryId);
-    // window.location.reload();
   };
 
   return (

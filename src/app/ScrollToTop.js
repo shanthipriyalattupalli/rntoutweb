@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Show button when page is scrolled down
   const toggleVisibility = () => {
     if (window.scrollY > 300) {
       setIsVisible(true);
@@ -14,7 +13,7 @@ const ScrollToTop = () => {
     }
   };
 
-  // Scroll to top smoothly
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
