@@ -741,8 +741,10 @@ console.log(formData,"formdata");
         </div>
 
 
-        <div className="mt-4 mb-4 flex flex-col gap-3">
-          <label className="text-[14px] font-semibold">Select Pick up address</label>
+        <div className="mt-10 flex flex-col gap-3">
+          <label className="text-[14px] font-semibold">Select Pick up address 
+          <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+          </label>
           <div className="google-content">
             <LoadScript googleMapsApiKey={MAP_API}>
               <GoogleMap
