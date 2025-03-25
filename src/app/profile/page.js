@@ -240,7 +240,7 @@ console.log(response.data,"profile")
           <img src={avatar} alt="Profile Avatar" className="w-20 h-20 rounded-full border-2" />
 
           <div>
-            <button className={` px-4 py-2 rounded-md text-sm ${isEditable ? "bg-blue-700":"bg-gray-200"}`} onClick={handleButtonClick}  disabled={!isEditable}>
+            <button className={` px-4 py-2 rounded-md text-sm font-md ${isEditable ? "bg-blue-400":"bg-gray-200"}`} onClick={handleButtonClick}  disabled={!isEditable}>
               Edit Image
             </button>
 

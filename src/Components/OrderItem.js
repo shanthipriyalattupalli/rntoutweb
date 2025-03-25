@@ -99,7 +99,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                   <span>{item.quantity} item(s)</span>
                 </p>
                <span className="hidden sm:flex">|</span>
-                {(item.orderStatus === "delivered" || item.orderStatus === "canceled") &&
+                {(item.orderStatus === "delivered") &&
                   Array.isArray(subOrderHistories[item._id]) &&
                   subOrderHistories[item._id].length === 0 && (
                     <a href={`/profile/orders/orderreview/${item._id}`} className="review_cta">
@@ -109,26 +109,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                       Write Product Review
                     </a>
                   )}
-{/* 
-                {(item.orderStatus === "placed" || item.orderStatus === "confirmed" || item.orderStatus === "shipped") && (
-                  <a
-  className="inline-flex w-full sm:w-auto items-center gap-1.5 justify-start no-underline text-red-500 font-medium cursor-pointer text-left"
-  onClick={() => setIsCanceled(true)}
->
-  Cancel Order
-</a>
 
-                )}
-                {isCanceled && (
-                  <div className="modal-overlays" onClick={() => setIsCanceled(false)}>
-                    <div className="modal-contents" onClick={(e)=>e.stopPropagation()}>
-                      <button className="close-button" onClick={() => setIsCanceled(false)}>
-                        ✕
-                      </button>
-                      <CancelOrder setIsCanceled={setIsCanceled} subOrderId={item._id} suborder={item} />
-                    </div>
-                  </div>
-                )} */}
 
                 <button
                   className="text-blue-500 font-semibold sm:px-4 px-0 rounded items-left text-left"

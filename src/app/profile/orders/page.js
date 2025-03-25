@@ -281,7 +281,7 @@ orderItems.length > 0 ? orderItems.map((orderItem,index) => (
             <a href="#" class="download-invoice">
               Download Invoice
             </a>
-            {(order.orderStatus === "placed" || order.orderStatus === "confirmed" || order.orderStatus === "shipped") && (
+            {(order.orderStatus === "placed") && (
                   <a
   className="inline-flex w-full sm:w-auto items-center gap-1.5 justify-start no-underline text-red-500 font-medium cursor-pointer text-left"
   onClick={() => {
