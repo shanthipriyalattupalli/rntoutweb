@@ -102,7 +102,10 @@ useEffect(() => {
 
       
       Cookies.set("userId", user.id, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userName", user.name, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userEmail", user.email, { expires: 7, secure: true, sameSite: "Strict" });
       Cookies.set("userToken", response.data.token, { expires: 7, secure: true, sameSite: "Strict" });
+      
       
       if (!profilepic) {
         localStorage.setItem("profilePic", profile_avatar);

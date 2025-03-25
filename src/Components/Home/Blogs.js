@@ -5,9 +5,8 @@ import axios from "axios";
 const left = '/Assets/leftarrow.svg';
 
 
-const Blog = () => {
+const Blog = ({blogs}) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  const [blogs, setBlogs] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -15,19 +14,6 @@ const Blog = () => {
   const router = useRouter();
   const token = (typeof window !== "undefined") ? localStorage.getItem("userToken") : null;
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/blogs`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setBlogs(response.data.blogs);
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-      }
-    };
-    fetchBlogs();
-  }, []);
 
   // Update `itemsPerPage` based on screen width
   useEffect(() => {

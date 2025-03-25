@@ -45,7 +45,7 @@ function Header() {
   const [cartItems, setCartItems] = useState(0);
   const [locationsList, setLocationsList] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-
+const [subscriptionPlans,setSubscriptionPlans]=useState([])
   const [address, setAddress] = useState({ suburb: "" });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -91,74 +91,98 @@ function Header() {
 
 
 
-
+  const checkLocationPermission = async () => {
+    if ("permissions" in navigator) {
+      try {
+        const permissionStatus = await navigator.permissions.query({ name: "geolocation" });
+  
+        if (permissionStatus.state === "denied" || permissionStatus.state === "prompt") {
+          // If location access is blocked or reset, remove stored values
+          localStorage.removeItem("latitude");
+          localStorage.removeItem("longitude");
+        }
+      } catch (error) {
+        console.error("Error checking location permission:", error);
+      }
+    }
+  };
+  
   const getLocationFromCoordinates = async (lat, lon) => {
     try {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${MAP_API}`
       );
+  
       const locationData = response.data.results;
       if (locationData) {
-        const uniqueLocations = new Set(); // Use Set to store unique location names
+        const uniqueLocations = new Set();
         let locations = [];
-        // Iterate through all results and get address components with both 'political' and 'locality' types
-        locationData.forEach(result => {
-          const matchingComponent = result.address_components.find(component =>
-            component.types.includes('locality') && component.types.includes('political')
+  
+        locationData.forEach((result) => {
+          const matchingComponent = result.address_components.find((component) =>
+            component.types.includes("locality") && component.types.includes("political")
           );
+  
           if (matchingComponent && !uniqueLocations.has(matchingComponent.short_name)) {
-            uniqueLocations.add(matchingComponent.short_name); // Add to Set for uniqueness
-            locations.push(matchingComponent); // Add the matching component to the locations array
+            uniqueLocations.add(matchingComponent.short_name);
+            locations.push(matchingComponent);
           }
         });
-        setLocationsList(locations); // Set the list of unique locations0
+  
+        setLocationsList(locations);
+  
         if (locations.length > 0) {
-          const suburb = locations[0]; // Use the first match for suburb
-
-          setAddress({
-            suburb: suburb.short_name,
-          });
+          const suburb = locations[0];
+          setAddress({ suburb: suburb.short_name });
         } else {
-          setError('Suburb not found.');
+          setError("Suburb not found.");
         }
       } else {
-        setError('Location data not found.');
+        setError("Location data not found.");
       }
       setLoading(false);
     } catch (error) {
-      setError('Failed to fetch location data.');
+      setError("Failed to fetch location data.");
       setLoading(false);
     }
   };
-
-
-
-
+  
   const fetchLocation = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
           setLocation({ latitude, longitude });
+  
+          // Store only if access is granted
           localStorage.setItem("latitude", latitude);
           localStorage.setItem("longitude", longitude);
+  
           await getLocationFromCoordinates(latitude, longitude);
         },
         (err) => {
-          setError('Unable to retrieve your location.');
+          setError("Unable to retrieve your location.");
           setLoading(false);
         }
       );
     } else {
-      setError('Geolocation is not supported by this browser.');
+      setError("Geolocation is not supported by this browser.");
       setLoading(false);
     }
   };
-
-
+  
   useEffect(() => {
     fetchLocation();
+  
+    // Periodically check for permission changes (every 10 seconds)
+    const interval = setInterval(() => {
+      checkLocationPermission();
+    }, 10000);
+  
+    return () => clearInterval(interval); // Cleanup on unmount
   }, []);
+  
+  
 
 
 
@@ -232,6 +256,28 @@ function Header() {
     window.location.reload();
   };
 
+
+
+
+
+  const fetchSubscriptionPlans=async()=>{
+    try {
+      const response = await axios.get(`${BASE_URL}/subscription-plans/plans`);
+      console.log(response.data,"response of plans")
+      setSubscriptionPlans(response.data.data)
+    } catch (error) {
+      console.log(error,"error")
+      
+    }
+  }
+
+  useEffect(()=>{
+    fetchSubscriptionPlans()
+  },[])
+
+
+
+
   return (
     <>
       <header className="flex items-center justify-between px-6 md:px-10 lg:px-20 py-3 bg-white border ">
@@ -280,13 +326,13 @@ function Header() {
         {/* Right Section - Location, Distance, Cart, Profile, and Buttons */}
         <div className="flex items-center gap-4 md:gap-4 cursor-pointer">
           {/* Location */}
-          <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 gap-2">
+{address?.suburb    &&      <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 gap-2">
             <Image src={locations} alt="location" width={18} height={18} />
             <span className="text-sm font-medium text-blacky">{address.suburb}</span>
-          </div>
+          </div>}
 
           {/* Distance Selection */}
-          <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
+{address?.suburb  &&          <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
             <Image src={nearby} alt="location" width={18} height={18} />
             <select className="bg-transparent text-sm cursor-pointer md:mr-3" value={selectedDistance} onChange={handleDistanceChange}>
               <option className="cursor-pointer" value="20">20 km</option>
@@ -296,26 +342,26 @@ function Header() {
               <option value="60">60 km</option>
               <option value="100">100 + km</option>
             </select>
-          </div>
+          </div>}
 
 
-<div className="border border-orange-400 rounded-lg p-2">
+{ name || token ?<div className="border border-orange-400 rounded-lg p-2">
   <Image src={subscription} width={20} height={20} alt="subscription" onClick={()=>setIsSubscription(true)}/>
-</div>
+</div>:null}
 
-{isSubscription && (
+{isSubscription &&  (
   <div className="modal-overlay">
     <div className="modal-content" onClick={(e)=>e.stopPropagation()}>
       <button className="close-button" onClick={() => setIsSubscription(false)}>
         ✕
       </button>
  
-      <Subscription setIsSubscription={setIsSubscription}/>
+      <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans}/>
     </div>
   </div>
 )}
           {/* Cart Button */}
-          <div className="relative cursor-pointer" onClick={() => router.push("/Cartpage")}>
+{ name || token ?         <div className="relative cursor-pointer" onClick={() => router.push("/Cartpage")}>
             {cartItems > 0 ? (
               <>
                 <Image src={cartitems} width={30} height={30} alt="cart" className="min-w-[34px] min-h-[34px]" />
@@ -330,7 +376,7 @@ function Header() {
               </button>
 
             )}
-          </div>
+          </div>:null}
           {/* Rent Button */}
           {name || token ? (
             <button
@@ -342,7 +388,7 @@ function Header() {
           ) : null}
 
           {/* Profile & Sign In/Sign Up */}
-          <nav>
+         
             {name || token ? (
               <div
                 onClick={() => router.push("/profile")}
@@ -377,7 +423,7 @@ function Header() {
                 </div>
               </div>
             )}
-          </nav>
+  
         </div>
       </header>
       <div className="sm:flex md:flex lg:hidden  w-full flex md:flex gap-3 px-2 py-4 md:px-16 sm:px-12" >

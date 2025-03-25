@@ -74,8 +74,7 @@ const [categoryId,setCategoryId]=useState(true)
           latitude: latitude,
           longitude: longitude,
           distance: distance,
-          // minPrice: minPrice,
-          // maxPrice: maxPrice,
+
         },
       });
 
