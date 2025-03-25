@@ -98,6 +98,8 @@ const [subscriptionPlans,setSubscriptionPlans]=useState([])
   
         if (permissionStatus.state === "denied" || permissionStatus.state === "prompt") {
           // If location access is blocked or reset, remove stored values
+          Cookies.remove("latitude", { path: "/" });
+Cookies.remove("longitude", { path: "/" });
           localStorage.removeItem("latitude");
           localStorage.removeItem("longitude");
         }
@@ -155,6 +157,8 @@ const [subscriptionPlans,setSubscriptionPlans]=useState([])
           setLocation({ latitude, longitude });
   
           // Store only if access is granted
+                    Cookies.set("latitude", latitude, { expires: 7, sameSite: "Strict" });
+                    Cookies.set("longitude", longitude, {  expires: 7, sameSite: "Strict", });
           localStorage.setItem("latitude", latitude);
           localStorage.setItem("longitude", longitude);
   

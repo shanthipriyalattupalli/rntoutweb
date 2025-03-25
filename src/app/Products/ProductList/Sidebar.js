@@ -11,8 +11,9 @@ import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 // import { useParams } from 'next/navigation';
 const downArrow = "/Assets/down_line.png";
+import Cookies from "js-cookie";
 
-const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, distance, rating }) => {
+const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPriceChange, distance, rating }) => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [priceRange, setPriceRange] = useState(25); // Current slider value
   const [ratings, setRating] = useState(5)
@@ -36,7 +37,8 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
   const categoryId = params.categoryId; // Extract categoryId directly from params
   const router = useRouter();
 
- 
+ const latitude=Cookies.get("latitude");
+ const longitude=Cookies.get("longitude")
  
 
 
@@ -104,6 +106,21 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
     subcategoryID(subcategoryId);
     localStorage.setItem(`subcategoryId_${categoryId}`, subcategoryId);
   };
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      categories.forEach((category) => {
+        const storedSubcategoryId = localStorage.getItem(`subcategoryId_${category.id}`);
+        
+        if (!storedSubcategoryId && category.subcategories?.length > 0) {
+          const firstSubcategoryId = category.subcategories[0].id;
+          setActiveIndex(firstSubcategoryId);
+          localStorage.setItem(`subcategoryId_${category.id}`, firstSubcategoryId);
+        }
+      });
+    }
+  }, [categories]);
+
 
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -287,7 +304,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                   )}
                 </div>
 
-                <div className='bt-2'>
+   {latitude && longitude &&             <div className='bt-2'>
                   <div className='px-6 pb-4'>
                     <div
                       className='flex items-center justify-between cursor-pointer'
@@ -356,7 +373,7 @@ const Sidebar = ({ subCategories, subcategoryId, subcategoryID, onPriceChange, d
                       </div>
                     )}
                   </div>
-                </div>
+                </div>}
                 <div className='bt-2'>
                   <div className='px-6 pb-4'>
                     <div

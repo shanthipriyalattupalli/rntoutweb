@@ -82,9 +82,7 @@ const ProductList = () => {
     fetchCategories();
   }, []);
 
-  const getProductsByCategory = (categoryId, subcategoryId) => {
-    return products.filter((product) => product.categoryId?._id === categoryId && product.subCategoryId?._id === subcategoryId && product.productId._id === active);
-  };
+
   const fetchSubCategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/subcategories/categories/${categoryId}`);
@@ -142,6 +140,8 @@ const ProductList = () => {
       setActive(product[0]._id);
     }
   }, [product]);
+
+
 
 
 
@@ -207,7 +207,7 @@ const handleRating=(rating)=>{ded
         <div className="flex flex-col sm:flex-row">
 
 
-          <Sidebar subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} rating={handleRating}/>
+          <Sidebar categories={categories} subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} rating={handleRating}/>
 
           <div className="w-full flex flex-col gap-2 py-4 h-[auto] border border-slate-200  bg-white rounded-r-lg overflow-hidden">
             <div className="px-8 border-b-2 pb-4">
