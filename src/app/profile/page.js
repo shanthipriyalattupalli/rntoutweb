@@ -157,52 +157,67 @@ console.log(response.data,"profile")
 
 
   const handleSubmitProfile = async () => {
-
     let validationErrors = {};
-
+  
     if (!profile.user.name.trim()) {
       validationErrors.name = "Name is required.";
-      
     }
     if (!profile.dateOfBirth.trim()) {
       validationErrors.dateOfBirth = "Date of Birth is required.";
     }
-
-    
   
     // If there are errors, update state and stop submission
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-
-    const formData = new FormData();
-    formData.append("profilePic", profile.profilePic);
-    formData.append("name", profile.user.name);
-    formData.append("email", profile.user.email);
-    formData.append("dateOfBirth", profile.dateOfBirth);
-    formData.append("gender", profile.gender);
-
+  
+    const formDatas = new FormData();
+    formDatas.append("profilePic", profile.profilePic);
+    formDatas.append("name", profile.user.name);
+    formDatas.append("email", profile.user.email);
+    formDatas.append("dateOfBirth", profile.dateOfBirth);
+    formDatas.append("gender", profile.gender);
+  
     try {
-      const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, formData, {
+      const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, formDatas, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
+  
+      console.log(response, "response in profile");
+  
+      if (response.data.status === 200) {
+        await handleBusinessInformation(); // Ensure business info is updated before proceeding
+      }
+  
       setIsEditable(false);
       fetchProfile();
       toast.success("Profile updated successfully!");
-      window.dispatchEvent(new CustomEvent("profileUpdated", {
-        detail: { profilePic: response.data.profile.profilePic }
-      }));
-
-
+      
+      window.dispatchEvent(
+        new CustomEvent("profileUpdated", {
+          detail: { profilePic: response.data.profile.profilePic },
+        })
+      );
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error("Failed to update profile.");
     }
   };
+  
+
+
+
+
+
+
+
+
+
+
 
   const router = useRouter();
   console.log(profile,"profile")
@@ -327,6 +342,8 @@ console.log(response.data,"profile")
   {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
 </div>
       </div>
+
+
     </div>
 
   );

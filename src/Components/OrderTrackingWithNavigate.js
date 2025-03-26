@@ -101,22 +101,25 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
 
   const trackingSteps = ["Order Confirmed", "Order Packed", "Out for Delivery"];
 
-  const getCurrentStep = (orderStatus) => {
-    switch (orderStatus) {
-      case "placed":
-        return 0;
-      case "confirmed":
-        return 1;
-      case "shipped":
-        return 2;
-      case "delivered":
-        return 3;
-      case "canceled":
-        return 4; // Canceled step
-      default:
-        return 0;
-    }
-  };
+const getCurrentStep = (orderStatus) => {
+  if (orderStatus === "canceled") {
+    return 4; // Return steps 1 and 4 if canceled
+  }
+
+  switch (orderStatus) {
+    case "placed":
+      return 0;
+    case "confirmed":
+      return 1;
+    case "shipped":
+      return 2;
+    case "delivered":
+      return 3;
+    default:
+      return 0;
+  }
+};
+
 
   const router = useRouter();
 

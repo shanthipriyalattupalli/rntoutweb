@@ -284,7 +284,7 @@ Cookies.remove("longitude", { path: "/" });
 
   return (
     <>
-      <header className="flex items-center justify-between px-6 md:px-10 lg:px-20 py-3 bg-white border ">
+      <header className="flex items-center justify-between px-6 md:px-10 lg:px-20 py-3 gap-4 bg-white border ">
         {/* Left Section - Logo */}
         <div className="flex items-center cursor-pointer">
           <Link href="/" style={{ all: "unset" }}>
@@ -349,9 +349,36 @@ Cookies.remove("longitude", { path: "/" });
           </div>}
 
 
-{ name || token ?<div className="border border-orange-400 rounded-lg p-2">
-  <Image src={subscription} width={20} height={20} alt="subscription" onClick={()=>setIsSubscription(true)}/>
-</div>:null}
+          {(name || token) && (
+  <>
+    {/* Visible only on small devices */}
+    <div className="sm:hidden border border-orange-400 rounded-lg p-2">
+      <Image
+        src={subscription}
+        width={20}
+        height={20}
+        alt="subscription"
+        onClick={() => setIsSubscription(true)}
+        className="flex w-[100px]"
+      />
+    </div>
+
+    <div className="hidden sm:flex border border-orange-400 rounded-lg p-2">
+      <Image
+        src={subscription}
+        width={20}
+        height={20}
+        alt="subscription"
+        onClick={() => setIsSubscription(true)}
+        className="flex"
+      />
+    </div>
+  </>
+)}
+
+
+
+
 
 {isSubscription &&  (
   <div className="modal-overlay">
@@ -384,10 +411,18 @@ Cookies.remove("longitude", { path: "/" });
           {/* Rent Button */}
           {name || token ? (
             <button
-              className="sm:flex items-center gap-2 px-5 py-2 rounded-full text-white font-medium shadow-lg bg-gradient-to-r from-orange-400 via-purple-500 to-teal-500 hover:scale-105 transition-transform duration-300"
+              className="hidden sm:flex items-center gap-2 px-5 py-2 rounded-full text-white font-medium shadow-lg bg-gradient-to-r from-orange-400 via-purple-500 to-teal-500 hover:scale-105 transition-transform duration-300"
               onClick={() => router.push("/add-on-rent")}
             >
               <span className="text-lg">+</span> Rent
+            </button>
+          ) : null}
+                    {name || token ? (
+            <button
+              className="sm:hidden sm:flex items-center gap-2 px-5 py-1 rounded-full text-white font-medium shadow-lg bg-gradient-to-r from-orange-400 via-purple-500 to-teal-500 hover:scale-105 transition-transform duration-300"
+              onClick={() => router.push("/add-on-rent")}
+            >
+              <span className="text-lg">+</span>
             </button>
           ) : null}
 

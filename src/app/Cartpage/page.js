@@ -323,7 +323,7 @@ const CartPage = () => {
       Swal.fire({
         icon: "warning",
         title: "Note",
-        text: errorMessage,
+        text: `${errorMessage}\n\nPlease Click "OK" for KYC Verification.`,
         showCancelButton: true,  
         confirmButtonText: "OK", 
         cancelButtonText: "Cancel", 

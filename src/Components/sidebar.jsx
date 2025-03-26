@@ -40,7 +40,7 @@ const buttonsData = [
   { id: 4, title: "Orders", icon: <FiShoppingBag />, route: "/profile/orders" },
   {
     id: 5,
-    title: "Business Information",
+    title: "Renter Information",
     icon:<AiTwotoneShop />,
     route: "/profile/business-information/add-business",
   },
@@ -111,8 +111,6 @@ function Sidebar() {
       Cookies.remove("userId");
       Cookies.remove("userName");
       Cookies.remove("userToken");
-
-
     }
     router.push("/");
     router.push(eachbar.route);
