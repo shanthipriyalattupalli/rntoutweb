@@ -711,12 +711,12 @@ export default function BusinessInformation2() {
                   <img src='/Assets/business information.png' alt="business information" />
                 </div>
                 <div className='bi-text-section'>
-                  <h2 className='title-text'>Hey, seems like you forgot to add your business!</h2>
+                  <h2 className='title-text'>Hey, seems like you forgot to add your Renter Information!</h2>
                   <p className='description-text'>
                     If you want to add your business and share the deets, just hit that <span>“Add Business”</span> button.
                   </p>
                 </div>
-                <button className='add-business-button' onClick={toggleEdit} >+ Add Business</button>
+                <button className='add-business-button' onClick={toggleEdit} >+ Add Renter Info</button>
               </div>
             </div>
 
