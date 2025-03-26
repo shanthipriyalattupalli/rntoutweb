@@ -79,7 +79,7 @@ const buttonsData = [
     id: 12,
     title: "About us",
     icon: <IoMdInformationCircleOutline />,
-    route: "/profile/aboutus",
+    route: "/aboutus",
   },
   {
     id: 13,
