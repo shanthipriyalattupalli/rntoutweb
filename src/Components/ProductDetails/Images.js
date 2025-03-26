@@ -17,7 +17,7 @@ export const Images = ({ product, productId }) => {
 
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
-  const [isFavorite, setIsFavorite] = useState(isFavorites);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
 
   const handleAddToFavorites = async () => {
