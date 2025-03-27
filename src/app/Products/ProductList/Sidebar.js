@@ -32,6 +32,7 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
 
+
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const params = useParams();
   const categoryId = params.categoryId; // Extract categoryId directly from params
@@ -181,7 +182,7 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
                 <li key={subcategory._id} >
                   <div
                     onClick={() => handleClick(subcategory._id, subcategory.categoryId._id)}
-                    className={`w-full 2xl:w-full flex justify-between items-center text-gray-700 border rounded-lg hover:text-gray-900 cursor-pointer p-2 ${openIndex === subcategory._id
+                    className={`w-full 2xl:w-full flex justify-between items-center text-gray-700 border rounded-lg hover:text-gray-900 cursor-pointer p-2 ${openIndex === subcategory._id ||subcategoryId === subcategory._id
                       ? "bg-[#F0F5FF] text-black border-[#2F6FED]"
                       : "bg-[#0707070D] text-black border-[#0707071A]"
                       }`}

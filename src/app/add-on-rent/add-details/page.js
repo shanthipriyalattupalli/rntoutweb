@@ -535,8 +535,7 @@ console.log(formData,"formdata");
           icon: "warning",
           title: "Note!",
           html: `
-            <p>${error.response?.data?.message || error.message}</p>
-            <p><b>Click OK to add a business.</b></p>
+            <p>${error.response?.data?.error || error.response?.data?.message}</p>
           `,
           showCancelButton: true,
           confirmButtonText: "OK",
@@ -550,8 +549,10 @@ console.log(formData,"formdata");
         })
         .then((result) => {
           if (result.isConfirmed) {
-            if (error.response?.data?.message === "You must have a business profile to place a product for rent.") {
-            // router.push("profile/business-information/add-business")
+            if (error.response?.data?.error === "KYC verification is required before checkout.") {
+            router.push("/profile/kyc")
+            } else if (error.response?.data?.message === "You must have a profile to place a product for rent."){
+              router.push("/profile/Renter-information")
             }
           }
         });

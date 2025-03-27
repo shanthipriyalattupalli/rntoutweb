@@ -32,10 +32,11 @@ function Header() {
 
   const userId = Cookies.get("userId");
   const token = Cookies.get("userToken");
-  const name = Cookies.get("userName");
+  const names = Cookies.get("userName");
   const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
   const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
   const [profilePic, setProfilePic] = useState((typeof window !== 'undefined') ? localStorage.getItem("profilePic") : null || Photo);
+  const [name,setName]=useState(names)
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [location, setLocation] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -55,23 +56,31 @@ const [subscriptionPlans,setSubscriptionPlans]=useState([])
   const cartlength = typeof window !== 'undefined' ? localStorage.getItem("cart") : null;
   const profile = typeof window !== 'undefined' ? localStorage.getItem("profilePic") : null;
   useEffect(() => {
-    const handleProfileUpdate = (event) => {
+    const handleProfilePicUpdate = (event) => {
       const updatedPic = event.detail.profilePic;
-      localStorage.setItem("profilePic", updatedPic && updatedPic);
-      setProfilePic(updatedPic);
-
+      if (updatedPic) {
+        localStorage.setItem("profilePic", updatedPic);
+        setProfilePic(updatedPic);
+      }
     };
-
-    window.addEventListener("profileUpdated", handleProfileUpdate);
-
+  
+    const handleNameUpdate = (event) => {
+      const updatedName = event.detail.name;
+      if (updatedName) {
+        Cookies.set("userName", updatedName, { expires: 7, secure: true, sameSite: "Strict" });
+        setName(updatedName);
+      }
+    };
+  
+    window.addEventListener("profileUpdated", handleProfilePicUpdate);
+    window.addEventListener("nameUpdated", handleNameUpdate);
+  
     return () => {
-      window.removeEventListener("profileUpdated", handleProfileUpdate);
+      window.removeEventListener("profileUpdated", handleProfilePicUpdate);
+      window.removeEventListener("nameUpdated", handleNameUpdate);
     };
   }, []);
-
-  useEffect(() => {
-    setProfilePic(profile);
-  })
+  
 
   useEffect(() => {
     if (!pathname.startsWith("/Products")) {
@@ -178,12 +187,11 @@ Cookies.remove("longitude", { path: "/" });
   useEffect(() => {
     fetchLocation();
   
-    // Periodically check for permission changes (every 10 seconds)
     const interval = setInterval(() => {
       checkLocationPermission();
     }, 10000);
   
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, []);
   
   
@@ -381,7 +389,7 @@ Cookies.remove("longitude", { path: "/" });
 
 
 {isSubscription &&  (
-  <div className="modal-overlay">
+  <div className="modal-overlay" onClick={() => setIsSubscription(false)}>
     <div className="modal-content" onClick={(e)=>e.stopPropagation()}>
       <button className="close-button" onClick={() => setIsSubscription(false)}>
         ✕
@@ -503,7 +511,6 @@ Cookies.remove("longitude", { path: "/" });
           <span className="text-sm font-medium text-blacky md:mr-3 truncate w-full block">
             {address.suburb}
           </span>
-
         </div>
         <div className="sm:flex md:flex lg:hidden  w-1/2 h-10 flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
           <Image src={nearby} alt="location" width={16} height={16} />

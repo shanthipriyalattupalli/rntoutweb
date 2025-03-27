@@ -8,6 +8,7 @@ import '../../styles/ProfileSettings.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const profile_avatar = "/Assets/profile_avatar.png";
+const deleteicon ="/Assets/deleteicon.svg"
 const Photo = "/Assets/Photo.png";
 import { useRouter } from 'next/navigation';
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -17,11 +18,14 @@ import Cookies from "js-cookie";
 
 
 
+
+
 export default function ProfileSettings() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [avatar, setAvatar] = useState(profile_avatar);
   const fileInputRef = useRef(null);
   const [isEditable, setIsEditable] = useState(false);
+  console.log(isEditable,"iseditable")
   const [isKyc,setIsKyc]=useState(false);
   const [profile, setProfile] = useState({
     user: {
@@ -99,29 +103,12 @@ console.log(response.data,"profile")
       return updatedProfile;
     });
   
-    let newErrors = { ...errors };
-  
-    // Name Validation
-    if (name === "user.name") {
-      const namePattern = /^[A-Za-z\s]+$/;
-      if (!namePattern.test(value) && value !== "") {
-        newErrors.name = "Only letters and spaces are allowed.";
-      } else {
-        delete newErrors.name;
-      }
-    }
-  
-    // Email Validation
-    if (name === "user.email") {
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(value)) {
-        newErrors.email = "Invalid email format.";
-      } else {
-        delete newErrors.email;
-      }
-    }
-  
-    setErrors(newErrors);
+
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
   
 
@@ -145,7 +132,6 @@ console.log(response.data,"profile")
         profilePic: file,
       }));
 
-      // toast.success("Profile picture updated successfully!");
     }
   };
 
@@ -157,20 +143,30 @@ console.log(response.data,"profile")
 
 
   const handleSubmitProfile = async () => {
+
+
     let validationErrors = {};
-  
+
     if (!profile.user.name.trim()) {
       validationErrors.name = "Name is required.";
     }
     if (!profile.dateOfBirth.trim()) {
       validationErrors.dateOfBirth = "Date of Birth is required.";
     }
-  
-    // If there are errors, update state and stop submission
+    if (!profile.user.email.trim()) {
+      validationErrors.email = "Email is required.";
+    } else if (!validateEmail(profile.user.email)) {
+      validationErrors.email = "Invalid email format.";
+    }
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      setIsEditable(true)
+      toast.error("Please fix validation errors.");
       return;
     }
+
+
   
     const formDatas = new FormData();
     formDatas.append("profilePic", profile.profilePic);
@@ -178,6 +174,12 @@ console.log(response.data,"profile")
     formDatas.append("email", profile.user.email);
     formDatas.append("dateOfBirth", profile.dateOfBirth);
     formDatas.append("gender", profile.gender);
+
+    if (profile.profilePic) {
+      formDatas.append("profilePic", profile.profilePic);
+    } else {
+      formDatas.append("profilePic", ""); 
+    }
   
     try {
       const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, formDatas, {
@@ -189,17 +191,22 @@ console.log(response.data,"profile")
   
       console.log(response, "response in profile");
   
-      if (response.data.status === 200) {
-        await handleBusinessInformation(); // Ensure business info is updated before proceeding
+      if (response.status === 200) {
+          setIsEditable(!isEditable);
       }
   
-      setIsEditable(false);
       fetchProfile();
       toast.success("Profile updated successfully!");
       
       window.dispatchEvent(
         new CustomEvent("profileUpdated", {
           detail: { profilePic: response.data.profile.profilePic },
+        })
+      );
+            
+      window.dispatchEvent(
+        new CustomEvent("nameUpdated", {
+          detail: { name: response.data.user.name },
         })
       );
     } catch (error) {
@@ -209,6 +216,24 @@ console.log(response.data,"profile")
   };
   
 
+
+
+  const handleProfileDelete = () => {
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      profilePic: null, // Set profilePic to null
+    }));
+  
+    // Dispatch event for profile pic update
+    window.dispatchEvent(
+      new CustomEvent("profileUpdated", {
+        detail: { profilePic: null },
+      })
+    );
+  
+    localStorage.removeItem("profilePic"); 
+    setAvatar(profile_avatar);
+  };
 
 
 
@@ -234,14 +259,22 @@ console.log(response.data,"profile")
             Personal KYC ?
           </a>
 
-          <a className="text-blue-600 font-medium text-sm cursor-pointer" onClick={() => {
-            if (isEditable) {
-              handleSubmitProfile();
-            }
-            toggleEdit();
-          }}>
-            {isEditable ? "Save" : "Edit"}
-          </a>
+          <a
+  className="text-blue-600 font-medium text-sm cursor-pointer"
+  onClick={async () => {
+    if (isEditable) {
+      const isUpdated = await handleSubmitProfile();
+      if (isUpdated) {
+        toggleEdit();
+      }
+    } else {
+      toggleEdit();
+    }
+  }}
+>
+  {isEditable ? "Save" : "Edit"}
+</a>
+
         </div>
       </div>
       {/* <div className="w-max-screen flex justify-between p-1 px-2 bg-green-100 rounded ">
@@ -249,15 +282,17 @@ console.log(response.data,"profile")
         <span className="text-green-700 font-sm">Your account is KYC Verified, Now you can take things on rent</span>
       </div> */}
 
-      <div className="flex flex-col space-y-6  p-4 md:p-6 lg:p-8">
+      <div className="flex flex-col space-y-8  p-4 md:p-6 lg:p-8">
         {/* Avatar Section */}
-        <div className="flex items-center space-x-6">
-          <img src={avatar} alt="Profile Avatar" className="w-20 h-20 rounded-full border-2" />
+        <div className="flex items-center justify-between space-x-6">
+          <img src={avatar} alt="Profile Avatar" className=" w-20 h-20 rounded-full border-2" />
 
-          <div>
-            <button className={` px-4 py-2 rounded-md text-sm font-md ${isEditable ? "bg-blue-400":"bg-gray-200"}`} onClick={handleButtonClick}  disabled={!isEditable}>
+
+          <div className="flex gap-2">
+            <button className={` px-4 py-2 rounded-md text-sm font-md ${isEditable ? "bg-blue-500 text-white font-semibold":"bg-gray-200"}`} onClick={handleButtonClick}  disabled={!isEditable}>
               Edit Image
             </button>
+            {/* <img src={deleteicon} alt="delete" className="cursor-pointer" onClick={()=>handleProfileDelete()} disabled={!isEditable}/> */}
 
             {/* Hidden File Input */}
             <input
@@ -289,7 +324,7 @@ console.log(response.data,"profile")
 
           {/* Email Input */}
           <div className="flex flex-col">
-            <label className="text-sm font-semibold">Email Address</label>
+            <label className="text-sm font-semibold">Email Address <span className="text-red-500">*</span></label>
             <input
               type="email"
               name="user.email"

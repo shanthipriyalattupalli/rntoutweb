@@ -35,20 +35,6 @@ const Signup = ({ setIsRegisterOpen }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     const keys = name.split(".");
-    let isValid = true;
-
-    if (name === "user.name") {
-      const nameRegex = /^[A-Za-z\s]*$/;
-      isValid = nameRegex.test(value);
-    }
-
-    if (name === "user.email") {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-      isValid = emailRegex.test(value);
-    }
-
-    if (!isValid) return;
-
     setProfile((prev) => {
       let updatedProfile = { ...prev };
       let temp = updatedProfile;
@@ -94,21 +80,24 @@ const Signup = ({ setIsRegisterOpen }) => {
 
 
   const handleSubmitProfile = async () => {
+
     let validationErrors = {};
 
     if (!profile.user.name.trim()) {
       validationErrors.name = "Name is required.";
-
     }
     if (!profile.dateOfBirth.trim()) {
       validationErrors.dateOfBirth = "Date of Birth is required.";
     }
+    if (!profile.user.email.trim()) {
+      validationErrors.email = "Email is required.";
+    } else if (!validateEmail(profile.user.email)) {
+      validationErrors.email = "Invalid email format.";
+    }
 
-
-
-    // If there are errors, update state and stop submission
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      toast.error("Please fix validation errors.");
       return;
     }
 
@@ -174,10 +163,11 @@ const Signup = ({ setIsRegisterOpen }) => {
           </div>
 
 
-          <div>
+          <div className="flex text-left flex-col">
             <p className='login-p1 m-0'>Email Address
             <span className="text-red-500">*</span>
             </p>
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             <input
               type='email'
               placeholder='Enter Email Address'

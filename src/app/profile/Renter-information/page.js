@@ -3,11 +3,11 @@
 
 import { React, useState, useRef, useEffect } from 'react';
 // import '@/styles/BusinessInformation1.css';
-import '../../../../styles/BusinessInformation1.css'
+import '../../../styles/BusinessInformation1.css'
 import { IoMdArrowRoundBack } from "react-icons/io";
 import axios from "axios";
 // import '@/styles/BusinessInformation2.css';
-import '../../../../styles/BusinessInformation2.css';
+import '../../../styles/BusinessInformation2.css';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -264,9 +264,7 @@ export default function BusinessInformation2() {
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         toast.error(error.response.data.message);
-      } else {
-        toast.error("An unexpected error occurred");
-      }
+      } 
       console.error("Error submitting business information:", error);
     }
   };

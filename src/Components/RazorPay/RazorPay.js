@@ -16,7 +16,7 @@ const loadScript = (src) => new Promise((resolve) => {
   };
   document.body.appendChild(script);
 });
-const Razorpay = ({ orderId, planId, keyId, currency, amount, handlePayment, name }) => {
+const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, handlePayment, name }) => {
   const paymentId = useRef(null);
   const paymentMethod = useRef(null);
 
@@ -42,21 +42,24 @@ const Razorpay = ({ orderId, planId, keyId, currency, amount, handlePayment, nam
               Authorization: `Bearer ${token}`,
             }
           });
+          setIsSubscription(false)
+          Swal.fire({
+            icon: "success",
+            title: "Payment Completed!",
+            text: "Payment is Successfull.",
+            confirmButtonColor: "#d33", 
+          });  
           console.log(result, "response in verify-payment")
-          if (result.data.transactionStatus === 'completed') {
+          if (result.data.success  === true) {
             handlePayment('succeeded', {
               razorpay_order_id: orderId,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               planId: planId
             });
-            // alert("successfully payment completed ")
-            Swal.fire({
-              icon: "success",
-              title: "Payment Completed!",
-              text: "Payment is Successfull.",
-              confirmButtonColor: "#d33", // Optional: Customize button color
-            });            // window.location.href = '/payment-success';
+                        
+
+        
           } else {
             handlePayment('failed', {
               razorpay_order_id: orderId,
@@ -71,8 +74,7 @@ const Razorpay = ({ orderId, planId, keyId, currency, amount, handlePayment, nam
             orderId,
             error: error.response?.data?.message || 'Payment verification failed'
           });
-          // alert("Payment verification error ---- ")
-          // window.location.href = '/payment-failed';
+
         }
       }
     },

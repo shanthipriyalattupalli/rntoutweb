@@ -13,7 +13,7 @@ const Benefits = [
   "🎧 24/7 VIP Customer Support "
 ]
 
-const Subscription = ({ plans }) => {
+const Subscription = ({ plans,setIsSubscription }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const userId = Cookies.get("userId");
   const token = Cookies.get("userToken")
@@ -36,6 +36,7 @@ const Subscription = ({ plans }) => {
       if (response.data.order.id) {
         setOrderId(response.data.order.id);
         setSelectedPlanId(planId);
+        
         setDisplayRazorpay(true);
       }
     } catch (error) {
@@ -57,6 +58,7 @@ const Subscription = ({ plans }) => {
       return;
     }
     await handleSubscriptionCheckout(planId);
+  
   };
 
   const handlePayment = async (status, orderDetails) => {
@@ -107,6 +109,7 @@ const Subscription = ({ plans }) => {
           <Razorpay
             orderId={orderId}
             planId={selectedPlanId}
+            setIsSubscription={setIsSubscription}
             amount={plan.price}
             currency={"INR"}
             keyId={apiKey}

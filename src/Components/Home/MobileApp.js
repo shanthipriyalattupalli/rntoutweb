@@ -43,10 +43,12 @@ const MobileApp = () => {
         </div>
       </div>
 
-      {/* Popup Modal (Fixed and Centered) */}
       <div
         id="downloadPopup"
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50"
+        onClick={() => {
+          document.getElementById("downloadPopup").classList.add("hidden");
+        }}
       >
         <div className="bg-white p-6 rounded-lg shadow-lg text-center w-1/3 relative">
           <h2 className="text-xl font-bold mb-4">Download RntOut Mobile App</h2>

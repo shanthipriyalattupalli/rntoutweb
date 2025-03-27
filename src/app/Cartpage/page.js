@@ -196,16 +196,10 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      toast.success(
-        response.data.message || "Rental period updated successfully."
-      );
+
     } catch (error) {
       console.error("Error adding product to cart:", error);
       toast.error(error.response.data.error);
-      // toast.error(
-      //   error.response?.data?.message ||
-      //     "Something went wrong. Please try again."
-      // );
       throw error;
     }
   };

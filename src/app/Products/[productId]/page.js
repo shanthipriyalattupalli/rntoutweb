@@ -135,7 +135,7 @@ const ProductPage = async ({ params, searchParams }) => {
 
                 {product?.categoryId?.categoryName ? (
                   <>
-                    <Link href={`/category/${product.categoryId._id}`} className="hover:underline">
+                    <Link href={`/Product-list/${product.categoryId._id}`} className="hover:underline">
                       {product.categoryId.categoryName}
                     </Link>
                     <span className="mx-2">/</span>

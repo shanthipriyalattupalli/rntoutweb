@@ -42,7 +42,7 @@ const buttonsData = [
     id: 5,
     title: "Renter Information",
     icon:<AiTwotoneShop />,
-    route: "/profile/business-information/add-business",
+    route: "/profile/Renter-information",
   },
   { id: 6, title: "Products", icon: <GrCubes />, route: "/profile/products" },
   {
