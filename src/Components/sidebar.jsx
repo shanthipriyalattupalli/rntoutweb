@@ -26,6 +26,7 @@ import {
 import { BsShieldCheck } from "react-icons/bs";
 import { FileDigitIcon } from 'lucide-react';
 
+const KycStatus=Cookies.get("kycstatus");
 
 
 const buttonsData = [
@@ -96,27 +97,44 @@ const buttonsData = [
   { id: 15, title: "Log Out", icon: <MdOutlineLogout />, route: "/" },
 ];
 
+
+const filteredButtons = buttonsData.filter((eachBar) => {
+  if (KycStatus === "VERIFIED") {
+    return true;
+  } else {
+    return ![4,6, 8, 9].includes(eachBar.id); 
+  }
+});
+
+
 function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
 
   const handleNavigation = (eachbar) => {
-    if (eachbar.title == "Log Out") {
+    if (eachbar.title === "Log Out") {
       localStorage.removeItem("userEmail");
       localStorage.removeItem("userId");
       localStorage.removeItem("userName");
       localStorage.removeItem("userToken");
-
+  
       Cookies.remove("userEmail");
       Cookies.remove("userId");
       Cookies.remove("userName");
       Cookies.remove("userToken");
-    }
-    router.push("/");
-    router.push(eachbar.route);
+  
+      router.push("/");
 
-    // window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    } else {
+      router.push(eachbar.route);
+    }
   };
+  
+  
+
   return (
     <div className='sidemenubar'>
       <div className='menu-item1'>
@@ -124,7 +142,7 @@ function Sidebar() {
           <span>{<PiCirclesFourFill />}</span>
           <p className='title'>MENUS</p>
         </div>
-        {buttonsData?.map((eachBar) => (
+        {filteredButtons?.map((eachBar) => (
           <button
             key={eachBar.id}
             className={`bar ${pathname === eachBar.route ? "active" : ""}`} // Add "active" class if the route matches

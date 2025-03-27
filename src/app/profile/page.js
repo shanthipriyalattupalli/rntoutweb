@@ -33,7 +33,7 @@ export default function ProfileSettings() {
       email: ""
     },
     dateOfBirth: "",
-    gender: "",
+    gender: "Male",
     profilePic: ""
   });
 
@@ -41,7 +41,19 @@ export default function ProfileSettings() {
 
   const [selectedFile, setSelectedFile] = useState(null);
 
+
   const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
+
+
+  
+  // useEffect(() => {
+  //   const userName = Cookies.get("userName");
+  //   const userToken = Cookies.get("userToken");
+
+  //   if (!userName || !userToken) {
+  //     router.replace("/"); 
+  //   }
+  // }, []);
 
 
   const fetchProfile = async () => {
@@ -92,6 +104,8 @@ console.log(response.data,"profile")
   const handleChange = (e) => {
     const { name, value } = e.target;
     const keys = name.split(".");
+    
+
     
     setProfile((prev) => {
       let updatedProfile = { ...prev };
@@ -147,13 +161,13 @@ console.log(response.data,"profile")
 
     let validationErrors = {};
 
-    if (!profile.user.name.trim()) {
+    if (!profile?.user?.name.trim()) {
       validationErrors.name = "Name is required.";
     }
-    if (!profile.dateOfBirth.trim()) {
+    if (!profile?.dateOfBirth.trim()) {
       validationErrors.dateOfBirth = "Date of Birth is required.";
     }
-    if (!profile.user.email.trim()) {
+    if (!profile?.user?.email.trim()) {
       validationErrors.email = "Email is required.";
     } else if (!validateEmail(profile.user.email)) {
       validationErrors.email = "Invalid email format.";
@@ -259,21 +273,14 @@ console.log(response.data,"profile")
             Personal KYC ?
           </a>
 
-          <a
-  className="text-blue-600 font-medium text-sm cursor-pointer"
-  onClick={async () => {
-    if (isEditable) {
-      const isUpdated = await handleSubmitProfile();
-      if (isUpdated) {
-        toggleEdit();
-      }
-    } else {
-      toggleEdit();
-    }
-  }}
->
-  {isEditable ? "Save" : "Edit"}
-</a>
+          <a className="text-blue-600 font-medium text-sm cursor-pointer" onClick={() => {
+            if (isEditable) {
+              handleSubmitProfile();
+            }
+            toggleEdit();
+          }}>
+            {isEditable ? "Save" : "Edit"}
+          </a>
 
         </div>
       </div>
@@ -341,24 +348,24 @@ console.log(response.data,"profile")
 
         {/* Gender Section */}
         <div className="flex flex-col">
-          <label className="text-sm font-semibold">Gender</label>
-          <div className="flex space-x-4">
-            {["Male", "Female", "Other"].map((gender) => (
-              <label key={gender} className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="gender"
-                  value={gender}
-                  checked={profile.gender === gender}
-                  onChange={handleChange}
-                  disabled={!isEditable}
-                  className="cursor-pointer"
-                />
-                <span>{gender}</span>
-              </label>
-            ))}
-          </div>
-        </div>
+      <label className="text-sm font-semibold">Gender</label>
+      <div className="flex space-x-4">
+        {["Male", "Female", "Other"].map((gender) => (
+          <label key={gender} className="flex items-center space-x-2">
+            <input
+              type="radio"
+              name="gender"
+              value={gender}
+              checked={profile.gender === gender} 
+              onChange={handleChange}
+              className="cursor-pointer"
+              disabled={!isEditable}
+            />
+            <span>{gender}</span>
+          </label>
+        ))}
+      </div>
+    </div>
 
         {/* Date of Birth */}
         <div className="flex flex-col">

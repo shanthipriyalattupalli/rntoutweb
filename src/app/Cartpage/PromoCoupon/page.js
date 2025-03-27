@@ -73,7 +73,8 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
           );
 
 
-          onDiscountedPrice(response.data.data.finalAmount, couponcode,response.data.data.coupon.discountValue);
+          onDiscountedPrice(response.data.data.finalAmount, couponcode,response.data.data.coupon.discountValue,response.data.data.coupon.maxDiscountAmount);
+          onClose()
           toast.success(
             response.data.message || "Coupon applied successfully!"
           );

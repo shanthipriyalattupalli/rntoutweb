@@ -16,6 +16,7 @@ const nearby = '/Assets/nearby.svg'
 const cart = '/Assets/Button.svg'
 const cartitems = '/Assets/cartitems.svg'
 const subscription='/Assets/subscription.svg'
+const profile_avatar = "/Assets/profile_avatar.png";
 
 
 
@@ -97,6 +98,33 @@ const [subscriptionPlans,setSubscriptionPlans]=useState([])
       setSelectedDistance(storedDistance);
     }
   }, []);
+
+
+
+  const fetchProfile = async () => {
+
+    try {
+      const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+console.log(response.data,"profile fetch")
+      const profileData = response.data.profile;
+
+setProfilePic(profileData?.profilePic);
+
+
+
+    } catch (error) {
+      console.error(error);
+      // toast.error("Failed to fetch profile.");
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      fetchProfile();
+    }
+  }, [token]);
 
 
 
@@ -442,7 +470,8 @@ Cookies.remove("longitude", { path: "/" });
                 onClick={() => router.push("/profile")}
                 className="w-full md:w-[110px] flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 cursor-pointer"
               >
-                <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" />
+               {profilePic ? <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" /> :
+               <img src={profile_avatar} alt="user" className="w-8 h-8 rounded-full object-cover" />}
                 <p className="hidden sm:flex md:flex text-sm truncate max-w-[80px]">
                   {name === undefined || name==="undefined" ? "Hi!" : name}
                 </p>

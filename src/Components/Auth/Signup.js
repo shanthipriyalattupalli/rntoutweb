@@ -129,7 +129,7 @@ const Signup = ({ setIsRegisterOpen }) => {
   }
 
 
-  const handleSkip = () => {
+  const   handleSkip = () => {
     router.push("/");
     window.location.reload();
   }

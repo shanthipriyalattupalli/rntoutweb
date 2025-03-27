@@ -209,6 +209,7 @@
 .address-content {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     gap: 16px;
     cursor: pointer;
     align-items: center;

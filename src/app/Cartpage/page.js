@@ -44,7 +44,8 @@ const CartPage = () => {
   const [orderId, setOrderId] = useState(null);
   const [selectedCartItems, setSelectedCartItems] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [disValue, setDisValue] = useState(0)
+  const [disValue, setDisValue] = useState(0);
+  const [disAmount,setDisAmount]=useState(0)
   const [razorpayOrderId, setRazorpayOrderId] = useState()
   const router = useRouter();
 
@@ -410,10 +411,12 @@ console.log(response,"resonde of paymnet")
 
 
 
-  const handleDiscountedPrice = (newDiscountedPrice, couponcode, discountValue) => {
+  const handleDiscountedPrice = (newDiscountedPrice, couponcode, discountValue,maxDiscountAmount) => {
     setDiscountedPrice(newDiscountedPrice);
     setCouponCode(couponcode);
     setDisValue(discountValue);
+    setDisAmount(maxDiscountAmount)
+
   };
 
   const handleAddress = (addressId) => {
@@ -558,13 +561,21 @@ console.log(response,"resonde of paymnet")
       <div className='summary-section'>
         <div className='summary-item address' onClick={handleAddressToggle}>
           <div className='address-content'>
+            <div className="flex gap-2 items-center">
             <img src={location} />
             <span>Choose Address</span>
-            <i className='fas fa-chevron-right'></i>
+            </div>
+            <MdOutlineKeyboardArrowRight />
           </div>
           {selectedAddress && (
             <>
+
               <div className='address-context'>
+              <input
+  type="checkbox"
+  checked
+  className="w-5 h-5 accent-red-500"
+/>
                 <h4>{selectedAddress.name}</h4>
                 <p>|</p>
                 <p>{selectedAddress.mobile}</p>
@@ -667,14 +678,15 @@ console.log(response,"resonde of paymnet")
                 <span>Total Rent</span>
                 <span className="font-medium">{totalPrice}</span>
               </div>
+              <div className="flex justify-between">
+                <span>Discount Price</span>
+                <span className="font-medium">-{disAmount}</span>
+              </div>
               <div className="flex justify-between text-green-500">
                 <span>Discounts</span>
                 <span className="font-medium">{disValue}%</span>
               </div>
-              {/* <div className="flex justify-between">
-                <span>Delivery Charges</span>
-                <span className="font-medium">₹419.98</span>
-              </div> */}
+
               <div className="flex justify-between border-t pt-2">
                 <span>Total Costs</span>
                 <span className="font-medium">{discountedPrice ? discountedPrice : totalPrice}</span>
