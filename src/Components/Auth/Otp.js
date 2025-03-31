@@ -34,6 +34,7 @@ const fcmToken = typeof window !== 'undefined' ? localStorage.getItem("FCMToken"
 const profilepic = typeof window !== 'undefined'? localStorage.getItem("profilePic"):null;
 
 
+
 useEffect(() => {
   if (timer > 0) {
     const countdown = setTimeout(() => setTimer(timer - 1), 1000);
@@ -74,7 +75,7 @@ useEffect(() => {
     const otpCode = otp.join(""); 
     if (otpCode.length < 4) {
       setErrorMessage("Please enter a valid 4-digit OTP.");
-      setOtpError(true); // Apply red border
+      setOtpError(true); 
       return;
     }
 
@@ -84,7 +85,7 @@ useEffect(() => {
   
     setErrorMessage("");
     setIsLoading(true);
-    setOtpError(false); // Reset error state
+    setOtpError(false); 
   
     try {
       const response = await axios.post(`${BASE_URL}/users/verify-otp`, {
@@ -199,7 +200,7 @@ useEffect(() => {
           number above. Please enter it to complete verification.
         </p>
         <p className="otp-number">
-       +91 {mobileNumber}<span className="otp-change">  Change</span>
+       +91 {mobileNumber}<span className="otp-change" onClick={()=>setIsOtpOpen(false)}>  Change</span>
         </p>
 
         <div className="otp-inputs">
@@ -236,11 +237,6 @@ useEffect(() => {
         <p className="otp-resend" onClick={handleSendOtp}>
           <span className="otp-resend-link">Resend OTP  <span className="otp-timer">{timer}s</span></span>
         </p>
-
-
-         
-
-
       </div>
     </div>
   );

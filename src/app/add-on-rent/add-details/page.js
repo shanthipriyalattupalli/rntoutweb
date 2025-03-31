@@ -531,32 +531,34 @@ console.log(formData,"formdata");
         });
       } else {
         console.error("Error while publishing product:", error);
+        const errorMessage =
+          error.response?.data?.error || error.response?.data?.message || "An unexpected error occurred.";
+      
         Swal.fire({
           icon: "warning",
           title: "Note!",
-          html: `
-            <p>${error.response?.data?.error || error.response?.data?.message}</p>
-          `,
+          html: `<p>${errorMessage}</p>`,
           showCancelButton: true,
           confirmButtonText: "OK",
           cancelButtonText: "Cancel",
           customClass: {
-            confirmButton: "swal-confirm-button", 
+            confirmButton: "swal-confirm-button",
           },
           didOpen: () => {
-            document.querySelector(".swal-confirm-button").style.backgroundColor = "red";
+            const confirmButton = Swal.getConfirmButton();
+            if (confirmButton) confirmButton.style.backgroundColor = "red";
           },
-        })
-        .then((result) => {
+        }).then((result) => {
           if (result.isConfirmed) {
-            if (error.response?.data?.error === "KYC verification is required before checkout.") {
-            router.push("/profile/kyc")
-            } else if (error.response?.data?.message === "You must have a profile to place a product for rent."){
-              router.push("/profile/Renter-information")
+            if (errorMessage === "KYC verification is required before checkout.") {
+              router.push("/profile/kyc");
+            } else if (errorMessage === "You must have a profile to place a product for rent.") {
+              router.push("/profile/Renter-information");
             }
           }
         });
       }
+      
     }
   };
 

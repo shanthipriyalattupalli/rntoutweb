@@ -53,7 +53,7 @@ const Blog = ({blogs}) => {
     <div className='mt-8'>
       <div className='mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5'>
         <div className='flex justify-between items-center mt-20 mb-4'>
-          <h1 className='text-3xl font-bold text-gray-800 xl:px-16'>Our Exclusive Blogs</h1>
+          <h1 className='text-[23px] sm:text-[32px] font-[700] text-gray-800 xl:px-16'>Our Exclusive Blogs</h1>
           <a href='#' className='text-blue-500 hover:text-blue-700 text-sm font-medium xl:pl-16'>
             View all blogs{" "}
             <svg className='w-4 h-4 inline-block ml-1' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -61,7 +61,7 @@ const Blog = ({blogs}) => {
             </svg>
           </a>
         </div>
-        <p className='text-gray-600 text-left mb-8 px-16'>"Smart Renting, Happy Living!"</p>
+        <p className='text-gray-600 text-left mb-8 px-4 sm:px-16'>"Smart Renting, Happy Living!"</p>
 
         {/* Carousel Section */}
         <div className='relative px-12'>

@@ -711,7 +711,7 @@ export default function BusinessInformation2() {
                 <div className='bi-text-section'>
                   <h2 className='title-text'>Hey, seems like you forgot to add your Renter Information!</h2>
                   <p className='description-text'>
-                    If you want to add your business and share the deets, just hit that <span>“Add Business”</span> button.
+                    If you want to add your Information and share the deets, just hit that <span>“Add Renter Info“</span> button.
                   </p>
                 </div>
                 <button className='add-business-button' onClick={toggleEdit} >+ Add Renter Info</button>

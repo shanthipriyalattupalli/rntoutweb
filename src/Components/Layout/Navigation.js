@@ -76,11 +76,11 @@ const Navigation = () => {
   }, []);
 
   return (
-    <nav className="px-4 sm:px-20 bg-white border border-slate-200 relative">
+    <nav className="px-4 sm:px-20 bg-white border-b border-slate-200 relative">
       <div className="relative">
         <div
           id="category-container"
-          className="flex items-center h-12 gap-2 2xl:gap-16 overflow-x-auto overflow-visible whitespace-nowrap scrollbar-hide relative"
+          className="flex items-center h-12 gap-6 sm:gap-10 2xl:gap-16 overflow-x-auto overflow-visible whitespace-nowrap scrollbar-hide relative"
         >
           {categories?.map((category) => (
             <div

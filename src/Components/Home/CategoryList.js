@@ -170,7 +170,7 @@ const CategoryList = ({ products = [], categories, isLoading }) => {
                   height={48}
                   className="w-12 h-12"
                 />
-                <span className="text-center pt-2 truncate w-24">
+                <span className="text-center pt-2 truncate w-auto">
                   {category.categoryName}
                 </span>
               </div>

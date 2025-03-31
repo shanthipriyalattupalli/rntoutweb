@@ -320,7 +320,7 @@ Cookies.remove("longitude", { path: "/" });
 
   return (
     <>
-      <header className="flex items-center justify-between px-6 md:px-10 lg:px-20 py-3 gap-4 bg-white border ">
+      <header className="flex items-center justify-between px-6 md:px-10 lg:px-20 py-3 gap-4 bg-white border border-b-1 ">
         {/* Left Section - Logo */}
         <div className="flex items-center cursor-pointer">
           <Link href="/" style={{ all: "unset" }}>
@@ -366,13 +366,13 @@ Cookies.remove("longitude", { path: "/" });
         {/* Right Section - Location, Distance, Cart, Profile, and Buttons */}
         <div className="flex items-center gap-4 md:gap-4 cursor-pointer">
           {/* Location */}
-{address?.suburb    &&      <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 gap-2">
+{address?.suburb    &&      <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 gap-2">
             <Image src={locations} alt="location" width={18} height={18} />
             <span className="text-sm font-medium text-blacky">{address.suburb}</span>
           </div>}
 
           {/* Distance Selection */}
-{address?.suburb  &&          <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
+{address?.suburb  &&          <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 cursor-pointer">
             <Image src={nearby} alt="location" width={18} height={18} />
             <select className="bg-transparent text-sm cursor-pointer md:mr-3" value={selectedDistance} onChange={handleDistanceChange}>
               <option className="cursor-pointer" value="20">20 km</option>
@@ -388,18 +388,18 @@ Cookies.remove("longitude", { path: "/" });
           {(name || token) && (
   <>
     {/* Visible only on small devices */}
-    <div className="sm:hidden border border-orange-400 rounded-lg p-2">
+    <div className="sm:hidden border border-orange-400 rounded-[10px] p-2">
       <Image
         src={subscription}
         width={20}
         height={20}
         alt="subscription"
         onClick={() => setIsSubscription(true)}
-        className="flex w-[100px]"
+        className="flex w-[100px] h-[20px]"
       />
     </div>
 
-    <div className="hidden sm:flex border border-orange-400 rounded-lg p-2">
+    <div className="hidden sm:flex shadow-sm border border-[rgba(244,128,3,0.45)] rounded-[10px] p-2">
       <Image
         src={subscription}
         width={20}
@@ -438,8 +438,8 @@ Cookies.remove("longitude", { path: "/" });
               </Link>
             ) : (
 <Link href="/Cartpage">
-              <button className="bg-white border border-blue-300 rounded-lg p-2 hover:bg-gray-100">
-                <Image src={cart} width={22} height={22} alt="cart" className="min-w-[22px] min-h-[22px]" />
+              <button className="h-[37px] bg-white border border-blue-300 rounded-[10px] p-2 hover:bg-gray-100">
+                <Image src={cart} width={20} height={20} alt="cart" className="min-w-[20px] min-h-[20px]" />
               </button>
               </Link>
 
@@ -448,7 +448,9 @@ Cookies.remove("longitude", { path: "/" });
           {/* Rent Button */}
           {name || token ? (
             <button
-              className="hidden sm:flex items-center gap-2 px-5 py-2 rounded-full text-white font-medium shadow-lg bg-gradient-to-r from-orange-400 via-purple-500 to-teal-500 hover:scale-105 transition-transform duration-300"
+              className="hidden sm:flex items-center gap-2 px-[16px] py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-[92px] border border-[rgba(7,7,7,0.1)] 
+                bg-gradient-to-r from-[#FEAC5E] via-[#C779D0] to-[#4BC0C8] 
+                shadow-[inset_0px_3px_3px_0px_rgba(255,255,255,0.35),inset_0px_-2px_4px_0px_rgba(0,0,0,0.25)] "
               onClick={() => router.push("/add-on-rent")}
             >
               <span className="text-lg">+</span> Rent
@@ -456,7 +458,9 @@ Cookies.remove("longitude", { path: "/" });
           ) : null}
                     {name || token ? (
             <button
-              className="sm:hidden sm:flex items-center gap-2 px-5 py-1 rounded-full text-white font-medium shadow-lg bg-gradient-to-r from-orange-400 via-purple-500 to-teal-500 hover:scale-105 transition-transform duration-300"
+              className="sm:hidden sm:flex items-center gap-2 px-[16px] py-[6px] sm:py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-[92px] border border-[rgba(7,7,7,0.1)] 
+                bg-gradient-to-r from-[#FEAC5E] via-[#C779D0] to-[#4BC0C8] 
+                shadow-[inset_0px_3px_3px_0px_rgba(255,255,255,0.35),inset_0px_-2px_4px_0px_rgba(0,0,0,0.25)]"
               onClick={() => router.push("/add-on-rent")}
             >
               <span className="text-lg">+</span>
@@ -468,11 +472,11 @@ Cookies.remove("longitude", { path: "/" });
             {name || token ? (
               <div
                 onClick={() => router.push("/profile")}
-                className="w-full md:w-[110px] flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 cursor-pointer"
+                className="w-full md:w-[110px] flex items-center gap-2  px-2 py-1 cursor-pointer"
               >
                {profilePic ? <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" /> :
                <img src={profile_avatar} alt="user" className="w-8 h-8 rounded-full object-cover" />}
-                <p className="hidden sm:flex md:flex text-sm truncate max-w-[80px]">
+                <p className="hidden sm:flex md:flex text-sm truncate w-auto">
                   {name === undefined || name==="undefined" ? "Hi!" : name}
                 </p>
 
@@ -480,7 +484,7 @@ Cookies.remove("longitude", { path: "/" });
               </div>
             ) : (
               <button
-                className="ml-2 sm:ml-5 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 sm:px-6 rounded-full shadow-md transition duration-300 flex items-center justify-center"
+                className=" px-2 py-2  w-[147px] text-white text-[14px] font-[600] rounded-[10px] border border-[1px] bg-[rgba(255,45,85,1)] border border-[rgba(255,45,85,1)] shadow-[inset_0px_1px_0px_1px_var(--OverlaysWhiteAlpha10),inset_0px_6px_4px_-4px_var(--OverlaysWhiteAlpha8),inset_0px_-1px_0.5px_1px_var(--OverlaysBlackAlpha8)]"
                 onClick={() => setIsLoginOpen(true)}
               >
                 {/* Show 'Login' on mobile */}
@@ -503,7 +507,7 @@ Cookies.remove("longitude", { path: "/" });
   
         </div>
       </header>
-      <div className="sm:flex md:flex lg:hidden  w-full flex md:flex gap-3 px-2 py-4 md:px-16 sm:px-12" >
+      <div className="sm:flex md:flex lg:hidden  border border-b-1 w-full flex md:flex gap-3 px-2 py-4 md:px-16 sm:px-12" >
         <div className="items-center  w-full relative cursor-pointer sm:block md:block lg:hidden">
           <SearchInput
             value={searchValue}

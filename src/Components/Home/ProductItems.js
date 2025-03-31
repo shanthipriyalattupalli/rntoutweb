@@ -195,10 +195,10 @@ const ProductItem = ({ product }) => {
       {/* <ToastContainer /> */}
       <style>{customStyles}</style>
 
-      <div className="2xl:w-full xl:w-full xl:h-[436px] bg-white rounded-lg border border-slate-200"
+      <div className="2xl:w-full xl:w-full h-[436px] rounded-[12px] bg-white  border border-slate-200"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
-        <div className="relative rounded-t-lg">
+        <div className="relative">
           <div className="border-b-2 border-bottom-color: rgb(209 213 219 / var(--tw-border-opacity, 1))">
             {isHovered ? (
               <>
@@ -245,7 +245,7 @@ const ProductItem = ({ product }) => {
                         <Image
                           src={img}
                           alt={`${title} - ${index + 1}`}
-                          className="w-full h-[220px] object-cover rounded-t-lg"
+                          className="w-full h-[220px] object-cover rounded-t-[12px]"
                           width={308}
                           height={220}
                         />
@@ -259,7 +259,7 @@ const ProductItem = ({ product }) => {
                 <Image
                   src={images[0]}
                   alt={title}
-                  className="w-full h-[220px] object-cover rounded-t-lg"
+                  className="w-full h-[220px] object-cover rounded-t-[12px]"
                   width={308}
                   height={220}
                 />
@@ -268,10 +268,23 @@ const ProductItem = ({ product }) => {
 
             {/* Rating and Fav Icon positioned on top */}
             <div className="absolute top-[14px] right-4 z-10 flex flex-col items-center space-x-2">
-              {averageRating && <p className={`flex items-center bg-green-700 px-2 rounded-full text-white  ${averageRating >= 4 ? "bg-green-700" : averageRating >= 2 ? "bg-orange-500" : "bg-red-500"}`}>
-                <img src={stars} alt="Rating stars" className="w-4 h-3" />
-                <span className="ml-1">{averageRating}</span>
-              </p>}
+            {averageRating && (
+  <p
+    className="w-[49px] h-[20px] flex items-center px-2 rounded-full text-white"
+    style={{
+      backgroundColor:
+        averageRating >= 4
+          ? "rgba(8, 135, 93, 1)" 
+          : averageRating >= 2
+          ? "rgba(244, 128, 3, 1)" 
+          : "rgba(224, 45, 60, 1)", 
+    }}
+  >
+    <img src={stars} alt="Rating stars" className="w-4 h-3" />
+    <span className="ml-1">{averageRating}</span>
+  </p>
+)}
+
 
               {/* <p
                 className="cursor-pointer"
@@ -314,7 +327,7 @@ const ProductItem = ({ product }) => {
 
         {isView ? (
           <div className='p-4'>
-            <h2 className="product-title text-gray-800 truncate w-full overflow-hidden whitespace-nowrap">
+            <h2 className="product-title text-[#070707] font-[500] truncate w-full overflow-hidden whitespace-nowrap">
               {title || title.charAt(0).toUpperCase() + title.slice(1)}
             </h2>
 
@@ -323,7 +336,7 @@ const ProductItem = ({ product }) => {
             <p className='cart-price text-bold text-lg mt-2'>
               <span className='text-[#FF2D55] font-[600] text-[14px]'>
                 ₹{rentalPrice[0]?.price && `${rentalPrice[0].price}`}
-                <span className='text-[#070707A6] font-[400] text-[12]'>
+                <span className='text-[#070707A6] font-[400] text-[12px]'>
                   /day
                 </span>
               </span>
@@ -339,7 +352,7 @@ const ProductItem = ({ product }) => {
                 height={16}
               />
               <span className="text-gray-500 text-xs">
-                <span className="hidden sm:inline">Free Delivery for: </span>5 km
+                <span className="hidden sm:inline">Free Delivery for: </span><span className="font-[500] text-[12px]">5 km</span>
               </span>
 
             </div>
@@ -358,8 +371,8 @@ const ProductItem = ({ product }) => {
                   <span className="hidden sm:inline">Availability:</span> {formattedDate}-{formattedendDate}
                 </span>
               ) : rentalAvailability && formattedDate ? (
-                <span className="text-gray-500 text-xs hidden sm:inline">
-                  Availability: {formattedDate}
+                <span className="text-gray-500 text-[12px] hidden sm:inline">
+                  Availability:<span className="font-[500px] text-[12px]"> {formattedDate}</span>
                 </span>) : null}
             </div>
             {/* <Image
@@ -382,38 +395,28 @@ const ProductItem = ({ product }) => {
             </div>
 
 
-            {/* Add to Cart Button */}
-            {/* <button
-          className="cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        > */}
-            {/* {
-              rentalStartDate > new Date() ? ( // Compare raw Date objects
-                <button
-                  className="notify-btn border-blue-500 border  text-blue-400 font-medium px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2"
-                  onClick={() => handleNotifyMe()}
-                >
-                  <span className="text-sm">Notify Me Availability</span>
-                </button>
-              ) : ( */}
             <button
-              className={`${stockQuantity > 0
-                ? "cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-                : "cart-btn border-red-100 border text-black font-bold px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-                } ${isHovered && stockQuantity > 0 ? "bg-red-600 text-white" : ""}`}
-              onClick={() => stockQuantity > 0 && handleAddCart()}
-              disabled={stockQuantity <= 0}
-            >
-              <Image
-                src={isHovered && stockQuantity > 0 ? cartIconHov : cartIcon}
-                alt="Cart icon"
-                className="w-4 h-4"
-                width={500}
-                height={300}
-              />
-              <span className={`text-sm ${stockQuantity > 0 ? "" : "text-gray-400"}`}>Add to cart</span>
-            </button>
+  className={`${stockQuantity > 0
+    ? "cart-btn border border-[rgba(255,45,85,0.6)] hover:bg-[rgba(255,45,85,1)] text-[rgba(255,45,85,1)] hover:text-white font-bold px-4 py-1  rounded-[8px] mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+    : "cart-btn border border-[rgba(255,45,85,0.6)] text-white font-bold px-4 py-1 rounded-[8px] mt-4 text-center w-full  flex items-center justify-center space-x-2 group"
+    } ${isHovered && stockQuantity > 0 ? "bg-[rgba(255,45,85,1)] hover:text-white cart-hover-shadow" : ""}`}
+  onClick={() => stockQuantity > 0 && handleAddCart()}
+  disabled={stockQuantity <= 0}
+>
+  <Image
+    src={isHovered && stockQuantity > 0 ? cartIconHov : cartIcon}
+    alt="Cart icon"
+    className="w-4 h-4"
+    width={500}
+    height={300}
+  />
+  <span className={`text-sm ${stockQuantity > 0 && isHovered ? "text-white" : stockQuantity > 0 ? "" : "text-gray-400"}`}>
+    Add to cart
+  </span>
+</button>
+
+
+
             {/* ) */}
             {/* } */}
 
@@ -422,13 +425,13 @@ const ProductItem = ({ product }) => {
           <div>
             <div className='w-full'>
               <div className='grid grid-cols-2 text-center'>
-                {rentalPrice?.map((detail) => (
-                  <div
-                    key={detail._id}
-                    className={`border p-1 cursor-pointer ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""
-                      }`}
-                    onClick={() => setSelectedRentalPeriod(detail.period)}
-                  >
+                {rentalPrice?.map((detail,index) => (
+  <div
+  key={detail._id}
+  className={`p-1 cursor-pointer ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""} 
+    border ${index < 2 ? "border-t-0" : "border-t"}`}
+  onClick={() => setSelectedRentalPeriod(detail.period)}
+>
     <span
       className={`block font-[500] text-[14px] ${
         selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"

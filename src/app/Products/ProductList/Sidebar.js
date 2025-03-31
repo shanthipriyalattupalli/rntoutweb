@@ -245,7 +245,7 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
 
 
                       <div className="w-full flex flex-col">
-                        <div className="relative w-[200px] ">
+                        <div className="relative w-[200px]">
                           {/* Range Track */}
                           <div className="absolute bg-red-200 h-2 w-full rounded-lg"></div>
                           <div

@@ -59,6 +59,13 @@ body {
   cursor:pointer;
   border-radius: 0 16px 0 0;
 }
+.cart-hover-shadow {
+  box-shadow: 
+    0px 1px 0px 1px var(--OverlaysWhiteAlpha10) inset,
+    0px 6px 4px -4px var(--OverlaysWhiteAlpha8) inset,
+    0px -1px 0.5px 1px var(--OverlaysBlackAlpha8) inset;
+}
+
 .item-header1{
   display: flex;
   flex-direction: row;

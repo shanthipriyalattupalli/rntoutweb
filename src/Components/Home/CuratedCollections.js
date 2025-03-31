@@ -11,8 +11,8 @@ const LazyImage = memo(({ src, alt }) => {
     <img
       src={src}
       alt={alt}
-      className='w-full h-[200px] object-cover rounded-lg'
-      loading='lazy'
+      className="w-full h-[200px] object-cover rounded-lg"
+      loading="lazy"
     />
   );
 });
@@ -20,48 +20,38 @@ const LazyImage = memo(({ src, alt }) => {
 const CuratedCollections = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
+  const [slidesToShow, setSlidesToShow] = useState(3); // Default: Show 3 slides
 
   const collections = [
-    {
-      id: 1,
-      image: curated1,
-      title: "Furniture",
-      description: "130+ Properties",
-    },
-    {
-      id: 2,
-      image: curated2,
-      title: "Appliances",
-      description: "230+ Properties",
-    },
-    {
-      id: 3,
-      image: curated3,
-      title: "Workspace",
-      description: "220+ Properties",
-    },
-    {
-      id: 4,
-      image: curated2,
-      title: "Outdoor Living",
-      description: "50+ Properties",
-    },
-    {
-      id: 5,
-      image: curated1,
-      title: "Home Office",
-      description: "180+ Properties",
-    },
+    { id: 1, image: curated1, title: "Furniture", description: "130+ Properties" },
+    { id: 2, image: curated2, title: "Appliances", description: "230+ Properties" },
+    { id: 3, image: curated3, title: "Workspace", description: "220+ Properties" },
+    { id: 4, image: curated2, title: "Outdoor Living", description: "50+ Properties" },
+    { id: 5, image: curated1, title: "Home Office", description: "180+ Properties" },
   ];
 
-  const slidesToShow = 3; // Show only 3 slides at a time
+  // Responsive Slide Count
+  useEffect(() => {
+    const updateSlidesToShow = () => {
+      if (window.innerWidth < 640) {
+        setSlidesToShow(1); // Small devices: Show 1 slide
+      } else {
+        setSlidesToShow(3); // Larger screens: Show 3 slides
+      }
+    };
 
-  // Navigate to the next set of 3 images (with wrap around)
+    updateSlidesToShow(); // Initial check
+    window.addEventListener("resize", updateSlidesToShow);
+
+    return () => window.removeEventListener("resize", updateSlidesToShow);
+  }, []);
+
+  // Navigate to the next set of slides
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % collections.length);
   };
 
-  // Navigate to the previous set of 3 images (with wrap around)
+  // Navigate to the previous set of slides
   const prevImage = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? collections.length - slidesToShow : prevIndex - 1
@@ -77,7 +67,7 @@ const CuratedCollections = () => {
     return () => clearInterval(timer); // cleanup timer
   }, [autoPlay, currentIndex]);
 
-  // Get the current 3 images to show based on the currentIndex
+  // Get the current slides to display
   const currentCollections = collections.slice(
     currentIndex,
     currentIndex + slidesToShow
@@ -91,48 +81,37 @@ const CuratedCollections = () => {
       : currentCollections;
 
   return (
-    <div className='mx-auto py-2 w-full mx-auto px-6 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-4'>
-      <h1 className='text-3xl font-bold text-gray-800 text-center mb-6'>
+    <div className="mx-auto py-2 w-full px-6 sm:px-4 md:px-8 lg:px-12 xl:px-16 2xl:px-4">
+      <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
         Curated Rental Collections
       </h1>
-      <p className='text-gray-600 text-center mb-8'>
+      <p className="text-gray-600 text-center mb-8">
         Your Gateway to Premium Rental Experiences.
       </p>
 
-      <div className='relative'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10 px-14'>
-          {/* Map over the current 3 images to display */}
-          {wrapAroundCollections?.map((collection) => (
-            <div key={collection.id} className='relative'>
+      <div className="relative">
+        {/* Grid layout updates for responsive behavior */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10 px-4 sm:px-14">
+          {wrapAroundCollections.map((collection) => (
+            <div key={collection.id} className="relative">
               <LazyImage src={collection.image} alt={collection.title} />
-              <div className='absolute bg-black opacity-50 rounded-lg'></div>
-              <div className='absolute inset-0 flex flex-col items-center justify-center text-white px-6 py-8'>
-                <div className='bg-blue-500 text-white px-3 py-1 rounded-md text-sm font-medium mb-4'>
+              <div className="absolute bg-black opacity-50 rounded-lg"></div>
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-6 py-8">
+                <div className="bg-blue-500 text-white px-3 py-1 rounded-md text-sm font-medium mb-4">
                   For Tenants with Company Lease
                 </div>
-                <div className='text-lg font-medium mb-2'>
-                  {collection.description}
-                </div>
-                {/* <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                </svg> */}
+                <div className="text-lg font-medium mb-2">{collection.description}</div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Navigation buttons */}
-        <div className='absolute inset-0 flex justify-between items-center px-4 py-2 z-10'>
-          <button
-            onClick={prevImage}
-            className='bg-black bg-opacity-50 text-white p-2 rounded-full'
-          >
+        {/* Navigation Buttons */}
+        <div className="absolute inset-0 flex justify-between items-center px-4 py-2 z-10">
+          <button onClick={prevImage} className="bg-black bg-opacity-50 text-white p-2 rounded-full">
             &#10094;
           </button>
-          <button
-            onClick={nextImage}
-            className='bg-black bg-opacity-50 text-white p-2 rounded-full'
-          >
+          <button onClick={nextImage} className="bg-black bg-opacity-50 text-white p-2 rounded-full">
             &#10095;
           </button>
         </div>

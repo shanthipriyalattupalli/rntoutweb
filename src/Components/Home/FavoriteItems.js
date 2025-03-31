@@ -23,6 +23,7 @@ import Link from "next/link";
 // import cartIcon from '/public/Assets/Icons/add-to-cart.png';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 
 const customStyles = `
@@ -149,14 +150,17 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response.data.message, "removal of items")
       fetchFavorites()
-      toast.success(response.data.message || "Item removed from favourites");
+      Swal.fire({
+        icon: "success",
+        title: "Done!",
+        text: response.data.message,
+        confirmButtonColor: "#d33",
+      });
     } catch (error) {
       console.error("Error removing product from favorites:", error);
-      // toast.error(
-      //   error.response?.data?.message ||
-      //   "Something went wrong. Please try again."
-      // );
+
     }
   }
 
@@ -178,10 +182,10 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
       {/* <ToastContainer /> */}
       <style>{customStyles}</style>
 
-      <div className="w-full max-w-[350px] xl:max-w-[330px] sm:max-w-[260px] 2xl:max-w-[330px] xl:h-[436px] bg-white rounded-lg border border-slate-200"
+      <div className="w-full max-w-[350px] xl:max-w-[330px] sm:max-w-[260px] 2xl:max-w-[330px] xl:h-[436px] bg-white  rounded-[12px] border border-slate-200"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
-        <div className="relative rounded-t-lg">
+        <div className="relative rounded-t-[13px]">
           <div className="border-b-2 border-bottom-color: rgb(209 213 219 / var(--tw-border-opacity, 1))">
             {isHovered ? (
               <>
@@ -226,7 +230,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                         <Image
                           src={img}
                           alt={`${title} - ${index + 1}`}
-                          className="w-full h-[220px] object-cover rounded-t-lg"
+                          className="w-full h-[220px] object-cover rounded-t-[12px]"
                           width={308}
                           height={220}
                         />
@@ -240,7 +244,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                 <Image
                   src={images[0]}
                   alt={title}
-                  className="w-full h-[220px] object-cover rounded-t-lg"
+                  className="w-full h-[220px] object-cover  rounded-t-[12px]"
                   width={308}
                   height={220}
                 />
@@ -362,15 +366,14 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                 {stockQuantity > 0 ? "In stock" : "Out of stock"}
               </span>
             </div>
-
             <button
-              className={`${stockQuantity > 0
-                ? "cart-btn border-red-500 border hover:bg-red-600 text-black font-bold hover:text-white px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-                : "cart-btn border-red-100 border text-black font-bold px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-                } ${isHovered && stockQuantity > 0 ? "bg-red-600 text-white" : ""}`}
-              onClick={() => stockQuantity > 0 && handleAddCart()}
-              disabled={stockQuantity <= 0}
-            >
+  className={`${stockQuantity > 0
+    ? "cart-btn border border-[rgba(255,45,85,0.6)] hover:bg-[rgba(255,45,85,1)] text-[rgba(255,45,85,1)] hover:text-white font-bold px-4 py-1 rounded-[8px] mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+    : "cart-btn border border-[rgba(255,45,85,0.6)] text-white font-bold px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+    } ${isHovered && stockQuantity > 0 ? "bg-[rgba(255,45,85,1)] hover:text-white cart-hover-shadow" : ""}`}
+  onClick={() => stockQuantity > 0 && handleAddCart()}
+  disabled={stockQuantity <= 0}
+>
               <Image
                 src={isHovered && stockQuantity > 0 ? cartIconHov : cartIcon}
                 alt="Cart icon"
@@ -378,7 +381,9 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                 width={500}
                 height={300}
               />
-              <span className={`text-sm ${stockQuantity > 0 ? "" : "text-gray-400"}`}>Add to cart</span>
+  <span className={`text-sm ${stockQuantity > 0 && isHovered ? "text-white" : stockQuantity > 0 ? "" : "text-gray-400"}`}>
+    Add to cart
+  </span>
             </button>
             {/* ) */}
             {/* } */}
@@ -388,11 +393,11 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
           <div>
             <div className='w-full'>
               <div className='grid grid-cols-2 text-center'>
-                {rentalPrice?.map((detail) => (
+                {rentalPrice?.map((detail, index) => (
                   <div
                     key={detail._id}
-                    className={`border p-1 cursor-pointer ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""
-                      }`}
+                    className={` p-1 cursor-pointer ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""}
+                       border ${index < 2 ? "border-t-0" : "border-t"}`}
                     onClick={() => setSelectedRentalPeriod(detail.period)}
                   >
                     <span className={`block font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"}`}>

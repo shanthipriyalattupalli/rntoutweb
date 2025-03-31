@@ -24,8 +24,8 @@ const CategorySection = ({ categories, isLoading,categoryIds }) => {
   };
 
   return (
-    <div className="bg-white pt-8">
-      <div className="flex flex-col gap-2 px-4 text-center">
+    <div className="bg-white pt-8 justify-center">
+<div className="flex flex-col gap-2 px-[20px] sm:px-[80px] text-center">
         <h1 className="text-3xl font-bold text-gray-800">
           Our Top Trending Products
         </h1>
@@ -34,47 +34,50 @@ const CategorySection = ({ categories, isLoading,categoryIds }) => {
         </p>
       </div>
 
-      <div className="bg-white-100 py-6">
-  <div
-    className={`flex gap-2 px-8 scrollbar-hide ${
-      categories?.length > 8 ? "overflow-x-auto whitespace-nowrap" : "flex-wrap justify-center"
-    }`}
-  >
-    {isLoading
-      ? Array.from({ length: 8 }).map((_, index) => (
-          <div
-            key={index}
-            className="w-[150px] h-[40px] bg-gray-300 rounded-lg animate-pulse flex-shrink-0"
-          ></div>
-        ))
-      : categories?.map((category) => (
-          <button
-            key={category._id}
-            onClick={() => handleCategoryClick(category._id)}
-            className={`flex items-center py-1 text-sm px-1 rounded-lg transition duration-300 flex-shrink-0 ${
-              selectedCategory === category._id
-                ? "bg-[#F0F5FF] border border-[#2F6FED] text-blue-700"
-                : "bg-white text-gray-800 border border-slate-300 hover:bg-blue-100"
-            }`}
-            style={{
-              boxShadow:
+      <div className="bg-white py-6">
+  <div className="w-full overflow-x-auto px-[80px]">
+    <div
+      className={`flex gap-2 xl:gap-6 scrollbar-hide ${
+        categories?.length > 5 ? "overflow-x-auto flex-nowrap" : "flex-wrap justify-between"
+      }`}
+    >
+      {isLoading
+        ? Array.from({ length: 8 }).map((_, index) => (
+            <div
+              key={index}
+              className="w-[150px] h-[40px] bg-gray-300 rounded-[10px] animate-pulse flex-shrink-0"
+            ></div>
+          ))
+        : categories?.map((category) => (
+            <button
+              key={category._id}
+              onClick={() => handleCategoryClick(category._id)}
+              className={`w-auto flex items-center py-1 text-sm px-1 rounded-[10px] transition duration-300 flex-shrink-0 ${
                 selectedCategory === category._id
-                  ? "0px 1px 1px rgba(0, 0, 255, 0.1)"
-                  : "none",
-            }}
-          >
-            <Image
-              src={category.image || "/default-icon.png"}
-              alt={`${category.categoryName} icon`}
-              className="h-5 w-5 mr-2"
-              width={16}
-              height={16}
-            />
-            {category.categoryName}
-          </button>
-        ))}
+                  ? "bg-[#F0F5FF] border border-[#2F6FED] text-blue-700"
+                  : "bg-white text-gray-800 border border-slate-300 hover:bg-blue-100"
+              }`}
+              style={{
+                boxShadow:
+                  selectedCategory === category._id
+                    ? "0px 1px 1px rgba(0, 0, 255, 0.1)"
+                    : "none",
+              }}
+            >
+              <Image
+                src={category.image || "/default-icon.png"}
+                alt={`${category.categoryName} icon`}
+                className="h-5 w-5 mr-2"
+                width={16}
+                height={16}
+              />
+              {category.categoryName}
+            </button>
+          ))}
+    </div>
   </div>
 </div>
+
 
     </div>
   );

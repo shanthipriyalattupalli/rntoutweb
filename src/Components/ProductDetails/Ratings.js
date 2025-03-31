@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 const stars = "/Assets/stars.svg";
 const userProfile = '/Assets/userProfile.svg'
 import { formatDistanceToNow } from 'date-fns';
+import { ArrowLeft } from 'lucide-react';
+const left="/Assets/Chevron-left.svg"
 
 
 const Ratings = ({ userRatings }) => {
@@ -43,31 +45,44 @@ const Ratings = ({ userRatings }) => {
           <div>
             {currentRatings.map((rating) => (
               <div key={rating._id} className="flex flex-col gap-3">
-                <table className="flex flex-col gap-2 w-[610px] border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4">
+                <table className="flex flex-col gap-2 w-[610px] border bg-[#FFFFFF] border-slate-200 text-sm rounded-[16px] p-4">
                   <tbody>
                     <tr>
                       <div className="flex flex-col gap-2">
                         <div className="flex gap-3">
                           <p
-                            className={`flex gap-1 items-center px-2 rounded-full text-white 
-                      ${rating.rating >= 4 ? "bg-green-700" : rating.rating >= 2 ? "bg-orange-500" : "bg-red-500"}`}
+                            className={`w-[49px] h-[20px] flex items-center px-2 rounded-full text-white`}
+                            style={{
+                              backgroundColor:
+                                rating.rating >= 4
+                                  ? "rgba(8, 135, 93, 1)" // Green
+                                  : rating.rating >= 2
+                                    ? "rgba(244, 128, 3, 1)" // Orange
+                                    : "rgba(224, 45, 60, 1)", // Red
+                            }}
+
                           >
-                            <img src={stars} alt="Rating stars" className="w-4 h-4" />
+                            <img src={stars} alt="Rating stars" className="w-4 h-3" />
                             <span className="ml-1">{rating.rating}</span>
                           </p>
-                          <p className="text-[14px] font-medium leading-[20px] ">{rating.comment}</p>
+                          <p className="text-[14px] text-[rgba(7, 7, 7, 1)] font-[500] leading-[20px] ">{rating.comment}</p>
                         </div>
-                        <p className="text-[14px] font-medium leading-[20px] ">{rating.comment}</p>
+                        <p className="text-[14px] font-[400] leading-[20px] ">{rating.comment}</p>
                       </div>
                     </tr>
                   </tbody>
                 </table>
-                <div className="flex gap-2 p-2">
-                  <img src={userProfile} alt="User Profile" />
-                  <p className="flex gap-2 text-[14px] font-medium text-gray-500 text-left">
-                    {formatDistanceToNow(new Date(rating.createdAt), { addSuffix: true })}
-                  </p>
+                <div className="flex items-center gap-2 pb-2">
+                  <img src={userProfile} alt="User Profile" className="w-8 h-8 rounded-full" />
+                  <div className="flex items-center gap-1 text-sm">
+                    <p className="font-semibold text-black">{rating?.userId?.name}</p>
+                    <span className="text-gray-500">•</span>
+                    <p className="text-gray-500">
+                      {formatDistanceToNow(new Date(rating.createdAt), { addSuffix: true })}
+                    </p>
+                  </div>
                 </div>
+
               </div>
             ))}
 
@@ -77,9 +92,9 @@ const Ratings = ({ userRatings }) => {
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                className="px-3 py-2 border border-[rgba(7,7,7,0.15)] rounded-full bg-white hover:bg-white disabled:opacity-50"
               >
-                Prev
+                <img src={left} alt='leftarrow'/>
               </button>
 
 
@@ -87,7 +102,7 @@ const Ratings = ({ userRatings }) => {
                 <button
                   key={index}
                   onClick={() => typeof page === "number" && setCurrentPage(page)}
-                  className={`px-3 py-1 border rounded-full ${currentPage === page ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+                  className={`px-4 py-2 border border-[rgba(7,7,7,0.15)] rounded-full ${currentPage === page ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
                     }`}
                   disabled={page === "..."}
                 >
@@ -98,9 +113,9 @@ const Ratings = ({ userRatings }) => {
               <button
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                className="px-3 py-2 border border-[rgba(7,7,7,0.15)] rounded-full bg-white hover:bg-white disabled:opacity-50"
               >
-                Next
+                 <img src={left} alt='leftarrow' className='rotate-180'/>
               </button>
             </div>
           </div>

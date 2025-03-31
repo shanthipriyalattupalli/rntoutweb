@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 // import "@/styles/Login.css";
 import '../../styles/Login.css';
 import axios from "axios";
@@ -14,16 +14,15 @@ import Signup from "./Signup";
 const Login = ({ setIsLoginOpen }) => {
   const [isPhoneSelected, setIsPhoneSelected] = useState(true);
   const [isForgetPassword, setIsForgetPassword] = useState(false);
-  const [mobileNumber, setMobileNumber] = useState(""); // For phone login
-  const [email, setEmail] = useState(""); // For email login
-  const [password, setPassword] = useState(""); // For email login
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [email, setEmail] = useState(""); 
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false); 
   const [isInvalid, setIsInvalid] = useState(false);
   const router = useRouter();
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isOtpOpen, setIsOtpOpen] = useState(false);
-  // const [isregisterOpen, setIsRegisterOpen] = useState(false);
-  // Handle OTP API integration
+
   const handleSendOtp = async () => {
     if (!mobileNumber || !/^\d{10}$/.test(mobileNumber)) {
       setIsInvalid(true); // Mark input as invalid
@@ -43,6 +42,7 @@ const Login = ({ setIsLoginOpen }) => {
         toast.success(response.data.message || "OTP sent successfully!");
         setIsOtpOpen(true);
 
+
         const fcmToken = (typeof window !== 'undefined') ? localStorage.getItem("fcmToken") : null;
         if (fcmToken) {
           await sendFcmTokenToServer(fcmToken);
@@ -58,6 +58,8 @@ const Login = ({ setIsLoginOpen }) => {
     }
   };
   
+
+
 
   const sendFcmTokenToServer = async (fcmToken) => {
     try {
@@ -77,11 +79,6 @@ const Login = ({ setIsLoginOpen }) => {
   return (
     <div className='login-container'>
       <ToastContainer position='top-right' autoClose={3000} />
-      {/* <div className='login-first'>
-        <img src={Rntout} alt='RentOut Logo' className='login-logo' />
-        <h2 className='subtitle'>Sign in to RntOut</h2>
-      </div> */}
-
       <div className='login-card'>
         {isForgetPassword ? (
           <div>
@@ -110,20 +107,7 @@ const Login = ({ setIsLoginOpen }) => {
               <img src={Rntout} alt='RentOut Logo' className='login-logo' />
               <h2 className='subtitle'>Sign in to rntout</h2>
             </div>
-            {/* <div className='tab-container'>
-              <button
-                className={`tab ${isPhoneSelected ? "active" : "inactive"}`}
-                onClick={() => setIsPhoneSelected(true)}
-              >
-                Phone
-              </button>
-              <button
-                className={`tab ${!isPhoneSelected ? "active" : "inactive"}`}
-                onClick={() => setIsPhoneSelected(false)}
-              >
-                Email
-              </button>
-            </div> */}
+
 
             {isPhoneSelected && (
               <div>
@@ -175,58 +159,7 @@ const Login = ({ setIsLoginOpen }) => {
 
             )}
 
-            {/* {!isPhoneSelected && (
-              <div>
-                <p className='login-p1 m-0'>Email Address</p>
-                <input
-                  type='email'
-                  placeholder='Enter Email Address'
-                  className='input'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <p className='login-p1 m-0'>Password</p>
-                <input
-                  type='password'
-                  placeholder='Enter Password'
-                  className='input'
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <button
-                  className='button'
-                  onClick={handleEmailLogin}
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Logging in..." : "Login"}
-                </button>
-              </div>
-            )} */}
-            {/* <p className='or-text'>or</p>
-            <button className='google-button'>
-              <img
-                src='https://img.icons8.com/color/48/000000/google-logo.png'
-                alt='Google'
-                className='google-icon'
-              />
-              Google
-            </button>
-            <p className='footer-text mb-0'>
-              Don't have any account?{" "}
-              <span className='link'   >
-                Create account
-              </span>
-            </p> */}
-            {/* {isregisterOpen && (
-                          <div className="modal-overlay">
-                            <div className="modal-content">
-                              <button className="close-button" onClick={() => setIsRegisterOpen(false)}>
-                                ✕
-                              </button>
-                              <Signup />
-                            </div>
-                          </div>
-                        )} */}
+
           </div>
         )}
       </div>

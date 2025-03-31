@@ -55,6 +55,7 @@ const fetchProductRatings = async (productId) => {
     const response = await axios.get(`${BASE_URL}/reviews/variant/${productId}`);
 
     const data = response.data;
+    console.log(response.data,"ratings")
     return response.data.data;
   } catch (error) {
     console.error("Error fetching product:", error);
@@ -274,7 +275,7 @@ const ProductPage = async ({ params, searchParams }) => {
           </div>
         </div>}
         {product.averageRating && (
-          <div className="flex flex-col w-full md:w-1/2 gap-2 border border-black-200 bg-white p-6 md:p-10 rounded-lg text-center justify-center">
+          <div className="flex mt-6 flex-col w-full md:w-1/2 gap-2 border border-black-200 bg-white p-6 md:p-10 rounded-lg text-center justify-center">
             <h2 className="text-black-500 text-5xl md:text-5xl font-bold">
               {product.averageRating}
             </h2>

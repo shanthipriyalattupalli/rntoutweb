@@ -78,6 +78,12 @@ const KYCVerification = ({ setIsKyc }) => {
             }
         } catch (error) {
             console.log(error, "error");
+            if(error){
+                setIsKycSuccess(null);
+                Cookies.set("kycstatus", undefined, { expires: 7, secure: true, sameSite: "Strict" });
+            }
+
+
         }
     };
 
