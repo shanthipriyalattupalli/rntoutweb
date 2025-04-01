@@ -12,7 +12,7 @@ import Signup from "./Signup";
 import Cookies from "js-cookie";
 
 
-const Rntout = "/Assets/Rntout_Logo.png";
+const Rntout = "/Assets/Rntout_Logo.svg";
 
 const Otp = ({mobileNumber,setIsOtpOpen,setIsLoginOpen}) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -158,7 +158,7 @@ useEffect(() => {
       toast.error("Please enter a valid mobile number.");
       return;
     }
-
+    setOtpError(false)
     setIsLoading(true);
     setOtp(["", "", "", ""]);
     setTimer(60);
@@ -193,6 +193,7 @@ useEffect(() => {
         <img src={Rntout} alt='RentOut Logo' className='login-logo' />
         {/* <h2 className='subtitle'>Sign in to rntout</h2> */}
       </div>
+      <div className="flex flex-col gap-[6px]">
         <h2 className="otp-heading">OTP Verification</h2>
         <p className="otp-subtext">
           We've sent a One Time Password (OTP) to the mobile
@@ -202,7 +203,7 @@ useEffect(() => {
         <p className="otp-number">
        +91 {mobileNumber}<span className="otp-change" onClick={()=>setIsOtpOpen(false)}>  Change</span>
         </p>
-
+        </div>
         <div className="otp-inputs">
       {otp.map((digit, index) => (
         <input

@@ -9,7 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
-const Rntout = "/Assets/Rntout_Logo.png";
+const Rntout = "/Assets/Rntout_Logo.svg";
 const profile_avatar = "/Assets/profile_avatar.png";
 
 const Signup = ({ setIsRegisterOpen }) => {
@@ -29,7 +29,8 @@ const Signup = ({ setIsRegisterOpen }) => {
 
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
-  const [errors, setErrors] = useState({ name: "", dateOfBirth: "" });
+  const [errors, setErrors] = useState({ name: null, email: null, dateOfBirth: null });
+
 
 
   const handleChange = (e) => {
@@ -41,7 +42,7 @@ const Signup = ({ setIsRegisterOpen }) => {
       while (keys.length > 1) {
         temp = temp[keys.shift()];
       }
-      temp[keys[0]] = value; // Update the final key
+      temp[keys[0]] = value;
       return updatedProfile;
     });
   };
@@ -94,12 +95,15 @@ const Signup = ({ setIsRegisterOpen }) => {
     } else if (!validateEmail(profile.user.email)) {
       validationErrors.email = "Invalid email format.";
     }
-
+  
+    console.log(validationErrors); // Check what errors are collected
+  
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       toast.error("Please fix validation errors.");
       return;
     }
+
 
 
     try {
@@ -135,7 +139,7 @@ const Signup = ({ setIsRegisterOpen }) => {
   }
 
 
-
+console.log(errors,"errors in")
   return (
     
       <div className='signup-container'>
@@ -144,26 +148,25 @@ const Signup = ({ setIsRegisterOpen }) => {
         <div className='signup-card'>
           <div className='login-first'>
             <img src={Rntout} alt='RentOut Logo' className='login-logo' />
-            <h2 className='subtitle'>Sign up for RntOut</h2>
+            <h2 className='subtitle'>Basic Information</h2>
           </div>
-          <div className="flex text-left flex-col">
+<div className="flex flex-col gap-6">
+          <div className="flex text-left flex-col gap-2">
             <p className='login-p1 m-0'>Name
             <span className="text-red-500">*</span>
             </p>
-            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+            {errors?.name && <p className="text-red-500 text-sm mt-1">{errors?.name}</p>}
 
             <input
               type='text'
               placeholder='Enter First Name'
-              className='input'
+              className='input-signup'
               name='user.name'
               value={profile.user.name}
               onChange={handleChange}
             />
           </div>
-
-
-          <div className="flex text-left flex-col">
+          <div className="flex text-left flex-col gap-2">
             <p className='login-p1 m-0'>Email Address
             <span className="text-red-500">*</span>
             </p>
@@ -171,17 +174,17 @@ const Signup = ({ setIsRegisterOpen }) => {
             <input
               type='email'
               placeholder='Enter Email Address'
-              className='input'
+              className='input-signup'
               name='user.email'
               value={profile.user.email}
               onChange={handleChange}
             />
           </div>
-          <div  >
+          <div className="flex text-left flex-col gap-2" >
             <p className='login-p1 m-0'>Gender</p>
             <select
               name='gender'
-              className='input'
+              className='input-signup'
               value={profile.gender}
               onChange={handleChange}
             >
@@ -191,7 +194,7 @@ const Signup = ({ setIsRegisterOpen }) => {
               <option value='Other' name="gender">Other</option>
             </select>
           </div>
-          <div>
+          <div className="flex text-left flex-col gap-2">
             <p className='login-p1 m-0'>Date Of Birth
             <span className="text-red-500">*</span>
             </p>
@@ -199,7 +202,7 @@ const Signup = ({ setIsRegisterOpen }) => {
 
             <input
               type="date"
-              className="input"
+              className="input-signup"
               name="dateOfBirth"
               value={profile.dateOfBirth}
               onChange={handleChange}
@@ -207,6 +210,7 @@ const Signup = ({ setIsRegisterOpen }) => {
                 .toISOString()
                 .split("T")[0]}
             />
+          </div>
           </div>
 
           <button
