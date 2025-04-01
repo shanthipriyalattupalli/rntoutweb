@@ -93,9 +93,12 @@ function Header() {
 
 
   useEffect(() => {
-    const storedDistance = (typeof window !== 'undefined') ? localStorage.getItem("selectedDistance") : null
+    const storedDistance=Cookies.get("selectedDistance") 
     if (storedDistance) {
       setSelectedDistance(storedDistance);
+    }else{
+      Cookies.set("selectedDistance", 20, { expires: 7, secure: true, sameSite: "Strict" });
+
     }
   }, []);
 

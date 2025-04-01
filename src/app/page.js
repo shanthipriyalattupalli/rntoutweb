@@ -72,13 +72,13 @@ const fetchCategories = async () => {
 
 
 const fetchProducts = async (latitude,longitude,radius) => {
-  console.log(latitude.value,longitude.value,radius.value,"products fetchingsss")
+  console.log(latitude?.value,longitude?.value,radius?.value,"products fetchingsss")
   try {
     const response = await axios.get(`${BASE_URL}/variants/variants-by-category`,{
       params:{
-        latitude :latitude.value,
-        longitude :longitude.value,
-        radius :radius.value
+        latitude :latitude?.value,
+        longitude :longitude?.value,
+        radius :radius?.value
       }
     });
     console.log(response.data, "responsse in products");
