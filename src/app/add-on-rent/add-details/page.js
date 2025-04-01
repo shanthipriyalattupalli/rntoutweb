@@ -18,12 +18,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-
-
-
 import { GrLocation } from "react-icons/gr";
 import LocationSearch from "@/Components/Location/LocationSearch";
 const upload = "/Assets/upload.png";
+
 
 const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -192,7 +190,7 @@ const MainContent = () => {
   const [previewImages, setPreviewImages] = useState([]); // To store the preview images
   const fileInputRef = useRef();
 
- 
+
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
@@ -310,8 +308,9 @@ const MainContent = () => {
     itemDetails: {},
   };
 
-  const [formData, setFormData] = useState(initialFormData);
-  const [mapCenter, setMapCenter] = useState({ lat: latitude, lng: longitude });
+  // const [formData, setFormData] = useState(initialFormData);
+  // const [mapCenter, setMapCenter] = useState({ lat: latitude, lng: longitude });
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -378,28 +377,51 @@ const MainContent = () => {
   };
 
 
+  const DEFAULT_LOCATION = { lat: 17.385044, lng: 78.486671 }; // Hyderabad coordinates
 
-  const handleMapClick = async (event) => {
-    const lat = event.latLng.lat();
-    const lng = event.latLng.lng();
+  const [formData, setFormData] = useState(initialFormData);
+  const [mapCenter, setMapCenter] = useState(
+    latitude && longitude ? { lat: latitude, lng: longitude } : DEFAULT_LOCATION
+  );
 
-    setFormData((prevData) => ({
-      ...prevData,
-      location: {
-        type: "Point", // Add default type if missing
-        coordinates: [lng, lat], // Correct order: [longitude, latitude]
-      },
-    }));
+  // Get User Location or Set Default Location
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
 
-    // Reverse geocode to get the address
+          setMapCenter({ lat: userLat, lng: userLng });
+          setFormData((prev) => ({
+            ...prev,
+            location: { type: "Point", coordinates: [userLng, userLat] },
+          }));
+
+          // Reverse geocode to get address
+          fetchAddress(userLat, userLng);
+        },
+        () => {
+          console.warn("Geolocation permission denied. Using default location.");
+          setMapCenter(DEFAULT_LOCATION);
+        }
+      );
+    } else {
+      console.warn("Geolocation not supported. Using default location.");
+      setMapCenter(DEFAULT_LOCATION);
+    }
+  }, []);
+
+  // Reverse Geocoding
+  const fetchAddress = async (lat, lng) => {
     try {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${MAP_API}`
       );
 
       if (response.data.results[0]) {
-        setFormData((prevData) => ({
-          ...prevData,
+        setFormData((prev) => ({
+          ...prev,
           pickupAddress: response.data.results[0].formatted_address,
         }));
       }
@@ -408,12 +430,25 @@ const MainContent = () => {
     }
   };
 
+  // Handle Map Click
+  const handleMapClick = async (event) => {
+    const lat = event.latLng.lat();
+    const lng = event.latLng.lng();
+
+    setFormData((prev) => ({
+      ...prev,
+      location: { type: "Point", coordinates: [lng, lat] },
+    }));
+
+    fetchAddress(lat, lng);
+  };
 
 
-console.log(formData,"formdata");
+
+
+  console.log(formData, "formdata");
 
   const handlePublishProduct = async () => {
-
     setErrors({
       title: "",
       description: "",
@@ -423,29 +458,62 @@ console.log(formData,"formdata");
       stockQuantity: "",
       pickupAddress: "",
     });
+
     let newErrors = {};
+    let missingFields = [];
 
-    if (!formData.title.trim()) newErrors.title = "This field is required";
-    if (!formData.description.trim()) newErrors.description = "This field is required";
-    if (formData.images.length === 0) newErrors.images = "This field is required";
-    if (!formData.productId.trim()) newErrors.productId = "This field is required";
-    if (!formData.rentalAvailability.startDate || !formData.rentalAvailability.endDate) {
-      newErrors.rentalAvailability = "Start date and end date are required";
+    // Validate Required Fields
+    if (!formData.title.trim()) {
+      newErrors.title = "This field is required";
+      missingFields.push("Title");
     }
-    if (!formData.stockQuantity) newErrors.stockQuantity = "This field is required";
-    if (!formData.pickupAddress.trim()) newErrors.pickupAddress = "This field is required";
+    if (!formData.description.trim()) {
+      newErrors.description = "This field is required";
+      missingFields.push("Description");
+    }
+    if (!formData.images || formData.images.length === 0) {
+      newErrors.images = "This field is required";
+      missingFields.push("Images");
+    }
+    if (!formData.productId.trim()) {
+      newErrors.productId = "This field is required";
+      missingFields.push("Product ID");
+    }
+    if (!formData.rentalAvailability?.startDate || !formData.rentalAvailability?.endDate) {
+      newErrors.rentalAvailability = "Start date and end date are required";
+      missingFields.push("Rental Availability");
+    }
+    if (!formData.stockQuantity || isNaN(formData.stockQuantity)) {
+      newErrors.stockQuantity = "This field is required";
+      missingFields.push("Stock Quantity");
+    }
+    if (!formData.pickupAddress.trim()) {
+      newErrors.pickupAddress = "This field is required";
+      missingFields.push("Pickup Address");
+    }
 
-    // If there are errors, update the state and stop the function
+    // Check if errors exist
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+
+      if (missingFields.length === Object.keys(newErrors).length) {
+        // Show only one toast if everything is empty
+        toast.error("Please fill all required fields.", { autoClose: 3000 });
+      } else {
+        // Show specific missing field errors
+        missingFields.forEach((field) => {
+          toast.error(`${field} is required.`, { autoClose: 3000 });
+        });
+      }
       return;
     }
 
+    // ✅ If No Errors, Proceed with API Call
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append('owner', userId);
-      formDataToSend.append('title', formData.title);
-      formDataToSend.append('description', formData.description);
+      formDataToSend.append("owner", userId);
+      formDataToSend.append("title", formData.title);
+      formDataToSend.append("description", formData.description);
 
       if (formData.images.length > 0) {
         formData.images.forEach((file) => {
@@ -453,30 +521,26 @@ console.log(formData,"formdata");
         });
       }
 
-      formDataToSend.append('categoryId', formData.categoryId);
-      formDataToSend.append('subCategoryId', formData.subCategoryId);
-      formDataToSend.append('productId', formData.productId);
-      formDataToSend.append('available', formData.available);
+      formDataToSend.append("categoryId", formData.categoryId);
+      formDataToSend.append("subCategoryId", formData.subCategoryId);
+      formDataToSend.append("productId", formData.productId);
+      formDataToSend.append("available", formData.available);
 
       formData.rentalPrice.forEach((item, index) => {
         formDataToSend.append(`rentalPrice[${index}][period]`, item.period);
         formDataToSend.append(`rentalPrice[${index}][price]`, item.price);
       });
 
-      formDataToSend.append(
-        'rentalAvailability',
-        JSON.stringify(formData.rentalAvailability),
-      );
-      formDataToSend.append('seoTags', formData.seoTags);
-      formDataToSend.append('isForSale', formData.isForSale);
-      formDataToSend.append('salePrice', formData.salePrice);
-      formDataToSend.append('stockQuantity', formData.stockQuantity);
-      formDataToSend.append('pickupAddress', formData.pickupAddress);
+      formDataToSend.append("rentalAvailability", JSON.stringify(formData.rentalAvailability));
+      formDataToSend.append("seoTags", formData.seoTags);
+      formDataToSend.append("isForSale", formData.isForSale);
+      formDataToSend.append("salePrice", formData.salePrice);
+      formDataToSend.append("stockQuantity", formData.stockQuantity);
+      formDataToSend.append("pickupAddress", formData.pickupAddress);
 
       const coordinates = formData.location.coordinates;
-      const validCoordinates = Array.isArray(coordinates) &&
-        coordinates.length === 2 &&
-        !isNaN(coordinates[0]) && !isNaN(coordinates[1]);
+      const validCoordinates =
+        Array.isArray(coordinates) && coordinates.length === 2 && !isNaN(coordinates[0]) && !isNaN(coordinates[1]);
 
       formDataToSend.append(
         "location",
@@ -486,8 +550,7 @@ console.log(formData,"formdata");
         })
       );
 
-
-      formDataToSend.append('pickupAvailable', formData.pickupAvailable);
+      formDataToSend.append("pickupAvailable", formData.pickupAvailable);
       for (const key in formData.itemDetails) {
         if (formData.itemDetails.hasOwnProperty(key)) {
           formDataToSend.append(`itemDetails[${key}]`, formData.itemDetails[key]);
@@ -507,7 +570,7 @@ console.log(formData,"formdata");
           icon: "success",
           title: "Success!",
           text: "Product published successfully!",
-          confirmButtonColor: "#3085d6",
+          confirmButtonColor: "#3085D6",
         }).then(() => {
           router.push("/profile/products");
           setPreviewImages([]);
@@ -533,7 +596,6 @@ console.log(formData,"formdata");
         console.error("Error while publishing product:", error);
         const errorMessage =
           error.response?.data?.error || error.response?.data?.message || "An unexpected error occurred.";
-      
         Swal.fire({
           icon: "warning",
           title: "Note!",
@@ -558,28 +620,30 @@ console.log(formData,"formdata");
           }
         });
       }
-      
     }
   };
 
 
 
-  const [selectedDate, setSelectedDate] = useState(null); 
+
+
+
+  const [selectedDate, setSelectedDate] = useState(null);
 
   return (
     <div className='main-content'>
       <ToastContainer />
 
       {isLoginOpen && (
-  <div className="modal-overlay">
-    <div className="modal-content">
-      <button className="close-button" onClick={() => setIsLoginOpen(false)}>
-        ✕
-      </button>
-      <Login setIsLoginOpen={setIsLoginOpen} />
-    </div>
-  </div>
-)}
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="close-button" onClick={() => setIsLoginOpen(false)}>
+              ✕
+            </button>
+            <Login setIsLoginOpen={setIsLoginOpen} />
+          </div>
+        </div>
+      )}
 
       <div className='radio-button-group'>
         {products?.length > 0 ? (
@@ -596,16 +660,16 @@ console.log(formData,"formdata");
               <span className='custom-radio'></span>
               {option.productName}
             </label>
-            
+
           ))
         ) : (
           <p>No products found for the selected subcategory.</p>
         )}
       </div>
       {errors.productId && <p className="text-red-500 text-sm">{errors.productId}</p>}
-      
+
       <div className='product-form'>
-        <h2 className='ba-in'>BASICS INFO</h2>
+        <h2 className='ba-in mb-3'>BASICS INFO</h2>
         <div className='basic-details '>
           <div className='form-section1'>
             <label>
@@ -709,44 +773,71 @@ console.log(formData,"formdata");
             Product Availability{" "}
             <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </label>
-          <div className='date-picker-container'>
-
-            <div className="w-full flex flex-col">
-              <label>Product Availability  <span className="text-gray-400">(Start)</span></label>
-              <DatePicker
-                selected={formData.rentalAvailability.startDate}
-                name='startDate'
-                value={formData.rentalAvailability.startDate}
-                onChange={(date) => handleDateChange(date)}
-                placeholderText='Select start date'
-                className='date-picker-wrapper'
-                dateFormat='MMMM d, yyyy'
-                minDate={new Date()}
-              />
-              <FaRegCalendarAlt className='calendar-icon' />
+          <div className="date-picker-container flex flex-col md:flex-row justify-between gap-4">
+            {/* Start Date */}
+            <div className="w-full md:w-1/2 flex flex-col">
+              <label className="text-gray-700 font-medium">
+                Product Availability <span className="text-gray-400">(Start)</span>
+              </label>
+              <div className="relative flex items-center justify-between border border-gray-300 rounded-lg px-3 py-3 focus-within:border-blue-500">
+                <DatePicker
+                  selected={formData.rentalAvailability.startDate}
+                  name="startDate"
+                  value={formData.rentalAvailability.startDate}
+                  onChange={(date) => handleDateChange(date)}
+                  placeholderText="Select start date"
+                  className="w-full outline-none bg-transparent"
+                  dateFormat="MMMM d, yyyy"
+                  minDate={new Date()}
+                />
+                <FaRegCalendarAlt
+                  className="text-gray-500 cursor-pointer"
+                  onClick={(e) => {
+                    const container = e.currentTarget.parentElement;
+                    const input = container.querySelector("input");
+                    if (input) input.click();
+                  }}
+                />
+              </div>
             </div>
-            <div className="w-full flex flex-col">
-              <label>Product Availability <span className="text-gray-400">(end)</span></label>
-              <DatePicker
-                selected={formData.rentalAvailability.endDate}
-                name='endDate'
-                value={formData.rentalAvailability.endDate}
-                onChange={(date) => handleEndDateChange(date)}
-                placeholderText='Select End date'
-                className='date-picker-wrapper'
-                dateFormat='MMMM d, yyyy'
-                minDate={new Date()} // Restricts past dates
-              />
-              <FaRegCalendarAlt className='calendar-icon' />
+
+            {/* End Date */}
+            <div className="w-full md:w-1/2 flex flex-col">
+              <label className="text-gray-700 font-medium">
+                Product Availability <span className="text-gray-400">(End)</span>
+              </label>
+              <div className="relative flex items-center justify-between border border-gray-300 rounded-lg px-3 py-3 focus-within:border-blue-500">
+                <DatePicker
+                  selected={formData.rentalAvailability.endDate}
+                  name="endDate"
+                  value={formData.rentalAvailability.endDate}
+                  onChange={(date) => handleEndDateChange(date)}
+                  placeholderText="Select end date"
+                  className="w-full outline-none bg-transparent"
+                  dateFormat="MMMM d, yyyy"
+                  minDate={new Date()}
+                />
+                <FaRegCalendarAlt
+                  className="text-gray-500 cursor-pointer"
+                  onClick={(e) => {
+                    const container = e.currentTarget.parentElement;
+                    const input = container.querySelector("input");
+                    if (input) input.click();
+                  }}
+                />
+              </div>
             </div>
           </div>
+
+
+
           <span> {errors.rentalAvailability && <p className="text-red-500 text-sm mt-10">{errors.rentalAvailability}</p>}</span>
         </div>
 
 
         <div className="mt-10 flex flex-col gap-3">
-          <label className="text-[14px] font-semibold">Select Pick up address 
-          <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+          <label className="text-[14px] font-semibold">Select Pick up address
+            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </label>
           <div className="google-content">
             <LoadScript googleMapsApiKey={MAP_API}>
@@ -776,16 +867,16 @@ console.log(formData,"formdata");
           value={formData.pickupAddress}
           onChange={handleInputChange}>
           <strong>Address:</strong> {formData.pickupAddress}
-    
-        {/* <LocationSearch /> */}
+
+          {/* <LocationSearch /> */}
 
           {errors.pickupAddress && <p className="text-red-500 text-sm">{errors.pickupAddress}</p>}
           {/* {errors.address && <p style={{ color: "red" }}>{errors.address}</p>} */}
 
         </p>
         <div className="mt-3 flex flex-col relative">
-          <label className="left-3 text-gray-500 text-sm bg-white">Description 
-          <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+          <label className="left-3 text-gray-500 text-sm bg-white">Description
+            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
 
           </label>
           <textarea
@@ -838,7 +929,7 @@ console.log(formData,"formdata");
           Product Details{" "}
           {/* <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span> */}
         </h2>
-        {productDetails?.map((section,index) => (
+        {productDetails?.map((section, index) => (
           <div className='product-details-card' key={index}>
             Title
             {section.details?.map((detail) => (
