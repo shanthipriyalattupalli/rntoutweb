@@ -36,10 +36,13 @@ const Blog = ({blogs}) => {
   
 
   // Calculate the current blogs to display
-  const currentBlogs = [
-    ...blogs.slice(currentSlide),
-    ...blogs.slice(0, currentSlide + itemsPerPage - blogs.length),
-  ].slice(0, itemsPerPage);
+  const currentBlogs = blogs?.length
+  ? [
+      ...blogs.slice(currentSlide),
+      ...blogs.slice(0, Math.max(0, currentSlide + itemsPerPage - blogs.length)),
+    ].slice(0, itemsPerPage)
+  : [];
+
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + itemsPerPage) % blogs.length);

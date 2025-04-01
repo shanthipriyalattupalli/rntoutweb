@@ -61,8 +61,8 @@ const Testimonials = () => {
 
   const currentTestimonials = Array.isArray(testimonials)
     ? [
-        ...testimonials.slice(currentSlide),
-        ...testimonials.slice(0, (currentSlide + itemsPerSlide) % testimonials.length),
+        ...testimonials?.slice(currentSlide),
+        ...testimonials?.slice(0, (currentSlide + itemsPerSlide) % testimonials.length),
       ].slice(0, itemsPerSlide)
     : [];
 

@@ -128,11 +128,11 @@ const Login = ({ setIsLoginOpen }) => {
         let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
 
         if (value.startsWith("+91")) {
-          value = value.slice(3);
+          value = value?.slice(3);
         }
 
         if (value.length > 10) {
-          value = value.slice(0, 10);
+          value = value?.slice(0, 10);
         }
 
         setMobileNumber(value);

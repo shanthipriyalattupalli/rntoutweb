@@ -93,7 +93,7 @@ const ProductPage = ({ setIsModelOpen, productId, product, rentalPrice, rentalAv
 
     const durations = Object.entries(rentalPrice).map(([key, value]) => ({
         name: key,
-        label: key.charAt(0).toUpperCase() + key.slice(1),
+        label: key.charAt(0).toUpperCase() + key?.slice(1),
         price: `$${parseFloat(value).toFixed(2)}`, // Convert to number and format price
     }));
 
@@ -101,7 +101,7 @@ const ProductPage = ({ setIsModelOpen, productId, product, rentalPrice, rentalAv
         const date = new Date(dateString);
         const day = date.getDate();
         const month = date.toLocaleString("en-US", { month: "short" }); // Get short month name
-        const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year
+        const year = String(date.getFullYear())?.slice(-2); // Get last two digits of the year
         return `${day} ${month} ‘${year}`;
     };
     const formattedStartDate = formatDate(rentalAvailability.startDate);
@@ -112,14 +112,14 @@ const ProductPage = ({ setIsModelOpen, productId, product, rentalPrice, rentalAv
 
     const otherDetails = otherDetail
         ? Object.entries(otherDetail).map(([key, value]) => ({
-            label: key.charAt(0).toUpperCase() + key.slice(1),
+            label: key.charAt(0).toUpperCase() + key?.slice(1),
             value,
         }))
         : [];
 
     const productDetails = otherDetail
         ? Object.entries(otherDetail).map(([key, value]) => ({
-            label: key.charAt(0).toUpperCase() + key.slice(1),
+            label: key.charAt(0).toUpperCase() + key?.slice(1),
             value,
         }))
         : [];
@@ -169,7 +169,7 @@ const ProductPage = ({ setIsModelOpen, productId, product, rentalPrice, rentalAv
                                     key={price._id}
                                     className={`flex flex-col items-center justify-center px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 rounded-lg border text-center w-full sm:w-auto "`}
                                 >
-                                    {periodMapping[price.period] || price.period.charAt(0).toUpperCase() + price.period.slice(1)}
+                                    {periodMapping[price.period] || price.period.charAt(0).toUpperCase() + price.period?.slice(1)}
 
                                     <div className='font-bold text-sm sm:text-md md:text-sm'>₹{price.price}</div>
                                 </button>

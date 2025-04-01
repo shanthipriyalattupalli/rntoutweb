@@ -100,14 +100,14 @@ const ProductPage = async ({ params, searchParams }) => {
 
   const midIndex = Math.ceil(itemDetailsArray.length / 2);
 
-  const productDetails = itemDetailsArray.slice(0, midIndex);
-  const otherDetails = itemDetailsArray.slice(midIndex);
+  const productDetails = itemDetailsArray?.slice(0, midIndex);
+  const otherDetails = itemDetailsArray?.slice(midIndex);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
     const month = date.toLocaleString("en-US", { month: "short" }); // Get short month name
-    const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year
+    const year = String(date.getFullYear())?.slice(-2); // Get last two digits of the year
     return `${day} ${month} ‘${year}`;
   };
   const formattedStartDate = formatDate(product.rentalAvailability.startDate);

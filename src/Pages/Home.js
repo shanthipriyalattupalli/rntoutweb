@@ -167,12 +167,12 @@ const [categoryId,setCategoryId]=useState(true)
 
   return (
     <main className='tmp-bg'>
-      <Banner banners={banners} isLoading={isLoading} />
-      <CategoryList categories={categories} isLoading={isLoading} />
+     {/* <Banner banners={banners} isLoading={isLoading} />
+      <CategoryList categories={categories} isLoading={isLoading} /> */}
       <ProductGrid categories={categories} isLoading={isLoading} categoryIds={handleCategoryClick}/>
       <Products products={categoryProducts[categoryId] || []} categoryId={categoryId} />
-      <CuratedCollections />
-      <ITInfrastructure products={categoryProducts[CATEGORY_IDS.IT_INFRASTRUCTURE] || []} categoryId={CATEGORY_IDS.IT_INFRASTRUCTURE} isLoading={isLoading} />
+      {/* <CuratedCollections /> */}
+      {/* <ITInfrastructure products={categoryProducts[CATEGORY_IDS.IT_INFRASTRUCTURE] || []} categoryId={CATEGORY_IDS.IT_INFRASTRUCTURE} isLoading={isLoading} />
       <Furniture products={categoryProducts[CATEGORY_IDS.FURNITURE] || []} categoryId={CATEGORY_IDS.FURNITURE} isLoading={isLoading} />
       <PromotionalAd banner={banner[0]} />
       <MedicalEquipment products={categoryProducts[CATEGORY_IDS.MEDICAL_EQUIPMENT] || []} categoryId={CATEGORY_IDS.MEDICAL_EQUIPMENT} isLoading={isLoading} />
@@ -181,13 +181,11 @@ const [categoryId,setCategoryId]=useState(true)
       <Vehicles products={categoryProducts[CATEGORY_IDS.VEHICLES] || []} categoryId={CATEGORY_IDS.VEHICLES} isLoading={isLoading} />
       <PartyMaterial products={categoryProducts[CATEGORY_IDS.PARTY_MATERIAL] || []} categoryId={CATEGORY_IDS.PARTY_MATERIAL} isLoading={isLoading} />
       <SportsGym products={categoryProducts[CATEGORY_IDS.SPORTS_GYM] || []} categoryId={CATEGORY_IDS.SPORTS_GYM} isLoading={isLoading} />
-      <HouseholdKitchen products={categoryProducts[CATEGORY_IDS.HOUSEHOLD_KITCHEN] || []} categoryId={CATEGORY_IDS.HOUSEHOLD_KITCHEN} isLoading={isLoading} />
-
+      <HouseholdKitchen products={categoryProducts[CATEGORY_IDS.HOUSEHOLD_KITCHEN] || []} categoryId={CATEGORY_IDS.HOUSEHOLD_KITCHEN} isLoading={isLoading} /> 
       <Services isLoading={isLoading} />
-      {/* <CityExplorer /> */}
       <Achievements isLoading={isLoading} />
       <Blogs isLoading={isLoading} />
-      <Testimonials isLoading={isLoading} />
+      <Testimonials isLoading={isLoading} /> */}
     </main>
   );
 };

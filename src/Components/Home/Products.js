@@ -65,7 +65,6 @@ const Products = ({categories}) => {
 
 
 
-
   const handleProducts = () => {
     router.push("/Products"); // Navigate to the profile page
   };
