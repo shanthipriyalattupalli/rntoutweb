@@ -38,7 +38,7 @@ const CategoryProducts = ({ products }) => {
           </Suspense>
 
         </div>) : (
-        <div className="flex flex-col items-center justify-center w-80 mx-auto h-[500px] text-center">
+        <div className="flex flex-col gap-4 items-center justify-center w-80 mx-auto h-[500px] text-center">
           <img
             src={emptyproducts}
             alt="No products available"
@@ -48,6 +48,10 @@ const CategoryProducts = ({ products }) => {
           <span className="font-poppins font-normal text-[12px] leading-[18px] tracking-normal text-center text-[rgba(7,7,7,0.8)]">
             No product found in this category so meanwhile you can explore our other categories.
           </span>
+          {/* <a href="/" className="border p-3 rounded-[8px] font-[500] text-[14px] cursor-pointer" style={{ borderColor: "rgba(255, 45, 85, 0.6) ", color:"rgba(255, 45, 85, 1)" }}>
+  Explore Now
+</a> */}
+
         </div>
 
 

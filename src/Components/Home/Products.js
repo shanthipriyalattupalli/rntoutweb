@@ -27,11 +27,11 @@ const Products = ({categories}) => {
 
     const [categoryProducts, setCategoryProducts] = useState({});
       const [isLoading, setIsLoading] = useState(true);
-      const [categoryId,setCategoryId]=useState(true)
+      const [categoryId,setCategoryId]=useState(null);
       const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
       const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
       const distance = (typeof window !== 'undefined') ? localStorage.getItem("selectedDistance") : null
-    
+
   console.log(categoryId,"categoryId")
 
   const fetchProductsByCategory = async () => {

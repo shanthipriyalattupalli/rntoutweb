@@ -163,15 +163,15 @@ export default function BusinessInformation2() {
     let errors = {};
 
     // Validate required fields
-    if (!formData.businessName) errors.businessName = "This field is required";
-    if (!formData.storeName) errors.storeName = "This field is required";
-    if (!formData.contactEmail) errors.contactEmail = "This field is required";
-    if (!formData.contactPhone || formData.contactPhone.length !== 10)
+    if (!formData?.businessName) errors.businessName = "This field is required";
+    if (!formData?.storeName) errors.storeName = "This field is required";
+    if (!formData?.contactEmail) errors.contactEmail = "This field is required";
+    if (!formData?.contactPhone || formData?.contactPhone.length !== 10)
       errors.contactPhone = "Mobile number must be 10 digits";
-    if (!formData.storeDescription) errors.storeDescription = "This field is required";
-    if (!formData.bankName) errors.bankName = "This field is required";
-    if (!formData.accountNumber) errors.accountNumber = "This field is required";
-    if (!formData.ifsc) errors.ifsc = "This field is required";
+    if (!formData?.storeDescription) errors.storeDescription = "This field is required";
+    if (!formData?.bankName) errors.bankName = "This field is required";
+    if (!formData?.accountNumber) errors.accountNumber = "This field is required";
+    if (!formData?.ifsc) errors.ifsc = "This field is required";
     // if (!formData.profileImage) errors.profileImage = "This field is required";
 
     // If errors exist, set error state and return
@@ -183,30 +183,30 @@ export default function BusinessInformation2() {
       const formDataToSend = new FormData();
 
       // Append business information
-      formDataToSend.append("businessName", formData.businessName);
-      formDataToSend.append("storeName", formData.storeName);
-      formDataToSend.append("businessAddress[no]", formData.businessAddress.no);
-      formDataToSend.append("businessAddress[street]", formData.businessAddress.street);
-      formDataToSend.append("businessAddress[city]", formData.businessAddress.city);
-      formDataToSend.append("businessAddress[state]", formData.businessAddress.state);
-      formDataToSend.append("businessAddress[postalCode]", formData.businessAddress.postalCode);
-      formDataToSend.append("businessAddress[country]", formData.businessAddress.country);
-      formDataToSend.append("businessAddress[full]", formData.businessAddress.full);
-      formDataToSend.append("taxId", formData.taxId);
-      formDataToSend.append("contactEmail", formData.contactEmail);
-      formDataToSend.append("contactPhone", formData.contactPhone);
-      formDataToSend.append("storeDescription", formData.storeDescription);
-      formDataToSend.append("bankName", formData.bankName);
-      formDataToSend.append("accountNumber", formData.accountNumber || "");
-      formDataToSend.append("ifsc", formData.ifsc);
-      formDataToSend.append("bankBranchAddress[no]", formData.bankBranchAddress.no);
-      formDataToSend.append("bankBranchAddress[street]", formData.bankBranchAddress.street);
-      formDataToSend.append("bankBranchAddress[city]", formData.bankBranchAddress.city);
-      formDataToSend.append("bankBranchAddress[state]", formData.bankBranchAddress.state);
-      formDataToSend.append("bankBranchAddress[postalCode]", formData.bankBranchAddress.postalCode);
-      formDataToSend.append("bankBranchAddress[country]", formData.bankBranchAddress.country);
-      formDataToSend.append("bankBranchAddress[full]", formData.bankBranchAddress.full);
-      formDataToSend.append("profileImage", formData.profileImage);
+      formDataToSend.append("businessName", formData?.businessName);
+      formDataToSend.append("storeName", formData?.storeName);
+      formDataToSend.append("businessAddress[no]", formData.businessAddress?.no);
+      formDataToSend.append("businessAddress[street]", formData?.businessAddress?.street);
+      formDataToSend.append("businessAddress[city]", formData?.businessAddress?.city);
+      formDataToSend.append("businessAddress[state]", formData?.businessAddress?.state);
+      formDataToSend.append("businessAddress[postalCode]", formData?.businessAddress?.postalCode);
+      formDataToSend.append("businessAddress[country]", formData?.businessAddress?.country);
+      formDataToSend.append("businessAddress[full]", formData?.businessAddress?.full);
+      formDataToSend.append("taxId", formData?.taxId);
+      formDataToSend.append("contactEmail", formData?.contactEmail);
+      formDataToSend.append("contactPhone", formData?.contactPhone);
+      formDataToSend.append("storeDescription", formData?.storeDescription);
+      formDataToSend.append("bankName", formData?.bankName);
+      formDataToSend.append("accountNumber", formData?.accountNumber || "");
+      formDataToSend.append("ifsc", formData?.ifsc);
+      formDataToSend.append("bankBranchAddress[no]", formData?.bankBranchAddress?.no);
+      formDataToSend.append("bankBranchAddress[street]", formData?.bankBranchAddress?.street);
+      formDataToSend.append("bankBranchAddress[city]", formData?.bankBranchAddress?.city);
+      formDataToSend.append("bankBranchAddress[state]", formData.bankBranchAddress?.state);
+      formDataToSend.append("bankBranchAddress[postalCode]", formData.bankBranchAddress?.postalCode);
+      formDataToSend.append("bankBranchAddress[country]", formData.bankBranchAddress?.country);
+      formDataToSend.append("bankBranchAddress[full]", formData.bankBranchAddress?.full);
+      formDataToSend.append("profileImage", formData?.profileImage);
 
       if (Array.isArray(formData.bannerImages) && formData.bannerImages.length > 0) {
         formData.bannerImages.forEach((banner, index) => {
@@ -339,12 +339,12 @@ export default function BusinessInformation2() {
                   <h3 className="text-md font-semibold text-yellow-600">BANK DETAILS</h3>
                   <div className="p-4 rounded-md">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4">
-                      <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Bank Name:</strong></div><div className="text-sm">{formData.bankName}</div></p>
-                      <p className="flex flex-col"><div className="flex gap-2"><FaCreditCard className="text-gray-500" /> <strong>IFSC Code:</strong></div><div className="text-sm">{formData.ifsc}</div></p>
-                      <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Account Number:</strong></div><div className="text-sm">{formData.accountNumber}</div></p>
+                      <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Bank Name:</strong></div><div className="text-sm">{formData?.bankName}</div></p>
+                      <p className="flex flex-col"><div className="flex gap-2"><FaCreditCard className="text-gray-500" /> <strong>IFSC Code:</strong></div><div className="text-sm">{formData?.ifsc}</div></p>
+                      <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Account Number:</strong></div><div className="text-sm">{formData?.accountNumber}</div></p>
                     </div>
                     <strong className="flex mt-4">Address :</strong>
-                    <p className="flex items-center gap-2 mt-2 text-sm"><FaMapMarkerAlt className="text-gray-500" />{formData.bankBranchAddress.full}</p>
+                    <p className="flex items-center gap-2 mt-2 text-sm"><FaMapMarkerAlt className="text-gray-500" />{formData?.bankBranchAddress?.full}</p>
                   </div>
                 </div>
 
@@ -353,15 +353,15 @@ export default function BusinessInformation2() {
                   <h3 className="text-md font-semibold text-yellow-600">BASIC INFO</h3>
                   <div className="p-4 rounded-md">
                     <div className="flex flex-col sm:flex-row md:flex-col lg:flex-col xl:flex-col gap-4">
-                      <img src={formData.profileImage} alt="Profile" className="w-16 h-16 rounded-full" />
+                      <img src={formData?.profileImage} alt="Profile" className="w-16 h-16 rounded-full" />
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4 w-full">
-                        <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Business Name:</strong></div><div className="text-sm">{formData.businessName}</div></p>
+                        <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Business Name:</strong></div><div className="text-sm">{formData?.businessName}</div></p>
                         <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Store Name:</strong></div><div className="text-sm">Codefacts Furniss Shop</div></p>
-                        <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong></div><div className="text-sm">{formData.contactPhone}</div></p>
-                        <p className="flex flex-col"><div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong>Email:</strong></div><div className="text-sm">{formData.contactEmail}</div></p>
+                        <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong></div><div className="text-sm">{formData?.contactPhone}</div></p>
+                        <p className="flex flex-col"><div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong>Email:</strong></div><div className="text-sm">{formData?.contactEmail}</div></p>
                       </div>
                     </div>
-                    <p className="text-gray-700 text-sm mt-2">{formData.storeDescription}</p>
+                    <p className="text-gray-700 text-sm mt-2">{formData?.storeDescription}</p>
                   </div>
                 </div>
 
@@ -401,7 +401,7 @@ export default function BusinessInformation2() {
                     placeholder="Enter name"
                     className='full-width'
                     name='businessName'
-                    value={formData.businessName}
+                    value={formData?.businessName}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
                   {errorMessage.businessName && <p className="text-red-500 text-sm">{errorMessage.businessName}</p>}
@@ -418,7 +418,7 @@ export default function BusinessInformation2() {
                     type="text"
                     placeholder="Enter name"
                     name='storeName'
-                    value={formData.storeName}
+                    value={formData?.storeName}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
                   {errorMessage.storeName && <p className="text-red-500 text-sm">{errorMessage.storeName}</p>}
@@ -434,7 +434,7 @@ export default function BusinessInformation2() {
                     placeholder="Enter mobile number"
                     className={`${errorMessage ? "border-red-500" : ""}`}
                     name='contactPhone'
-                    value={formData.contactPhone}
+                    value={formData?.contactPhone}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
                   {errorMessage.contactPhone && <p className="text-red-500 text-sm">{errorMessage.contactPhone}</p>}
@@ -450,7 +450,7 @@ export default function BusinessInformation2() {
                     type="email"
                     placeholder="Enter email address"
                     name='contactEmail'
-                    value={formData.contactEmail}
+                    value={formData?.contactEmail}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
                   {errorMessage.contactEmail && <p className="text-red-500 text-sm">{errorMessage.contactEmail}</p>}
@@ -464,7 +464,7 @@ export default function BusinessInformation2() {
                     placeholder="Business-address"
                     className="full-width"
                     name='businessAddress.full'
-                    value={formData.businessAddress.full}
+                    value={formData?.businessAddress.full}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
                 </div>
@@ -486,7 +486,7 @@ export default function BusinessInformation2() {
                     className="full-width"
                     rows={5}
                     name='storeDescription'
-                    value={formData.storeDescription}
+                    value={formData?.storeDescription}
                     onChange={handleInputChange}
                     disabled={!isEditable}></textarea>
                   {errorMessage.storeDescription && <p className="text-red-500 text-sm">{errorMessage.storeDescription}</p>}
@@ -504,8 +504,8 @@ export default function BusinessInformation2() {
                     {/* Display uploaded image preview if available */}
                     {previewProfileImage ? (
                       <img src={previewProfileImage} alt="Profile Preview" className="w-[7rem] h-[5.5rem] rounded-full" />
-                    ) : formData.profileImage ? (
-                      <img src={formData.profileImage} alt="Default Icon" className="w-[7rem] h-[5.5rem] rounded-full" />
+                    ) : formData?.profileImage ? (
+                      <img src={formData?.profileImage} alt="Default Icon" className="w-[7rem] h-[5.5rem] rounded-full" />
                     ) : (
                       <div className="rounded-full">
                         <img src={storeimage} alt="Default Icon" className="ml-2  px-4 py-5" />
@@ -613,7 +613,7 @@ export default function BusinessInformation2() {
 
                   </label>
                   <select id="bank-select" name='bankName'
-                    value={formData.bankName}
+                    value={formData?.bankName}
                     onChange={handleInputChange}
                     disabled={!isEditable}>
                     <option>Select bank</option>
@@ -632,7 +632,7 @@ export default function BusinessInformation2() {
                     type="text"
                     placeholder="Enter code"
                     name='accountNumber'
-                    value={formData.accountNumber}
+                    value={formData?.accountNumber}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
                   {errorMessage.accountNumber && <p className="text-red-500 text-sm">{errorMessage.accountNumber}</p>}
@@ -647,7 +647,7 @@ export default function BusinessInformation2() {
                     type="text"
                     placeholder="Enter code"
                     name='ifsc'
-                    value={formData.ifsc}
+                    value={formData?.ifsc}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
                   {errorMessage.ifsc && <p className="text-red-500 text-sm">{errorMessage.ifsc}</p>}
@@ -662,7 +662,7 @@ export default function BusinessInformation2() {
                     type="text"
                     placeholder="Enter mobile number"
                     name='contactPhone'
-                    value={formData.contactPhone}
+                    value={formData?.contactPhone}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
                   {errorMessage.contactPhone && <p className="text-red-500 text-sm">{errorMessage.contactPhone}</p>}
@@ -681,7 +681,7 @@ export default function BusinessInformation2() {
                     placeholder="Enter address"
                     className='full-width'
                     name='bankBranchAddress.full'
-                    value={formData.bankBranchAddress.full}
+                    value={formData?.bankBranchAddress?.full}
                     onChange={handleInputChange}
                     disabled={!isEditable} />
                 </div>
