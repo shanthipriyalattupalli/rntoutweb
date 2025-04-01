@@ -123,7 +123,7 @@ function Sidebar() {
       Cookies.remove("userName");
       Cookies.remove("userToken");
   
-      router.push("/");
+      router.replace("/");
 
       setTimeout(() => {
         window.location.reload();

@@ -19,6 +19,7 @@ import CityExplorer from "../Components/Home/CityExplorer";
 import Achievements from "../Components/Home/Achievements";
 import Blogs from "../Components/Home/Blogs";
 import Testimonials from "../Components/Home/Testimonials";
+import { cookies } from 'next/headers';
 
 
 import axios from "axios";
@@ -70,9 +71,16 @@ const fetchCategories = async () => {
 };
 
 
-const fetchProducts = async () => {
+const fetchProducts = async (latitude,longitude,radius) => {
+  console.log(latitude.value,longitude.value,radius.value,"products fetchingsss")
   try {
-    const response = await axios.get(`${BASE_URL}/variants/variants-by-category`);
+    const response = await axios.get(`${BASE_URL}/variants/variants-by-category`,{
+      params:{
+        latitude :latitude.value,
+        longitude :longitude.value,
+        radius :radius.value
+      }
+    });
     console.log(response.data, "responsse in products");
     return response.data.data;
   } catch (error) {
@@ -99,11 +107,14 @@ const fetchBlogs = async () => {
 
 
 const Home = async () => {
-
+  const cookieStore = cookies();
+  const latitude = cookieStore.get('latitude');
+  const longitude= cookieStore.get('longitude');
+  const radius=cookieStore.get('selectedDistance')
   const banners = await fetchBanners();
   const banner = await fetchBanner();
   const categories = await fetchCategories();
-  const products = await fetchProducts();
+  const products = await fetchProducts(latitude,longitude,radius);
   const blogs = await fetchBlogs()
 
   console.log(products["Party Material"], "party material")

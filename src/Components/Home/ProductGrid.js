@@ -19,6 +19,7 @@ const CategorySection = ({ categories, isLoading,categoryIds }) => {
   }, [categories]);
 
   const handleCategoryClick = (categoryId) => {
+    console.log(categoryId,"categoriesId")
     categoryIds(categoryId);
     setSelectedCategory(categoryId);
   };

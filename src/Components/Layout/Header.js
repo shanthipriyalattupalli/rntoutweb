@@ -15,7 +15,7 @@ const locations = '/Assets/location_fill.svg'
 const nearby = '/Assets/nearby.svg'
 const cart = '/Assets/Button.svg'
 const cartitems = '/Assets/cartitems.svg'
-const subscription='/Assets/subscription.svg'
+const subscription = '/Assets/subscription.svg'
 const profile_avatar = "/Assets/profile_avatar.png";
 
 
@@ -26,7 +26,7 @@ function Header() {
 
   const [locationError, setLocationError] = useState(null);
   const [locationName, setLocationName] = useState("");
-  const [isSubscription,setIsSubscription]=useState(false)
+  const [isSubscription, setIsSubscription] = useState(false)
   // const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
   // const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   // const name = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
@@ -37,7 +37,7 @@ function Header() {
   const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
   const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
   const [profilePic, setProfilePic] = useState((typeof window !== 'undefined') ? localStorage.getItem("profilePic") : null || Photo);
-  const [name,setName]=useState(names)
+  const [name, setName] = useState(names)
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [location, setLocation] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -47,7 +47,7 @@ function Header() {
   const [cartItems, setCartItems] = useState(0);
   const [locationsList, setLocationsList] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-const [subscriptionPlans,setSubscriptionPlans]=useState([])
+  const [subscriptionPlans, setSubscriptionPlans] = useState([])
   const [address, setAddress] = useState({ suburb: "" });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -64,7 +64,7 @@ const [subscriptionPlans,setSubscriptionPlans]=useState([])
         setProfilePic(updatedPic);
       }
     };
-  
+
     const handleNameUpdate = (event) => {
       const updatedName = event.detail.name;
       if (updatedName) {
@@ -72,16 +72,16 @@ const [subscriptionPlans,setSubscriptionPlans]=useState([])
         setName(updatedName);
       }
     };
-  
+
     window.addEventListener("profileUpdated", handleProfilePicUpdate);
     window.addEventListener("nameUpdated", handleNameUpdate);
-  
+
     return () => {
       window.removeEventListener("profileUpdated", handleProfilePicUpdate);
       window.removeEventListener("nameUpdated", handleNameUpdate);
     };
   }, []);
-  
+
 
   useEffect(() => {
     if (!pathname.startsWith("/Products")) {
@@ -107,10 +107,10 @@ const [subscriptionPlans,setSubscriptionPlans]=useState([])
       const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-console.log(response.data,"profile fetch")
+      console.log(response.data, "profile fetch")
       const profileData = response.data.profile;
 
-setProfilePic(profileData?.profilePic);
+      setProfilePic(profileData?.profilePic);
 
 
 
@@ -132,11 +132,11 @@ setProfilePic(profileData?.profilePic);
     if ("permissions" in navigator) {
       try {
         const permissionStatus = await navigator.permissions.query({ name: "geolocation" });
-  
+
         if (permissionStatus.state === "denied" || permissionStatus.state === "prompt") {
           // If location access is blocked or reset, remove stored values
           Cookies.remove("latitude", { path: "/" });
-Cookies.remove("longitude", { path: "/" });
+          Cookies.remove("longitude", { path: "/" });
           localStorage.removeItem("latitude");
           localStorage.removeItem("longitude");
         }
@@ -145,31 +145,31 @@ Cookies.remove("longitude", { path: "/" });
       }
     }
   };
-  
+
   const getLocationFromCoordinates = async (lat, lon) => {
     try {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${MAP_API}`
       );
-  
+
       const locationData = response.data.results;
       if (locationData) {
         const uniqueLocations = new Set();
         let locations = [];
-  
+
         locationData.forEach((result) => {
           const matchingComponent = result.address_components.find((component) =>
             component.types.includes("locality") && component.types.includes("political")
           );
-  
+
           if (matchingComponent && !uniqueLocations.has(matchingComponent.short_name)) {
             uniqueLocations.add(matchingComponent.short_name);
             locations.push(matchingComponent);
           }
         });
-  
+
         setLocationsList(locations);
-  
+
         if (locations.length > 0) {
           const suburb = locations[0];
           setAddress({ suburb: suburb.short_name });
@@ -185,20 +185,20 @@ Cookies.remove("longitude", { path: "/" });
       setLoading(false);
     }
   };
-  
+
   const fetchLocation = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
           setLocation({ latitude, longitude });
-  
+
           // Store only if access is granted
-                    Cookies.set("latitude", latitude, { expires: 7, sameSite: "Strict" });
-                    Cookies.set("longitude", longitude, {  expires: 7, sameSite: "Strict", });
+          Cookies.set("latitude", latitude, { expires: 7, sameSite: "Strict" });
+          Cookies.set("longitude", longitude, { expires: 7, sameSite: "Strict", });
           localStorage.setItem("latitude", latitude);
           localStorage.setItem("longitude", longitude);
-  
+
           await getLocationFromCoordinates(latitude, longitude);
         },
         (err) => {
@@ -211,18 +211,18 @@ Cookies.remove("longitude", { path: "/" });
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchLocation();
-  
+
     const interval = setInterval(() => {
       checkLocationPermission();
     }, 10000);
-  
+
     return () => clearInterval(interval);
   }, []);
-  
-  
+
+
 
 
 
@@ -293,6 +293,7 @@ Cookies.remove("longitude", { path: "/" });
     const distance = e.target.value;
     setSelectedDistance(distance);
     localStorage.setItem("selectedDistance", distance);
+    Cookies.set("selectedDistance", distance, { expires: 7, secure: true, sameSite: "Strict" });
     window.location.reload();
   };
 
@@ -300,20 +301,20 @@ Cookies.remove("longitude", { path: "/" });
 
 
 
-  const fetchSubscriptionPlans=async()=>{
+  const fetchSubscriptionPlans = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/subscription-plans/plans`);
-      console.log(response.data,"response of plans")
+      console.log(response.data, "response of plans")
       setSubscriptionPlans(response.data.data)
     } catch (error) {
-      console.log(error,"error")
-      
+      console.log(error, "error")
+
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchSubscriptionPlans()
-  },[])
+  }, [])
 
 
 
@@ -366,13 +367,13 @@ Cookies.remove("longitude", { path: "/" });
         {/* Right Section - Location, Distance, Cart, Profile, and Buttons */}
         <div className="flex items-center gap-4 md:gap-4 cursor-pointer">
           {/* Location */}
-{address?.suburb    &&      <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 gap-2">
+          {address?.suburb && <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 gap-2">
             <Image src={locations} alt="location" width={18} height={18} />
             <span className="text-sm font-medium text-blacky">{address.suburb}</span>
           </div>}
 
           {/* Distance Selection */}
-{address?.suburb  &&          <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 cursor-pointer">
+          {address?.suburb && <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 cursor-pointer">
             <Image src={nearby} alt="location" width={18} height={18} />
             <select className="bg-transparent text-sm cursor-pointer md:mr-3" value={selectedDistance} onChange={handleDistanceChange}>
               <option className="cursor-pointer" value="20">20 km</option>
@@ -386,49 +387,49 @@ Cookies.remove("longitude", { path: "/" });
 
 
           {(name || token) && (
-  <>
-    {/* Visible only on small devices */}
-    <div className="sm:hidden border border-orange-400 rounded-[10px] p-2">
-      <Image
-        src={subscription}
-        width={20}
-        height={20}
-        alt="subscription"
-        onClick={() => setIsSubscription(true)}
-        className="flex w-[100px] h-[20px]"
-      />
-    </div>
+            <>
+              {/* Visible only on small devices */}
+              <div className="sm:hidden border border-orange-400 rounded-[10px] p-2">
+                <Image
+                  src={subscription}
+                  width={20}
+                  height={20}
+                  alt="subscription"
+                  onClick={() => setIsSubscription(true)}
+                  className="flex w-[100px] h-[20px]"
+                />
+              </div>
 
-    <div className="hidden sm:flex shadow-sm border border-[rgba(244,128,3,0.45)] rounded-[10px] p-2">
-      <Image
-        src={subscription}
-        width={20}
-        height={20}
-        alt="subscription"
-        onClick={() => setIsSubscription(true)}
-        className="flex"
-      />
-    </div>
-  </>
-)}
-
-
+              <div className="hidden sm:flex shadow-sm border border-[rgba(244,128,3,0.45)] rounded-[10px] p-2">
+                <Image
+                  src={subscription}
+                  width={20}
+                  height={20}
+                  alt="subscription"
+                  onClick={() => setIsSubscription(true)}
+                  className="flex"
+                />
+              </div>
+            </>
+          )}
 
 
 
-{isSubscription &&  (
-  <div className="modal-overlay" onClick={() => setIsSubscription(false)}>
-    <div className="modal-content" onClick={(e)=>e.stopPropagation()}>
-      <button className="close-button" onClick={() => setIsSubscription(false)}>
-        ✕
-      </button>
- 
-      <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans}/>
-    </div>
-  </div>
-)}
+
+
+          {isSubscription && (
+            <div className="modal-overlay" onClick={() => setIsSubscription(false)}>
+              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <button className="close-button" onClick={() => setIsSubscription(false)}>
+                  ✕
+                </button>
+
+                <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans} />
+              </div>
+            </div>
+          )}
           {/* Cart Button */}
-{ name || token ?         <div className="relative cursor-pointer" >
+          <div className="relative cursor-pointer" >
             {cartItems > 0 ? (
               <Link href="/Cartpage">
                 <Image src={cartitems} width={30} height={30} alt="cart" className="min-w-[34px] min-h-[34px]" />
@@ -437,14 +438,14 @@ Cookies.remove("longitude", { path: "/" });
                 </span>
               </Link>
             ) : (
-<Link href="/Cartpage">
-              <button className="h-[37px] bg-white border border-blue-300 rounded-[10px] p-2 hover:bg-gray-100">
-                <Image src={cart} width={20} height={20} alt="cart" className="min-w-[20px] min-h-[20px]" />
-              </button>
+              <Link href="/Cartpage">
+                <button className="h-[37px] bg-white border border-blue-300 rounded-[10px] p-2 hover:bg-gray-100">
+                  <Image src={cart} width={20} height={20} alt="cart" className="min-w-[20px] min-h-[20px]" />
+                </button>
               </Link>
 
             )}
-          </div>:null}
+          </div>
           {/* Rent Button */}
           {name || token ? (
             <button
@@ -456,7 +457,7 @@ Cookies.remove("longitude", { path: "/" });
               <span className="text-lg">+</span> Rent
             </button>
           ) : null}
-                    {name || token ? (
+          {name || token ? (
             <button
               className="sm:hidden sm:flex items-center gap-2 px-[16px] py-[6px] sm:py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-[92px] border border-[rgba(7,7,7,0.1)] 
                 bg-gradient-to-r from-[#FEAC5E] via-[#C779D0] to-[#4BC0C8] 
@@ -468,43 +469,43 @@ Cookies.remove("longitude", { path: "/" });
           ) : null}
 
           {/* Profile & Sign In/Sign Up */}
-         
-            {name || token ? (
-              <div
-                onClick={() => router.push("/profile")}
-                className="w-full md:w-[110px] flex items-center gap-2  px-2 py-1 cursor-pointer"
-              >
-               {profilePic ? <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" /> :
-               <img src={profile_avatar} alt="user" className="w-8 h-8 rounded-full object-cover" />}
-                <p className="hidden sm:flex md:flex text-sm truncate w-auto">
-                  {name === undefined || name==="undefined" ? "Hi!" : name}
-                </p>
+
+          {name || token ? (
+            <div
+              onClick={() => router.push("/profile")}
+              className="w-full md:w-[110px] flex items-center gap-2  px-2 py-1 cursor-pointer"
+            >
+              {profilePic ? <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" /> :
+                <img src={profile_avatar} alt="user" className="w-8 h-8 rounded-full object-cover" />}
+              <p className="hidden sm:flex md:flex text-sm truncate w-auto">
+                {name === undefined || name === "undefined" ? "Hi!" : name}
+              </p>
 
 
+            </div>
+          ) : (
+            <button
+              className=" px-2 py-2  w-[147px] text-white text-[14px] font-[600] rounded-[10px] border border-[1px] bg-[rgba(255,45,85,1)] border border-[rgba(255,45,85,1)] shadow-[inset_0px_1px_0px_1px_var(--OverlaysWhiteAlpha10),inset_0px_6px_4px_-4px_var(--OverlaysWhiteAlpha8),inset_0px_-1px_0.5px_1px_var(--OverlaysBlackAlpha8)]"
+              onClick={() => setIsLoginOpen(true)}
+            >
+              {/* Show 'Login' on mobile */}
+              <span className="sm:hidden">Login</span>
+
+              {/* Show 'Sign In / Sign Up' on larger screens */}
+              <span className="hidden sm:block">Sign In / Sign Up</span>
+            </button>
+          )}
+          {isLoginOpen && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <button className="close-button" onClick={() => setIsLoginOpen(false)}>
+                  ✕
+                </button>
+                <Login setIsLoginOpen={setIsLoginOpen} />
               </div>
-            ) : (
-              <button
-                className=" px-2 py-2  w-[147px] text-white text-[14px] font-[600] rounded-[10px] border border-[1px] bg-[rgba(255,45,85,1)] border border-[rgba(255,45,85,1)] shadow-[inset_0px_1px_0px_1px_var(--OverlaysWhiteAlpha10),inset_0px_6px_4px_-4px_var(--OverlaysWhiteAlpha8),inset_0px_-1px_0.5px_1px_var(--OverlaysBlackAlpha8)]"
-                onClick={() => setIsLoginOpen(true)}
-              >
-                {/* Show 'Login' on mobile */}
-                <span className="sm:hidden">Login</span>
+            </div>
+          )}
 
-                {/* Show 'Sign In / Sign Up' on larger screens */}
-                <span className="hidden sm:block">Sign In / Sign Up</span>
-              </button>
-            )}
-            {isLoginOpen && (
-              <div className="modal-overlay">
-                <div className="modal-content">
-                  <button className="close-button" onClick={() => setIsLoginOpen(false)}>
-                    ✕
-                  </button>
-                  <Login setIsLoginOpen={setIsLoginOpen} />
-                </div>
-              </div>
-            )}
-  
         </div>
       </header>
       <div className="sm:flex md:flex lg:hidden  border border-b-1 w-full flex md:flex gap-3 px-2 py-4 md:px-16 sm:px-12" >

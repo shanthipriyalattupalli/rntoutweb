@@ -67,8 +67,9 @@ const [isOn, setIsOn] = useState(false);
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response,"order history")
       setOrders(response.data);
-      const filteredOrders = response.data
+      const filteredOrders = response?.data
       .map(order => {
         const canceledSubOrders = order.subOrders?.filter(subOrder => {
           return subOrder.orderStatus.toLowerCase().trim() === "canceled"; 
@@ -237,7 +238,7 @@ orderItems.length > 0 ? orderItems.map((orderItem,index) => (
       </span>
     </div>:     
       
-      orderItems.length > 0 ?     orders.map((order,index) => (
+      orders.length > 0 ?     orders.map((order,index) => (
         <div class="order-item" key={order._id}>
           <div className="order-header">
             <span>ID: {order._id}</span>

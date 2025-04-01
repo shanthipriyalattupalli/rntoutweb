@@ -553,7 +553,7 @@ console.log(formData,"formdata");
             if (errorMessage === "KYC verification is required before checkout.") {
               router.push("/profile/kyc");
             } else if (errorMessage === "You must have a profile to place a product for rent.") {
-              router.push("/profile/Renter-information");
+              router.push("profile/Renter-information");
             }
           }
         });
