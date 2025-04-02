@@ -151,15 +151,7 @@ const notApprovedCount = userProducts.filter(product => !product.isApproved).len
         
         </div>
 
-        {kyc !== "VERIFIED" ? (
-          <div className="flex flex-col items-center justify-center">
-  <img src={kycimage} className="w-full h-80" />
-  <Link href="/profile/kyc" className="bg-red-500 p-2 rounded-lg w-[200px] text-center text-white font-bold text-lg mt-4 cursor-pointer">
-    Complete your KYC
-  </Link>
-</div>
-
-):(
+      {
  loading?
 <Suspense fallback={<ProductCard/>}></Suspense>:
 
@@ -249,7 +241,7 @@ const notApprovedCount = userProducts.filter(product => !product.isApproved).len
     </span>
   </div>
   )
-)}
+}
 
       </div>
     </div>

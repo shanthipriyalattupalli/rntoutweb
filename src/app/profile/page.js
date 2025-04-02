@@ -8,12 +8,12 @@ import '../../styles/ProfileSettings.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const profile_avatar = "/Assets/profile_avatar.png";
-const deleteicon ="/Assets/deleteicon.svg"
+const deleteicon = "/Assets/deleteicon.svg"
 const Photo = "/Assets/Photo.png";
 import { useRouter } from 'next/navigation';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import KYCVerification from "@/Components/Kyc/Kyc";
-const verified ='/Assets/verified.svg';
+const verified = '/Assets/verified.svg';
 import Cookies from "js-cookie";
 
 
@@ -25,8 +25,8 @@ export default function ProfileSettings() {
   const [avatar, setAvatar] = useState(profile_avatar);
   const fileInputRef = useRef(null);
   const [isEditable, setIsEditable] = useState(false);
-  console.log(isEditable,"iseditable")
-  const [isKyc,setIsKyc]=useState(false);
+  console.log(isEditable, "iseditable")
+  const [isKyc, setIsKyc] = useState(false);
   const [profile, setProfile] = useState({
     user: {
       name: "",
@@ -45,7 +45,7 @@ export default function ProfileSettings() {
   const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
 
 
-  
+
   // useEffect(() => {
   //   const userName = Cookies.get("userName");
   //   const userToken = Cookies.get("userToken");
@@ -62,12 +62,12 @@ export default function ProfileSettings() {
       const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-console.log(response.data,"profile")
+      console.log(response.data, "profile")
       const profileData = response.data.profile;
 
 
       const formattedDate = profileData.dateOfBirth
-        ? profileData.dateOfBirth.split("T")[0]  
+        ? profileData.dateOfBirth.split("T")[0]
         : "";
 
       setProfile({
@@ -81,10 +81,10 @@ console.log(response.data,"profile")
       localStorage.setItem("userEmail", profileData.user.email);
       localStorage.setItem("profilePic", profileData.profilePic || profile_avatar);
 
-            Cookies.set("gender", profileData.gender, { expires: 7, secure: true, sameSite: "Strict" });
-            Cookies.set("userName", profileData.user.name, { expires: 7, secure: true, sameSite: "Strict" });
-            Cookies.set("userEmail", profileData.user.email, { expires: 7, secure: true, sameSite: "Strict" });
-            Cookies.set("profilePic", profileData.profilePic || profile_avatar, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("gender", profileData.gender, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userName", profileData.user.name, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userEmail", profileData.user.email, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("profilePic", profileData.profilePic || profile_avatar, { expires: 7, secure: true, sameSite: "Strict" });
 
     } catch (error) {
       console.error(error);
@@ -104,9 +104,9 @@ console.log(response.data,"profile")
   const handleChange = (e) => {
     const { name, value } = e.target;
     const keys = name.split(".");
-    
 
-    
+
+
     setProfile((prev) => {
       let updatedProfile = { ...prev };
       let temp = updatedProfile;
@@ -116,7 +116,7 @@ console.log(response.data,"profile")
       temp[keys[0]] = value;
       return updatedProfile;
     });
-  
+
 
   };
 
@@ -124,7 +124,7 @@ console.log(response.data,"profile")
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-  
+
 
   const toggleEdit = () => {
     setIsEditable(!isEditable);
@@ -175,13 +175,12 @@ console.log(response.data,"profile")
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setIsEditable(true)
       toast.error("Please fix validation errors.");
-      return;
+      return true;
     }
 
 
-  
+
     const formDatas = new FormData();
     formDatas.append("profilePic", profile.profilePic);
     formDatas.append("name", profile.user.name);
@@ -192,9 +191,9 @@ console.log(response.data,"profile")
     if (profile.profilePic) {
       formDatas.append("profilePic", profile.profilePic);
     } else {
-      formDatas.append("profilePic", ""); 
+      formDatas.append("profilePic", "");
     }
-  
+
     try {
       const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, formDatas, {
         headers: {
@@ -202,22 +201,23 @@ console.log(response.data,"profile")
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       console.log(response, "response in profile");
-  
+
       if (response.status === 200) {
-          setIsEditable(!isEditable);
+        setIsEditable(!isEditable);
+        setErrors({});
       }
-  
+
       fetchProfile();
       toast.success("Profile updated successfully!");
-      
+
       window.dispatchEvent(
         new CustomEvent("profileUpdated", {
           detail: { profilePic: response.data.profile.profilePic },
         })
       );
-            
+
       window.dispatchEvent(
         new CustomEvent("nameUpdated", {
           detail: { name: response.data.user.name },
@@ -226,9 +226,10 @@ console.log(response.data,"profile")
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error("Failed to update profile.");
+      return true
     }
   };
-  
+
 
 
 
@@ -237,15 +238,15 @@ console.log(response.data,"profile")
       ...prevProfile,
       profilePic: null, // Set profilePic to null
     }));
-  
+
     // Dispatch event for profile pic update
     window.dispatchEvent(
       new CustomEvent("profileUpdated", {
         detail: { profilePic: null },
       })
     );
-  
-    localStorage.removeItem("profilePic"); 
+
+    localStorage.removeItem("profilePic");
     setAvatar(profile_avatar);
   };
 
@@ -259,26 +260,33 @@ console.log(response.data,"profile")
 
 
   const router = useRouter();
-  console.log(profile,"profile")
+  console.log(profile, "profile")
 
   return (
-  <div className="profile-settings bg-white ">
+    <div className="profile-settings bg-white ">
       <ToastContainer />
 
       <div className="item-header">
-   <Link href='/' className='flex flex-row gap-1'> Profile Settings</Link>
+        <Link href='/' className='flex flex-row gap-1'> Profile Settings</Link>
 
         <div className="flex items-center space-x-4">
-          <a href = "/profile/kyc" className="text-green-600 font-medium text-sm cursor-pointer" >
+          <a href="/profile/kyc" className="text-green-600 font-medium text-sm cursor-pointer" >
             Personal KYC ?
           </a>
 
-          <a className="text-blue-600 font-medium text-sm cursor-pointer" onClick={() => {
-            if (isEditable) {
-              handleSubmitProfile();
-            }
-            toggleEdit();
-          }}>
+          <a
+            className="text-blue-600 font-medium text-sm cursor-pointer"
+            onClick={async () => {
+              if (isEditable) {
+                const hasErrors = await handleSubmitProfile();
+                if (!hasErrors) {
+                  toggleEdit();
+                }
+              } else {
+                toggleEdit();
+              }
+            }}
+          >
             {isEditable ? "Save" : "Edit"}
           </a>
 
@@ -296,7 +304,7 @@ console.log(response.data,"profile")
 
 
           <div className="flex gap-2">
-            <button className={` px-4 py-2 rounded-md text-sm font-md ${isEditable ? "bg-blue-500 text-white font-semibold":"bg-gray-200"}`} onClick={handleButtonClick}  disabled={!isEditable}>
+            <button className={` px-4 py-2 rounded-md text-sm font-md ${isEditable ? "bg-blue-500 text-white font-semibold" : "bg-gray-200"}`} onClick={handleButtonClick} disabled={!isEditable}>
               Edit Image
             </button>
             {/* <img src={deleteicon} alt="delete" className="cursor-pointer" onClick={()=>handleProfileDelete()} disabled={!isEditable}/> */}
@@ -315,19 +323,19 @@ console.log(response.data,"profile")
         {/* Profile Information Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Name Input */}
-<div className="flex flex-col">
-  <label className="text-sm font-semibold">Name <span className="text-red-500">*</span></label>
-  <input
-    type="text"
-    name="user.name"
-    value={profile.user.name}
-    onChange={handleChange}
-    placeholder="Enter your name"
-    disabled={!isEditable}
-    className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-  />
-  {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
-</div>
+          <div className="flex flex-col">
+            <label className="text-sm font-semibold">Name <span className="text-red-500">*</span></label>
+            <input
+              type="text"
+              name="user.name"
+              value={profile.user.name}
+              onChange={handleChange}
+              placeholder="Enter your name"
+              disabled={!isEditable}
+              className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            />
+            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+          </div>
 
           {/* Email Input */}
           <div className="flex flex-col">
@@ -341,48 +349,48 @@ console.log(response.data,"profile")
               disabled={!isEditable}
               className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
-  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
 
           </div>
         </div>
 
         {/* Gender Section */}
         <div className="flex flex-col">
-      <label className="text-sm font-semibold">Gender</label>
-      <div className="flex space-x-4">
-        {["Male", "Female", "Other"].map((gender) => (
-          <label key={gender} className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="gender"
-              value={gender}
-              checked={profile.gender === gender} 
-              onChange={handleChange}
-              className="cursor-pointer"
-              disabled={!isEditable}
-            />
-            <span>{gender}</span>
-          </label>
-        ))}
-      </div>
-    </div>
+          <label className="text-sm font-semibold">Gender</label>
+          <div className="flex space-x-4">
+            {["Male", "Female", "Other"].map((gender) => (
+              <label key={gender} className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  name="gender"
+                  value={gender}
+                  checked={profile.gender === gender}
+                  onChange={handleChange}
+                  className="cursor-pointer"
+                  disabled={!isEditable}
+                />
+                <span>{gender}</span>
+              </label>
+            ))}
+          </div>
+        </div>
 
         {/* Date of Birth */}
         <div className="flex flex-col">
-  <label className="text-sm font-semibold">Date of Birth <span className="text-red-500">*</span></label>
-  <input
-    type="date"
-    name="dateOfBirth"
-    value={profile.dateOfBirth}
-    onChange={handleChange}
-    disabled={!isEditable}
-    className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-    max={new Date(new Date().setFullYear(new Date().getFullYear() - 18))
-      .toISOString()
-      .split("T")[0]}
-  />
-  {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
-</div>
+          <label className="text-sm font-semibold">Date of Birth <span className="text-red-500">*</span></label>
+          <input
+            type="date"
+            name="dateOfBirth"
+            value={profile.dateOfBirth}
+            onChange={handleChange}
+            disabled={!isEditable}
+            className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            max={new Date(new Date().setFullYear(new Date().getFullYear() - 18))
+              .toISOString()
+              .split("T")[0]}
+          />
+          {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
+        </div>
       </div>
 
 
