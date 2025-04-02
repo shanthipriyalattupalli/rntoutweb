@@ -25,6 +25,7 @@ import {
 } from "react-icons/io";
 import { BsShieldCheck } from "react-icons/bs";
 import { FileDigitIcon } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const KycStatus=Cookies.get("kycstatus");
 
@@ -113,6 +114,17 @@ function Sidebar() {
 
   const handleNavigation = (eachbar) => {
     if (eachbar.title === "Log Out") {
+      Swal.fire({
+        title: "LOG OUT",
+        text: `Are you sure to "Log Out"`,
+        showCancelButton: true,  
+        confirmButtonText: "Yes", 
+        cancelButtonText: "Cancel", 
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6", 
+      }).then((result) => {
+              if (result.isConfirmed) {
+                
       localStorage.removeItem("userEmail");
       localStorage.removeItem("userId");
       localStorage.removeItem("userName");
@@ -122,12 +134,22 @@ function Sidebar() {
       Cookies.remove("userId");
       Cookies.remove("userName");
       Cookies.remove("userToken");
+      Cookies.remove("hasSubscription");
+      Cookies.remove("SubscriptionId");
+    
   
       router.replace("/");
 
       setTimeout(() => {
         window.location.reload();
       }, 500);
+
+              } else if (result.dismiss === Swal.DismissReason.cancel) {
+                console.log("User clicked Cancel");
+                // Handle cancel action if needed
+              }
+            });
+
     } else {
       router.push(eachbar.route);
     }

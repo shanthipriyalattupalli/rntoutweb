@@ -62,6 +62,7 @@ const Navigation = () => {
     fetchCategories();
   }, []);
 
+
   useEffect(() => {
     const categoryContainer = document.getElementById("category-container");
     if (categoryContainer) {
@@ -79,6 +80,13 @@ const Navigation = () => {
   return (
     <nav className="px-3 sm:px-20 bg-white border-b border-slate-200 relative">
       <div className="relative" style={{display:"flex",alignItems:"center",gap:"12px"}}>
+
+      <p style={{color:"#9d9797"}} className="cursor-pointer"   onClick={() => {
+    const categoryContainer = document.getElementById("category-container");
+    if (categoryContainer) {
+      categoryContainer.scrollBy({ left: -200, behavior: "smooth" }); 
+    }
+  }}><span>{"<<"}</span> </p>
         <div
           id="category-container"
           className="flex items-center h-12 gap-6 sm:gap-10 2xl:gap-16 overflow-x-auto overflow-visible whitespace-nowrap scrollbar-hide relative"
@@ -101,7 +109,12 @@ const Navigation = () => {
             </div>
           ))}
         </div>
-        <p style={{color:"#9d9797"}}>scroll<span>{">>"}</span> </p>
+        <p style={{color:"#9d9797"}} className="cursor-pointer"   onClick={() => {
+    const categoryContainer = document.getElementById("category-container");
+    if (categoryContainer) {
+      categoryContainer.scrollBy({ left: 200, behavior: "smooth" }); // Scroll right by 200px smoothly
+    }
+  }}><span>{">>"}</span> </p>
 
 
         {activeCategory && subcategories.length > 0 && (

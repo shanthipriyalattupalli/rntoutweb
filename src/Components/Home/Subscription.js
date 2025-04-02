@@ -89,6 +89,9 @@ const Subscription = ({ plans,setIsSubscription }) => {
           Authorization: `Bearer ${token}`,
         },
       })
+    Cookies.set("hasSubscription", response?.data?.data?._id, { expires: 7, secure: true, sameSite: "Strict" });
+    Cookies.set("SubscriptionId", response?.data?.data?.isActive, { expires: 7, secure: true, sameSite: "Strict" });
+
       console.log(response.data.data,"response in subscription")
       setSubscription(response?.data?.data)
       

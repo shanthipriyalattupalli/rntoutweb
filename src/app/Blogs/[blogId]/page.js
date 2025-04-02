@@ -98,7 +98,7 @@ const BlogPage = () => {
                   <h3 className="text-sm font-semibold">
                   {singleblog?.title}
                   </h3>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-xs text-gray-600 line-clamp-3">
                   {singleblog?.description}
                   </p>
                 </div>
