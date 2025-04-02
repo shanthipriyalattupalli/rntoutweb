@@ -21,6 +21,8 @@ import { IoIosInformationCircleOutline } from "react-icons/io";
 import { GrLocation } from "react-icons/gr";
 import LocationSearch from "@/Components/Location/LocationSearch";
 const upload = "/Assets/upload.png";
+const emptyproducts = "/Assets/emptyproducts.svg";
+
 
 
 const MainContent = () => {
@@ -644,30 +646,28 @@ const MainContent = () => {
           </div>
         </div>
       )}
+   {products?.length > 0 && (
+  <div className='radio-button-group'>
+    {products.map((option) => (
+      <label key={option._id} className='radio-option'>
+        <input
+          type='radio'
+          name='productId'
+          value={option._id}
+          checked={selectedOption === option._id}
+          onChange={() => handleOptionChange(option._id)}
+        />
+        <span className='custom-radio'></span>
+        {option.productName}
+      </label>
+    ))}
+  </div>
+)}
 
-      <div className='radio-button-group'>
-        {products?.length > 0 ? (
-          products?.map((option) => (
-            <label key={option._id} className='radio-option'>
-              <input
-                type='radio'
-                name='productId'
-                value={option._id}
-                checked={selectedOption === option._id}
-                onChange={() => handleOptionChange(option._id)}
-              />
 
-              <span className='custom-radio'></span>
-              {option.productName}
-            </label>
-
-          ))
-        ) : (
-          <p>No products found for the selected subcategory.</p>
-        )}
-      </div>
       {errors.productId && <p className="text-red-500 text-sm">{errors.productId}</p>}
-
+        {products?.length > 0 ? (
+<>
       <div className='product-form'>
         <h2 className='ba-in mb-3'>BASICS INFO</h2>
         <div className='basic-details '>
@@ -979,25 +979,25 @@ const MainContent = () => {
           <FiPlus /> Add New Product Description
         </button>
       </div>
-
-
-
-
-      <div
-        className="location-info"
-        style={{ marginTop: "20px", padding: "16px 30px" }}
-      >
-        {/* <p>
-                    <strong>Latitude:</strong> {formData.latitude}
-                  </p>
-                  <p>
-                    <strong>Longitude:</strong> {formData.longitude}
-                  </p> */}
-
-      </div>
       <button onClick={handlePublishProduct} className='publish-button'>
         Publish Product
-      </button>
+      </button></> ):
+      <div className="flex flex-col gap-4 items-center justify-center w-[120%] max-w-[480px] mx-auto h-[500px] text-center">
+      <img
+           src={emptyproducts}
+           alt="No products available"
+           className="w-[80%] animate-float"
+         />
+       <div className="flex flex-col items-center text-center">
+  <span className="pt-10 font-medium text-xl">No Products Available to Add Variants</span>
+  <span className="font-poppins font-normal text-[12px] leading-[18px] tracking-normal text-[rgba(7,7,7,0.8)]">
+    There are no products in this category to add a variant. You can explore other categories and choose a different one if needed.
+  </span>
+</div>
+
+    
+
+       </div> }
     </div>
   );
 };

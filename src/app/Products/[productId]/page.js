@@ -13,6 +13,7 @@ const estimation = "/Assets/estimation.svg"
 const stars = "/Assets/stars.svg";
 const left = '/Assets/leftarrow.svg';
 const startfill = '/Assets/star_fill.svg'
+const starHallFill = '/Assets/star_half_fill.svg'
 const starline = '/Assets/star_line.svg'
 const quality = '/Assets/quality.svg';
 const relocation = '/Assets/relocation.svg';
@@ -275,22 +276,35 @@ const ProductPage = async ({ params, searchParams }) => {
           </div>
         </div>}
         {product.averageRating && (
-          <div className="flex mt-6 flex-col w-full md:w-1/2 gap-2 border border-black-200 bg-white p-6 md:p-10 rounded-lg text-center justify-center">
-            <h2 className="text-black-500 text-5xl md:text-5xl font-bold">
-              {product.averageRating}
-            </h2>
-            <div className="flex gap-2 justify-center">
-              {[...Array(5)].map((_, index) => (
-                <img
-                  key={index}
-                  src={index < Math.round(product.averageRating) ? startfill : starline}
-                  alt="Rating star"
-                  className="w-6 h-6 md:w-8 md:h-8"
-                />
-              ))}
-            </div>
-          </div>
-        )}
+  <div className="flex mt-6 flex-col w-full md:w-1/2 gap-2 border border-black-200 bg-white p-6 md:p-10 rounded-lg text-center justify-center">
+    <h2 className="text-black-500 text-5xl md:text-5xl font-bold">
+      {product.averageRating} 
+    </h2>
+    <div className="flex gap-2 justify-center">
+      {[...Array(5)].map((_, index) => {
+        const fullStars = Math.floor(product.averageRating);
+        const hasHalfStar = product.averageRating % 1 >= 0.5;
+        let starIcon = starline; // Default empty star
+
+        if (index < fullStars) {
+          starIcon = startfill; // Full star
+        } else if (index === fullStars && hasHalfStar) {
+          starIcon = starHallFill; // Half-filled star
+        }
+
+        return (
+          <img
+            key={index}
+            src={starIcon}
+            alt="Rating star"
+            className="w-6 h-6 md:w-8 md:h-8"
+          />
+        );
+      })}
+    </div>
+  </div>
+)}
+
         <Ratings userRatings={userRatings} />
         <RelatedItems relatedItems={relatedItems} />
 

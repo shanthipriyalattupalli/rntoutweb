@@ -37,7 +37,6 @@ const faqQuestions=await fetchFaqQandA(faqId)
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </p>
 <FaqQandA faqQuestions ={faqQuestions}/>
-            <h3 className="text-xl font-bold mt-10 text-center">Other Questions</h3>
 
         </div>
     );

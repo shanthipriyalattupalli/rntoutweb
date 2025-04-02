@@ -209,11 +209,12 @@ const handleRating=(rating)=>{ded
 
           <Sidebar categories={categories} subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} rating={handleRating}/>
 
-          <div className="w-full flex flex-col gap-2 py-4 h-[auto] border border-slate-200  bg-white rounded-r-lg overflow-hidden">
-            <div className="px-8 border-b-2 pb-4">
-          <div id="product-container" className="w-full overflow-x-auto border rounded-lg scrollbar-hide">
+          <div className="w-full flex flex-col gap-3 py-4 h-[auto] border border-slate-200  bg-white rounded-r-lg overflow-hidden">
+          {product?.length > 0 && 
+            <div className="flex items-center gap-2 px-8 border-b-2 pb-4" >
+             <div id="product-container" className="w-full overflow-x-auto border rounded-lg scrollbar-hide">
   <div className="flex w-max">
-    {product.map((productItem) => (
+    {product?.map((productItem) => (
       <div
         key={productItem._id}
         className={`text-center rounded-lg px-4 py-2 cursor-pointer ${
@@ -221,16 +222,14 @@ const handleRating=(rating)=>{ded
         }`}
         onClick={() => handleProductClick(productItem._id)}
       >
-        {productItem.productName}
+        {productItem.productName} 
       </div>
     ))}
   </div>
 </div>
-</div>
-
-
-
-            {/* <Products/> */}
+<p style={{color:"#9d9797"}}>scroll<span>{">>"}</span> </p>
+  
+</div>}
             <CategoryProducts products={products} />
             </div>
         </div>
