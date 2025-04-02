@@ -233,26 +233,35 @@ const ProductPage = async ({ params, searchParams }) => {
           <div className='space-y-6'>
 
             <div className=''>
-              <table className='flex flex-col w-full text-sm border bg-white rounded-3xl p-4'>
-                <h2 className='text-lg font-semibold mb-3 text-[#2F6FED]'>
-                  Product Details
-                </h2>
-                <tbody>
-                  {productDetails.map((detail, index) => (
-                    <tr key={index} className=''>
-                      <td className='p-2 font-semibold'>{detail.label}</td>
-                      <td className='p-2 text-gray-600'>{detail.value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <table className='flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4'>
+  <thead>
+    <tr>
+      <th colSpan="2" className='text-lg font-semibold mb-3 text-[#2F6FED] text-left p-2'>
+        Product Details
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {productDetails.map((detail, index) => (
+      <tr key={index}>
+        <td className='p-2 font-semibold'>{detail.label}</td>
+        <td className='p-2 text-gray-600'>{detail.value}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
             </div>
 
             <div>
               <table className='flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4'>
-                <h2 className='text-lg font-semibold mb-3 text-[#2F6FED]'>
-                  Other Details
-                </h2>
+              <thead>
+    <tr>
+      <th colSpan="2" className='text-lg font-semibold mb-3 text-[#2F6FED] text-left p-2'>
+        Other Details
+      </th>
+    </tr>
+  </thead> 
                 <tbody>
                   {otherDetails?.map((detail, index) => (
                     <tr key={index} className=''>
@@ -265,12 +274,21 @@ const ProductPage = async ({ params, searchParams }) => {
             </div>
             <div>
               <table className='flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4'>
-                <h2 className='text-lg font-semibold mb-3 text-[#2F6FED]'>
-                  Product Description
-                </h2>
-                <tbody>
-                  <p className="font-sm text-md text-gray-700 leading-relaxed text-justify">{product.description}</p>
-                </tbody>
+              <thead>
+    <tr>
+      <th colSpan="2" className='text-lg font-semibold mb-3 text-[#2F6FED] text-left p-2'>
+        Product description
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td className="font-sm text-md text-gray-700 leading-relaxed text-justify">
+      {product.description}
+    </td>
+  </tr>
+</tbody>
+
               </table>
             </div>
           </div>

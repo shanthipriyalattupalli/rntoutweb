@@ -208,12 +208,9 @@ const CartPage = () => {
   const fetchCartDetails = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
+      console.log(response)
       const cartData = response.data.cartItems || [];
-
-
-
       setCartItems(cartData);
-
       if (cartData.length === 0) {
         setQuantities({});
       } else {
@@ -439,7 +436,7 @@ console.log(response,"resonde of paymnet")
     annual: "Year",
   };
 
-
+console.log(cartItems,"cart items")
 
   return (
     <div className='cart-page'>
@@ -456,7 +453,7 @@ console.log(response,"resonde of paymnet")
               <input
                 type="checkbox"
                 className="mr-3 w-5 h-5 accent-red-500 checked:bg-red-500 checked:border-red-500"
-                checked={item.selected}
+                checked={item?.selected || false}
                 onChange={(e) => handleCheckboxChange(item._id, e.target.checked)}
               />
 
@@ -572,8 +569,8 @@ console.log(response,"resonde of paymnet")
 
               <div className='address-context'>
               <input
-  type="checkbox"
-  checked
+  type="checkbox" 
+  defaultChecked
   className="w-5 h-5 accent-red-500"
 />
                 <h4>{selectedAddress.name}</h4>
