@@ -21,27 +21,15 @@ const profile_avatar = "/Assets/profile_avatar.png";
 
 
 function Header() {
-
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-
-  const [locationError, setLocationError] = useState(null);
-  const [locationName, setLocationName] = useState("");
   const [isSubscription, setIsSubscription] = useState(false)
-  // const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
-  // const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
-  // const name = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
-
   const userId = Cookies.get("userId");
   const token = Cookies.get("userToken");
   const names = Cookies.get("userName");
-  const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
-  const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
   const [profilePic, setProfilePic] = useState((typeof window !== 'undefined') ? localStorage.getItem("profilePic") : null || Photo);
   const [name, setName] = useState(names)
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [location, setLocation] = useState(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // const [location, setLocation] = useState(null);
   const [variants, setVariants] = useState([]);
   const [selectedDistance, setSelectedDistance] = useState("");
   const [cartItems, setCartItems] = useState(0);
@@ -54,8 +42,6 @@ function Header() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const cartlength = typeof window !== 'undefined' ? localStorage.getItem("cart") : null;
-  const profile = typeof window !== 'undefined' ? localStorage.getItem("profilePic") : null;
   useEffect(() => {
     const handleProfilePicUpdate = (event) => {
       const updatedPic = event.detail.profilePic;
@@ -234,8 +220,10 @@ function Header() {
 
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
-      setCartItems(response.data?.cartItems?.length);
+      console.log(response,"cart response from header")
+      setCartItems(response?.data?.cartItems?.length);
     } catch (error) {
+      console.log(error)
       setCartItems(0);
     }
   };
@@ -288,9 +276,7 @@ function Header() {
 
   };
 
-  const handleVariantClick = () => {
-    router.push('/Products')
-  }
+ 
 
   const handleDistanceChange = (e) => {
     const distance = e.target.value;
@@ -299,11 +285,6 @@ function Header() {
     Cookies.set("selectedDistance", distance, { expires: 7, secure: true, sameSite: "Strict" });
     window.location.reload();
   };
-
-
-
-
-
   const fetchSubscriptionPlans = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/subscription-plans/plans`);
@@ -394,7 +375,7 @@ function Header() {
               {/* Visible only on small devices */}
               <div className="sm:hidden border border-orange-400 rounded-[10px] p-2">
                 <Image
-                  src={subscription}
+                  src="/Assets/subscription.svg"
                   width={20}
                   height={20}
                   alt="subscription"
@@ -405,7 +386,7 @@ function Header() {
 
               <div className="hidden sm:flex shadow-sm border border-[rgba(244,128,3,0.45)] rounded-[10px] p-2">
                 <Image
-                  src={subscription}
+                  src="/Assets/subscription.svg"
                   width={20}
                   height={20}
                   alt="subscription"
@@ -435,7 +416,7 @@ function Header() {
           <div className="relative cursor-pointer" >
             {cartItems > 0 ? (
               <Link href="/Cartpage">
-                <Image src={cartitems} width={30} height={30} alt="cart" className="min-w-[34px] min-h-[34px]" />
+                <Image src='/Assets/cartitems.svg' width={30} height={30} alt="cart" className="min-w-[34px] min-h-[34px]" />
                 <span className="absolute -top-2 -top-2 -right-2  bg-red-500 rounded-full w-5 h-5 text-xs font-semibold text-white flex items-center justify-center">
                   {cartItems}
                 </span>
@@ -443,7 +424,7 @@ function Header() {
             ) : (
               <Link href="/Cartpage">
                 <button className="h-[37px] bg-white border border-blue-300 rounded-[10px] p-2 hover:bg-gray-100">
-                  <Image src={cart} width={20} height={20} alt="cart" className="min-w-[20px] min-h-[20px]" />
+                  <Image src='/Assets/Button.svg' width={20} height={20} alt="cart" className="min-w-[20px] min-h-[20px]" />
                 </button>
               </Link>
 

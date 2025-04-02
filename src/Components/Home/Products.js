@@ -1,7 +1,6 @@
 "use client";
 
 import React, { Suspense,useState,useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { ToastContainer } from "react-toastify";
@@ -9,13 +8,6 @@ import ProductGrid from "../../Components/Home/ProductGrid";
 import ProductCard from "../Shimmer/ProductCard";
 import axios from "axios";
 import Cookies from "js-cookie";
-
-const pro1 = "/Assets/laptop-1.jpg";
-const pro2 = "/Assets/laptop-2.jpg";
-const pro3 = "/Assets/laptop-3.jpg";
-const pro4 = "/Assets/laptop-4.jpg";
-const pro5 = "/Assets/laptop-5.jpg";
-
 // Dynamically import the ProductItems component for lazy loading
 const ProductItems = dynamic(() => import("../Home/ProductItems"), {
   suspense: true,
@@ -62,12 +54,6 @@ const Products = ({categories}) => {
   useEffect(()=>{
     fetchProductsByCategory()
   },[categoryId,latitude,longitude,distance])
-
-
-
-  const handleProducts = () => {
-    router.push("/Products"); // Navigate to the profile page
-  };
 
   
   const handleCategoryClick = (categoryId) => {
@@ -116,9 +102,8 @@ let products=categoryProducts[categoryId] || []
       <Link href={`/Product-list/${categoryId}`}>
         <button
           className='bg-red-500 hover:bg-red-600 text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg sm:rounded-xl shadow-md focus:outline-none transition duration-300 ease-in-out'
-          onClick={handleProducts}
         >
-          View all products
+          View all productsc
         </button>
       </Link>
     </div>
