@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { CgScrollH } from "react-icons/cg";
 import axios from "axios";
 
 const Navigation = () => {
@@ -76,8 +77,8 @@ const Navigation = () => {
   }, []);
 
   return (
-    <nav className="px-4 sm:px-20 bg-white border-b border-slate-200 relative">
-      <div className="relative">
+    <nav className="px-3 sm:px-20 bg-white border-b border-slate-200 relative">
+      <div className="relative" style={{display:"flex",alignItems:"center",gap:"12px"}}>
         <div
           id="category-container"
           className="flex items-center h-12 gap-6 sm:gap-10 2xl:gap-16 overflow-x-auto overflow-visible whitespace-nowrap scrollbar-hide relative"
@@ -100,6 +101,8 @@ const Navigation = () => {
             </div>
           ))}
         </div>
+        <p style={{color:"#9d9797"}}>scroll<span>{">>"}</span> </p>
+
 
         {activeCategory && subcategories.length > 0 && (
           <div
@@ -120,6 +123,7 @@ const Navigation = () => {
           </div>
         )}
       </div>
+      {/* <CgScrollH /> */}
     </nav>
   );
 };

@@ -68,7 +68,7 @@ const CuratedCollections = () => {
   }, [autoPlay, currentIndex]);
 
   // Get the current slides to display
-  const currentCollections = collections.slice(
+  const currentCollections = collections?.slice(
     currentIndex,
     currentIndex + slidesToShow
   );
@@ -76,7 +76,7 @@ const CuratedCollections = () => {
     currentCollections.length < slidesToShow
       ? [
           ...currentCollections,
-          ...collections.slice(0, slidesToShow - currentCollections.length),
+          ...collections?.slice(0, slidesToShow - currentCollections.length),
         ]
       : currentCollections;
 

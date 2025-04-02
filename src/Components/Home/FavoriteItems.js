@@ -402,7 +402,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                     onClick={() => setSelectedRentalPeriod(detail.period)}
                   >
                     <span className={`block font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"}`}>
-                      {periodMapping[detail.period] || detail.period.charAt(0).toUpperCase() + detail.period.slice(1)}
+                      {periodMapping[detail.period] || detail.period.charAt(0).toUpperCase() + detail.period?.slice(1)}
                     </span>
                     <span className={`block text-lg font-[500] text-[16px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-black"}`}>
                       ₹

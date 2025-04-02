@@ -68,7 +68,7 @@ const Newsletter = () => {
     {/* Links Section */}
     <div className="md:w-1/2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
       <div>
-        <h4 className="text-lg font-medium text-white mb-4">Product</h4>
+        <h4 className="text-lg font-medium text-white mb-4">Products</h4>
         <ul className="text-gray-400 text-sm space-y-2">
           {categories.map((category) => (
             <li key={category._id}>
@@ -83,7 +83,7 @@ const Newsletter = () => {
         <h4 className="text-lg font-medium text-white mb-4">Information</h4>
         <ul className="text-gray-400 text-sm space-y-2 cursor-pointer">
           <li onClick={() => router.push("/Faq")}>FAQ</li>
-          <li onClick={() => router.push("/Blogs/67599401ddd3533ef08c6a3b")}>Blog</li>
+          <li onClick={() => router.push("/Blogs")}>Blogs</li>
         </ul>
       </div>
       <div>

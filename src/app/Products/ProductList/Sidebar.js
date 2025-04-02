@@ -186,8 +186,9 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
                       ? "bg-[#F0F5FF] text-black border-[#2F6FED]"
                       : "bg-[#0707070D] text-black border-[#0707071A]"
                       }`}
+                      title={subcategory.subCategoryName}
                   >
-                    <span className="truncate w-[80%]">{subcategory.subCategoryName}</span>
+                    <span className="truncate w-[80%]" >{subcategory.subCategoryName}</span>
                     {openIndex === subcategory._id ? (
                       <ChevronRightIcon className="w-5 h-5 text-gray-600" />
 

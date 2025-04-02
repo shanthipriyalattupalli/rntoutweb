@@ -121,7 +121,8 @@ const CategoryGrid = () => {
 
   const handleNextClick = () => {
     if (selectedCategoryLabel && selectedCategory) {
-      router.push(`/add-on-rent/add-details?${selectedCategoryLabel}`);
+      const encodedLable = encodeURIComponent(selectedCategoryLabel);
+      router.push(`/add-on-rent/add-details?name=${encodedLable}`);
     }
      else {
       setError("Please select a category before proceeding.");

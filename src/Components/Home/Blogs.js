@@ -36,10 +36,13 @@ const Blog = ({blogs}) => {
   
 
   // Calculate the current blogs to display
-  const currentBlogs = [
-    ...blogs.slice(currentSlide),
-    ...blogs.slice(0, currentSlide + itemsPerPage - blogs.length),
-  ].slice(0, itemsPerPage);
+  const currentBlogs = blogs?.length
+  ? [
+      ...blogs.slice(currentSlide),
+      ...blogs.slice(0, Math.max(0, currentSlide + itemsPerPage - blogs.length)),
+    ].slice(0, itemsPerPage)
+  : [];
+
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + itemsPerPage) % blogs.length);
@@ -54,7 +57,7 @@ const Blog = ({blogs}) => {
       <div className='mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5'>
         <div className='flex justify-between items-center mt-20 mb-4'>
           <h1 className='text-[23px] sm:text-[32px] font-[700] text-gray-800 xl:px-16'>Our Exclusive Blogs</h1>
-          <a href='#' className='text-blue-500 hover:text-blue-700 text-sm font-medium xl:pl-16'>
+          <a href='/Blogs' className='text-blue-500 hover:text-blue-700 text-sm font-medium xl:pl-16'>
             View all blogs{" "}
             <svg className='w-4 h-4 inline-block ml-1' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M9 5l7 7-7 7'></path>

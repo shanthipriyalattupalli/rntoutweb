@@ -16,7 +16,7 @@ const Ratings = ({ userRatings }) => {
 
   const totalPages = Math.ceil(userRatings.length / itemsPerPage);
 
-  const currentRatings = userRatings.slice(
+  const currentRatings = userRatings?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );

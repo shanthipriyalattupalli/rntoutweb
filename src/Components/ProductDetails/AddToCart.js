@@ -80,7 +80,7 @@ const token =Cookies.get("userToken");
                     onClick={() => handleselectedDuration(price.period)}
                   >
                     <div className="text-[10px] sm:text-xs md:text-sm">
-                    {periodMapping[price.period] || price.period.charAt(0).toUpperCase() + price.period.slice(1)}
+                    {periodMapping[price.period] || price.period.charAt(0).toUpperCase() + price.period?.slice(1)}
                     </div>
                     <div className="font-bold text-sm sm:text-base md:text-lg">₹{price.price}</div>
                   </button>
