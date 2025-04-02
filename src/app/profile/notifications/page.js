@@ -6,74 +6,6 @@ import '../../../styles/Notifications.css';
 const chair = "/Assets/chair.png";
 import { FaEllipsisV } from "react-icons/fa";
 
-const initialNotifications = [
-  {
-    id: 1,
-    title: "New Feature Alert!",
-    message:
-      "We're pleased to introduce the latest enhancements in our templating experience.",
-    time: "15h",
-    icon: chair,
-  },
-  {
-    id: 2,
-    title: "New Feature Alert!",
-    message:
-      "We're pleased to introduce the latest enhancements in our templating experience.",
-    time: "15h",
-    icon: chair,
-  },
-  {
-    id: 3,
-    title: "New Feature Alert!",
-    message:
-      "We're pleased to introduce the latest enhancements in our templating experience.",
-    time: "15h",
-    icon: chair,
-  },
-  {
-    id: 4,
-    title: "New Feature Alert!",
-    message:
-      "We're pleased to introduce the latest enhancements in our templating experience.",
-    time: "15h",
-    icon: chair,
-  },
-  {
-    id: 5,
-    title: "New Feature Alert!",
-    message:
-      "We're pleased to introduce the latest enhancements in our templating experience.",
-    time: "15h",
-    icon: chair,
-  },
-  {
-    id: 6,
-    title: "New Feature Alert!",
-    message:
-      "We're pleased to introduce the latest enhancements in our templating experience.",
-    time: "15h",
-    icon: chair,
-  },
-  {
-    id: 7,
-    title: "New Feature Alert!",
-    message:
-      "We're pleased to introduce the latest enhancements in our templating experience.",
-    time: "15h",
-    icon: chair,
-  },
-  {
-    id: 8,
-    title: "New Feature Alert!",
-    message:
-      "We're pleased to introduce the latest enhancements in our templating experience.",
-    time: "15h",
-    icon: chair,
-  },
-
-  // Add more notifications as needed
-];
 
 const Notifications = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -84,6 +16,7 @@ const Notifications = () => {
   const fetchNotications=async()=>{
     try {
       const response = await axios.get(`${BASE_URL}/notifications/user/${userId}`)
+      console.log(response.data,"notifications")
       setNotifications(response.data);
     } catch (error) {
       console.error("Error fetching notifications:", error);

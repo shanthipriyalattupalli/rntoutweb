@@ -5,6 +5,9 @@ import Swal from "sweetalert2";
 import Cookies from 'js-cookie';
 import { FaRegCheckCircle } from "react-icons/fa";
 import Razorpay from '../RazorPay/RazorPay';
+import { CrossIcon } from 'lucide-react';
+import { TiCancelOutline } from 'react-icons/ti';
+import { MdCancel, MdOutlineCancel } from 'react-icons/md';
 const subscription = '/Assets/subscription2.svg'
 
 const Benefits = [
@@ -14,13 +17,17 @@ const Benefits = [
 ]
 
 const Subscription = ({ plans,setIsSubscription }) => {
+  console.log(plans,"plans")
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const userId = Cookies.get("userId");
-  const token = Cookies.get("userToken")
+  const token = Cookies.get("userToken");
+  const isSubscription=Cookies.get("hasSubscription");
+  const subscriptionId=Cookies.get("SubscriptionId")
   const [orderId, setOrderId] = useState(null)
   const [displayRazorpay, setDisplayRazorpay] = useState(false);
   const [subscriptionPlanId, setSubscriptionPlanId] = useState(null);
   const [selectedPlanId, setSelectedPlanId] = useState(null);
+  const [subscriptions,setSubscription]=useState({})
   const apiKey = "rzp_test_a4GiGqcTxFZlKT";
 
   const handleSubscriptionCheckout = async (planId) => {
@@ -33,6 +40,7 @@ const Subscription = ({ plans,setIsSubscription }) => {
           Authorization: `Bearer ${token}`,
         }
       });
+      console.log(response.data,"response of data")
       if (response.data.order.id) {
         setOrderId(response.data.order.id);
         setSelectedPlanId(planId);
@@ -71,8 +79,77 @@ const Subscription = ({ plans,setIsSubscription }) => {
       setDisplayRazorpay(false);
     }
   };
+
+
+  const fetchSubscription=async()=>{
+    try {
+
+      const response=await axios.get(`${BASE_URL}/subscription-plans/plan/${subscriptionId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(response.data.data,"response in subscription")
+      setSubscription(response?.data?.data)
+      
+    } catch (error) {
+      console.log(error,"error in subscription")
+      
+    }
+  }
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchSubscription();
+    };
+  
+    fetchData();
+  }, [subscriptionId]);
+
   return (
-    plans.map((plan, index) => (
+    <>
+{ isSubscription?       
+ <div className="flex flex-col gap-[24px] p-6 sm:p-[20px]" key={subscriptions._id}>
+
+<div className="flex justify-center items-center mb-4">
+  <div className="bg-orange-100 p-3 rounded-full">
+    <img src={subscription} alt='subscription' className='' />
+  </div>
+</div>
+<h2 className="text-xl text-center font-bold">RntOut Subscription</h2>
+<div className='flex-flex-col gap-[4px]'>
+<span className='text-left'>Next invoice issue date</span>
+<div className='flex justify-between'>
+  <span>Mar 18,2025</span>
+  <div className="text-center ">
+          <span className="text-red-500 font-bold text-xl">₹{subscriptions.price} </span>
+          <span className="text-gray-500 font-sm text-md"> /{subscriptions.name}</span>
+        </div>
+</div>
+</div>
+
+<div>
+  <p className="text-gray-600 font-semibold">BENEFITS:</p>
+  <ul className="mt-2 space-y-2">
+            {subscriptions?.benefits?.map((benefit, index) => (
+                <li key={index} className="flex items-center gap-2 text-gray-700">
+                  <FaRegCheckCircle className="text-green-700" />
+                  {benefit}
+                </li>
+              ))}
+          </ul>
+</div>
+
+  
+
+<button
+          className="flex gap-2 text-center justify-center text-[12px] font-[500] py-2 rounded-lg "
+          style={{ color: "rgba(255, 45, 85, 1)" }}
+        >
+<MdCancel className='w-4 h-4'/>
+          Cancel Subscription
+        </button>
+   
+</div> : plans.map((plan, index) => (
       <div className="flex flex-col gap-2 p-8" key={plan._id}>
 
         <div className="flex justify-center items-center mb-4">
@@ -117,7 +194,8 @@ const Subscription = ({ plans,setIsSubscription }) => {
             name={(typeof window !== 'undefined') ? localStorage.getItem("userName") : null} />
         )}
       </div>
-    ))
+    ))}
+    </>
 
   )
 }

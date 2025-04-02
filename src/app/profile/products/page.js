@@ -35,6 +35,7 @@ export default function Dashboard({ products }) {
     const [images, setImages] = useState([]);
     const [relatedItems, setRelatedItems] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [itemActive,setItemActive] = useState()
 
     const kyc =Cookies.get("kycstatus");
 
@@ -77,10 +78,6 @@ export default function Dashboard({ products }) {
       console.error("Error deleting product:", error);
     }
   }
-
-
-
-
   const fetchProductById = async (productId) => {
     try {
         const response = await axios.get(`${BASE_URL}/variants/${productId}?includeRelated=false`);
@@ -108,6 +105,13 @@ const approvedCount = userProducts.filter(product => product.isApproved).length;
 const notApprovedCount = userProducts.filter(product => !product.isApproved).length;
 
 
+const handleClick=(itemId)=>{
+  if(itemId === itemActive){
+    setItemActive(null)
+  }else{
+    setItemActive(itemId)
+  }
+}
 
 
 
@@ -184,8 +188,8 @@ const notApprovedCount = userProducts.filter(product => !product.isApproved).len
               <div className="flex justify-between">
                 <h3 className='item-title'>{item.title}</h3>
                 <div className='action-menu'>
-                  <button className='menu-button'>...</button>
-                  <div className='dropdown-menu'>
+                  <button className='menu-button' onClick={() => handleClick(item._id)}>...</button>
+                {itemActive === item._id &&  <div className='dropdown-menu'>
                     <p onClick={() => router.push(`/profile/products/details/${item._id}`)}>
                       <LuPencil /> Edit
                     </p>
@@ -209,7 +213,7 @@ const notApprovedCount = userProducts.filter(product => !product.isApproved).len
                     <p style={{ color: "red" }} onClick={() => handleProductDelete(item._id)}>
                       <RiDeleteBinLine /> Delete
                     </p>
-                  </div>
+                  </div>}
                 </div>
               </div>
               <div className='item-details'>

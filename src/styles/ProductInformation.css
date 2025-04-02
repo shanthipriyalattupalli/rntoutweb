@@ -254,6 +254,7 @@ line-height: 18px; /* 150% */
 }
 
 .menu-button {
+  width: 30px;
   background: none;
   border: none;
   font-size: 18px;
@@ -262,9 +263,8 @@ line-height: 18px; /* 150% */
 }
 
 .dropdown-menu {
-  width:100px;
+  width:35%;
   gap:6px;
-  display: none;
   position: absolute;
   right: 25px;
   bottom:10px;
@@ -279,15 +279,16 @@ line-height: 18px; /* 150% */
 
 
 }
-
+/* 
 .action-menu:hover .dropdown-menu {
   display: block;
-}
+} */
 
 
 .dropdown-menu p {
   display: flex;
-  gap:6px;
+  align-items: center;
+  gap:12px;
   margin: 0;
   padding: 10px;
   cursor: pointer;

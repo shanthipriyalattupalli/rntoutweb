@@ -208,20 +208,21 @@ const ProductPage = ({ setIsModelOpen, productId, product, rentalPrice, rentalAv
                                     </tbody>
                                 </table>
                             </div>
-                            <div>
+  
+                        </div>
+
+
+                    </div>}
+                    <div>
                                 <table className='flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4'>
                                     <h2 className='text-lg font-semibold mb-3 text-[#2F6FED]'>
                                         Product Description
                                     </h2>
                                     <tbody>
-                                        <p className="font-sm text-md text-gray-700 leading-relaxed text-justify">{product.description}</p>
+                                        <p className="font-sm text-md text-gray-700 leading-relaxed text-left">{product.description}</p>
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-
-
-                    </div>}
                 </div>
 
 

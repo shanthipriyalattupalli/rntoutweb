@@ -10,6 +10,7 @@ const Rntout = "/Assets/Rntout_Logo.png";
 import { useRouter } from "next/navigation";
 import Otp from "./Otp";
 import Signup from "./Signup";
+import Swal from "sweetalert2";
 
 const Login = ({ setIsLoginOpen }) => {
   const [isPhoneSelected, setIsPhoneSelected] = useState(true);
@@ -39,7 +40,14 @@ const Login = ({ setIsLoginOpen }) => {
       setIsLoading(false);
   
       if (response.status === 200) {
-        toast.success(response.data.message || "OTP sent successfully!");
+              Swal.fire({
+                icon: "success",
+                title: "Done!",
+                text: response.data.message,
+             timer:1000,
+             showConfirmButton:false
+              });
+        // toast.success(response.data.message || "OTP sent successfully!");/
         setIsOtpOpen(true);
 
 

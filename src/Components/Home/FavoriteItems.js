@@ -156,7 +156,8 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
         icon: "success",
         title: "Done!",
         text: response.data.message,
-        confirmButtonColor: "#d33",
+     timer:1000,
+     showConfirmButton:false
       });
     } catch (error) {
       console.error("Error removing product from favorites:", error);

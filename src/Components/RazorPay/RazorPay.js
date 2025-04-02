@@ -4,6 +4,7 @@ import axios from "axios";
 const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 import { useEffect, useRef } from 'react';
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
 const loadScript = (src) => new Promise((resolve) => {
   const script = document.createElement('script');
@@ -42,6 +43,7 @@ const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, 
               Authorization: `Bearer ${token}`,
             }
           });
+
           setIsSubscription(false)
           Swal.fire({
             icon: "success",
@@ -50,6 +52,7 @@ const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, 
             confirmButtonColor: "#d33", 
           });  
           console.log(result, "response in verify-payment")
+
           if (result.data.success  === true) {
             handlePayment('succeeded', {
               razorpay_order_id: orderId,
@@ -57,6 +60,11 @@ const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, 
               razorpay_signature: response.razorpay_signature,
               planId: planId
             });
+
+            Cookies.set("hasSubscription",result.data.success , { expires: 7, secure: true, sameSite: "Strict" });
+            Cookies.set("SubscriptionId",result.data.subscription.planId , { expires: 7, secure: true, sameSite: "Strict" });
+
+          
                         
 
         

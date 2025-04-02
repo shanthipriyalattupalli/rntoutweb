@@ -46,7 +46,7 @@ const WithdrawalRequest = async() => {
         <h2 className="text-blue-600 font-semibold text-lg">Withdrawal Request</h2>
         <div className="flex gap-2 items-center justify-center">
         <span className="text-gray-800 font-bold text-lg">
-          Balance: <span className="text-blue-600">₹{transactionsWallet?.walletBalance ? transactionsWallet?.walletBalance :"0"}</span>
+          Balance: <span className="text-blue-600">₹{transactionsWallet?.walletBalance ? transactionsWallet?.walletBalance.toFixed(2) :"0"}</span>
         </span>
         <button className="bg-red-600 p-2 text-white border border-red-300 rounded-lg font-semibold">
          Withdrawal

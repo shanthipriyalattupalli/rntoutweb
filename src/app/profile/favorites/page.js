@@ -17,6 +17,7 @@ const hp34 = "/Assets/hp34.png";
 const vector = "/Assets/Vector.png";
 import { Heart } from "lucide-react";
 
+
 export default function Profile({ }) {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
@@ -58,7 +59,7 @@ export default function Profile({ }) {
         ))}
       </div> :
       <div className="flex flex-col justify-center items-center h-3/4">
-  <span className="text-6xl animate-blink">❤️</span>
+  <img src="/Assets/nofavourites.svg"className="text-6xl animate-blink"/>
   <span className="text-lg font-semibold">No Favorites Yet</span>
   <p className="text-center px-6 py-2">
     Browse our collection and click the ❤️ icon to save your favorite items.
