@@ -120,6 +120,11 @@ export default function BusinessInformation2() {
 
       return updatedFormData;
     });
+
+    setErrorMessage((prev) => ({
+      ...prev,
+      [name]: "",  
+    }));
   };
 
 
@@ -155,6 +160,11 @@ export default function BusinessInformation2() {
       bannerImages: [...prev.bannerImages, ...files],
     }));
 
+    setErrorMessage((prev) => ({
+      ...prev,
+      bannerImages: [],
+    }));
+
   };
 
 
@@ -170,9 +180,13 @@ export default function BusinessInformation2() {
       errors.contactPhone = "Mobile number must be 10 digits";
     if (!formData?.storeDescription) errors.storeDescription = "This field is required";
     if (!formData?.bankName) errors.bankName = "This field is required";
-    if (!formData?.accountNumber) errors.accountNumber = "This field is required";
+    if (!formData?.accountNumber) {
+      errors.accountNumber = "This field is required";
+    } else if (!/^\d{9,18}$/.test(formData.accountNumber)) {
+      errors.accountNumber = "Account number must be between 9 and 18 digits";
+    }
     if (!formData?.ifsc) errors.ifsc = "This field is required";
-    // if (!formData.profileImage) errors.profileImage = "This field is required";
+    if (!formData.profileImage) errors.profileImage = "This field is required";
 
     // If errors exist, set error state and return
     if (Object.keys(errors).length > 0) {
@@ -343,8 +357,8 @@ export default function BusinessInformation2() {
                       <p className="flex flex-col"><div className="flex gap-2"><FaCreditCard className="text-gray-500" /> <strong>IFSC Code:</strong></div><div className="text-sm">{formData?.ifsc}</div></p>
                       <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Account Number:</strong></div><div className="text-sm">{formData?.accountNumber}</div></p>
                     </div>
-                    <strong className="flex mt-4">Address :</strong>
-                    <p className="flex items-center gap-2 mt-2 text-sm"><FaMapMarkerAlt className="text-gray-500" />{formData?.bankBranchAddress?.full}</p>
+                    {formData?.bankBranchAddress?.full && <strong className="flex mt-4">Address :</strong>}
+                   {formData?.bankBranchAddress?.full && <p className="flex items-center gap-2 mt-2 text-sm"><FaMapMarkerAlt className="text-gray-500" />{formData?.bankBranchAddress?.full}</p>}
                   </div>
                 </div>
 
@@ -497,7 +511,8 @@ export default function BusinessInformation2() {
 
             {/* Basic Info Section */}
             <div className="section">
-              <h3 className="section-title">Basic Info</h3>
+              <h3 className="section-title">Basic Info    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span></h3>
+ 
               <div className="basic-info">
                 <div className="icon-text">
                   <div className="icon">
@@ -516,7 +531,7 @@ export default function BusinessInformation2() {
                   </div>
 
                 </div>
-                {errorMessage.profileImage && <p className="text-red-500 text-sm">{errorMessage.profileImage}</p>}
+
                 <div className="icon-button">
                   <input
                     type="file"
@@ -547,6 +562,7 @@ export default function BusinessInformation2() {
                 </div>
 
               </div>
+              {errorMessage.profileImage && <p className="text-red-500 text-sm my-4">{errorMessage.profileImage}</p>}
               <h4 className="info-title">Advertisement Banner</h4>
 
               <div className="banner-upload">
@@ -620,9 +636,8 @@ export default function BusinessInformation2() {
                     <option>State Bank of India</option>
                     <option>ICICI Bank</option>
                   </select>
-                  {errorMessage.bankName && <p className="text-red-500 text-sm">{errorMessage.bankName}</p>}
-
                 </div>
+                {errorMessage.bankName && <p className="text-red-500 text-sm">{errorMessage.bankName}</p>}
                 <div className="input-item">
                   <label htmlFor="accountNumber">Account Number
                     <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
@@ -672,7 +687,6 @@ export default function BusinessInformation2() {
               <div className='address-bar'>
                 <div className="input-item">
                   <label htmlFor="bank-address">Address
-                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
 
                   </label>
                   <input

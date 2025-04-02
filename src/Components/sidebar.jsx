@@ -142,7 +142,7 @@ function Sidebar() {
           <span>{<PiCirclesFourFill />}</span>
           <p className='title'>MENUS</p>
         </div>
-        {filteredButtons?.map((eachBar) => (
+        {buttonsData?.map((eachBar) => (
           <button
             key={eachBar.id}
             className={`bar ${pathname === eachBar.route ? "active" : ""}`} // Add "active" class if the route matches
