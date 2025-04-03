@@ -40,7 +40,7 @@ export default function ProfileSettings() {
   const [errors, setErrors] = useState({ name: "", dateOfBirth: "" });
 
   const [selectedFile, setSelectedFile] = useState(null);
-
+  
 
   const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
 
@@ -270,9 +270,9 @@ export default function ProfileSettings() {
         <Link href='/' className='flex flex-row gap-1'> Profile Settings</Link>
 
         <div className="flex items-center space-x-4">
-          <a href="/profile/kyc" className="text-green-600 font-medium text-sm cursor-pointer" >
+          {/* <a href="/profile/kyc" className="text-green-600 font-medium text-sm cursor-pointer" >
             Personal KYC ?
-          </a>
+          </a> */}
 
           <a
             className="text-blue-600 font-medium text-sm cursor-pointer"
@@ -304,9 +304,14 @@ export default function ProfileSettings() {
 
 
           <div className="flex gap-2">
-            <button className={` px-4 py-2 rounded-md text-sm font-md ${isEditable ? "bg-blue-500 text-white font-semibold" : "bg-gray-200"}`} onClick={handleButtonClick} disabled={!isEditable}>
-              Edit Image
-            </button>
+            {isEditable && (
+              <button
+                className="px-4 py-2 rounded-md text-sm font-md bg-blue-500 text-white font-semibold mt-2"
+                onClick={handleButtonClick}
+              >
+                Edit Image
+              </button>
+            )}
             {/* <img src={deleteicon} alt="delete" className="cursor-pointer" onClick={()=>handleProfileDelete()} disabled={!isEditable}/> */}
 
             {/* Hidden File Input */}

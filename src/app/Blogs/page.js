@@ -36,7 +36,7 @@ const Blog = () => {
         <div className='relative px-12'>
           <div className={`grid grid-cols-1 lg:grid-cols-4 gap-6`}>
             {blogs?.map((blog, index) => (
-              <div key={index} className='bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden' onClick={() => router.push(`/Blogs/${blog._id}`)}>
+              <div key={index} className='bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden cursor-pointer' onClick={() => router.push(`/Blogs/${blog._id}`)}>
                 <img src={blog.images} alt={blog.title} className='w-full h-40 2xl:h-[350px]' />
                 <div className='p-4'>
                   <div className="h-[82px]">
