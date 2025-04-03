@@ -1,21 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-// import "@/styles/Add.css";
 import '../../styles/Add.css';
-import {
-  FaDesktop,
-  FaCouch,
-  FaCar,
-  FaDumbbell,
-  FaStethoscope,
-  FaHome,
-  FaUmbrellaBeach,
-  FaBirthdayCake,
-  FaEllipsisH,
-} from "react-icons/fa";
 import { MdCheckCircle } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
@@ -27,20 +13,6 @@ const CategoryGrid = () => {
   const [selectedCategoryLabel, setSelectedCategoryLabel] = useState(""); 
   const [error, setError] = useState("");
   const router = useRouter();
-  // const [userId, setUserId] = useState("");
-  // const [token, setToken] = useState("");
-  const [BusinessId, setBusinessId] = useState("");
-  // useEffect(() => {
-  //   const userId = localStorage.getItem("userId");
-  //   const token = localStorage.getItem("userToken");
-  //   setUserId(userId);
-  //   setToken(token);
-  // }, []);
-
-  const userId=(typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
-  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
-
-
   // Define background colors
   const categoryColors = [
     "#008A000D",
@@ -96,27 +68,8 @@ const CategoryGrid = () => {
   }, []);
 
 
-  const fetchBusinessDetails = async () => {
-    if (!token) {
-      console.error("Token is not set yet");
-      return;
-    }
-    try {
-      const response = await axios.get(`${BASE_URL}/business-info`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setBusinessId(response.data?.data?._id)
+ 
 
-    } catch (error) {
-      console.error("Error :", error);
-    }
-  };
-
-  useEffect(() => {
-    if (token) {
-      fetchBusinessDetails();
-    }
-  }, [token]);
 
 
   const handleNextClick = () => {
@@ -131,7 +84,6 @@ const CategoryGrid = () => {
 
   return (
     <div className='category-container'>
-      <ToastContainer/>
       <h1>🔥 Got something cool? Rent it out! 😎</h1>
       <p>Got something cool? Rent it out! </p>
       <div className='category-grid'>

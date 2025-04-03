@@ -618,13 +618,12 @@ console.log(cartItems,"cart items")
             )}
           </div>
         </div>
-        <div className="summary-item address" onClick={handleCouponToggle}>
+        {/* <div className="summary-item address" onClick={handleCouponToggle}>
           <div className="flex justify-between align-center text-center items-center">
             <div className="flex flex-row items-center gap-4">
               <img src={coupon} alt="Coupon Icon" />
               <span>{couponcode ? couponcode : "Promo Coupon"}</span>
 
-              {/* Show remove button only when a coupon is applied */}
               {couponcode && (
                 <button
                   className="remove-coupon-btn"
@@ -641,16 +640,16 @@ console.log(cartItems,"cart items")
             <MdOutlineKeyboardArrowRight />
 
           </div>
-        </div>
+        </div> */}
 
-        {isCoupon && (
+        {/* {isCoupon && (
           <PromoCoupon
             isOpen={isCoupon}
             onClose={handleCouponToggle} // Properly pass the toggle function
             totalPrice={totalPrice}
             onDiscountedPrice={handleDiscountedPrice}
           />
-        )}
+        )} */}
 
         <div className="mx-auto bg-white shadow-lg rounded-xl p-5 border mb-4">
           {/* Header with Dropdown Toggle */}
