@@ -2,6 +2,7 @@
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
+    padding: 30px 70px;
    
 }
 .about-card1-left{
@@ -9,6 +10,7 @@
     border-top: 1px solid #dbe4f1;
 }
 .about-title {
+    border-radius: 20px 20px 0px 0px;
     font-size: 24px;
     font-weight: bold;
     color: #0056b3;

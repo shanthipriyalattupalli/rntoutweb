@@ -42,6 +42,7 @@ function Header() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+
   useEffect(() => {
     const handleProfilePicUpdate = (event) => {
       const updatedPic = event.detail.profilePic;
@@ -101,11 +102,8 @@ function Header() {
 
       setProfilePic(profileData?.profilePic);
 
-
-
     } catch (error) {
       console.error(error);
-      // toast.error("Failed to fetch profile.");
     }
   };
 
@@ -212,10 +210,6 @@ function Header() {
   }, []);
 
 
-
-
-
-
   const fetchCartDetails = async () => {
 
     try {
@@ -246,7 +240,6 @@ function Header() {
     };
   }, [userId]);
 
-
   const handleSearchInputChange = async (searchTerm) => {
     setSearchValue(searchTerm);
     if (searchTerm.length > 2) {
@@ -267,7 +260,6 @@ function Header() {
     }
   };
 
-
   const handleSuggestionClick = (variant) => {
     setSearchValue(variant.title);
     setShowSuggestions(false); // Close suggestions
@@ -276,8 +268,6 @@ function Header() {
 
   };
 
- 
-
   const handleDistanceChange = (e) => {
     const distance = e.target.value;
     setSelectedDistance(distance);
@@ -285,6 +275,7 @@ function Header() {
     Cookies.set("selectedDistance", distance, { expires: 7, secure: true, sameSite: "Strict" });
     window.location.reload();
   };
+  
   const fetchSubscriptionPlans = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/subscription-plans/plans`);
