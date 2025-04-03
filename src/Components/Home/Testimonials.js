@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -14,7 +14,6 @@ const Testimonials = () => {
     const fetchTestimonials = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/testimonial`);
-
         if (Array.isArray(response.data)) {
           setTestimonials(response.data);
         } else if (Array.isArray(response.data.data)) {
@@ -22,7 +21,6 @@ const Testimonials = () => {
         } else {
           throw new Error("Unexpected API response structure");
         }
-
         setLoading(false);
       } catch (err) {
         console.error("Error fetching testimonials:", err);
@@ -30,11 +28,9 @@ const Testimonials = () => {
         setLoading(false);
       }
     };
-
     fetchTestimonials();
   }, []);
 
-  // Track screen size to determine number of items per slide
   useEffect(() => {
     const updateItemsPerSlide = () => {
       if (window.innerWidth <= 425) {
@@ -43,8 +39,7 @@ const Testimonials = () => {
         setItemsPerSlide(3);
       }
     };
-
-    updateItemsPerSlide(); // Initial check
+    updateItemsPerSlide();
     window.addEventListener("resize", updateItemsPerSlide);
     return () => window.removeEventListener("resize", updateItemsPerSlide);
   }, []);
@@ -59,12 +54,13 @@ const Testimonials = () => {
     );
   };
 
-  const currentTestimonials = Array.isArray(testimonials)
-    ? [
-        ...testimonials?.slice(currentSlide),
-        ...testimonials?.slice(0, (currentSlide + itemsPerSlide) % testimonials.length),
-      ].slice(0, itemsPerSlide)
-    : [];
+  const currentTestimonials =
+    testimonials.length >= 4
+      ? [
+          ...testimonials?.slice(currentSlide),
+          ...testimonials?.slice(0, (currentSlide + itemsPerSlide) % testimonials.length),
+        ].slice(0, itemsPerSlide)
+      : testimonials;
 
   if (loading) return <p className="text-center">Loading testimonials...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
@@ -85,16 +81,24 @@ const Testimonials = () => {
         </div>
 
         {/* Testimonials Grid */}
-        <div className="relative">
+        <div className="w-full relative">
           <div
             className={`grid gap-4 md:gap-6 ${
-              itemsPerSlide === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+              testimonials.length < 4
+                ? "grid-cols-1 sm:grid-cols-2 md:flex md:flex-row md:gap-10"
+                : itemsPerSlide === 1
+                ? "grid-cols-1"
+                : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
             }`}
           >
-            {currentTestimonials.map((testimonial, index) => (
+            {currentTestimonials.map((testimonial, index) => {
+               const middleIndex = Math.floor(itemsPerSlide / 2); 
+               return(
               <div
                 key={index}
-                className="p-4 sm:p-6 md:p-8 rounded-xl shadow-md bg-white border border-slate-200"
+                className={`w-[413px] h-[458px] p-4 sm:p-6 md:p-8 rounded-[20px] shadow-md bg-white border border-slate-200${
+                  index === middleIndex ? "bg-white" : "bg-gray-100"
+                }`}
               >
                 <div className="flex flex-col items-center text-center">
                   <img
@@ -112,35 +116,41 @@ const Testimonials = () => {
                   <p className="text-gray-500 text-xs sm:text-sm">{testimonial.description}</p>
                 </div>
               </div>
-            ))}
+               )
+            
+  })}
           </div>
 
-          {/* Navigation Buttons */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full"
-          >
-            &#8592;
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full"
-          >
-            &#8594;
-          </button>
-
-          {/* Dots Navigation */}
-          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {testimonials.map((_, index) => (
+          {/* Show navigation buttons only if there are at least 4 testimonials */}
+          {testimonials.length >= 4 && (
+            <>
               <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${
-                  currentSlide === index ? "bg-red-800" : "bg-red-200"
-                }`}
-              ></button>
-            ))}
-          </div>
+                onClick={prevSlide}
+                className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full"
+              >
+                &#8592;
+              </button>
+              <button
+                onClick={nextSlide}
+                className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full"
+              >
+                &#8594;
+              </button>
+
+              {/* Dots Navigation */}
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${
+                      currentSlide === index ? "bg-red-800" : "bg-red-200"
+                    }`}
+                  ></button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

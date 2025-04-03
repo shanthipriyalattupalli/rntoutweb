@@ -196,7 +196,7 @@ const handleRating=(rating)=>{ded
 
 
   return (
-    <main className="min-h-screen py-6 w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5">
+    <main className="min-h-screen  w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5">
       <ScrollToTop/>
       <div className="px-8 sm:px-8 md:px-2 xl:px-14 lg:px-16 2xl:px-16">
       <Breadcrumb categoryName={breadcrumbCategoryName} />
@@ -210,14 +210,23 @@ const handleRating=(rating)=>{ded
           <Sidebar categories={categories} subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} rating={handleRating}/>
 
           <div className="w-full flex flex-col gap-3 py-4 h-[auto] border border-slate-200  bg-white rounded-r-lg overflow-hidden">
+            
           {product?.length > 0 && 
             <div className="flex items-center gap-2 px-8 border-b-2 pb-4" >
-             <div id="product-container" className="w-full overflow-x-auto border rounded-lg scrollbar-hide">
-  <div className="flex w-max">
+              <p style={{color:"#9d9797"}} 
+className="cursor-pointer"
+ onClick={() => {
+  const categoryContainer = document.getElementById("product-container");
+  if (categoryContainer) {
+    categoryContainer.scrollBy({ left: -200, behavior: "smooth" }); // Scroll right by 200px smoothly
+  }
+}}><span>{"<<"}</span> </p>
+             <div id="product-container" className="w-[956px] h-[32px] overflow-x-auto border overflow-visible whitespace-nowrap rounded-lg scrollbar-hide">
+  <div id="product-container" className="flex w-max justify-center">
     {product?.map((productItem) => (
       <div
         key={productItem._id}
-        className={`text-center rounded-lg px-4 py-2 cursor-pointer ${
+        className={`h-[29px] w-[316px] justify-center text-center rounded-lg px-[8px] py-[4px] cursor-pointer ${
           active === productItem._id ? 'bg-[#2F6FED] text-white' : ''
         }`}
         onClick={() => handleProductClick(productItem._id)}
@@ -227,7 +236,14 @@ const handleRating=(rating)=>{ded
     ))}
   </div>
 </div>
-<p style={{color:"#9d9797"}}>scroll<span>{">>"}</span> </p>
+<p style={{color:"#9d9797"}} 
+className="cursor-pointer"
+ onClick={() => {
+  const categoryContainer = document.getElementById("product-container");
+  if (categoryContainer) {
+    categoryContainer.scrollBy({ left: 300, behavior: "smooth" }); // Scroll right by 200px smoothly
+  }
+}}><span>{">>"}</span> </p>
   
 </div>}
             <CategoryProducts products={products} />

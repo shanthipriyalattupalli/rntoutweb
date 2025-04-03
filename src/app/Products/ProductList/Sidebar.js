@@ -163,8 +163,8 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
 
   return (
     <div className="w-full sm:w-80">
-      <div className='border rounded-tl-lg'>
-        <div className='mb-6 px-6 pt-4'>
+      <div className='border rounded-tl-lg flex flex-col gap-[8px]'>
+        <div className='p-[16px]'>
           <div
             className='flex items-center justify-between cursor-pointer'
             onClick={handleSubCategoriesToggle}
@@ -177,12 +177,12 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
             )}
           </div>
           {isSubCategoriesOpen && (
-            <ul className="space-y-1 ">
+            <ul className="flex flex-col gap-[7px]">
               {subCategories?.map((subcategory) => (
                 <li key={subcategory._id} >
                   <div
                     onClick={() => handleClick(subcategory._id, subcategory.categoryId._id)}
-                    className={`w-full 2xl:w-full flex justify-between items-center text-gray-700 border rounded-lg hover:text-gray-900 cursor-pointer p-2 ${openIndex === subcategory._id ||subcategoryId === subcategory._id
+                    className={`w-full 2xl:w-full h-[32px] flex justify-between items-center text-gray-700 border rounded-[8px] hover:text-gray-900 cursor-pointer px-1.5 pl-3 pr-2 ${openIndex === subcategory._id ||subcategoryId === subcategory._id
                       ? "bg-[#F0F5FF] text-black border-[#2F6FED]"
                       : "bg-[#0707070D] text-black border-[#0707071A]"
                       }`}
