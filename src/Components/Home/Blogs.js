@@ -77,7 +77,8 @@ const Blog = ({ blogs }) => {
             >
               {blogs.map((blog, index) => (
                 <SwiperSlide key={index}>
-                  <div className="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden">
+                  <div className="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden cursor-pointer" 
+                   onClick={() => router.push(`/Blogs/${blog._id}`)}>
                     <img
                       src={blog.images}
                       alt={blog.title}
@@ -108,11 +109,12 @@ const Blog = ({ blogs }) => {
           </div>
         ) : (
           // Simple Flex Row for Less than 3 blogs
-          <div className="w-full flex gap-5 px-12">
+          <div className="flex gap-10 px-12">
             {blogs.map((blog, index) => (
               <div
                 key={index}
-                className="w-[300px] bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden"
+                className="w-[300px] bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden cursor-pointer"
+                onClick={() => router.push(`/Blogs/${blog._id}`)}
               >
                 <img
                   src={blog.images}
@@ -120,13 +122,6 @@ const Blog = ({ blogs }) => {
                   className="w-full h-40 2xl:h-[350px]"
                 />
                 <div className="p-4">
-        {/* Carousel Section */}
-        <div className='relative px-12'>
-          <div className={`grid grid-cols-1 ${itemsPerPage > 1 ? "md:grid-cols-3 lg:grid-cols-4" : ""} gap-6`}>
-            {currentBlogs?.map((blog, index) => (
-              <div key={index} className='bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden cursor-pointer' onClick={() => router.push(`/Blogs/${blog._id}`)}>
-                <img src={blog.images} alt={blog.title} className='w-full h-40 2xl:h-[350px]' />
-                <div className='p-4'>
                   <div className="h-[82px]">
                     <h3 className="h-[40px] text-[14px] font-medium text-gray-800 mb-2">
                       {blog.title}
