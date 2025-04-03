@@ -7,18 +7,14 @@ import Sidebar from "../Products/ProductList/Sidebar";
 import Products from "@/Components/Home/Products";
 import CategoryProducts from "@/Components/Home/CategoryProducts";
 
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 const ProductLists = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const router = useRouter();
-  /* const searchParams = useSearchParams();
-  const categoryId = searchParams.get("categoryId"); */
   const params = useParams();
   const categoryId = params.categoryId;
   const [categories, setCategories] = useState([]);
-  // const [categoryId,setCategoryId]=useState("")
-  const [subcategories, setSubcategories] = useState([]);
   const [products, setProducts] = useState([]);
 
   // Fetch all product variants

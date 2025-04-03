@@ -14,35 +14,35 @@ import Cookies from "js-cookie";
 
 const Rntout = "/Assets/Rntout_Logo.svg";
 
-const Otp = ({mobileNumber,setIsOtpOpen,setIsLoginOpen}) => {
+const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-    const [isregisterOpen, setIsRegisterOpen] = useState(false);
-    const [profile,setProfile]=useState(null);
-    const [otpError, setOtpError] = useState(false);
+  const [isregisterOpen, setIsRegisterOpen] = useState(false);
+  const [profile, setProfile] = useState(null);
+  const [otpError, setOtpError] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [timer,setTimer]=useState(60)
-//   const mobileNumber = searchParams.get("mobileNumber");
-const userName = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
-const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
-const fcmToken = typeof window !== 'undefined' ? localStorage.getItem("FCMToken") : null;
+  const [timer, setTimer] = useState(60)
+  //   const mobileNumber = searchParams.get("mobileNumber");
+  const userName = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
+  const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
+  const fcmToken = typeof window !== 'undefined' ? localStorage.getItem("FCMToken") : null;
 
-const profilepic = typeof window !== 'undefined'? localStorage.getItem("profilePic"):null;
+  const profilepic = typeof window !== 'undefined' ? localStorage.getItem("profilePic") : null;
 
 
 
-useEffect(() => {
-  if (timer > 0) {
-    const countdown = setTimeout(() => setTimer(timer - 1), 1000);
-    return () => clearTimeout(countdown);
-  } else {
-    setIsOtpOpen(true); 
-  }
-}, [timer]);
+  useEffect(() => {
+    if (timer > 0) {
+      const countdown = setTimeout(() => setTimer(timer - 1), 1000);
+      return () => clearTimeout(countdown);
+    } else {
+      setIsOtpOpen(true);
+    }
+  }, [timer]);
 
 
   const handleChange = (index, value) => {
@@ -72,59 +72,65 @@ useEffect(() => {
   };
 
   const handleOtpVerify = async () => {
-    const otpCode = otp.join(""); 
+    const otpCode = otp.join("");
     if (otpCode.length < 4) {
       setErrorMessage("Please enter a valid 4-digit OTP.");
-      setOtpError(true); 
+      setOtpError(true);
       return;
     }
 
-    if(timer === 0){
+    if (timer === 0) {
       return;
     }
-  
+
     setErrorMessage("");
     setIsLoading(true);
-    setOtpError(false); 
-  
+    setOtpError(false);
+
     try {
       const response = await axios.post(`${BASE_URL}/users/verify-otp`, {
         otp: String(otpCode),
         phoneNumber: mobileNumber,
       });
-  
+
+      console.log(response.data, "response of login")
+
       setIsLoading(false);
       let user = response.data.user;
       toast.success(response.data.message || "OTP verified successfully!");
-  
+
       localStorage.setItem("userToken", response.data.token);
       localStorage.setItem("userId", user.id);
       localStorage.setItem("role", user.role);
 
-      
+
       Cookies.set("userId", user.id, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("hasSubscription", user?.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" })
+      Cookies.set("SubscriptionId", user?.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" })
+      // { user?.hasActiveSubscription && Cookies.set("hasSubscription", user?.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" }) }
+      // { user?.currentSubscription && Cookies.set("SubscriptionId", user?.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" }) }
       Cookies.set("userName", user.name, { expires: 7, secure: true, sameSite: "Strict" });
       Cookies.set("userEmail", user.email, { expires: 7, secure: true, sameSite: "Strict" });
       Cookies.set("userToken", response.data.token, { expires: 7, secure: true, sameSite: "Strict" });
-      
-      
+
+
       if (!profilepic) {
         localStorage.setItem("profilePic", profile_avatar);
       } else {
         localStorage.setItem("profilePic", profilepic);
       }
-  
+
       if (fcmToken) {
         await saveFcmToken(fcmToken);
       }
-  
+
       if (!user.name || user.name === "undefined" || user.name === "null") {
         setIsRegisterOpen(true);
       } else {
-        if(!otpError){
-        setIsRegisterOpen(false);
-        router.push("/");
-        window.location.reload();
+        if (!otpError) {
+          setIsRegisterOpen(false);
+          router.push("/");
+          window.location.reload();
         }
       }
     } catch (error) {
@@ -133,13 +139,13 @@ useEffect(() => {
       setOtpError(true); // Apply red border
     }
   };
-  
+
 
 
   const saveFcmToken = async () => {
     try {
 
-     const response= await axios.post(
+      const response = await axios.post(
         `${BASE_URL}/users/save-fcm-token`,
         { fcmToken },
         {
@@ -189,52 +195,52 @@ useEffect(() => {
         <h2 className='subtitle'>Sign in to RntOut</h2>
       </div> */}
       <div className="otp-card">
-      <div className='login-first'>
-        <img src={Rntout} alt='RentOut Logo' className='login-logo' />
-        {/* <h2 className='subtitle'>Sign in to rntout</h2> */}
-      </div>
-      <div className="flex flex-col gap-[6px]">
-        <h2 className="otp-heading">OTP Verification</h2>
-        <p className="otp-subtext">
-          We've sent a One Time Password (OTP) to the mobile
-          <br />
-          number above. Please enter it to complete verification.
-        </p>
-        <p className="otp-number">
-       +91 {mobileNumber}<span className="otp-change" onClick={()=>setIsOtpOpen(false)}>  Change</span>
-        </p>
+        <div className='login-first'>
+          <img src={Rntout} alt='RentOut Logo' className='login-logo' />
+          {/* <h2 className='subtitle'>Sign in to rntout</h2> */}
+        </div>
+        <div className="flex flex-col gap-[6px]">
+          <h2 className="otp-heading">OTP Verification</h2>
+          <p className="otp-subtext">
+            We've sent a One Time Password (OTP) to the mobile
+            <br />
+            number above. Please enter it to complete verification.
+          </p>
+          <p className="otp-number">
+            +91 {mobileNumber}<span className="otp-change" onClick={() => setIsOtpOpen(false)}>  Change</span>
+          </p>
         </div>
         <div className="otp-inputs">
-      {otp.map((digit, index) => (
-        <input
-          key={index}
-          id={`otp-${index}`}
-          type="text"
-          maxLength="1"
-          value={digit}
-          onChange={(e) => handleChange(index, e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Backspace") handleBackspace(index, e.target.value);
-          }}
-          className={`otp-input ${otpError ? "otp-error" : ""}`} // Apply red border class on error
-        />
-      ))}
-    </div>
-
-    {errorMessage && <p className={`error-message ${errorMessage && "text-red"}`}>{errorMessage}</p>}
-
-    <button className="button" onClick={handleOtpVerify}   disabled={isLoading || otp.some((digit) => digit === "" || timer === 0)}>
-      {isLoading ? "Verifying..." : "Continue"}
-    </button>
-
-    {isregisterOpen && (
-      <div className="modal-overlay">
-        <div className="modal-content">
-          <button className="close-button" onClick={() => setIsRegisterOpen(false)}>✕</button>
-          <Signup setIsRegisterOpen={setIsRegisterOpen} />
+          {otp.map((digit, index) => (
+            <input
+              key={index}
+              id={`otp-${index}`}
+              type="text"
+              maxLength="1"
+              value={digit}
+              onChange={(e) => handleChange(index, e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Backspace") handleBackspace(index, e.target.value);
+              }}
+              className={`otp-input ${otpError ? "otp-error" : ""}`} // Apply red border class on error
+            />
+          ))}
         </div>
-      </div>
-    )}
+
+        {errorMessage && <p className={`error-message ${errorMessage && "text-red"}`}>{errorMessage}</p>}
+
+        <button className="button" onClick={handleOtpVerify} disabled={isLoading || otp.some((digit) => digit === "" || timer === 0)}>
+          {isLoading ? "Verifying..." : "Continue"}
+        </button>
+
+        {isregisterOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <button className="close-button" onClick={() => setIsRegisterOpen(false)}>✕</button>
+              <Signup setIsRegisterOpen={setIsRegisterOpen} />
+            </div>
+          </div>
+        )}
         <p className="otp-resend" onClick={handleSendOtp}>
           <span className="otp-resend-link">Resend OTP  <span className="otp-timer">{timer}s</span></span>
         </p>

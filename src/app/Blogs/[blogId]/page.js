@@ -2,12 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import axios from "axios";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import Link from "next/link";
 
 const blog = "/Assets/blog1.svg";
 const blogs ="/Assets/blogs-image.svg"
 const BlogPage = () => {
+    const router = useRouter();
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
     const params = useParams();
@@ -57,6 +60,11 @@ const BlogPage = () => {
   return (
     <div className=" min-h-screen p-6 flex justify-center w-full">
       <div className=" w-full bg-white shadow-lg p-6 rounded-lg flex flex-col md:flex-row gap-6">
+        <div  onClick={() => router.back()}>
+                <div className="mt-2 cursor-pointer">
+                  <IoMdArrowRoundBack />
+                </div>
+              </div>
         {/* Main Blog Section */}
         <div className="md:w-2/3">
           <h1 className="text-2xl font-bold">

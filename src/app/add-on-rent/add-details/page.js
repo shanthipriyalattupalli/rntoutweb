@@ -1,11 +1,8 @@
 // components/MainContent.js
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-// import ReactQuill from "react-quill";
 import axios from "axios";
 import { X } from "lucide-react";
-// import "@/styles/Adddetail.css";
-import Image from "next/image";
 import '../../../styles/Adddetail.css';
 import { useRouter } from "next/navigation";
 import { FaUpload, FaRegCalendarAlt } from "react-icons/fa";
@@ -13,13 +10,10 @@ import { FiPlus, FiTrash } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import { MAP_API } from '../../../services/GMap'
+import { MAP_API } from '../../../services/GMap';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
-import { IoIosInformationCircleOutline } from "react-icons/io";
-import { GrLocation } from "react-icons/gr";
-import LocationSearch from "@/Components/Location/LocationSearch";
 const upload = "/Assets/upload.png";
 const emptyproducts = "/Assets/emptyproducts.svg";
 
