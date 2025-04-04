@@ -67,7 +67,7 @@ const fetchProductRatings = async (productId) => {
 
 
 
-const ProductPage = async ({ params, searchParams }) => {
+const ProductPage = async ({ params }) => {
   const cookieStore = cookies();
   let token = cookieStore.get(`userToken`)?.value;
   console.log(token, "token");

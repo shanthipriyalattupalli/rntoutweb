@@ -117,37 +117,40 @@ function Sidebar() {
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6", 
       }).then((result) => {
-              if (result.isConfirmed) {
-                
-      localStorage.removeItem("userEmail");
-      localStorage.removeItem("userId");
-      localStorage.removeItem("userName");
-      localStorage.removeItem("userToken");
+        if (result.isConfirmed) {
+          
+          // Remove everything from localStorage
+          for (let i = localStorage.length - 1; i >= 0; i--) {
+            const key = localStorage.key(i);
+            localStorage.removeItem(key);
+          }
   
-      Cookies.remove("userEmail");
-      Cookies.remove("userId");
-      Cookies.remove("userName");
-      Cookies.remove("userToken");
-      // Cookies.remove("hasSubscription");
-      // Cookies.remove("SubscriptionId");
-    
+          // Remove all cookies
+          const cookies = document.cookie.split("; ");
+          cookies.forEach((cookie) => {
+            const cookieName = cookie.split("=")[0];
+            Cookies.remove(cookieName);
+          });
   
-      router.replace("/");
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
-
-              } else if (result.dismiss === Swal.DismissReason.cancel) {
-                console.log("User clicked Cancel");
-                // Handle cancel action if needed
-              }
-            });
-
+          // Replace current history entry to prevent going back to the previous page
+          router.push("/")
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+          
+  
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          console.log("User clicked Cancel");
+          // Handle cancel action if needed
+        }
+      });
+  
     } else {
       router.push(eachbar.route);
     }
   };
+  
+  
   
   
 

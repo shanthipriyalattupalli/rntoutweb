@@ -85,9 +85,9 @@ const Furniture = ({ products, categoryId }) => {
     <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
       <h1 className="text-lg sm:text-xl md:text-2xl xl:text-3xl font-bold text-gray-800 text-center sm:text-left">
       Furniture{" "}
-        <span className="text-white font-normal p-1 px-2 bg-teal-700 text-xs ml-2 rounded-lg">
+        {/* <span className="text-white font-normal p-1 px-2 bg-teal-700 text-xs ml-2 rounded-lg">
           {products.length} Products
-        </span>
+        </span> */}
       </h1>
       <a
         href={`/Product-list/${categoryId}`}

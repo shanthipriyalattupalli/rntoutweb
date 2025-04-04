@@ -267,7 +267,7 @@ export default function ProfileSettings() {
       <ToastContainer />
 
       <div className="item-header">
-        <Link href='/' className='flex flex-row gap-1'> Profile Settings</Link>
+        <div className='flex flex-row gap-1'> Profile Settings</div>
 
         <div className="flex items-center space-x-4">
           {/* <a href="/profile/kyc" className="text-green-600 font-medium text-sm cursor-pointer" >

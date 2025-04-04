@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 const mobileapp = "/Assets/mobileapp.svg";
 const playstore="/Assets/playstore.png"
-const appstore="/Assets/appstore.webp"
+const appstore="/Assets/appstore.jpg"
 
 const MobileApp = () => {
   return (
@@ -55,20 +55,13 @@ const MobileApp = () => {
           <p className="text-gray-600 mb-4">Choose your platform to download:</p>
           <div className="flex justify-evenly gap-4">
 
-              <img src={playstore} className="w-[200px] h-[200px]" />
+              <img src={playstore} className="w-[200px] h-[80px]" />
       
-              <img src={appstore} className="w-[200px] h-[80px] mt-14" />
+              <img src={appstore} className="w-[200px] h-[80px] "/>
 
 
           </div>
-          <button
-            className="mt-4 px-4 py-2 bg-gray-400 text-white rounded"
-            onClick={() => {
-              document.getElementById("downloadPopup").classList.add("hidden");
-            }}
-          >
-            Close
-          </button>
+
         </div>
       </div>
     </section>

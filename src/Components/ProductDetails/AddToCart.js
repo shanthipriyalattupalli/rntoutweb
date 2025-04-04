@@ -16,7 +16,7 @@ const token =Cookies.get("userToken");
 
 
 
-    const [selectedDuration, setSelectedDuration] = useState("monthly");
+    const [selectedDuration, setSelectedDuration] = useState("Daily");
     const handleselectedDuration = (period) => {
         setSelectedDuration(period)
         // setselectedcustomDuration(null)
