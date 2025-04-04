@@ -42,7 +42,7 @@ const fetchProductById = async (productId, token) => {
         },
       }
     );
-    console.log(response.data, "response")
+    console.log(response.data, "response in product")
     const data = response.data;
     return response.data;
 

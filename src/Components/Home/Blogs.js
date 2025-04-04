@@ -109,7 +109,7 @@ const Blog = ({ blogs }) => {
           </div>
         ) : (
           // Simple Flex Row for Less than 3 blogs
-          <div className="flex gap-10 px-12">
+          <div className="flex flex-col sm:flex-row gap-10 sm:px-12">
             {blogs.map((blog, index) => (
               <div
                 key={index}

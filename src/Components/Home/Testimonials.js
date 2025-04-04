@@ -96,7 +96,7 @@ const Testimonials = () => {
                return(
               <div
                 key={index}
-                className={`w-[413px] h-[458px] p-4 sm:p-6 md:p-8 rounded-[20px] shadow-md bg-white border border-slate-200${
+                className={`w-[340px] sm:w-[413px] md:[300px] h-[458px] p-4 sm:p-6 md:p-8 rounded-[20px] shadow-md bg-white border border-slate-200${
                   index === middleIndex ? "bg-white" : "bg-gray-100"
                 }`}
               >
