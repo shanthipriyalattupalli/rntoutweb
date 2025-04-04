@@ -34,20 +34,20 @@ export default function ManageAddresses() {
 
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
-
+  const fetchAddress = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setAddresses(response.data.profile.addresses);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to fetch addresses.");
+    }
+  };
 
   useEffect(() => {
-    const fetchAddress = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setAddresses(response.data.profile.addresses);
-      } catch (error) {
-        console.error(error);
-        toast.error("Failed to fetch addresses.");
-      }
-    };
+ 
 
     if (token) {
       fetchAddress();
@@ -76,6 +76,8 @@ export default function ManageAddresses() {
 
   const handleAddressToggle = () => {
     setIsAddressOpen(!isAddressOpen);
+    fetchAddress();
+
   };
 
   const handleDeleteAddress = async (addressId) => {
@@ -147,10 +149,10 @@ export default function ManageAddresses() {
     <>
       <h2 className='item-header'>Manage Addresses</h2>
       <ToastContainer />
-      <div className='manage-addresses-container'>
+      <div className='manage-addresses-container flex flex-col'>
         {addresses.length >0 ?
-        addresses?.map((address, index) => (
-          <div key={address.id} className='address-item'>
+        addresses?.map((address, index) => (  
+          <div key={address._id} className='address-item'>
             <div className='address-header'>
               <span className='delivers-to'>DELIVERS TO</span>
               <span className='address-type'>{address.type}</span>

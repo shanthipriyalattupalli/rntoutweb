@@ -121,6 +121,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
           Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
         },
       });
+      console.log(response)
 
       window.dispatchEvent(new CustomEvent("cartUpdated",));
 
@@ -180,7 +181,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
   return (
 
     <div>
-      {/* <ToastContainer /> */}
+      <ToastContainer />
       <style>{customStyles}</style>
 
       <div className="w-full max-w-[350px] xl:max-w-[330px] sm:max-w-[260px] 2xl:max-w-[330px] xl:h-[436px] bg-white  rounded-[12px] border border-slate-200"
@@ -227,7 +228,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                 >
                   {images.map((img, index) => (
                     <SwiperSlide key={index}>
-                      <Link href={{ pathname: `/Products/${title}`, query: { id: _id } }} key={_id}>
+                      <Link href={`/Products/${_id}`}>
                         <Image
                           src={img}
                           alt={`${title} - ${index + 1}`}
@@ -241,7 +242,8 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                 </Swiper>
               </>
             ) : (
-              <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
+              // <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
+              <Link href={`/products/${_id}`}>
                 <Image
                   src={images[0]}
                   alt={title}

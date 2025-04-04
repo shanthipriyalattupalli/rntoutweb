@@ -11,19 +11,19 @@ import { useRouter } from "next/navigation";
 
 const edit = "/Assets/editicon.svg";
 
-const AddressSidebar = ({ isOpen, onClose,setEditingAddressId,editingAddressId,setSelected,selected,setFormData,formData,initialFormData,setActiveModalIndex}) => {
+const AddressSidebar = ({ isOpen, onClose, setEditingAddressId, editingAddressId, setSelected, selected, setFormData, formData, initialFormData, setActiveModalIndex }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [addresses, setAddresses] = useState([]);
-    const [errorMessage, setErrorMessage] = useState("");
-    const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
-    const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
-    
-  const router=useRouter()
+  const [errorMessage, setErrorMessage] = useState("");
+  const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
+  const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
+
+  const router = useRouter()
 
 
 
-  const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
 
 
 
@@ -39,10 +39,10 @@ const AddressSidebar = ({ isOpen, onClose,setEditingAddressId,editingAddressId,s
     }
   };
   useEffect(() => {
-  if (token) {
-    fetchAddress();
-  }
-} ,[token])
+    if (token) {
+      fetchAddress();
+    }
+  }, [token])
 
 
 
@@ -99,15 +99,16 @@ const AddressSidebar = ({ isOpen, onClose,setEditingAddressId,editingAddressId,s
         text: "Address added successfully",
         confirmButtonColor: "#d33",
       });
-    
+
       // These actions happen immediately, before user clicks OK
       setFormData(initialFormData);
       setIsAddAddress(false);
       fetchAddress();
-    
+
       // This runs **only if the user clicks OK**
       if (result.isConfirmed) {
-        window.location.reload();
+        router.refresh();
+        onClose();
       }
     } catch (error) {
       const errorResponse = error.response.data.message;
@@ -259,155 +260,155 @@ const AddressSidebar = ({ isOpen, onClose,setEditingAddressId,editingAddressId,s
     <div className='sidebar-overlay' onClick={onClose}>
       <ToastContainer />
       <div className='sidebar' onClick={(e) => e.stopPropagation()}>
-            <div className='sidebar-header'>
-              <h2 onClick={() => setIsAddAddress(false)}>Add New Address</h2>
-              <button onClick={onClose} className='close-button'>
-                &times;
-              </button>
-            </div>
-            <div className='address-form'>
-              <label className="pb-2">Type<span className="text-red-500">*</span></label>
+        <div className='sidebar-header'>
+          <h2 onClick={() => setIsAddAddress(false)}>Add New Address</h2>
+          <button onClick={onClose} className='close-button' style={{position:"unset"}}>
+            &times;
+          </button>
+        </div>
+        <div className='address-form'>
+          <label className="pb-2">Type<span className="text-red-500">*</span></label>
 
-              <div className='form-select'>
-                {["Home", "Office", "Hotel", "Others"].map((item) => (
-                  <span
-                    key={item}
-                    className={`form-select-item ${selected === item ? "selected" : ""
-                      }`}
-                    onClick={() => handleSelect(item)}
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-              <label className="pt-4">Name <span className="text-red-500">*</span></label>
+          <div className='form-select'>
+            {["Home", "Office", "Hotel", "Others"].map((item) => (
+              <span
+                key={item}
+                className={`form-select-item ${selected === item ? "selected" : ""
+                  }`}
+                onClick={() => handleSelect(item)}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+          <label className="pt-4">Name <span className="text-red-500">*</span></label>
+          <input
+            type="text"
+            placeholder="Receiver’s name"
+            className="text-input required-input"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            required
+          />
+          <label className="pt-4">
+            Mobile <span className="text-red-500">*</span>
+          </label>
+
+          <input
+            type="number"
+            placeholder="Receiver’s contact number"
+            className={`text-input ${errorMessage ? "border-red-500" : ""}`}
+            name="mobile"
+            value={formData.mobile}
+            onChange={handleInputChange}
+            required
+          />
+
+          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          <label className="pt-4">Flat/ House no/ Floor / Building<span className="text-red-500">*</span></label>
+
+          <input
+            type="text"
+            placeholder="Flat/ House no/ Floor / Building"
+            className="text-input"
+            name="flatOrHouseNo"
+            value={formData.flatOrHouseNo}
+            onChange={handleInputChange}
+            required
+          />
+          <label className="pt-4">Area / Sector / Locality<span className="text-red-500">*</span></label>
+          <input
+            type='text'
+            placeholder='Area / Sector / Locality'
+            className='text-input'
+            name='street'
+            value={formData.street}
+            onChange={handleInputChange}
+            required
+          />
+          <label className="pt-4">Nearby Landmark<span className="text-red-500">*</span></label>
+          <input
+            type="text"
+            placeholder="Nearby Landmark"
+            className="text-input"
+            name="landmark"
+            value={formData.landmark}
+            onChange={handleInputChange}
+            required
+          />
+          <div className='flex gap-2'>
+            <div className="pt-4">
+              <label >Country<span className="text-red-500">*</span></label>
               <input
                 type="text"
-                placeholder="Receiver’s name"
-                className="text-input required-input"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-              />
-              <label className="pt-4">
-                Mobile <span className="text-red-500">*</span>
-              </label>
-
-              <input
-                type="number"
-                placeholder="Receiver’s contact number"
-                className={`text-input ${errorMessage ? "border-red-500" : ""}`}
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleInputChange}
-                required
-              />
-
-              {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
-              <label className="pt-4">Flat/ House no/ Floor / Building<span className="text-red-500">*</span></label>
-
-              <input
-                type="text"
-                placeholder="Flat/ House no/ Floor / Building"
+                placeholder="Country"
                 className="text-input"
-                name="flatOrHouseNo"
-                value={formData.flatOrHouseNo}
+                name="country"
+                value={formData.country}
                 onChange={handleInputChange}
                 required
+                readOnly
               />
-              <label className="pt-4">Area / Sector / Locality<span className="text-red-500">*</span></label>
+            </div>
+            <div className="pt-4">
+              <label>State<span className="text-red-500">*</span></label>
+              <select
+                className="text-input"
+                name="state"
+                value={formData.state}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="" disabled>Select State</option>
+                {Object.keys(citiesByState).map((state, index) => (
+                  <option key={index} value={state}>{state}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className='flex gap-2'>
+            <div className="pt-4">
+              <label>City<span className="text-red-500">*</span></label>
+              <select
+                className="text-input"
+                name="city"
+                value={formData.city}
+                onChange={handleInputChange}
+                required
+                disabled={!formData.state} // Disable until state is selected
+              >
+                <option value="" disabled>Select City</option>
+                {formData.state &&
+                  citiesByState[formData.state]?.map((city, index) => (
+                    <option key={index} value={city}>{city}</option>
+                  ))}
+              </select>
+            </div>
+            <div className="pt-4">
+              <label>PostCode<span className="text-red-500">*</span></label>
               <input
                 type='text'
-                placeholder='Area / Sector / Locality'
+                placeholder='Postcode'
                 className='text-input'
-                name='street'
-                value={formData.street}
+                name='zip'
+                value={formData.zip}
                 onChange={handleInputChange}
                 required
               />
-              <label className="pt-4">Nearby Landmark<span className="text-red-500">*</span></label>
-              <input
-                type="text"
-                placeholder="Nearby Landmark"
-                className="text-input"
-                name="landmark"
-                value={formData.landmark}
-                onChange={handleInputChange}
-                required
-              />
-              <div className='flex gap-2'>
-                <div className="pt-4">
-                  <label >Country<span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    placeholder="Country"
-                    className="text-input"
-                    name="country"
-                    value={formData.country}
-                    onChange={handleInputChange}
-                    required
-                    readOnly
-                  />
-                </div>
-                <div className="pt-4">
-        <label>State<span className="text-red-500">*</span></label>
-        <select
-          className="text-input"
-          name="state"
-          value={formData.state}
-          onChange={handleInputChange}
-          required
-        >
-          <option value="" disabled>Select State</option>
-          {Object.keys(citiesByState).map((state, index) => (
-            <option key={index} value={state}>{state}</option>
-          ))}
-        </select>
-      </div>
-              </div>
-              <div className='flex gap-2'>
-              <div className="pt-4">
-        <label>City<span className="text-red-500">*</span></label>
-        <select
-          className="text-input"
-          name="city"
-          value={formData.city}
-          onChange={handleInputChange}
-          required
-          disabled={!formData.state} // Disable until state is selected
-        >
-          <option value="" disabled>Select City</option>
-          {formData.state &&
-            citiesByState[formData.state]?.map((city, index) => (
-              <option key={index} value={city}>{city}</option>
-            ))}
-        </select>
-      </div>
-                <div className="pt-4">
-                  <label>PostCode<span className="text-red-500">*</span></label>
-                  <input
-                    type='text'
-                    placeholder='Postcode'
-                    className='text-input'
-                    name='zip'
-                    value={formData.zip}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-              </div>
-
-              {editingAddressId ? <button className='address-button' onClick={handleUpdateAddress}>
-                update Address
-              </button> :
-                <button className='address-button' onClick={handleSaveAddress}>
-                  Save Address
-                </button>
-              }
             </div>
           </div>
-          </div>
+
+          {editingAddressId ? <button className='address-button' onClick={handleUpdateAddress}>
+            update Address
+          </button> :
+            <button className='address-button' onClick={handleSaveAddress}>
+              Save Address
+            </button>
+          }
+        </div>
+      </div>
+    </div>
 
   );
 };

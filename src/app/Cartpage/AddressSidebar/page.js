@@ -300,10 +300,6 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       });
     }
   };
-
-
-
-
   const citiesByState = {
     "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Tirupati"],
     "Arunachal Pradesh": ["Itanagar", "Naharlagun", "Pasighat", "Tawang"],
@@ -340,17 +336,19 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
     "Delhi": ["New Delhi", "Old Delhi"],
     "Puducherry": ["Pondicherry", "Karaikal", "Mahe", "Yanam"],
   };
-
-
+  const handleBarClosure =() => {
+    setIsAddAddress(false)
+    onClose();
+  }
   return (
-    <div className='sidebar-overlay' onClick={onClose}>
+    <div className='sidebar-overlay' onClick={handleBarClosure}>
       <ToastContainer />
       <div className='sidebar' onClick={(e) => e.stopPropagation()}>
         {isAddAddress ? (
           <div>
             <div className='sidebar-header'>
-              <h2 onClick={() => setIsAddAddress(false)}>Add New Address</h2>
-              <button onClick={onClose} className='close-button'>
+              <h2>Add New Address</h2>
+              <button onClick={handleBarClosure} className='close-button' style={{position:"unset"}}>
                 &times;
               </button>
             </div>

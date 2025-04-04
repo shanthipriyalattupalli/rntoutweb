@@ -715,12 +715,12 @@ const MainContent = () => {
           </div>
         </div>
 
-        <div className='form-section file-upload' onClick={(e) => handleFileChange(e)}>
+        <div className='form-section file-upload '>
           <h2 className='ba-in'>
             Product Image{" "}
             <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </h2>
-          <div className='file-upload-box' tabIndex={0} >
+          <div className='file-upload-box cusror-pointer' tabIndex={0}  onClick={handleIconClick}>
             <input
               type='file'
               ref={fileInputRef}
