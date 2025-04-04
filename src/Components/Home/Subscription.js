@@ -124,8 +124,8 @@ const Subscription = ({ plans,setIsSubscription }) => {
 <div className='flex justify-between'>
   <span>Mar 18,2025</span>
   <div className="text-center ">
-          <span className="text-red-500 font-bold text-xl">₹{subscriptions.price} </span>
-          <span className="text-gray-500 font-sm text-md"> /{subscriptions.name}</span>
+          <span className="text-red-500 font-bold text-xl">₹{subscriptions?.price} </span>
+          <span className="text-gray-500 font-sm text-md"> /{subscriptions?.name}</span>
         </div>
 </div>
 </div>
