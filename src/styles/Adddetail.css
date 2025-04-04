@@ -223,6 +223,7 @@ label {
     border-radius: 12px;
     color: var(--textColor-default, #0B0B0B);
     position: relative;
+    cursor: pointer;
     margin-top: 10px;
 
 }

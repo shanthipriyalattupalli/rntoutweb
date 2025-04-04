@@ -715,12 +715,12 @@ const MainContent = () => {
           </div>
         </div>
 
-        <div className='form-section file-upload'>
+        <div className='form-section file-upload '>
           <h2 className='ba-in'>
             Product Image{" "}
             <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </h2>
-          <div className='file-upload-box' tabIndex={0} >
+          <div className='file-upload-box cusror-pointer' tabIndex={0}  onClick={handleIconClick}>
             <input
               type='file'
               ref={fileInputRef}
@@ -923,51 +923,52 @@ const MainContent = () => {
           Product Details{" "}
           {/* <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span> */}
         </h2>
-        {productDetails?.map((section, index) => (
-          <div className='product-details-card' key={index}>
-            Title
-            {section.details?.map((detail) => (
-              <div key={detail._id} className='detail-row'>
-                <input
-                  type='text'
-                  placeholder='Enter title'
-                  value={detail.key}
-                  onChange={(e) =>
-                    handleChange(section.id, detail.id, "key", e.target.value)
-                  }
-                />
-                <input
-                  type='text'
-                  placeholder='Enter description'
-                  value={detail.value}
-                  onChange={(e) =>
-                    handleChange(section.id, detail.id, "value", e.target.value)
-                  }
-                />
-                <button
-                  onClick={() => handleDeleteDetail(section.id, detail.id)}
-                  className='delete-btn'
-                >
-                  <FiTrash />
-                </button>
-              </div>
-            ))}
-            <div className='btn-add-del'>
-              <button
-                onClick={() => handleAddDetail(section.id)}
-                className='add-row-btn1'
-              >
-                <FiPlus /> Add Row
-              </button>
-              <button
-                onClick={() => handleDeleteSection(section.id)}
-                className='delete-card-btn1'
-              >
-                <FiTrash /> Delete Card
-              </button>
-            </div>
-          </div>
-        ))}
+        {productDetails?.map((section,index) => (
+  <div className='product-details-card' key={index}>
+    Title
+    {section.details?.map((detail,index) => (
+      <div key={index} className='detail-row'>
+        <input
+          type='text'
+          placeholder='Enter title'
+          value={detail.key}
+          onChange={(e) =>
+            handleChange(section.id, detail.id, "key", e.target.value)
+          }
+        />
+        <input
+          type='text'
+          placeholder='Enter description'
+          value={detail.value}
+          onChange={(e) =>
+            handleChange(section.id, detail.id, "value", e.target.value)
+          }
+        />
+        <button
+          onClick={() => handleDeleteDetail(section.id, detail.id)}
+          className='delete-btn'
+        >
+          <FiTrash />
+        </button>
+      </div>
+    ))}
+    <div className='btn-add-del'>
+      <button
+        onClick={() => handleAddDetail(section.id)}
+        className='add-row-btn1'
+      >
+        <FiPlus /> Add Row
+      </button>
+      <button
+        onClick={() => handleDeleteSection(section.id)}
+        className='delete-card-btn1'
+      >
+        <FiTrash /> Delete Card
+      </button>
+    </div>
+  </div>
+))}
+
 
         <button onClick={handleAddSection} className='add-section-btn'>
           <FiPlus /> Add New Product Description

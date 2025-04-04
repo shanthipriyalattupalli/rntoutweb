@@ -2,10 +2,11 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 
 const isBrowser = typeof window !== "undefined";
-const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+const token = Cookies.get("userToken") || null;
 const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
 

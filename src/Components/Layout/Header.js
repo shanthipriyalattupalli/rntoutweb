@@ -24,7 +24,7 @@ function Header() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isSubscription, setIsSubscription] = useState(false)
   const userId = Cookies.get("userId");
-  const token = Cookies.get("userToken");
+  const token = Cookies.get("userToken") || null;
   const names = Cookies.get("userName");
   const [profilePic, setProfilePic] = useState((typeof window !== 'undefined') ? localStorage.getItem("profilePic") : null || Photo);
   const [name, setName] = useState(names)
@@ -92,13 +92,13 @@ function Header() {
 
 
   const fetchProfile = async () => {
-
+    console.log(token,"token while fetching profile...")
     try {
       const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response.data, "profile fetch")
-      const profileData = response.data.profile;
+      console.log(response?.data, "profile fetch")
+      const profileData = response?.data?.profile;
 
       setProfilePic(profileData?.profilePic);
 
@@ -108,6 +108,7 @@ function Header() {
   };
 
   useEffect(() => {
+    console.log(token,"token available")
     if (token) {
       fetchProfile();
     }

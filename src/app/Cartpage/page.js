@@ -45,7 +45,7 @@ const CartPage = () => {
   const [selectedCartItems, setSelectedCartItems] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [disValue, setDisValue] = useState(0);
-  const [disAmount,setDisAmount]=useState(0)
+  const [disAmount, setDisAmount] = useState(0)
   const [razorpayOrderId, setRazorpayOrderId] = useState()
   const router = useRouter();
 
@@ -132,6 +132,7 @@ const CartPage = () => {
 
   const handleAddressToggle = () => {
     setIsAddressSidebarOpen(!isAddressSidebarOpen);
+    
   };
 
   const increaseQuantity = async (variantId) => {
@@ -184,7 +185,7 @@ const CartPage = () => {
   };
 
   const handleAddToCart = async (variantId, quantity, rentalPeriod) => {
-    console.log(variantId, quantity, rentalPeriod,"in handlecart")
+    console.log(variantId, quantity, rentalPeriod, "in handlecart")
     try {
       const payload = {
         user_id: userId,
@@ -273,7 +274,7 @@ const CartPage = () => {
 
       window.dispatchEvent(new CustomEvent("cartUpdated", { detail: cartItems.length }));
     }
-  }, [cartItems]); 
+  }, [cartItems]);
 
 
   useEffect(() => {
@@ -307,20 +308,22 @@ const CartPage = () => {
         setOrderId(orderId); // Save orderId for future use
         await handleContinueClick(orderId, finalAmount);
         router.push('/profile/orders')
+        window.dispatchEvent(new CustomEvent("cartUpdated", { detail: 0 }));
+
       }
 
     } catch (error) {
       // Extract and display error message safely
-      const errorMessage = error.response?.data?.error|| "Something went wrong. Please try again!";
+      const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";
       Swal.fire({
         icon: "warning",
         title: "Note",
         text: `${errorMessage}\n\nPlease Click "OK" for KYC Verification.`,
-        showCancelButton: true,  
-        confirmButtonText: "OK", 
-        cancelButtonText: "Cancel", 
+        showCancelButton: true,
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
         confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6", 
+        cancelButtonColor: "#3085d6",
       }).then((result) => {
         if (result.isConfirmed) {
           console.log("User clicked OK");
@@ -350,7 +353,7 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-console.log(response,"resonde of paymnet")
+      console.log(response, "resonde of paymnet")
       // Axios response data is already parsed
       if (response.data.order && response.data.order.id) {
         setDisplayRazorpay(true);
@@ -379,7 +382,7 @@ console.log(response,"resonde of paymnet")
       });
       return;
     }
-  
+
     if (!selectedAddress) {
       Swal.fire({
         icon: "warning",
@@ -390,10 +393,10 @@ console.log(response,"resonde of paymnet")
       });
       return;
     }
-  
+
     await handleOrderCheckout();
   };
-  
+
 
   const handlePayment = async (status, orderDetails) => {
     if (status === "succeeded") {
@@ -408,13 +411,13 @@ console.log(response,"resonde of paymnet")
 
 
 
-  const handleDiscountedPrice = (newDiscountedPrice, couponcode, discountValue,maxDiscountAmount) => {
-    setDiscountedPrice(newDiscountedPrice);
-    setCouponCode(couponcode);
-    setDisValue(discountValue);
-    setDisAmount(maxDiscountAmount)
+  // const handleDiscountedPrice = (newDiscountedPrice, couponcode, discountValue, maxDiscountAmount) => {
+  //   setDiscountedPrice(newDiscountedPrice);
+  //   setCouponCode(couponcode);
+  //   setDisValue(discountValue);
+  //   setDisAmount(maxDiscountAmount)
 
-  };
+  // };
 
   const handleAddress = (addressId) => {
     setAddressId(addressId);
@@ -436,7 +439,9 @@ console.log(response,"resonde of paymnet")
     annual: "Year",
   };
 
-console.log(cartItems,"cart items")
+  console.log(cartItems, "cart items")
+  console.log(totalPrice, "total price")
+
 
   return (
     <div className='cart-page'>
@@ -459,7 +464,7 @@ console.log(cartItems,"cart items")
 
               <Link
                 href={{
-                  pathname: `/Products/${item.variant_id._id }`,
+                  pathname: `/Products/${item.variant_id._id}`,
                   query: { id: item.variant_id._id },
                 }}
               >
@@ -559,8 +564,8 @@ console.log(cartItems,"cart items")
         <div className='summary-item address' onClick={handleAddressToggle}>
           <div className='address-content'>
             <div className="flex gap-2 items-center">
-            <img src={location} />
-            <span>Choose Address</span>
+              <img src={location} />
+              <span>Choose Address</span>
             </div>
             <MdOutlineKeyboardArrowRight />
           </div>
@@ -568,11 +573,11 @@ console.log(cartItems,"cart items")
             <>
 
               <div className='address-context'>
-              <input
-  type="checkbox" 
-  defaultChecked
-  className="w-5 h-5 accent-red-500"
-/>
+                <input
+                  type="checkbox"
+                  defaultChecked
+                  className="w-5 h-5 accent-red-500"
+                />
                 <h4>{selectedAddress.name}</h4>
                 <p>|</p>
                 <p>{selectedAddress.mobile}</p>
@@ -602,9 +607,16 @@ console.log(cartItems,"cart items")
                 <span className='amount'>₹{totalPrice}</span>
               </div>
             </div>
-            <button className='pay-btn' onClick={createPayment}>
-              Pay ₹{discountedPrice ? discountedPrice : totalPrice}
+            <button
+              className='pay-btn'
+              onClick={totalPrice > 0 ? createPayment : undefined}
+              disabled={totalPrice <= 0}
+              style={{ cursor: totalPrice <= 0 ? 'not-allowed' : 'pointer' }}
+            >
+              Pay ₹{totalPrice}
             </button>
+
+
             {displayRazorpay && (
               <RenderRazorpay
                 orderId={orderId}
@@ -618,13 +630,12 @@ console.log(cartItems,"cart items")
             )}
           </div>
         </div>
-        <div className="summary-item address" onClick={handleCouponToggle}>
+        {/* <div className="summary-item address" onClick={handleCouponToggle}>
           <div className="flex justify-between align-center text-center items-center">
             <div className="flex flex-row items-center gap-4">
               <img src={coupon} alt="Coupon Icon" />
               <span>{couponcode ? couponcode : "Promo Coupon"}</span>
 
-              {/* Show remove button only when a coupon is applied */}
               {couponcode && (
                 <button
                   className="remove-coupon-btn"
@@ -641,16 +652,16 @@ console.log(cartItems,"cart items")
             <MdOutlineKeyboardArrowRight />
 
           </div>
-        </div>
+        </div> */}
 
-        {isCoupon && (
+        {/* {isCoupon && (
           <PromoCoupon
             isOpen={isCoupon}
             onClose={handleCouponToggle} // Properly pass the toggle function
             totalPrice={totalPrice}
             onDiscountedPrice={handleDiscountedPrice}
           />
-        )}
+        )} */}
 
         <div className="mx-auto bg-white shadow-lg rounded-xl p-5 border mb-4">
           {/* Header with Dropdown Toggle */}

@@ -79,23 +79,17 @@ const buttonsData = [
   },
   {
     id: 12,
-    title: "About us",
-    icon: <IoMdInformationCircleOutline />,
-    route: "/aboutus",
-  },
-  {
-    id: 13,
     title: "Terms and conditions",
     icon: <GrNotes />,
     route: "/profile/terms-and-conditions",
   },
   {
-    id: 14,
+    id: 13,
     title: "Privacy Policy",
     icon: <BsShieldCheck />,
     route: "/profile/privacy-policy",
   },
-  { id: 15, title: "Log Out", icon: <MdOutlineLogout />, route: "/" },
+  { id: 14, title: "Log Out", icon: <MdOutlineLogout />, route: "/" },
 ];
 
 
@@ -134,8 +128,8 @@ function Sidebar() {
       Cookies.remove("userId");
       Cookies.remove("userName");
       Cookies.remove("userToken");
-      Cookies.remove("hasSubscription");
-      Cookies.remove("SubscriptionId");
+      // Cookies.remove("hasSubscription");
+      // Cookies.remove("SubscriptionId");
     
   
       router.replace("/");

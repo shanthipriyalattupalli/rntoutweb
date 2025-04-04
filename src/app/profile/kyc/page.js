@@ -69,6 +69,7 @@ const KYCVerification = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
+            console.log(response,"aadhaar response")
             console.log(response.data,"response of aadhar")
             setIsPreview(response.data.data.aadhaarPhoto);
             setIsKycSuccess(response.data.data.status);
@@ -84,7 +85,7 @@ const KYCVerification = () => {
     useEffect(() => {
         fetchAadharKyc();
     }, []);
-
+console.log(isKycSuccess,"kyc status")
     return (
         <>
             <h2 className='item-header'>
@@ -106,7 +107,7 @@ const KYCVerification = () => {
                         <h3 className="text-sm font-semibold text-gray-700 mb-2">
                             Aadhar Card
                         </h3>
-                        <span className="text-red font-semibold mb-2">{isKycSuccess === "VERIFIED" ? "":"Note: user can have only 3 changes to upload"}</span>
+                        <span className="text-red font-semibold mb-2">{isKycSuccess === "VERIFIED" ? "":"Note: user can have only 3 chances to upload"}</span>
                         <label className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center cursor-pointer relative">
                             {Preview ? (
                                 <>
