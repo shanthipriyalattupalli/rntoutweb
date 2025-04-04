@@ -101,24 +101,24 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
 
   const trackingSteps = ["Order Confirmed", "Order Packed", "Out for Delivery"];
 
-const getCurrentStep = (orderStatus) => {
-  if (orderStatus === "canceled") {
-    return 4; // Return steps 1 and 4 if canceled
-  }
+  const getCurrentStep = (orderStatus) => {
+    if (orderStatus === "canceled") {
+      return 4; // Return steps 1 and 4 if canceled
+    }
 
-  switch (orderStatus) {
-    case "placed":
-      return 0;
-    case "confirmed":
-      return 1;
-    case "shipped":
-      return 2;
-    case "delivered":
-      return 3;
-    default:
-      return 0;
-  }
-};
+    switch (orderStatus) {
+      case "placed":
+        return 0;
+      case "confirmed":
+        return 1;
+      case "shipped":
+        return 2;
+      case "delivered":
+        return 3;
+      default:
+        return 0;
+    }
+  };
 
 
   const router = useRouter();
@@ -162,7 +162,7 @@ const getCurrentStep = (orderStatus) => {
           </div>
           <div className='shipping_address_sec'>
             <span class='icon'>
-              <img src={shipping} alt='Icon' className="w-[59px] sm:w-[59px] md:w-auto"/>
+              <img src={shipping} alt='Icon' className="w-[59px] sm:w-[59px] md:w-auto" />
             </span>
 
             <div class='payment-details'>
@@ -180,34 +180,40 @@ const getCurrentStep = (orderStatus) => {
               </div>
             </div>
           </div>
-          <div class='rent-cost-breakup'>
-            <h3 class='section-title'>Rent Cost Breakup</h3>
-            <div class='grid-container'>
-              <div class='label'>Total Rent</div>
-              <div class='value'>₹ {orders.totalAmount}/-</div>
+          <div className="p-4 bg-white ">
+            <h3 className="text-lg font-semibold mb-4 border-b pb-2">Rent Cost Breakup</h3>
 
-              <div class='label'>Discounts</div>
-
-
-
+            <div className="flex flex-col text-sm">
+              <div className="flex justify-between items-center mb-2">
+              <div className="text-gray-600">Total Rent</div>
+              <div className="text-gray-800 font-medium">₹ {orders.totalAmount}/-</div>
+              </div>
+              {/* <div className="flex justify-between items-center mb-2">
+              <div className="text-gray-600">Discounts</div>
+              <div className="text-gray-800 font-medium">--</div> 
+              </div> */}
             </div>
-            <div class='label value grand-total'>Rent Grand Total</div>
-              <div class='value grand-total'>
+
+            <div className="flex justify-between  pt-3  font-semibold text-base">
+              <div className="text-gray-900">Rent Grand Total</div>
+              <div className="text-blue-600">
                 {/* ₹ {calculateGrandTotal().toFixed(2)} */}
                 ₹ {orders.totalAmount}/-
-              </div>  
+              </div>
+            </div>
           </div>
 
-          <div class='payment-info order_closer'>
+
+          {/* <div class='payment-info order_closer'>
             <span class='icon'>
-              {/* <MdDone /> */}
+             
               <PiClockClockwiseBold />
             </span>
             <div class='payment-details'>
               <h4>Order Closure</h4>
               <p>{95} Days Remaining</p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

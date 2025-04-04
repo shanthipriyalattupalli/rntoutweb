@@ -298,9 +298,7 @@ orderItems.length > 0 ? orderItems.map((orderItem,index) => (
                 {isCanceled && (
                   <div className="modal-overlays" onClick={() => setIsCanceled(false)}>
                     <div className="modal-contents" onClick={(e)=>e.stopPropagation()}>
-                      <button className="close-button" onClick={() => setIsCanceled(false)}>
-                        ✕
-                      </button>
+
                       <CancelOrder setIsCanceled={setIsCanceled} OrderId={selectedOrderId} order={order} />
                     </div>
                   </div>

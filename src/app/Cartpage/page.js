@@ -549,7 +549,7 @@ const CartPage = () => {
             <div className="flex flex-col justify-center items-center h-3/4">
               <img src={emptycart} className="w-auto h-auto" />
               <h1 className="text-lg font-semibold">Empty Cart</h1>
-              <span className="px-6 py-4">you haven’t place any item to cart , to place an item <a href="/" className="text-md font-semibold">"Browse Products" </a>button.</span>
+              <span className="px-6 py-4">you haven’t place any item to cart  <a href="/" className="text-md font-semibold text-blue-500">"Browse Products"</a></span>
             </div>
 
           </>
@@ -686,14 +686,14 @@ const CartPage = () => {
                 <span>Total Rent</span>
                 <span className="font-medium">{totalPrice}</span>
               </div>
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <span>Discount Price</span>
                 <span className="font-medium">-{disAmount}</span>
               </div>
               <div className="flex justify-between text-green-500">
                 <span>Discounts</span>
                 <span className="font-medium">{disValue}%</span>
-              </div>
+              </div> */}
 
               <div className="flex justify-between border-t pt-2">
                 <span>Total Costs</span>

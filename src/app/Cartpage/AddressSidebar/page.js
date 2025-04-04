@@ -92,12 +92,26 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     if (name === "name") {
       const regex = /^[A-Za-z\s]*$/;
-      if (!regex.test(value)) return; 
+      if (!regex.test(value)) return;
     }
 
-    if (name === "mobile" && value.length > 10) return;
+    if (name === "mobile") {
+      const onlyNumbers = value.replace(/\D/g, ""); // Allow only digits
+
+      if (onlyNumbers.length > 10) return;
+
+      // Validate: starts with 6-9
+      if (onlyNumbers.length > 0 && !/^[6-9]/.test(onlyNumbers)) return;
+
+      setFormData((prevState) => ({
+        ...prevState,
+        mobile: onlyNumbers,
+      }));
+      return;
+    }
 
     setFormData((prevState) => ({
       ...prevState,
@@ -105,6 +119,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
       ...(name === "state" ? { city: "" } : {}),
     }));
   };
+
 
   const handleSaveAddress = async () => {
 
@@ -336,7 +351,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
     "Delhi": ["New Delhi", "Old Delhi"],
     "Puducherry": ["Pondicherry", "Karaikal", "Mahe", "Yanam"],
   };
-  const handleBarClosure =() => {
+  const handleBarClosure = () => {
     setIsAddAddress(false)
     onClose();
   }
@@ -348,7 +363,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
           <div>
             <div className='sidebar-header'>
               <h2>Add New Address</h2>
-              <button onClick={handleBarClosure} className='close-button' style={{position:"unset"}}>
+              <button onClick={handleBarClosure} className='close-button' style={{ position: "unset" }}>
                 &times;
               </button>
             </div>
@@ -382,14 +397,19 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
               </label>
 
               <input
-                type="number"
+                type="tel"
                 placeholder="Receiver’s contact number"
-                className={`text-input ${errorMessage ? "border-red-500" : ""}`}
+                className={`text-input ${formData.mobile && formData.mobile.length < 10 ? "border-red-500" : ""
+                  }`}
                 name="mobile"
                 value={formData.mobile}
                 onChange={handleInputChange}
                 required
               />
+              {formData.mobile && formData.mobile.length > 0 && formData.mobile.length < 10 && (
+                <p className="text-red-500 text-sm mt-1">Enter a valid 10-digit number starting with 6-9</p>
+              )}
+
 
               {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
               <label className="pt-4">Flat/ House no/ Floor / Building<span className="text-red-500">*</span></label>
@@ -413,7 +433,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                 onChange={handleInputChange}
                 required
               />
-              <label className="pt-4">Nearby Landmark<span className="text-red-500">*</span></label>
+              <label className="pt-4">Nearby Landmark<span className="text-gray-500">(Optional)</span></label>
               <input
                 type="text"
                 placeholder="Nearby Landmark"
@@ -438,39 +458,39 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                   />
                 </div>
                 <div className="pt-4">
-        <label>State<span className="text-red-500">*</span></label>
-        <select
-          className="text-input"
-          name="state"
-          value={formData.state}
-          onChange={handleInputChange}
-          required
-        >
-          <option value="" disabled>Select State</option>
-          {Object.keys(citiesByState).map((state, index) => (
-            <option key={index} value={state}>{state}</option>
-          ))}
-        </select>
-      </div>
+                  <label>State<span className="text-red-500">*</span></label>
+                  <select
+                    className="text-input"
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="" disabled>Select State</option>
+                    {Object.keys(citiesByState).map((state, index) => (
+                      <option key={index} value={state}>{state}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <div className='flex gap-2'>
-              <div className="pt-4">
-        <label>City<span className="text-red-500">*</span></label>
-        <select
-          className="text-input"
-          name="city"
-          value={formData.city}
-          onChange={handleInputChange}
-          required
-          disabled={!formData.state} // Disable until state is selected
-        >
-          <option value="" disabled>Select City</option>
-          {formData.state &&
-            citiesByState[formData.state]?.map((city, index) => (
-              <option key={index} value={city}>{city}</option>
-            ))}
-        </select>
-      </div>
+                <div className="pt-4">
+                  <label>City<span className="text-red-500">*</span></label>
+                  <select
+                    className="text-input"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    required
+                    disabled={!formData.state} // Disable until state is selected
+                  >
+                    <option value="" disabled>Select City</option>
+                    {formData.state &&
+                      citiesByState[formData.state]?.map((city, index) => (
+                        <option key={index} value={city}>{city}</option>
+                      ))}
+                  </select>
+                </div>
                 <div className="pt-4">
                   <label>PostCode<span className="text-red-500">*</span></label>
                   <input
