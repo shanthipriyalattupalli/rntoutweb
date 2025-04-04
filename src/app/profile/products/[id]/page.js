@@ -192,7 +192,7 @@ export default function ProductInformation2() {
  {product?.isApproved === true &&           <a
               className='view-details-link'
               onClick={() => {
-                router.push(`/Products/${productId}?id=${productId}`);
+                router.push(`/Products/${productId}`);
               }}
             >
               View all product details

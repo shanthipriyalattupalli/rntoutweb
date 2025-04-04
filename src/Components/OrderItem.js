@@ -18,19 +18,22 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
 
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
-  const [expandedSubOrderId, setExpandedSubOrderId] = useState(null);
+  const [expandedSubOrderIds, setExpandedSubOrderIds] = useState([]);  // Changed to an array
   const [subOrderHistories, setSubOrderHistories] = useState({});
-  const [isCanceled, setIsCanceled] = useState(false);
 
   if (!orderData || !orderData.subOrders || orderData.subOrders.length === 0) {
     return <p>No orders found</p>;
   }
 
+
   const handleShowTracking = (item) => {
-    if (expandedSubOrderId === item._id) {
-      setExpandedSubOrderId(null);
+    // Check if the item ID is already in the expanded list
+    if (expandedSubOrderIds.includes(item._id)) {
+      // Remove the item ID from the expanded list (collapse the suborder)
+      setExpandedSubOrderIds(prev => prev.filter(id => id !== item._id));
     } else {
-      setExpandedSubOrderId(item._id);
+      // Add the item ID to the expanded list (expand the suborder)
+      setExpandedSubOrderIds(prev => [...prev, item._id]);
       onShowTracking(item);
     }
   };
@@ -59,24 +62,6 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
       console.error(`Error fetching suborder history for ${subOrderId}:`, error);
     }
   };
-
-
-  const handleUpdateReview = async (reviewId) => {
-    try {
-      const response = await axios.put(`${BASE_URL}/reviews/${reviewId}`, {
-
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      toast.success("Review updated successfully!");
-    } catch (error) {
-      console.error(`Error updating review for ${reviewId}:`, error);
-      toast.error("Failed to update review!");
-    }
-  }
-
   return (
     <div>
       <ToastContainer />
@@ -113,7 +98,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                   className="text-blue-500 font-semibold sm:px-4 px-0 rounded items-left text-left"
                   onClick={() => handleShowTracking(item)}
                 >
-                  {expandedSubOrderId === item._id ? (
+                  {expandedSubOrderIds === item._id ? (
                     <>Hide Tracking &#x25BE;</> // Down arrow
                   ) : (
                     <>Show Tracking &#x276F;</> // Side arrow
@@ -174,9 +159,14 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
         </a>
         </div>
 </div>
-          {expandedSubOrderId === item._id && (
-            <OrderTracking selectedSubOrder={selectedSubOrder} steps={steps} getCurrentStep={getCurrentStep} />
-          )}
+{expandedSubOrderIds.includes(item._id) && (
+  <OrderTracking 
+    selectedSubOrder={item}  // Assuming 'item' contains the relevant suborder data
+    steps={steps}
+    getCurrentStep={getCurrentStep}
+  />
+)}
+
         </div>
       ))}
     </div>

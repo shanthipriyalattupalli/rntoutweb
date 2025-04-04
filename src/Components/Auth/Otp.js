@@ -100,11 +100,11 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
       toast.success(response.data.message || "OTP verified successfully!");
 
       localStorage.setItem("userToken", response.data.token);
-      localStorage.setItem("userId", user.id);
+      localStorage.setItem("userId", user._id);
       localStorage.setItem("role", user.role);
 
 
-      Cookies.set("userId", user.id, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userId", user._id, { expires: 7, secure: true, sameSite: "Strict" });
       // Cookies.set("hasSubscription", user?.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" })
       // Cookies.set("SubscriptionId", user?.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" })
       // { user?.hasActiveSubscription && Cookies.set("hasSubscription", user?.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" }) }

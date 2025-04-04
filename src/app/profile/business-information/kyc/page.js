@@ -54,15 +54,12 @@ const KYCVerification = () => {
 
   return (
     <>
-      <h2 className="item-header">
-        <ToastContainer />
-        <div className="flex items-center gap-2 mr-auto text-left text-gray-700 hover:text-gray-900 cursor-pointer">
-          <a href="/profile">
-            <IoMdArrowRoundBack className="w-5 h-5 text-gray-600" />
-          </a>
-          <span className="text-lg font-bold">KYC Verification</span>
-        </div>
-      </h2>
+            <ToastContainer />
+
+      <div className="item-header">
+        <div className='flex flex-row gap-1'>Business KYC </div>
+
+      </div>
 
       <div className="max-w-md mx-auto p-6 text-center justify-center h-screen">
         <h2 className="text-xl font-semibold mb-4 text-gray-800">

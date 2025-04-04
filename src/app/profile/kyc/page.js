@@ -88,16 +88,11 @@ const KYCVerification = () => {
 console.log(isKycSuccess,"kyc status")
     return (
         <>
-            <h2 className='item-header'>
-                <ToastContainer />
-                <div
-                    className="flex items-center gap-2 mr-auto text-left text-gray-700 hover:text-gray-900 cursor-pointer"
-                    
-                >
-                   <a href="/profile"><IoMdArrowRoundBack className="w-5 h-5 text-gray-600"  /></a> 
-                    <span className="text-lg font-bold">KYC Verification</span>
-                </div>
-            </h2>
+                        <ToastContainer />
+
+            <div className='item-header'>
+            <div className='flex flex-row gap-1'>KYC Verification</div>
+            </div>
 
             <div className="bg-white rounded-lg p-6">
                 {/* Upload Sections */}

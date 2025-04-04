@@ -103,7 +103,7 @@ let products=categoryProducts[categoryId] || []
         <button
           className='bg-red-500 hover:bg-red-600 text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg sm:rounded-xl shadow-md focus:outline-none transition duration-300 ease-in-out'
         >
-          View all productsc
+          View all products
         </button>
       </Link>
     </div>

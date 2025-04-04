@@ -5,7 +5,7 @@ const stars = "/Assets/stars.svg";
 const userProfile = '/Assets/userProfile.svg'
 import { formatDistanceToNow } from 'date-fns';
 import { ArrowLeft } from 'lucide-react';
-const left="/Assets/Chevron-left.svg"
+const left = "/Assets/Chevron-left.svg"
 
 
 const Ratings = ({ userRatings }) => {
@@ -48,7 +48,7 @@ const Ratings = ({ userRatings }) => {
                 <table className="flex flex-col gap-2 w-[610px] border bg-[#FFFFFF] border-slate-200 text-sm rounded-[16px] p-4">
                   <tbody>
                     <tr>
-                      <div className="flex flex-col gap-2">
+                      <td colSpan={2} className="flex flex-col gap-2">
                         <div className="flex gap-3">
                           <p
                             className={`w-[49px] h-[20px] flex items-center px-2 rounded-full text-white`}
@@ -57,10 +57,9 @@ const Ratings = ({ userRatings }) => {
                                 rating.rating >= 4
                                   ? "rgba(8, 135, 93, 1)" // Green
                                   : rating.rating >= 2
-                                    ? "rgba(244, 128, 3, 1)" // Orange
-                                    : "rgba(224, 45, 60, 1)", // Red
+                                    ? "rgba(224, 45, 60, 1)" // Red
+                                    : "rgba(244, 128, 3, 1)", // Orange
                             }}
-
                           >
                             <img src={stars} alt="Rating stars" className="w-4 h-3" />
                             <span className="ml-1">{rating.rating}</span>
@@ -68,8 +67,9 @@ const Ratings = ({ userRatings }) => {
                           <p className="text-[14px] text-[rgba(7, 7, 7, 1)] font-[500] leading-[20px] ">{rating.comment}</p>
                         </div>
                         <p className="text-[14px] font-[400] leading-[20px] ">{rating.comment}</p>
-                      </div>
+                      </td>
                     </tr>
+
                   </tbody>
                 </table>
                 <div className="flex items-center gap-2 pb-2">
@@ -94,7 +94,7 @@ const Ratings = ({ userRatings }) => {
                 disabled={currentPage === 1}
                 className="px-3 py-2 border border-[rgba(7,7,7,0.15)] rounded-full bg-white hover:bg-white disabled:opacity-50"
               >
-                <img src={left} alt='leftarrow'/>
+                <img src={left} alt='leftarrow' />
               </button>
 
 
@@ -115,7 +115,7 @@ const Ratings = ({ userRatings }) => {
                 disabled={currentPage === totalPages}
                 className="px-3 py-2 border border-[rgba(7,7,7,0.15)] rounded-full bg-white hover:bg-white disabled:opacity-50"
               >
-                 <img src={left} alt='leftarrow' className='rotate-180'/>
+                <img src={left} alt='leftarrow' className='rotate-180' />
               </button>
             </div>
           </div>
