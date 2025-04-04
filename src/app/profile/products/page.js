@@ -72,7 +72,11 @@ export default function Dashboard({ products }) {
     try {
   const response=  await axios.delete(`${BASE_URL}/variants/${productId}`, {
         headers: { Authorization: `Bearer ${token}` },
+        params:{
+          id :productId
+        }
       });
+      console.log(response,"c")
       fetchUserProducts();
     } catch (error) {
       console.error("Error deleting product:", error);

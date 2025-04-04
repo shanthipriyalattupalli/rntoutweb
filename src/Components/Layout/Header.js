@@ -35,7 +35,9 @@ function Header() {
   const [cartItems, setCartItems] = useState(0);
   const [locationsList, setLocationsList] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-  const [subscriptionPlans, setSubscriptionPlans] = useState([])
+  const [subscriptionPlans, setSubscriptionPlans] = useState([]);
+    const [subscriptions,setSubscription]=useState({});
+    console.log(subscriptions,"subscriptions in profile")
   const [address, setAddress] = useState({ suburb: "" });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -99,6 +101,8 @@ function Header() {
       });
       console.log(response?.data, "profile fetch")
       const profileData = response?.data?.profile;
+
+      setSubscription(response?.data?.subscription)
 
       setProfilePic(profileData?.profilePic);
 
@@ -400,7 +404,7 @@ function Header() {
                   ✕
                 </button>
 
-                <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans} />
+                <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans} subscriptions={subscriptions} />
               </div>
             </div>
           )}
@@ -472,8 +476,8 @@ function Header() {
             </button>
           )}
           {isLoginOpen && (
-            <div className="modal-overlay">
-              <div className="modal-content">
+            <div className="modal-overlay"  onClick={() => setIsLoginOpen(false)}>
+              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-button" onClick={() => setIsLoginOpen(false)}>
                   ✕
                 </button>

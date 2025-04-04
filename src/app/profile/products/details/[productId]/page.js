@@ -287,6 +287,16 @@ const MainContent = () => {
   const [formData, setFormData] = useState(initialFormData);
 
 
+    const [errors, setErrors] = useState({
+      title: "",
+      description: "",
+      images: "",
+      productId: "",
+      rentalAvailability: "",
+      stockQuantity: "",
+      pickupAddress: "",
+    });
+
   const fetchProducts = async () => {
     console.log(productId, "productId")
     try {
@@ -445,6 +455,62 @@ const MainContent = () => {
   console.log(formData, "formdata")
 
   const handlePublishProduct = async () => {
+    setErrors({
+      title: "",
+      description: "",
+      images: "",
+      productId: "",
+      rentalAvailability: "",
+      stockQuantity: "",
+      pickupAddress: "",
+    });
+    let newErrors = {};
+    let missingFields = [];
+        // Validate Required Fields
+        if (!formData.title.trim()) {
+          newErrors.title = "This field is required";
+          missingFields.push("Title");
+        }
+        if (!formData.description.trim()) {
+          newErrors.description = "This field is required";
+          missingFields.push("Description");
+        }
+        if (!formData.images || formData.images.length === 0) {
+          newErrors.images = "This field is required";
+          missingFields.push("Images");
+        }
+        if (!formData.productId.trim()) {
+          newErrors.productId = "This field is required";
+          missingFields.push("Product ID");
+        }
+        if (!formData.rentalAvailability?.startDate || !formData.rentalAvailability?.endDate) {
+          newErrors.rentalAvailability = "Start date and end date are required";
+          missingFields.push("Rental Availability");
+        }
+        if (!formData.stockQuantity || isNaN(formData.stockQuantity)) {
+          newErrors.stockQuantity = "This field is required";
+          missingFields.push("Stock Quantity");
+        }
+        if (!formData.pickupAddress.trim()) {
+          newErrors.pickupAddress = "This field is required";
+          missingFields.push("Pickup Address");
+        }
+    
+        // Check if errors exist
+        if (Object.keys(newErrors).length > 0) {
+          setErrors(newErrors);
+    
+          if (missingFields.length === Object.keys(newErrors).length) {
+            // Show only one toast if everything is empty
+            toast.error("Please fill all required fields.", { autoClose: 3000 });
+          } else {
+            // Show specific missing field errors
+            missingFields.forEach((field) => {
+              toast.error(`${field} is required.`, { autoClose: 3000 });
+            });
+          }
+          return;
+        }
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('owner', userId);
@@ -534,8 +600,7 @@ const MainContent = () => {
           <div className='back-product22 flex gap-2 h-6'>
             <IoMdArrowRoundBack className="mt-1 ml-3" />
             <p>
-              DROGO Throne Ergonomic Gaming Chair with Foot Rest, Armrest &
-              Adjustable Seat (Blue)
+          {formData.title}
             </p>
             {/* <h1>Save Details</h1> */}
           </div>
@@ -556,6 +621,8 @@ const MainContent = () => {
               onChange={handleInputChange}
               placeholder='Enter name'
             />
+            {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
+
           </div>
 
           <div className='form-section2'>
@@ -588,6 +655,8 @@ const MainContent = () => {
               onChange={handleInputChange}
               placeholder='Enter number'
             />
+            {errors.stockQuantity && <p className="text-red-500 text-sm">{errors.stockQuantity}</p>}
+
           </div>
         </div>
 
@@ -614,6 +683,8 @@ const MainContent = () => {
             <p className='file-note'>Image format will be a JPEG, PNG, JPG</p>
           </div>
           <p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 4 images. 📸</p>
+          {errors.images && <p className="text-red-500 text-sm">{errors.images}</p>}
+
           {/* Render Preview Images */}
           <div className='image-preview-container'>
             {previewImages.map((src, index) => (
@@ -639,39 +710,65 @@ const MainContent = () => {
             Product Availability{" "}
             <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </label>
-          <div className='date-picker-container'>
-            <div className="w-full">
-              <label>Product Availability  <span className="text-gray-400">(Start)</span></label>
-              <div className='date-picker-input'>
+          <div className="date-picker-container flex flex-col md:flex-row justify-between gap-4">
+            {/* Start Date */}
+            <div className="w-full md:w-1/2 flex flex-col">
+              <label className="text-gray-700 font-medium">
+                Product Availability <span className="text-gray-400">(Start)</span>
+              </label>
+              <div className="relative flex items-center justify-between border border-gray-300 rounded-lg px-3 py-3 focus-within:border-blue-500">
                 <DatePicker
                   selected={formData.rentalAvailability.startDate}
                   name="startDate"
-                  value={formattedStartDate}  // Display formatted date
-                  onChange={handleDateChange}
+                  value={formattedStartDate} 
+                  onChange={(date) => handleDateChange(date)}
                   placeholderText="Select start date"
-                  className="date-picker-wrapper"
+                  className="w-full outline-none bg-transparent"
                   dateFormat="MMMM d, yyyy"
+                  minDate={new Date()}
                 />
-                <FaRegCalendarAlt className='calendar-icon' />
+                <FaRegCalendarAlt
+                  className="text-gray-500 cursor-pointer"
+                  onClick={(e) => {
+                    const container = e.currentTarget.parentElement;
+                    const input = container.querySelector("input");
+                    if (input) input.click();
+                  }}
+                />
               </div>
             </div>
-            <div className="w-full">
-              <label>Product Availability <span className="text-gray-400">(end)</span></label>
-              <div className='date-picker-input'>
+
+            {/* End Date */}
+            <div className="w-full md:w-1/2 flex flex-col">
+              <label className="text-gray-700 font-medium">
+                Product Availability <span className="text-gray-400">(End)</span>
+              </label>
+              <div className="relative flex items-center justify-between border border-gray-300 rounded-lg px-3 py-3 focus-within:border-blue-500">
                 <DatePicker
                   selected={formData.rentalAvailability.endDate}
                   name="endDate"
-                  value={formattedEndDate}  // Display formatted date
-                  onChange={handleEndDateChange}
-                  placeholderText="Select End date"
-                  className="date-picker-wrapper"
+                  value={formattedEndDate}
+                  onChange={(date) => handleEndDateChange(date)}
+                  placeholderText="Select end date"
+                  className="w-full outline-none bg-transparent"
                   dateFormat="MMMM d, yyyy"
+                  minDate={new Date()}
                 />
-
-                <FaRegCalendarAlt className='calendar-icon' />
+                <FaRegCalendarAlt
+                  className="text-gray-500 cursor-pointer"
+                  onClick={(e) => {
+                    const container = e.currentTarget.parentElement;
+                    const input = container.querySelector("input");
+                    if (input) input.click();
+                  }}
+                />
               </div>
             </div>
           </div>
+
+
+
+          <span> {errors.rentalAvailability && <p className="text-red-500 text-sm mt-10">{errors.rentalAvailability}</p>}</span>
         </div>
         <div className="mt-12">
           <label>Location</label>
@@ -714,7 +811,8 @@ const MainContent = () => {
         </div>
         <p>
           <strong>Address:</strong> {formData.pickupAddress}
-          {/* {errors.address && <p style={{ color: "red" }}>{errors.address}</p>} */}
+          {errors.pickupAddress && <p className="text-red-500 text-sm">{errors.pickupAddress}</p>}
+
 
         </p>
         <div className="pt-6 flex flex-col">
@@ -723,6 +821,8 @@ const MainContent = () => {
             name='description'
             value={formData.description}
             onChange={handleInputChange} />
+          {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+
         </div>
 
         <div className='form-section4'>

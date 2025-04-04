@@ -31,15 +31,15 @@ import ScrollToTop from "@/app/ScrollToTop";
 
 
 
-const fetchProductById = async (productId, token) => {
+const fetchProductById = async (productId, token,userId) => {
 
   try {
     const response = await axios.get(
       `${BASE_URL}/variants/${productId}?includeRelated=false`,
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        params:{
+          userId:userId
+        }
       }
     );
     console.log(response.data, "response in product")
@@ -70,10 +70,11 @@ const fetchProductRatings = async (productId) => {
 const ProductPage = async ({ params }) => {
   const cookieStore = cookies();
   let token = cookieStore.get(`userToken`)?.value;
+  let userId=cookieStore.get(`userId`)?.value;
   console.log(token, "token");
   const { productId } = await params;
   console.log(productId, "productId")
-  const variant = await fetchProductById(productId, token)
+  const variant = await fetchProductById(productId, token,userId)
   const userRatings = await fetchProductRatings(productId)
   console.log(variant, "variants")
   const product = variant.variant;
@@ -125,7 +126,7 @@ const ProductPage = async ({ params }) => {
           {/* Product Images */}
           {/* <ServerSideImageTabs images={product?.images} searchParams={searchParams} /> */}
 
-          <Images product={product} productId={productId} />
+          <Images product={product} productId={productId} variant={variant}/>
 
 
           {/* Product Details */}

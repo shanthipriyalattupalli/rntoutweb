@@ -68,7 +68,7 @@ const ProductItem = ({ product }) => {
     _id,
   } = product;
   // const productId = _id;
-  const [productID,setProductId] = useState(_id)
+  const [productID, setProductId] = useState(_id)
 
 
   const formattedDate = new Date(
@@ -237,21 +237,21 @@ const ProductItem = ({ product }) => {
                   modules={[Navigation]}
                   autoplay={{ delay: 3000 }}
                 >
-                  {images.map((img, index) => 
-                  {
-                    return(
-                    <SwiperSlide key={index}>
-                      <Link href={`/Products/${_id}`}>
-                        <Image
-                          src={img}
-                          alt={`${title} - ${index + 1}`}
-                          className="w-full h-[220px] object-cover rounded-t-[12px]"
-                          width={308}
-                          height={220}
-                        />
-                      </Link>
-                    </SwiperSlide>
-                  )})}
+                  {images.map((img, index) => {
+                    return (
+                      <SwiperSlide key={index}>
+                        <Link href={`/Products/${_id}`}>
+                          <Image
+                            src={img}
+                            alt={`${title} - ${index + 1}`}
+                            className="w-full h-[220px] object-cover rounded-t-[12px]"
+                            width={308}
+                            height={220}
+                          />
+                        </Link>
+                      </SwiperSlide>
+                    )
+                  })}
                 </Swiper>
               </>
             ) : (
@@ -268,22 +268,22 @@ const ProductItem = ({ product }) => {
 
             {/* Rating and Fav Icon positioned on top */}
             <div className="absolute top-[14px] right-4 z-10 flex flex-col items-center space-x-2">
-            {averageRating && (
-  <p
-    className="w-[49px] h-[20px] flex items-center px-2 rounded-full text-white"
-    style={{
-      backgroundColor:
-        averageRating >= 4
-          ? "rgba(8, 135, 93, 1)" 
-          : averageRating >= 2
-          ? "rgba(244, 128, 3, 1)" 
-          : "rgba(224, 45, 60, 1)", 
-    }}
-  >
-    <img src={stars} alt="Rating stars" className="w-4 h-3" />
-    <span className="ml-1">{averageRating}</span>
-  </p>
-)}
+              {averageRating && (
+                <p
+                  className="w-[49px] h-[20px] flex items-center px-2 rounded-full text-white"
+                  style={{
+                    backgroundColor:
+                      averageRating >= 4
+                        ? "rgba(8, 135, 93, 1)"
+                        : averageRating >= 2
+                          ? "rgba(244, 128, 3, 1)"
+                          : "rgba(224, 45, 60, 1)",
+                  }}
+                >
+                  <img src={stars} alt="Rating stars" className="w-4 h-3" />
+                  <span className="ml-1">{averageRating}</span>
+                </p>
+              )}
 
 
               {/* <p
@@ -396,24 +396,24 @@ const ProductItem = ({ product }) => {
 
 
             <button
-  className={`${stockQuantity > 0
-    ? "cart-btn border border-[rgba(255,45,85,0.6)] hover:bg-[rgba(255,45,85,1)] text-[rgba(255,45,85,1)] hover:text-white font-bold px-4 py-1  rounded-[8px] mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-    : "cart-btn border border-[rgba(255,45,85,0.6)] text-white font-bold px-4 py-1 rounded-[8px] mt-4 text-center w-full  flex items-center justify-center space-x-2 group"
-    } ${isHovered && stockQuantity > 0 ? "bg-[rgba(255,45,85,1)] hover:text-white cart-hover-shadow" : ""}`}
-  onClick={() => stockQuantity > 0 && handleAddCart()}
-  disabled={stockQuantity <= 0}
->
-  <Image
-    src={isHovered && stockQuantity > 0 ? cartIconHov : cartIcon}
-    alt="Cart icon"
-    className="w-4 h-4"
-    width={500}
-    height={300}
-  />
-  <span className={`text-sm ${stockQuantity > 0 && isHovered ? "text-white" : stockQuantity > 0 ? "" : "text-gray-400"}`}>
-    Add to cart
-  </span>
-</button>
+              className={`${stockQuantity > 0
+                ? "cart-btn border border-[rgba(255,45,85,0.6)] hover:bg-[rgba(255,45,85,1)] text-[rgba(255,45,85,1)] hover:text-white font-bold px-4 py-1  rounded-[8px] mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+                : "cart-btn border border-[rgba(255,45,85,0.6)] text-white font-bold px-4 py-1 rounded-[8px] mt-4 text-center w-full  flex items-center justify-center space-x-2 group"
+                } ${isHovered && stockQuantity > 0 ? "bg-[rgba(255,45,85,1)] hover:text-white cart-hover-shadow" : ""}`}
+              onClick={() => stockQuantity > 0 && handleAddCart()}
+              disabled={stockQuantity <= 0}
+            >
+              <Image
+                src={isHovered && stockQuantity > 0 ? cartIconHov : cartIcon}
+                alt="Cart icon"
+                className="w-4 h-4"
+                width={500}
+                height={300}
+              />
+              <span className={`text-sm ${stockQuantity > 0 && isHovered ? "text-white" : stockQuantity > 0 ? "" : "text-gray-400"}`}>
+                Add to cart
+              </span>
+            </button>
 
 
 
@@ -425,23 +425,22 @@ const ProductItem = ({ product }) => {
           <div>
             <div className='w-full'>
               <div className='grid grid-cols-2 text-center'>
-                {rentalPrice?.map((detail,index) => (
-  <div
-  key={detail._id}
-  className={`p-1 cursor-pointer ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""} 
+                {rentalPrice?.map((detail, index) => (
+                  <div
+                    key={detail._id}
+                    className={`p-1 cursor-pointer flex flex-col gap-[4px] ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""} 
     border ${index < 2 ? "border-t-0" : "border-t"}`}
-  onClick={() => setSelectedRentalPeriod(detail.period)}
->
-    <span
-      className={`block font-[500] text-[14px] ${
-        selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"
-      }`}
-    >
-      {periodMapping[detail.period] || detail.period.charAt(0).toUpperCase() + detail.period?.slice(1)}
-    </span>
+                    onClick={() => setSelectedRentalPeriod(detail.period)}
+                  >
+                    <span
+                      className={`block font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"
+                        }`}
+                    >
+                      {periodMapping[detail.period] || detail.period.charAt(0).toUpperCase() + detail.period?.slice(1)}
+                    </span>
                     <span className={`block text-lg font-[500] text-[16px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-black"}`}>
                       ₹
-                      {detail.price ? detail.price.toLocaleString() : "Not Available"}
+                      {detail.price && detail.price.toLocaleString()}
                     </span>
                   </div>
                 ))}
@@ -450,9 +449,9 @@ const ProductItem = ({ product }) => {
               {/* Additional rows like "6 Months" */}
               <div className="mt-2">
                 <div className="text-blue-500 font-[500] text-center text-[16px]">
-                  {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}  
+                  {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}
                   <span className="text-center text-gray-600 text-[16px] font-[500]"> Available
-                </span>
+                  </span>
                 </div>
 
               </div>

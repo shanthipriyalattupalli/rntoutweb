@@ -16,18 +16,19 @@ const Benefits = [
   "🎧 24/7 VIP Customer Support "
 ]
 
-const Subscription = ({ plans,setIsSubscription }) => {
+const Subscription = ({ plans,setIsSubscription,subscriptions }) => {
+  console.log(subscriptions,"subscriptions")
   console.log(plans,"plans")
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const userId = Cookies.get("userId");
   const token = Cookies.get("userToken");
+  const userName = Cookies.get("userName");
   const isSubscription=Cookies.get("hasSubscription");
-  const subscriptionId=Cookies.get("SubscriptionId")
+  const subscriptionId=Cookies.get("SubscriptionId");
   const [orderId, setOrderId] = useState(null)
   const [displayRazorpay, setDisplayRazorpay] = useState(false);
   const [subscriptionPlanId, setSubscriptionPlanId] = useState(null);
   const [selectedPlanId, setSelectedPlanId] = useState(null);
-  const [subscriptions,setSubscription]=useState({})
   const apiKey = "rzp_test_a4GiGqcTxFZlKT";
 
   const handleSubscriptionCheckout = async (planId) => {
@@ -81,37 +82,11 @@ const Subscription = ({ plans,setIsSubscription }) => {
   };
 
 
-  const fetchSubscription=async()=>{
-    try {
-
-      const response=await axios.get(`${BASE_URL}/subscription-plans/plan/${subscriptionId}`,{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-    Cookies.set("hasSubscription", response?.data?.data?._id, { expires: 7, secure: true, sameSite: "Strict" });
-    Cookies.set("SubscriptionId", response?.data?.data?.isActive, { expires: 7, secure: true, sameSite: "Strict" });
-
-      console.log(response.data.data,"response in subscription")
-      setSubscription(response?.data?.data)
-      
-    } catch (error) {
-      console.log(error,"error in subscription")
-      
-    }
-  }
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetchSubscription();
-    };
-  
-    fetchData();
-  }, [subscriptionId]);
 
   return (
     <>
-{ isSubscription?       
- <div className="flex flex-col gap-[24px] p-6 sm:p-[20px]" key={subscriptions._id}>
+{ subscriptions !=null ?       
+ <div className="flex flex-col gap-[24px] p-6 sm:p-[20px]" key={subscriptions?.planId._id}>
 
 <div className="flex justify-center items-center mb-4">
   <div className="bg-orange-100 p-3 rounded-full">
@@ -124,8 +99,8 @@ const Subscription = ({ plans,setIsSubscription }) => {
 <div className='flex justify-between'>
   <span>Mar 18,2025</span>
   <div className="text-center ">
-          <span className="text-red-500 font-bold text-xl">₹{subscriptions?.price} </span>
-          <span className="text-gray-500 font-sm text-md"> /{subscriptions?.name}</span>
+          <span className="text-red-500 font-bold text-xl">₹{subscriptions?.planId?.price} </span>
+          <span className="text-gray-500 font-sm text-md"> /{subscriptions?.planId?.name}</span>
         </div>
 </div>
 </div>
@@ -133,7 +108,7 @@ const Subscription = ({ plans,setIsSubscription }) => {
 <div>
   <p className="text-gray-600 font-semibold">BENEFITS:</p>
   <ul className="mt-2 space-y-2">
-            {subscriptions?.benefits?.map((benefit, index) => (
+            {subscriptions?.planId?.benefits?.map((benefit, index) => (
                 <li key={index} className="flex items-center gap-2 text-gray-700">
                   <FaRegCheckCircle className="text-green-700" />
                   {benefit}
@@ -194,7 +169,7 @@ const Subscription = ({ plans,setIsSubscription }) => {
             currency={"INR"}
             keyId={apiKey}
             handlePayment={handlePayment}
-            name={(typeof window !== 'undefined') ? localStorage.getItem("userName") : null} />
+            name={userName} />
         )}
       </div>
     ))}
