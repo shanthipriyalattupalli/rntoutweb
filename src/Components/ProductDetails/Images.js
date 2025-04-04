@@ -7,9 +7,9 @@ import Swal from "sweetalert2";
 const favorite = "/Assets/favorite.svg";
 const favorited = "/Assets/heart_fill.svg";
 
-export const Images = ({ product, productId }) => {
+export const Images = ({ product, productId,variant}) => {
   const images = product.images;
-  const isFavorites=product.isFavorite
+  const isFavorites=variant.isFavorite
 
 
   const token = Cookies.get("userToken");
@@ -17,7 +17,7 @@ export const Images = ({ product, productId }) => {
 
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(isFavorites);
   const [selectedImage, setSelectedImage] = useState(0);
 
   const handleAddToFavorites = async () => {

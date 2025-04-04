@@ -95,6 +95,13 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
 
       console.log(response.data, "response of login")
 
+      if (response.data.message === "Invalid OTP") {
+        toast.error("Invalid OTP. Please try again.");
+        setIsLoading(false);
+        setOtpError(true);
+        return;
+      }
+
       setIsLoading(false);
       let user = response.data.user;
       toast.success(response.data.message || "OTP verified successfully!");
@@ -104,11 +111,17 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
       localStorage.setItem("role", user.role);
 
 
-      Cookies.set("userId", user.id, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userId", user._id, { expires: 7, secure: true, sameSite: "Strict" });
       // Cookies.set("hasSubscription", user?.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" })
       // Cookies.set("SubscriptionId", user?.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" })
-      // { user?.hasActiveSubscription && Cookies.set("hasSubscription", user?.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" }) }
-      // { user?.currentSubscription && Cookies.set("SubscriptionId", user?.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" }) }
+      if (user?.hasActiveSubscription) {
+        Cookies.set("hasSubscription", user.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" });
+      }
+      
+      if (user?.currentSubscription) {
+        Cookies.set("SubscriptionId", user.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" });
+      }
+      
       Cookies.set("userName", user.name, { expires: 7, secure: true, sameSite: "Strict" });
       Cookies.set("userEmail", user.email, { expires: 7, secure: true, sameSite: "Strict" });
       Cookies.set("userToken", response.data.token, { expires: 7, secure: true, sameSite: "Strict" });
@@ -241,9 +254,16 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
             </div>
           </div>
         )}
-        <p className="otp-resend" onClick={handleSendOtp}>
-          <span className="otp-resend-link">Resend OTP  <span className="otp-timer">{timer}s</span></span>
+        <p
+          className={`otp-resend ${timer > 0 ? "disabled" : ""}`}
+          onClick={timer === 0 ? handleSendOtp : null}
+          style={{ pointerEvents: timer > 0 ? "none" : "auto", opacity: timer > 0 ? 0.5 : 1 }}
+        >
+          <span className="otp-resend-link">
+            Resend OTP <span className="otp-timer">{timer}s</span>
+          </span>
         </p>
+
       </div>
     </div>
   );

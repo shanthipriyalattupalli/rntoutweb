@@ -17,6 +17,11 @@
     border: 2px solid red !important;
     animation: shake 0.3s ease-in-out;
   }
+  .otp-resend.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  
   
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
@@ -170,7 +175,7 @@
   
   .otp-input {
     width: 80px;
-    height: 50px;
+    height: 60px;
     font-size: 20px;
     text-align: center;
     border: 1px solid #ccc;
@@ -225,5 +230,8 @@
     }
     .otp-subtext{
       font-size: 12px;
+    }
+    .otp-input{
+      max-width: 50PX;
     }
   }
