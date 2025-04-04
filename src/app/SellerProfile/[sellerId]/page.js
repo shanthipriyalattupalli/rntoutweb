@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, Suspense, lazy } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import axios from "axios";
 // import "@/styles/SellerProfile.css";
 import SellerProfile from '../../../Components/Seller/SellerProducts'

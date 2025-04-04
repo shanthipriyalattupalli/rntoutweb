@@ -5,7 +5,6 @@ import axios from "axios";
 import Categories from "../../Products/ProductList/categories";
 import Sidebar from "../../Products/ProductList/Sidebar";
 import { useParams } from "next/navigation";
-import { useRouter, useSearchParams } from 'next/navigation';
 import CategoryProducts from '@/Components/Home/CategoryProducts';
 import Breadcrumb from "@/Components/Breadcrumb/Breadcrumb";
 import ScrollToTop from "@/app/ScrollToTop";
