@@ -2,15 +2,24 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSearchParams } from "next/navigation";
-// import "@/styles/Adddetail.css";
+
 import { useRouter } from "next/navigation";
 import '../styles/Adddetail.css';
 
 const MenuItems = () => {
   const router = useRouter()
-  const searchParams = useSearchParams();
-  const selectedCategoryLabel = searchParams.get('name');
+
+  const [selectedCategoryLabel, setSelectedCategoryLabel] = useState(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const categoryLabel = params.get("name");
+
+    if (categoryLabel) {
+      setSelectedCategoryLabel(categoryLabel);
+    }
+  }, []);
+
   console.log(selectedCategoryLabel, "label available");
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
@@ -55,7 +64,7 @@ const MenuItems = () => {
   return (
     <div className='sidebar-menu'>
       <div className='menu-header'>
-        <span className='category-title'>{selectedCategoryLabel}</span>
+        <span className='category-title'>{selectedCategoryLabel ? selectedCategoryLabel : "Category Name"}</span>
         <button className='change-button'onClick={() => router.back()}>Change</button>
       </div>
       <ul className='menu-list'>

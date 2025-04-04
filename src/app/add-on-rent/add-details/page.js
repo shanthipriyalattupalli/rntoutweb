@@ -720,7 +720,7 @@ const MainContent = () => {
             Product Image{" "}
             <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </h2>
-          <div className='file-upload-box cusror-pointer' tabIndex={0}  onClick={handleIconClick}>
+          <div className='a cusror-pointer' tabIndex={0}  onClick={handleIconClick}>
             <input
               type='file'
               ref={fileInputRef}
