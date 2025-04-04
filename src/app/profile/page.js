@@ -175,7 +175,7 @@ export default function ProfileSettings() {
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      toast.error("Please fix validation errors.");
+      toast.error("Please fill all required fields.");
       return true;
     }
 

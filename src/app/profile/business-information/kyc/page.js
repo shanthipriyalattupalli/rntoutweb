@@ -48,7 +48,7 @@ const KYCVerification = () => {
       console.error(error, "error in gst");
       setGstDetails(null);
       setErrorMessage("Something went wrong. Please try again.");
-      toast.error("Something went wrong!");
+      toast.error("Please Enter Proper GST Number!");
     }
   };
 
@@ -71,7 +71,7 @@ const KYCVerification = () => {
 
         <input
           type="text"
-          placeholder="Enter GST Number"
+          placeholder="22AAAAA0000A1Z5"
           name="gstin"
           value={formData.gstin}
           onChange={handleChange}
@@ -100,7 +100,7 @@ const KYCVerification = () => {
 
 
         {/* Error Message */}
-        {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
+        {/* {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>} */}
       </div>
     </>
   );

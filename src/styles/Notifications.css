@@ -1,10 +1,10 @@
 /* Container Styles */
 .notifications-container {
     /* width: 100%; */
-    height: 600x;
+    /* height: 600px; */
     padding: 20px;
     background-color: #f7faff;
-    max-height: 600px;
+    /* max-height: 600px; */
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -247,6 +247,57 @@
     }
 
     .options-icon {
+        font-size: 14px;
+    }
+}
+
+.no-notifications {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    /* Full viewport height */
+    text-align: center;
+    padding: 20px;
+    /* Adds spacing on smaller screens */
+}
+
+.no-notifications-icon {
+    font-size: 60px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.no-notifications-text {
+    font-size: 18px;
+    color: #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .no-notifications-icon {
+        font-size: 50px;
+        /* Reduce icon size on smaller screens */
+    }
+
+    .no-notifications-text {
+        font-size: 16px;
+        /* Adjust text size for readability */
+    }
+}
+
+@media (max-width: 480px) {
+    .no-notifications {
+        padding: 10px;
+        /* Less padding on very small screens */
+    }
+
+    .no-notifications-icon {
+        font-size: 40px;
+    }
+
+    .no-notifications-text {
         font-size: 14px;
     }
 }
