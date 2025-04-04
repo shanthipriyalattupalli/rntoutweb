@@ -96,23 +96,23 @@ const Newsletter = () => {
   </div>
 
   {/* Logo Section */}
-  <div className="flex justify-center pt-8">
-    {/* <img src={rentoutlogo} alt="RentOut Logo" className="w-40 h-auto" /> */}
+  <div className="flex justify-center p-8">
+    <img src={rentoutlogo} alt="RentOut Logo" className="w-40 h-auto" />
   </div>
 
   {/* Footer Links */}
-  <div className="border-t-2 border-zinc-400 mt-8 pt-4 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
+  <div className="border-t-2  border-[rgba(255, 255, 255, 0.1)] py-4 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
     <div>© 2025 All rights reserved</div>
     <div className="flex space-x-4 mt-4 md:mt-0">
-      <a href="#" className="hover:text-white">Terms</a>
-      <a href="#" className="hover:text-white">Privacy</a>
-      <a href="#" className="hover:text-white">Cookies</a>
+      <a href="/" className="hover:text-white">Terms</a>
+      <a href="/" className="hover:text-white">Privacy</a>
+      <a href="/" className="hover:text-white">Cookies</a>
     </div>
     <div className="flex space-x-4 mt-4 md:mt-0">
-      <a href="#"><img src={facebook} alt="Facebook icon" className="w-6 h-6"/></a>
-      <a href="#"><img src={twitter} alt="Twitter icon" className="w-6 h-6"/></a>
-      <a href="#"><img src={instagram} alt="Instagram icon" className="w-6 h-6"/></a>
-      <a href="#"><img src={youtube} alt="YouTube icon" className="w-6 h-6"/></a>
+      <a href="https://www.facebook.com/"><img src={facebook} alt="Facebook icon" className="w-6 h-6"/></a>
+      <a href="https://x.com/?lang=en-in"><img src={twitter} alt="Twitter icon" className="w-6 h-6"/></a>
+      <a href="https://www.instagram.com/"><img src={instagram} alt="Instagram icon" className="w-6 h-6"/></a>
+      <a href="https://www.youtube.com/"><img src={youtube} alt="YouTube icon" className="w-6 h-6"/></a>
     </div>
   </div>
 </div>

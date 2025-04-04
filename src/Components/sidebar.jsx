@@ -134,8 +134,8 @@ function Sidebar() {
       Cookies.remove("userId");
       Cookies.remove("userName");
       Cookies.remove("userToken");
-      Cookies.remove("hasSubscription");
-      Cookies.remove("SubscriptionId");
+      // Cookies.remove("hasSubscription");
+      // Cookies.remove("SubscriptionId");
     
   
       router.replace("/");

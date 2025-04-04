@@ -172,7 +172,7 @@ const ProductList = () => {
    setDistance(distance)
    // Use the value as needed
  }
-const handleRating=(rating)=>{ded
+const handleRating=(rating)=>{
    setRating(rating)
  
 }

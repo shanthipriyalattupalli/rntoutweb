@@ -14,8 +14,9 @@ const downArrow = "/Assets/down_line.png";
 import Cookies from "js-cookie";
 
 const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPriceChange, distance, rating }) => {
+  const defaultdistance=Cookies.get("selectedDistance")
   const [activeIndex, setActiveIndex] = useState(null);
-  const [priceRange, setPriceRange] = useState(25); // Current slider value
+  const [priceRange, setPriceRange] = useState(defaultdistance); // Current slider value
   const [ratings, setRating] = useState(5)
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(2000);
@@ -125,16 +126,19 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
 
   const handleChange = (e) => {
     const { value, name } = e.target;
+    const numValue = Number(value); // Convert value to a number
+  
     if (name === "min") {
-      const newMinPrice = Math.min(+value, maxPrice - 1);
+      const newMinPrice = Math.max(0, Math.min(numValue, maxPrice - 1));
       setMinPrice(newMinPrice);
       onPriceChange(newMinPrice, maxPrice); // Pass updated values to parent
     } else {
-      const newMaxPrice = Math.max(+value, minPrice + 1);
+      const newMaxPrice = Math.min(2000, Math.max(numValue, minPrice + 1));
       setMaxPrice(newMaxPrice);
       onPriceChange(minPrice, newMaxPrice); // Pass updated values to parent
     }
   };
+  
 
 
 
@@ -242,15 +246,12 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
                   </div>
                   {isPriceOpen && (
                     <div className="grid grid-cols-2 gap-2 cursor-pointer">
-
-
-
                       <div className="w-full flex flex-col">
                         <div className="relative w-[200px]">
                           {/* Range Track */}
-                          <div className="absolute bg-red-200 h-2 w-full rounded-lg"></div>
+                          <div className="absolute bg-red-200 h-2 w-full rounded-lg cursor-pointer"></div>
                           <div
-                            className="absolute bg-red-500 h-2 rounded-lg"
+                            className="absolute bg-red-500 h-2 rounded-lg cursor-pointer"
                             style={{
                               left: `${(minPrice / 2000) * 100}%`,
                               right: `${100 - (maxPrice / 2000) * 100}%`,
@@ -286,11 +287,11 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
                         <div className="price-values3">
                           <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
                             <span className="ml-2 text-gray-200 ">|</span>
-                            <span>₹0</span>
+                            <span>₹{minPrice}</span>
                           </div>
                           <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
                             <span className="ml-2 text-gray-200 ">|</span>
-                            <span>₹2000</span>
+                            <span>₹{maxPrice}</span>
                           </div>
                         </div>
 
