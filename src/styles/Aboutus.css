@@ -1,39 +1,69 @@
-.about-card1{
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.about-container {
     width: 100%;
-    padding: 30px 70px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+.about-header {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0056b3;
+    margin-left: 30px;
+    border-bottom: 2px solid #dbe4f1;
+    padding-bottom: 10px;
    
 }
-.about-card1-left{
-    padding: 20px;
-    border-top: 1px solid #dbe4f1;
-}
-.about-title {
-    border-radius: 20px 20px 0px 0px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #0056b3;
-    height: 44px;
-    padding: 4px 16px;
-    background: #F0F5FF;
-    border-bottom: 1px solid #0707071A;
+
+.about-section {
+    margin: 30px;
 }
 
-.about-card-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333333;
-
+.about-subtitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 12px;
 }
 
-.about-card-text {
-    color:#070707;
-    line-height: 1.6;
-    /* font-family: Poppins; */
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
-    text-align: left;
+.about-text {
+    font-size: 15px;
+    color: #444;
+    line-height: 1.8;
+}
 
+.about-list {
+    list-style: none;
+    padding-left: 0;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #444;
+}
+
+/* .about-list li::before {
+    content: '✔';
+    color: #28a745;
+    margin-right: 10px;
+} */
+
+@media (max-width: 768px) {
+    .about-container {
+        padding: 20px;
+    }
+
+    .about-header {
+        font-size: 24px;
+    }
+
+    .about-subtitle {
+        font-size: 18px;
+    }
+
+    .about-text,
+    .about-list {
+        font-size: 14px;
+    }
 }
