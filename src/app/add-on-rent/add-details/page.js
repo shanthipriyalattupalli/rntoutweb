@@ -228,8 +228,14 @@ const MainContent = () => {
   };
 
 
-  const handleIconClick = () => {
-    fileInputRef.current.click();
+  const handleIconClick = (e) => {
+    // const handleIconClick = (e) => {
+      e.stopPropagation(); // Stop bubbling up to parent
+      if (fileInputRef.current) {
+        fileInputRef.current.click();
+      }
+    // };
+    // fileInputRef.current.click();
   };
 
 
