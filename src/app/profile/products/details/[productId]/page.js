@@ -612,8 +612,7 @@ const MainContent = () => {
           <div className='form-section1'>
             <label>
               Product Name{" "}
-              <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-            </label>
+                          </label>
             <input
               type='text'
               name='title'
@@ -628,8 +627,7 @@ const MainContent = () => {
           <div className='form-section2'>
             <label>
               Product Quality{" "}
-              <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-            </label>
+                          </label>
             <select
               name='description'
               value={formData.description}
@@ -646,8 +644,7 @@ const MainContent = () => {
           <div className='form-section3'>
             <label>
               Available Stock{" "}
-              <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-            </label>
+                          </label>
             <input
               type='number'
               name='stockQuantity'
@@ -663,8 +660,7 @@ const MainContent = () => {
         <div className='form-section file-upload'>
           <h2 className='ba-in'>
             Product Image{" "}
-            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-          </h2>
+                      </h2>
           <div className='file-upload-box' tabIndex={0} >
             <input
               type='file'
@@ -708,8 +704,7 @@ const MainContent = () => {
         <div className="flex flex-col">
           <label className='ba-in'>
             Product Availability{" "}
-            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-          </label>
+                      </label>
           <div className="date-picker-container flex flex-col md:flex-row justify-between gap-4">
             {/* Start Date */}
             <div className="w-full md:w-1/2 flex flex-col">
@@ -828,8 +823,7 @@ const MainContent = () => {
         <div className='form-section4'>
           <h2 className='ba-in'>
             PRICING INFO{" "}
-            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-          </h2>
+                      </h2>
           <div className='pricing-section'>
             {[
               "perDay",
@@ -878,8 +872,7 @@ const MainContent = () => {
       <div className='details-section'>
         <h2 className='ba-in'>
           Product Details{" "}
-          <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-        </h2>
+                  </h2>
         {productDetails?.map((section) => (
           <div className='product-details-card'>
             Title

@@ -4,32 +4,47 @@ import Link from 'next/link';
 import axios from 'axios';
 
 const CartIcon = ({ userId }) => {
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [cartItems, setCartItems] = useState(0);
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
     setHasMounted(true);
   }, []);
-
+  const fetchCartDetails = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/cart/${userId}`);
+      console.log(response, "cart response from header");
+      console.log(response?.data?.cartItems?.length ,"cart lenght from response")
+      setCartItems(response?.data?.cartItems?.length || 0);
+    } catch (error) {
+      console.log(error);
+      setCartItems(0);
+    }
+  };
   useEffect(() => {
-    const fetchCartDetails = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/cart/${userId}`);
-        console.log(response, "cart response from header");
-        setCartItems(response?.data?.cartItems?.length || 0);
-      } catch (error) {
-        console.log(error);
-        setCartItems(0);
-      }
-    };
+  
 
     if (userId) {
       fetchCartDetails();
     }
   }, [userId]);
 
+   useEffect(() => {
+      fetchCartDetails(); // Initial fetch when component mounts
+  
+      const handleCartUpdate = () => {
+        fetchCartDetails(); // Fetch cart details when event is received
+      };
+  
+      window.addEventListener("cartUpdated", handleCartUpdate);
+  
+      return () => {
+        window.removeEventListener("cartUpdated", handleCartUpdate);
+      };
+    }, [userId]);
   if (!hasMounted) return null;
-
+console.log(cartItems,"cart length")
   return (
     <div className="relative cursor-pointer">
       {cartItems > 0 ? (

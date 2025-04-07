@@ -367,11 +367,16 @@ export default function BusinessInformation2() {
                 </div>
 
                 {/* Advertisement Banner */}
-                <div className="bg-white px-6">
+                <div className="mb-2 p-6 bg-white">
                   <h3 className="text-md justify-center pt-6 font-semibold text-yellow-600 ">ADVERTISEMENT BANNER</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
                     {formData.bannerImages.map((src, index) => (
-                      <img key={index} src={src.imageUrl} alt={`Ad ${index + 1}`} className="rounded-md shadow-md w-full h-40 object-cover" />
+                      <img
+  key={index}
+  src={src.imageUrl}
+  alt={`Ad ${index + 1}`}
+  className="rounded-md shadow-md w-full h-60 object-fill"
+/>
                     ))}
                   </div>
                 </div>

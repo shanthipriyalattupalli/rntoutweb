@@ -117,7 +117,7 @@ const handleClick=(itemId)=>{
   }
 }
 
-
+console.log(userProducts)
 
   return (
     <div className='prod-container-page'>
@@ -222,8 +222,7 @@ const handleClick=(itemId)=>{
               </div>
               <div className='item-details'>
                 <p>Available Stock: {item.stockQuantity}/{item.totalStock}</p>
-                <p>Earning: <span>{item.earning}</span></p>
-                <p>Rating & Reviews: {item.rating} ★ ({item.reviews} Reviews)</p>
+                {/* <p>Rating & Reviews: {item.rating} ★ ({item.reviews} Reviews)</p> */}
               </div>
             </div>
             <div className='item-actions'>
