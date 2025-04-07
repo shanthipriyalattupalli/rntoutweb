@@ -35,7 +35,7 @@ const fetchProductById = async (productId, token,userId) => {
 
   try {
     const response = await axios.get(
-      `${BASE_URL}/variants/${productId}?includeRelated=false`,
+      `${BASE_URL}/variants/${productId}?includeRelated=true`,
       {
         params:{
           userId:userId
