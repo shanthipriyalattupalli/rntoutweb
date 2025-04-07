@@ -26,38 +26,26 @@ const CategoryProducts = ({ products }) => {
   };
 
   return (
+    <>
     <div className="container mx-auto">
       <ToastContainer />
       {products?.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
-
           <Suspense fallback={<div>Loading...</div>}>
             {products.map((product) => (
               <ProductItems key={product._id} product={product} />
             ))}
           </Suspense>
-
-        </div>) : (
+        </div>
+          ) : (
         <div className="flex flex-col text-justify justify-center w-80 ml-80">
           <img src={noproducts} alt="No products available" className="w-full" />
           <span className="pl-14 pt-10 font-medium text-xl">No Rental Items found</span>
         </div>
       )}
-      {products?.length > 0 && (
-        <div className="container mx-auto py-16">
-          <div className="flex justify-center">
-            {/* <Link href="/Products">
-              <button
-                className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-full shadow-md focus:outline-none"
-                onClick={handleProducts}
-              >
-                View all products
-              </button>
-            </Link> */}
-          </div>
-        </div>
-      )}
-    </div>
+                  </div>
+</>
+
   );
 };
 

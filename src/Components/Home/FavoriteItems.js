@@ -87,6 +87,8 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
 
   const startdate = new Date(rentalAvailability?.startDate);
   const endDate = new Date(rentalAvailability?.endDate);
+  const isDateExpired = endDate && endDate < new Date();
+
 
   // Calculate the difference in months
   const monthsDifference =
@@ -369,25 +371,32 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                 {stockQuantity > 0 ? "In stock" : "Out of stock"}
               </span>
             </div>
-            <button
-  className={`${stockQuantity > 0
-    ? "cart-btn border border-[rgba(255,45,85,0.6)] hover:bg-[rgba(255,45,85,1)] text-[rgba(255,45,85,1)] hover:text-white font-bold px-4 py-1 rounded-[8px] mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-    : "cart-btn border border-[rgba(255,45,85,0.6)] text-white font-bold px-4 py-1 rounded-md mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-    } ${isHovered && stockQuantity > 0 ? "bg-[rgba(255,45,85,1)] hover:text-white cart-hover-shadow" : ""}`}
-  onClick={() => stockQuantity > 0 && handleAddCart()}
-  disabled={stockQuantity <= 0}
+
+<button
+  className={`${stockQuantity > 0 && !isDateExpired
+    ? "cart-btn border border-[rgba(255,45,85,0.6)] hover:bg-[rgba(255,45,85,1)] text-[rgba(255,45,85,1)] hover:text-white font-bold px-4 py-1  rounded-[8px] mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+    : "cart-btn border border-[rgba(255,45,85,0.6)] text-white font-bold px-4 py-1 rounded-[8px] mt-4 text-center w-full  flex items-center justify-center space-x-2 group"
+    } ${isHovered && stockQuantity > 0 && !isDateExpired ? "bg-[rgba(255,45,85,1)] hover:text-white cart-hover-shadow" : ""}`}
+  onClick={() => stockQuantity > 0 && !isDateExpired && handleAddCart()}
+  disabled={stockQuantity <= 0 || isDateExpired}
 >
-              <Image
-                src={isHovered && stockQuantity > 0 ? cartIconHov : cartIcon}
-                alt="Cart icon"
-                className="w-4 h-4"
-                width={500}
-                height={300}
-              />
-  <span className={`text-sm ${stockQuantity > 0 && isHovered ? "text-white" : stockQuantity > 0 ? "" : "text-gray-400"}`}>
+  <Image
+    src={isHovered && stockQuantity > 0 && !isDateExpired ? cartIconHov : cartIcon}
+    alt="Cart icon"
+    className="w-4 h-4"
+    width={500}
+    height={300}
+  />
+  <span className={`text-sm ${
+    stockQuantity > 0 && !isDateExpired
+      ? isHovered
+        ? "text-white"
+        : ""
+      : "text-gray-400"
+  }`}>
     Add to cart
   </span>
-            </button>
+</button>
             {/* ) */}
             {/* } */}
 
