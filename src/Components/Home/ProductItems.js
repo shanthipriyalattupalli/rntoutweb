@@ -113,6 +113,8 @@ const ProductItem = ({ product }) => {
     setIsview(true);
   };
 
+
+
   const handleAddToCart = async (productId) => {
 
     try {
@@ -121,9 +123,11 @@ const ProductItem = ({ product }) => {
         variant_id: productId,
         quantity: 1,
         rentalPeriod: selectedRentalPeriod,
+        startDate:  new Date()
       };
+      console.log(payload,"payload in card")
 
-      const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
+      const response = await axios.post(`${BASE_URL}/cart/new-add`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

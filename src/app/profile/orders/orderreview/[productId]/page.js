@@ -11,7 +11,7 @@ import '../../../../../styles/orderReview.css';
 import '../../../../../styles/Orderpage.css';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { RiCloseLine } from "react-icons/ri";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useParams } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -37,12 +37,21 @@ const OrderReview = () => {
   const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
   const token=(typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [imagePreview, setImagePreview] = useState([]);
-  const [review, setReview] = useState("");
-  const [rating, setRating] = useState(null);
+  const [formData, setFormData] = useState({
+    rating: 0,
+    title: "",
+    review: "",
+  });
+
+  console.log(formData,"formdata")
   const [orderData, setOrderData] = useState({});
   const router = useRouter();
   const params = useParams();
   const productId = params.productId;
+  const searchParams = useSearchParams();
+  console.log(searchParams,"params")
+  const reviewId = searchParams.get("reviewId")
+  console.log(reviewId)
 
 
   const fetchProductById = async () => {
@@ -74,10 +83,8 @@ const OrderReview = () => {
   const removeImage = (index) => {
     setImagePreview((prev) => prev.filter((_, i) => i !== index));
   };
-
-  const handleRatingClick = (value) => {
-    setRating(value);
-
+  const handleRating = (rate) => {
+    setFormData((prev) => ({ ...prev, rating: rate }));
   };
 
   const handleStepClick = (path) => {
@@ -85,27 +92,25 @@ const OrderReview = () => {
   };
 
   const getDynamicBackground = () => {
-    if (rating === null) {
+    if (formData.rating === null) {
       return "linear-gradient(to right, #f8f9fa, #f8f9fa)"; // Default gray gradient
     }
 
-    if (rating >= 1 && rating <= 2) {
+    if (formData.rating >= 1 && formData.rating <= 2) {
       return "linear-gradient(to right, #ff4d4d,rgb(64, 183, 48))"; // Red gradient for ratings 1-2
-    } else if (rating > 2 && rating <= 3.5) {
+    } else if (formData.rating > 2 && formData.rating <= 3.5) {
       return "linear-gradient(to right, #ff4d4d, #ffff66)"; // Orange to yellow gradient for 2-3.5
-    } else if (rating > 3.5 && rating <= 5) {
+    } else if (formData.rating > 3.5 && formData.rating <= 5) {
       return "linear-gradient(to right, #a8e063,rgb(13, 134, 17))"; // Green gradient for 3.6-5
     }
 
     return "linear-gradient(to right, #f8f9fa, #f8f9fa)"; // Default fallback
   };
 
-  const handleReviewChange = (event) => {
-    setReview(event.target.value);
-  };
 
+  const handleSubmit = async (variantId) => {
+    const { rating, title, review } = formData;
 
-  const handleSubmit = async (orderId) => {
     if (!rating || !review) {
       toast.error("Please provide both rating and review!");
       return;
@@ -113,44 +118,52 @@ const OrderReview = () => {
 
     try {
       const payload = {
-        variantId: orderData.variantId._id,
-        subOrderId:orderId,
-        rating: rating,
+        variantId: variantId,
+        userId,
+        rating,
         comment: review,
+        title: title,
       };
+
+      console.log(payload,"formData")
+
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`, // Add the token if required by the API
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       };
 
       const response = await axios.post(`${BASE_URL}/reviews`, payload, config);
+      console.log(response)
       if (response.status === 201 || response.status === 200) {
         toast.success("Review submitted successfully!");
-        // router.push("/profile/orders/orderReviewSubmited");
-
+        setFormData({ rating: 0, headline: "", review: "" });
       } else {
         toast.error("Something went wrong. Please try again.");
       }
     } catch (error) {
       console.error("Error submitting review:", error);
-toast.error(error?.response?.data?.message)
+      if (error.response && error.response.status === 401) {
+        toast.error("Unauthorized! Please log in again.");
+      } else {
+        toast.error("Error submitting review. Please try again.");
+      }
+    }
   };
-}
 
 
 
   return (
     <div className='order-detail'>
       <ToastContainer/>
-      <h2 className='item-header' onClick={() => router.back()}>
-        <div className='back-product'>
+      <h2 className='item-header' >
+        <div className='back-product' onClick={() => router.back()}>
           <IoMdArrowRoundBack style={{ marginRight: "12px" }} /> Writing Review
         </div>
         <div
           
-          onClick={() => handleSubmit(orderData._id)}
+          onClick={() => handleSubmit(orderData?.variantId?._id)}
         >
           Submit
         </div>
@@ -220,9 +233,9 @@ toast.error(error?.response?.data?.message)
                   return (
                     <span
                       key={value}
-                      className={`rating-btn ${rating === value ? "selected" : ""
+                      className={`rating-btn ${formData.rating === value ? "selected" : ""
                         }`}
-                      onClick={() => handleRatingClick(value)}
+                      onClick={() => handleRating(value)}
                     >
                       <a href='#'>{value}</a>
                     </span>
@@ -230,7 +243,7 @@ toast.error(error?.response?.data?.message)
                 })}
               </div>
               <span className='rating-status'>
-                {rating ? `You selected: ${rating}` : "Not Given Rating"}
+                {formData.rating ? `You selected: ${formData.rating}` : "Not Given Rating"}
               </span>
             </div>
           </div>
@@ -242,9 +255,12 @@ toast.error(error?.response?.data?.message)
               <div className='form-group'>
                 <label htmlFor='headline'>Headline</label>
                 <input
+                
                   type='text'
-                  id='headline'
+                  id='tilte'
                   placeholder="What's most important to know?"
+                  value={formData.title}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))} 
                 />
               </div>
               <div className="form-group">
@@ -253,8 +269,8 @@ toast.error(error?.response?.data?.message)
                   id="review"
                   rows="4"
                   placeholder="What did you like or dislike? What did you use this product for?"
-                  value={review}
-                  onChange={handleReviewChange} 
+                  value={formData.review}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, review: e.target.value }))}
                 ></textarea>
                 {/* <button onClick={handleSubmit}>Submit Review</button> */}
               </div>

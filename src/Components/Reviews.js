@@ -4,24 +4,37 @@ import axios from "axios";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSearchParams } from "next/navigation";
 
-const laptop = "/Assets/laptop-1.jpg";
 
 const OrderReview = ({ product }) => {
+  console.log("this page is visible")
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  const [rating, setRating] = useState(0);
-  const [hover, setHover] = useState(0);
-  const [headline, setHeadline] = useState("");
-  const [review, setReview] = useState("");
+  const searchParams = useSearchParams();
+  console.log("All query params:", searchParams.toString()); // 👉 "reviewId=abc123"
+  console.log(searchParams,"available params")
+  const reviewId = searchParams.get("reviewId");
+  
+  console.log("Review ID:", reviewId);
+  
 
-  const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
-  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const [formData, setFormData] = useState({
+    rating: 0,
+    headline: "",
+    review: "",
+  });
+  const [hover, setHover] = useState(0);
+
+  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+  const token = typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
 
   const handleRating = (rate) => {
-    setRating(rate);
+    setFormData((prev) => ({ ...prev, rating: rate }));
   };
 
   const handleSubmit = async () => {
+    const { rating, headline, review } = formData;
+
     if (!rating || !review) {
       toast.error("Please provide both rating and review!");
       return;
@@ -33,11 +46,12 @@ const OrderReview = ({ product }) => {
         userId,
         rating,
         comment: review,
+        title: headline,
       };
 
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`, // Add the token if required by the API
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       };
@@ -46,9 +60,7 @@ const OrderReview = ({ product }) => {
 
       if (response.status === 201 || response.status === 200) {
         toast.success("Review submitted successfully!");
-        setHeadline("");
-        setReview("");
-        setRating(0);
+        setFormData({ rating: 0, headline: "", review: "" });
       } else {
         toast.error("Something went wrong. Please try again.");
       }
@@ -61,8 +73,6 @@ const OrderReview = ({ product }) => {
       }
     }
   };
-
-
 
   return (
     <div className="flex flex-col px-10 pb-10">
@@ -87,7 +97,7 @@ const OrderReview = ({ product }) => {
                 onMouseLeave={() => setHover(0)}
                 onClick={() => handleRating(star)}
               >
-                {star <= (hover || rating) ? (
+                {star <= (hover || formData.rating) ? (
                   <AiFillStar className="text-yellow-500 text-2xl" />
                 ) : (
                   <AiOutlineStar className="text-gray-400 text-2xl" />
@@ -96,7 +106,7 @@ const OrderReview = ({ product }) => {
             ))}
           </div>
           <p className="text-sm text-gray-500 ml-auto">
-            {rating === 0 ? "Not Given Rating" : `You rated ${rating} stars`}
+            {formData.rating === 0 ? "Not Given Rating" : `You rated ${formData.rating} stars`}
           </p>
         </div>
       </div>
@@ -109,8 +119,8 @@ const OrderReview = ({ product }) => {
           type="text"
           placeholder="What's most important to know?"
           className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          value={headline}
-          onChange={(e) => setHeadline(e.target.value)}
+          value={formData.headline}
+          onChange={(e) => setFormData((prev) => ({ ...prev, headline: e.target.value }))}
         />
 
         <label className="block text-sm text-gray-600 mt-3 mb-1">Review</label>
@@ -118,8 +128,8 @@ const OrderReview = ({ product }) => {
           rows="3"
           placeholder="What did you like or dislike? What did you use this product for?"
           className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          value={review}
-          onChange={(e) => setReview(e.target.value)}
+          value={formData.review}
+          onChange={(e) => setFormData((prev) => ({ ...prev, review: e.target.value }))}
         />
       </div>
 
@@ -127,11 +137,7 @@ const OrderReview = ({ product }) => {
       <div className="flex justify-between mt-4">
         <button
           className="px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-100"
-          onClick={() => {
-            setHeadline("");
-            setReview("");
-            setRating(0);
-          }}
+          onClick={() => setFormData({ rating: 0, headline: "", review: "" })}
         >
           Cancel
         </button>

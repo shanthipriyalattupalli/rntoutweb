@@ -14,8 +14,8 @@ const CartIcon = ({ userId }) => {
   const fetchCartDetails = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
-      console.log(response, "cart response from header");
-      console.log(response?.data?.cartItems?.length ,"cart lenght from response")
+      // console.log(response, "cart response from header");
+      // console.log(response?.data?.cartItems?.length ,"cart lenght from response")
       setCartItems(response?.data?.cartItems?.length || 0);
     } catch (error) {
       console.log(error);
@@ -44,7 +44,7 @@ const CartIcon = ({ userId }) => {
       };
     }, [userId]);
   if (!hasMounted) return null;
-console.log(cartItems,"cart length")
+// console.log(cartItems,"cart length")
   return (
     <div className="relative cursor-pointer">
       {cartItems > 0 ? (

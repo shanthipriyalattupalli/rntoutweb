@@ -14,9 +14,13 @@ const userId =Cookies.get("userId");
 
 const token =Cookies.get("userToken");
 
+const isDateExpired = product.rentalAvailability?.endDate
+  ? new Date(product.rentalAvailability.endDate) < new Date()
+  : false;
 
 
-    const [selectedDuration, setSelectedDuration] = useState("Daily");
+const [selectedDuration, setSelectedDuration] = useState(product?.rentalPrice?.[0]?.period || "daily");
+
     const handleselectedDuration = (period) => {
         setSelectedDuration(period)
         // setselectedcustomDuration(null)
@@ -76,7 +80,10 @@ const token =Cookies.get("userToken");
                   <button
                     key={price._id}
                     className={`flex flex-col items-center justify-center px-3 py-2 sm:px-2 sm:py-2 rounded-lg border text-center w-full sm:w-auto 
-   ${selectedDuration === price.period ? "border-[#F48003] bg-[#FFF5EB]" : "border-gray-200"}`}
+                      ${selectedDuration.toLowerCase() === price.period.toLowerCase()
+                        ? "border-[#F48003] bg-[#FFF5EB]"
+                        : "border-gray-200"}
+                      `}
                     onClick={() => handleselectedDuration(price.period)}
                   >
                     <div className="text-[10px] sm:text-xs md:text-sm">
@@ -89,12 +96,17 @@ const token =Cookies.get("userToken");
             </div> 
             
             <div className='flex items-center space-x-4'>
-              <div className='flex items-center border border-red-500 text-white font-[600] rounded-lg bg-[#FF2D55]'>
-                <button className='p-2 w-64' onClick={() => handleAddCart()}>
-                  Add to cart
-                </button>
-              </div>
-            </div> 
+  <div className={`flex items-center border ${isDateExpired ? 'border border-[rgba(255,45,85,0.6)] cursor-not-allowed' : 'border-red-500 bg-[#FF2D55]'} text-white font-[600] rounded-lg`}>
+    <button
+      className={`p-2 w-64 ${isDateExpired ? 'text-[rgba(255,45,85,0.6)] cursor-not-allowed' : ''}`}
+      onClick={() => !isDateExpired && handleAddCart()}
+      disabled={isDateExpired}
+    >
+      {isDateExpired ? 'No availability' : 'Add to cart'}
+    </button>
+  </div>
+</div>
+
             </>
   )
 }

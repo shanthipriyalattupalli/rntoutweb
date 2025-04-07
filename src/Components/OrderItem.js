@@ -53,6 +53,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response.data,"response of suborder")
       const reviews = Array.isArray(response.data.reviews) ? response.data.reviews : [];
       setSubOrderHistories((prev) => ({
         ...prev,
@@ -128,7 +129,14 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                           )}
 
                         </div>
-                        <p>{review.comment}</p><span className="w-4 h-4"><Edit2Icon className="w-4 h-4" /></span>
+                      
+
+                        { review.title &&  <p>{review.title}</p>
+                
+              }
+               <p>{review.comment}</p>
+                        <a   href={`/profile/orders/orderreview/${item._id}?reviewId=${review._id}`}className="w-4 h-4"><Edit2Icon className="w-4 h-4" /></a>
+                    
                         {/* <p>{new Date(review.createdAt).toLocaleDateString()}</p> */}
                       </div>
                     ))
