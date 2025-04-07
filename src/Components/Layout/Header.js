@@ -10,6 +10,7 @@ import { MAP_API } from '../../services/GMap'
 import Login from "../Auth/Login";
 import Subscription from "../Home/Subscription";
 import CartIcon from "./CartIcon";
+import LocationSearch from "../Location/LocationSearch";
 const logo = "/Assets/Rntout_Logo.png";
 const Photo = "/Assets/Photo.png";
 const locations = '/Assets/location_fill.svg'
@@ -114,99 +115,99 @@ function Header() {
 
 
 
-  const checkLocationPermission = async () => {
-    if ("permissions" in navigator) {
-      try {
-        const permissionStatus = await navigator.permissions.query({ name: "geolocation" });
+  // const checkLocationPermission = async () => {
+  //   if ("permissions" in navigator) {
+  //     try {
+  //       const permissionStatus = await navigator.permissions.query({ name: "geolocation" });
 
-        if (permissionStatus.state === "denied" || permissionStatus.state === "prompt") {
-          // If location access is blocked or reset, remove stored values
-          Cookies.remove("latitude", { path: "/" });
-          Cookies.remove("longitude", { path: "/" });
-          localStorage.removeItem("latitude");
-          localStorage.removeItem("longitude");
-        }
-      } catch (error) {
-        console.error("Error checking location permission:", error);
-      }
-    }
-  };
+  //       if (permissionStatus.state === "denied" || permissionStatus.state === "prompt") {
+  //         // If location access is blocked or reset, remove stored values
+  //         Cookies.remove("latitude", { path: "/" });
+  //         Cookies.remove("longitude", { path: "/" });
+  //         localStorage.removeItem("latitude");
+  //         localStorage.removeItem("longitude");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking location permission:", error);
+  //     }
+  //   }
+  // };
 
-  const getLocationFromCoordinates = async (lat, lon) => {
-    try {
-      const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${MAP_API}`
-      );
+  // const getLocationFromCoordinates = async (lat, lon) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${MAP_API}`
+  //     );
 
-      const locationData = response.data.results;
-      if (locationData) {
-        const uniqueLocations = new Set();
-        let locations = [];
+  //     const locationData = response.data.results;
+  //     if (locationData) {
+  //       const uniqueLocations = new Set();
+  //       let locations = [];
 
-        locationData.forEach((result) => {
-          const matchingComponent = result.address_components.find((component) =>
-            component.types.includes("locality") && component.types.includes("political")
-          );
+  //       locationData.forEach((result) => {
+  //         const matchingComponent = result.address_components.find((component) =>
+  //           component.types.includes("locality") && component.types.includes("political")
+  //         );
 
-          if (matchingComponent && !uniqueLocations.has(matchingComponent.short_name)) {
-            uniqueLocations.add(matchingComponent.short_name);
-            locations.push(matchingComponent);
-          }
-        });
+  //         if (matchingComponent && !uniqueLocations.has(matchingComponent.short_name)) {
+  //           uniqueLocations.add(matchingComponent.short_name);
+  //           locations.push(matchingComponent);
+  //         }
+  //       });
 
-        setLocationsList(locations);
+  //       setLocationsList(locations);
 
-        if (locations.length > 0) {
-          const suburb = locations[0];
-          setAddress({ suburb: suburb.short_name });
-        } else {
-          setError("Suburb not found.");
-        }
-      } else {
-        setError("Location data not found.");
-      }
-      setLoading(false);
-    } catch (error) {
-      setError("Failed to fetch location data.");
-      setLoading(false);
-    }
-  };
+  //       if (locations.length > 0) {
+  //         const suburb = locations[0];
+  //         setAddress({ suburb: suburb.short_name });
+  //       } else {
+  //         setError("Suburb not found.");
+  //       }
+  //     } else {
+  //       setError("Location data not found.");
+  //     }
+  //     setLoading(false);
+  //   } catch (error) {
+  //     setError("Failed to fetch location data.");
+  //     setLoading(false);
+  //   }
+  // };
 
-  const fetchLocation = () => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          setLocation({ latitude, longitude });
+  // const fetchLocation = () => {
+  //   if ("geolocation" in navigator) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       async (position) => {
+  //         const { latitude, longitude } = position.coords;
+  //         setLocation({ latitude, longitude });
 
-          // Store only if access is granted
-          Cookies.set("latitude", latitude, { expires: 7, sameSite: "Strict" });
-          Cookies.set("longitude", longitude, { expires: 7, sameSite: "Strict", });
-          localStorage.setItem("latitude", latitude);
-          localStorage.setItem("longitude", longitude);
+  //         // Store only if access is granted
+  //         Cookies.set("latitude", latitude, { expires: 7, sameSite: "Strict" });
+  //         Cookies.set("longitude", longitude, { expires: 7, sameSite: "Strict", });
+  //         localStorage.setItem("latitude", latitude);
+  //         localStorage.setItem("longitude", longitude);
 
-          await getLocationFromCoordinates(latitude, longitude);
-        },
-        (err) => {
-          setError("Unable to retrieve your location.");
-          setLoading(false);
-        }
-      );
-    } else {
-      setError("Geolocation is not supported by this browser.");
-      setLoading(false);
-    }
-  };
+  //         await getLocationFromCoordinates(latitude, longitude);
+  //       },
+  //       (err) => {
+  //         setError("Unable to retrieve your location.");
+  //         setLoading(false);
+  //       }
+  //     );
+  //   } else {
+  //     setError("Geolocation is not supported by this browser.");
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchLocation();
+  // useEffect(() => {
+  //   fetchLocation();
 
-    const interval = setInterval(() => {
-      checkLocationPermission();
-    }, 10000);
+  //   const interval = setInterval(() => {
+  //     checkLocationPermission();
+  //   }, 10000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
 
 
 
@@ -312,15 +313,10 @@ function Header() {
         </div>
 
 
-
         {/* Right Section - Location, Distance, Profile, and Buttons */}
         <div className="flex items-center gap-4 md:gap-4 cursor-pointer">
-          {/* Location */}
-          {address?.suburb && <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 gap-2">
-            <Image src={locations} alt="location" width={18} height={18} />
-            <span className="text-sm font-medium text-blacky">{address.suburb}</span>
-          </div>}
-
+        <LocationSearch />
+{/*  */}
           {/* Distance Selection */}
           {address?.suburb && <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 cursor-pointer">
             <Image src={nearby} alt="location" width={18} height={18} />

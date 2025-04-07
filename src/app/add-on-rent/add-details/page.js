@@ -10,7 +10,7 @@ import { FiPlus, FiTrash } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import { MAP_API } from '../../../services/GMap';
+// import { MAP_API } from '../../../services/GMap';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
@@ -21,6 +21,8 @@ const emptyproducts = "/Assets/emptyproducts.svg";
 
 const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+  const MAP_API = process.env.NEXT_PUBLIC_MAP_API_KEY;
+  console.log(MAP_API);
   const router = useRouter();
   const [products, setProducts] = useState([]);
 
@@ -840,7 +842,7 @@ const MainContent = () => {
             <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
           </label>
           <div className="google-content">
-            <LoadScript googleMapsApiKey={MAP_API}>
+            {/* <LoadScript googleMapsApiKey={MAP_API}> */}
               <GoogleMap
                 mapContainerStyle={{
                   height: "300px",
@@ -860,7 +862,7 @@ const MainContent = () => {
                   />
                 )}
               </GoogleMap>
-            </LoadScript>
+            {/* </LoadScript> */}
           </div>
         </div>
         <p name='pickupAddress'
