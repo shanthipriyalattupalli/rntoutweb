@@ -32,7 +32,7 @@ const KycStatus=Cookies.get("kycstatus");
 
 const buttonsData = [
   { id: 1, title: "Profile", icon: <FaUser />, route: "/profile" },
-  { id: 2, title: "Profile Kyc", icon: <FaUserShield />, route: "/profile/kyc" },
+  { id: 2, title: "Personal Kyc", icon: <FaUserShield />, route: "/profile/kyc" },
   {
     id: 3,
     title: "Business Kyc",
