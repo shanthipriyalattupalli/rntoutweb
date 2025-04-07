@@ -460,7 +460,7 @@ function Header() {
               {profilePic ? <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" /> :
                 <img src={profile_avatar} alt="user" className="w-8 h-8 rounded-full object-cover" />}
               <p className="hidden sm:flex md:flex text-sm truncate w-auto">
-                {name === undefined || name === "undefined" ? "Hi!" : name}
+                {name === undefined || name === "undefined" ? "User" : name}
               </p>
 
 
