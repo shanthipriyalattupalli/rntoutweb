@@ -10,6 +10,7 @@ import { MAP_API } from '../../services/GMap'
 import Login from "../Auth/Login";
 import Subscription from "../Home/Subscription";
 import CartIcon from "./CartIcon";
+import Swal from "sweetalert2";
 const logo = "/Assets/Rntout_Logo.png";
 const Photo = "/Assets/Photo.png";
 const locations = '/Assets/location_fill.svg'
@@ -45,6 +46,8 @@ function Header() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+
+  const isKyc=Cookies.get("isKyc");
 
   useEffect(() => {
     const handleProfilePicUpdate = (event) => {
@@ -299,6 +302,28 @@ function Header() {
 
 
 
+  const handleAddOnRent = async () => {
+    if (isKyc === "true") {
+      router.push("/add-on-rent");
+    } else {
+      // Show confirmation alert before redirecting
+      const result = await Swal.fire({
+        title: "KYC Required",
+        text: "KYC should be verified before adding on rent. Do you want to verify now?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, Verify Now",
+        cancelButtonText: "Cancel",
+      });
+  
+      if (result.isConfirmed) {
+        router.push("/profile/kyc");
+      }
+    }
+  };
+  
 
   return (
     <>
@@ -434,7 +459,7 @@ function Header() {
               className="hidden sm:flex items-center gap-2 px-[16px] py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-[92px] border border-[rgba(7,7,7,0.1)] 
                 bg-gradient-to-r from-[#FEAC5E] via-[#C779D0] to-[#4BC0C8] 
                 shadow-[inset_0px_3px_3px_0px_rgba(255,255,255,0.35),inset_0px_-2px_4px_0px_rgba(0,0,0,0.25)] "
-              onClick={() => router.push("/add-on-rent")}
+              onClick={() => handleAddOnRent()}
             >
               <span className="text-lg">+</span> Rent
             </button>
@@ -444,7 +469,7 @@ function Header() {
               className="sm:hidden sm:flex items-center gap-2 px-[16px] py-[6px] sm:py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-[92px] border border-[rgba(7,7,7,0.1)] 
                 bg-gradient-to-r from-[#FEAC5E] via-[#C779D0] to-[#4BC0C8] 
                 shadow-[inset_0px_3px_3px_0px_rgba(255,255,255,0.35),inset_0px_-2px_4px_0px_rgba(0,0,0,0.25)]"
-              onClick={() => router.push("/add-on-rent")}
+              onClick={() => handleAddOnRent()}
             >
               <span className="text-lg">+</span>
             </button>

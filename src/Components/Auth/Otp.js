@@ -117,14 +117,14 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
       if (user?.hasActiveSubscription) {
         Cookies.set("hasSubscription", user.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" });
       }
-      
+
       if (user?.currentSubscription) {
         Cookies.set("SubscriptionId", user.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" });
       }
-      
+      Cookies.set("isKyc", response?.data?.kycVerified, { expires: 7, secure: true, sameSite: "Strict" });
       Cookies.set("userName", user.name, { expires: 7, secure: true, sameSite: "Strict" });
       Cookies.set("userEmail", user.email, { expires: 7, secure: true, sameSite: "Strict" });
-      Cookies.set("userToken", response.data.token, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userToken", response?.data?.token, { expires: 7, secure: true, sameSite: "Strict" });
 
 
       if (!profilepic) {
@@ -260,8 +260,9 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
           style={{ pointerEvents: timer > 0 ? "none" : "auto", opacity: timer > 0 ? 0.5 : 1 }}
         >
           <span className="otp-resend-link">
-            Resend OTP <span className="otp-timer">{timer}s</span>
+            Resend OTP {timer > 0 && <span className="otp-timer">{timer}s</span>}
           </span>
+
         </p>
 
       </div>

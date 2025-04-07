@@ -31,7 +31,7 @@ export const Images = ({ product, productId,variant}) => {
           },
         }
       );
-
+  
       if (response.status === 200) {
         setIsFavorite(true);
         Swal.fire({
@@ -44,13 +44,25 @@ export const Images = ({ product, productId,variant}) => {
       }
     } catch (error) {
       console.error("Error adding product to favorites:", error);
-      Swal.fire({
-        icon: "info",
-        title: "Notice",
-        text: error.response?.data?.message || "Something went wrong!",
-      });
+  
+      if (error.response?.status === 401) {
+        Swal.fire({
+          icon: "info",
+          title: "Please Login!",
+          text: "Please Login to add your Favourite item",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } else {
+        Swal.fire({
+          icon: "info",
+          title: "Notice",
+          text: error.response?.data?.message || "Something went wrong!",
+        });
+      }
     }
   };
+  
 
   const handleRemoveFavorites = async () => {
     try {
