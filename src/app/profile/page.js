@@ -103,10 +103,10 @@ export default function ProfileSettings() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name)
     const keys = name.split(".");
-
-
-
+    if  (name === 'user. name')
+      setErrors({name:""})
     setProfile((prev) => {
       let updatedProfile = { ...prev };
       let temp = updatedProfile;

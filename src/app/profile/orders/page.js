@@ -193,9 +193,11 @@ orderItems.length > 0 ? orderItems.map((orderItem,index) => (
             {/* <a href="#" class="cancel-order">
               Cancel Order
             </a> */}
-            <a href="#" class="download-invoice">
-              Download Invoice
-            </a>
+            {trackingStatuses[index]==="delivered" &&
+                 <a href="#" class="download-invoice">
+                 Download Invoice seeing {trackingStatuses[index]}
+                </a>
+              }
 
           </div>
           <div class="order-actions-price-status">
@@ -229,7 +231,8 @@ orderItems.length > 0 ? orderItems.map((orderItem,index) => (
             </p>}
           </div>
         </div>
-      )):            <div className="flex flex-col justify-center items-center h-screen">
+      )):     
+             <div className="flex flex-col justify-center items-center h-screen">
       <img src={emptycart} className="w-1/3 h-1/3" />
       <h1 className="text-lg font-semibold">Empty Orders</h1>
       <span className="px-6 py-4 text-center">
@@ -279,9 +282,11 @@ orderItems.length > 0 ? orderItems.map((orderItem,index) => (
             {/* <a href="#" class="cancel-order">
               Cancel Order
             </a> */}
-            <a href="#" class="download-invoice">
-              Download Invoice
-            </a>
+            {trackingStatuses[index]==="delivered" &&
+                 <a href="#" class="download-invoice">
+                 Download Invoice
+                </a>
+              }
             {(order.orderStatus === "placed") && (
                   <a
   className="inline-flex w-full sm:w-auto items-center gap-1.5 justify-start no-underline text-red-500 font-medium cursor-pointer text-left"

@@ -15,8 +15,6 @@ const logo = "/Assets/Rntout_Logo.png";
 const Photo = "/Assets/Photo.png";
 const locations = '/Assets/location_fill.svg'
 const nearby = '/Assets/nearby.svg'
-const cart = '/Assets/Button.svg'
-const cartitems = '/Assets/cartitems.svg'
 const subscription = '/Assets/subscription.svg'
 const profile_avatar = "/Assets/profile_avatar.png";
 
@@ -34,12 +32,9 @@ function Header() {
   const [location, setLocation] = useState(null);
   const [variants, setVariants] = useState([]);
   const [selectedDistance, setSelectedDistance] = useState("");
-  const [cartItems, setCartItems] = useState(null || 0);
   const [locationsList, setLocationsList] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-  const [subscriptionPlans, setSubscriptionPlans] = useState([]);
-    const [subscriptions,setSubscription]=useState({});
-    console.log(subscriptions,"subscriptions in profile")
+  const [subscriptionPlans, setSubscriptionPlans] = useState([])
   const [address, setAddress] = useState({ suburb: "" });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -105,8 +100,6 @@ function Header() {
       });
       console.log(response?.data, "profile fetch")
       const profileData = response?.data?.profile;
-
-      setSubscription(response?.data?.subscription)
 
       setProfilePic(profileData?.profilePic);
 
@@ -219,35 +212,10 @@ function Header() {
   }, []);
 
 
-  const fetchCartDetails = async () => {
 
-    try {
-      const response = await axios.get(`${BASE_URL}/cart/${userId}`);
-      console.log(response,"cart response from header")
-      setCartItems(response?.data?.cartItems?.length || 0);
-    } catch (error) {
-      console.log(error)
-      setCartItems(0);
-    }
-  };
 
-  useEffect(() => {
-    fetchCartDetails();
-  }, [userId]);
 
-  useEffect(() => {
-    fetchCartDetails(); // Initial fetch when component mounts
-
-    const handleCartUpdate = () => {
-      fetchCartDetails(); // Fetch cart details when event is received
-    };
-
-    window.addEventListener("cartUpdated", handleCartUpdate);
-
-    return () => {
-      window.removeEventListener("cartUpdated", handleCartUpdate);
-    };
-  }, [userId]);
+  
 
   const handleSearchInputChange = async (searchTerm) => {
     setSearchValue(searchTerm);
@@ -370,7 +338,7 @@ function Header() {
 
 
 
-        {/* Right Section - Location, Distance, Cart, Profile, and Buttons */}
+        {/* Right Section - Location, Distance, Profile, and Buttons */}
         <div className="flex items-center gap-4 md:gap-4 cursor-pointer">
           {/* Location */}
           {address?.suburb && <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 gap-2">
@@ -430,30 +398,12 @@ function Header() {
                   ✕
                 </button>
 
-                <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans} subscriptions={subscriptions} />
+                <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans} />
               </div>
             </div>
           )}
-          {/* Cart Button */}
-          {/* <div className="relative cursor-pointer" >
-            {(cartItems && cartItems > 0 )? (
-              <Link href="/Cartpage">
-                <Image src='/Assets/cartitems.svg' width={30} height={30} alt="cart" className="min-w-[34px] min-h-[34px]" />
-                <span className="absolute -top-2 -top-2 -right-2  bg-red-500 rounded-full w-5 h-5 text-xs font-semibold text-white flex items-center justify-center">
-                  {cartItems}
-                </span>
-              </Link>
-            ) : (
-              <Link href="/Cartpage">
-                <button className="h-[37px] bg-white border border-blue-300 rounded-[10px] p-2 hover:bg-gray-100">
-                  <Image src='/Assets/Button.svg' width={20} height={20} alt="cart" className="min-w-[20px] min-h-[20px]" />
-                </button>
-              </Link>
-
-            )}
-          </div> */}
-          <CartIcon />
-          {/* Rent Button */}
+    
+          <CartIcon userId={userId} />
           {name || token ? (
             <button
               className="hidden sm:flex items-center gap-2 px-[16px] py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-[92px] border border-[rgba(7,7,7,0.1)] 
@@ -503,8 +453,8 @@ function Header() {
             </button>
           )}
           {isLoginOpen && (
-            <div className="modal-overlay"  onClick={() => setIsLoginOpen(false)}>
-              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-overlay">
+              <div className="modal-content">
                 <button className="close-button" onClick={() => setIsLoginOpen(false)}>
                   ✕
                 </button>

@@ -11,6 +11,7 @@ import '../../../../styles/BusinessInformation2.css';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2'
 const owner = '/Assets/owner.svg'
 const Userprofile = "../../Assets/User-icon.svg";
 const card = "../../Assets/card-img1.svg";
@@ -255,9 +256,18 @@ export default function BusinessInformation2() {
           "Content-Type": "multipart/form-data",
         },
       });
-      setIsEditable(false);
-      toast.success("Business information updated successfully");
-      handlefetchBusinessInfo();
+      console.log(response)
+      if (response.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: response?.data?.message || 'Business info updated successfully',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          router.back(); // Navigate only after alert is acknowledged
+        });
+      }
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         toast.error(error.response.data.message);
@@ -323,7 +333,7 @@ export default function BusinessInformation2() {
                     name='businessName'
                     value={formData?.businessName}
                     onChange={handleInputChange}
-                    disabled={!isEditable} />
+                     />
                   {errorMessage.businessName && <p className="text-red-500 text-sm">{errorMessage.businessName}</p>}
 
                 </div>
@@ -340,7 +350,7 @@ export default function BusinessInformation2() {
                     name='storeName'
                     value={formData?.storeName}
                     onChange={handleInputChange}
-                    disabled={!isEditable} />
+                     />
                   {errorMessage.storeName && <p className="text-red-500 text-sm">{errorMessage.storeName}</p>}
 
                 </div>
@@ -356,7 +366,7 @@ export default function BusinessInformation2() {
                     name='contactPhone'
                     value={formData?.contactPhone}
                     onChange={handleInputChange}
-                    disabled={!isEditable} />
+                     />
                   {errorMessage.contactPhone && <p className="text-red-500 text-sm">{errorMessage.contactPhone}</p>}
 
                 </div>
@@ -372,7 +382,7 @@ export default function BusinessInformation2() {
                     name='contactEmail'
                     value={formData?.contactEmail}
                     onChange={handleInputChange}
-                    disabled={!isEditable} />
+                     />
                   {errorMessage.contactEmail && <p className="text-red-500 text-sm">{errorMessage.contactEmail}</p>}
 
                 </div>
@@ -386,7 +396,7 @@ export default function BusinessInformation2() {
                     name='businessAddress.full'
                     value={formData?.businessAddress.full}
                     onChange={handleInputChange}
-                    disabled={!isEditable} />
+                     />
                 </div>
 
                 <label className="checkbox-label">
@@ -408,7 +418,7 @@ export default function BusinessInformation2() {
                     name='storeDescription'
                     value={formData?.storeDescription}
                     onChange={handleInputChange}
-                    disabled={!isEditable}></textarea>
+                    ></textarea>
                   {errorMessage.storeDescription && <p className="text-red-500 text-sm">{errorMessage.storeDescription}</p>}
 
                 </div></div>
@@ -481,7 +491,7 @@ export default function BusinessInformation2() {
                     <span
                       className="browse-link"
                       onClick={handleIconClick}
-                      disabled={!isEditable}
+                      
                     >
                       browse
                     </span>
@@ -495,7 +505,7 @@ export default function BusinessInformation2() {
                     multiple
                     // style={{ display: "none" }}
                     onChange={handleFileUpload}
-                    disabled={!isEditable}
+                    // 
                     className="ml-28"
                   />
 
@@ -537,7 +547,7 @@ export default function BusinessInformation2() {
                   <select id="bank-select" name='bankName'
                     value={formData?.bankName}
                     onChange={handleInputChange}
-                    disabled={!isEditable}>
+                    >
                     <option>Select bank</option>
                     <option>State Bank of India</option>
                     <option>ICICI Bank</option>
@@ -555,7 +565,7 @@ export default function BusinessInformation2() {
                     name='accountNumber'
                     value={formData?.accountNumber}
                     onChange={handleInputChange}
-                    disabled={!isEditable} />
+                     />
                   {errorMessage.accountNumber && <p className="text-red-500 text-sm">{errorMessage.accountNumber}</p>}
 
                 </div>
@@ -570,7 +580,7 @@ export default function BusinessInformation2() {
                     name='ifsc'
                     value={formData?.ifsc}
                     onChange={handleInputChange}
-                    disabled={!isEditable} />
+                     />
                   {errorMessage.ifsc && <p className="text-red-500 text-sm">{errorMessage.ifsc}</p>}
 
                 </div>
@@ -585,7 +595,7 @@ export default function BusinessInformation2() {
                     name='contactPhone'
                     value={formData?.contactPhone}
                     onChange={handleInputChange}
-                    disabled={!isEditable} />
+                     />
                   {errorMessage.contactPhone && <p className="text-red-500 text-sm">{errorMessage.contactPhone}</p>}
 
                 </div>
@@ -603,7 +613,7 @@ export default function BusinessInformation2() {
                     name='bankBranchAddress.full'
                     value={formData?.bankBranchAddress?.full}
                     onChange={handleInputChange}
-                    disabled={!isEditable} />
+                     />
                 </div>
               </div>
             </div>
@@ -611,7 +621,7 @@ export default function BusinessInformation2() {
 
             <div className="businness-submit-button">
               <button className="bussiness-submit" onClick={handleBusinessInformation}>
-                Publish Business
+                Publish Renter
               </button>
             </div>
           </div>

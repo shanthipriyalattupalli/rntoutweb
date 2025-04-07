@@ -682,10 +682,10 @@ const CartPage = () => {
           {/* Cost Breakdown (Hidden by Default) */}
           {isOpen && (
             <div className="mt-4 space-y-2 text-gray-700">
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <span>Total Rent</span>
                 <span className="font-medium">{totalPrice}</span>
-              </div>
+              </div> */}
               {/* <div className="flex justify-between">
                 <span>Discount Price</span>
                 <span className="font-medium">-{disAmount}</span>
@@ -695,17 +695,17 @@ const CartPage = () => {
                 <span className="font-medium">{disValue}%</span>
               </div> */}
 
-              <div className="flex justify-between border-t pt-2">
+              {/* <div className="flex justify-between border-t pt-2">
                 <span>Total Costs</span>
                 <span className="font-medium">{discountedPrice ? discountedPrice : totalPrice}</span>
-              </div>
+              </div> */}
               {/* <div className="flex justify-between">
                 <span>GST</span>
                 <span className="font-medium">₹512 (18%)</span>
               </div> */}
               <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
-                <span className="text-black">{discountedPrice ? discountedPrice : totalPrice}</span>
+                <span className="text-black">₹ {discountedPrice ? discountedPrice : totalPrice}</span>
               </div>
             </div>
           )}

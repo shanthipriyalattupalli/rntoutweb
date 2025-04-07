@@ -110,7 +110,7 @@ function Sidebar() {
     if (eachbar.title === "Log Out") {
       Swal.fire({
         title: "LOG OUT",
-        text: `Are you sure to "Log Out"`,
+        text: `Are you sure to "Log out"`,
         showCancelButton: true,  
         confirmButtonText: "Yes", 
         cancelButtonText: "Cancel", 
