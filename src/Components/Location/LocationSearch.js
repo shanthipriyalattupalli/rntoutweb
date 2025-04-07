@@ -7,7 +7,12 @@ import { IoIosInformationCircleOutline } from "react-icons/io";
 import { MAP_API } from "../../services/GMap";
 
 const loadGoogleMapsScript = (callback) => {
-  if (window.google && window.google.maps) {
+/** @type {any} */
+  const googleAny = window.google;
+
+  console.log("googlemapscript",typeof googleAny)
+
+  if (googleAny && googleAny.maps) {
     callback();
   } else {
     const existingScript = document.querySelector("#google-maps-script");
@@ -111,9 +116,11 @@ const LocationSearch = () => {
   };
 
   useEffect(() => {
-    loadGoogleMapsScript(() => {
-      if (window.google && window.google.maps && autocompleteRef.current) {
-        autocompleteInstance.current = new window.google.maps.places.Autocomplete(
+    const googleAny = window.google;
+
+    // loadGoogleMapsScript(() => {
+      if (googleAny && googleAny.maps && autocompleteRef.current) {
+        autocompleteInstance.current = new googleAny.maps.places.Autocomplete(
           autocompleteRef.current,
           { types: ["geocode"] }
         );
@@ -158,7 +165,7 @@ const LocationSearch = () => {
       } else {
         setError("Google Maps API failed to load.");
       }
-    });
+    // });
   }, []);
 
   useEffect(() => {
@@ -168,10 +175,11 @@ const LocationSearch = () => {
   return (
     <div className="location-container">
       {/* <div className="heading">CURRENT LOCATION</div> */}
+      {/* style={{ width: "68%" }} */}
       <div style={{ display: "flex", gap: "14px", width: "100%" }}>
-        <div className="address flex gap-3" style={{ width: "68%" }}>
+        <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 gap-2 " >
           <Image
-            src="/Assets/location.svg"
+            src="/Assets/location_fill.svg"
             alt="Location"
             width={20}
             style={{ cursor: "pointer" }}
@@ -189,6 +197,7 @@ const LocationSearch = () => {
           <input
             ref={autocompleteRef}
             type="text"
+            className="text-sm font-medium text-blacky placeholder-blackca"
             placeholder={address?.suburb || "Search location..."}
             style={{ all: "unset", width: "100%" }}
             onFocus={(e) => (e.target.placeholder = "")}
@@ -200,7 +209,7 @@ const LocationSearch = () => {
           />
         </div>
       </div>
-      {message.text && (
+      {/* {message.text && (
         <p
           style={{
             color: message.type === "success" ? "#777" : "red",
@@ -212,7 +221,7 @@ const LocationSearch = () => {
           />
           {message.text}
         </p>
-      )}
+      )} */}
     </div>
   );
 };
