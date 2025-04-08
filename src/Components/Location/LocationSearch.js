@@ -183,38 +183,43 @@ const LocationSearch = () => {
 
   return (
     <div className="location-container">
-      <div style={{ display: "flex", gap: "14px", width: "100%" }}>
-        <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 gap-2">
-          <Image
-            src="/Assets/location_fill.svg"
-            alt="Location"
-            width={20}
-            height={20}
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              setSelectedLocation(null);
-              if (autocompleteRef.current) {
-                setTimeout(() => {
-                  autocompleteRef.current.value = "";
-                }, 0);
-              }
-              fetchUserLocation();
-            }}
-          />
-          <input
-            ref={autocompleteRef}
-            type="text"
-            className="text-sm font-medium text-blacky placeholder-blackca"
-            placeholder={address?.suburb || "Search location..."}
-            style={{ all: "unset", width: "100%" }}
-            onFocus={(e) => (e.target.placeholder = "")}
-            onBlur={(e) => {
-              if (!e.target.value) {
-                e.target.placeholder = address?.suburb || "Search location...";
-              }
-            }}
-          />
-        </div>
+      <div style={{ display: "flex", gap: "14px", width: "80%" }}>
+      <div className="flex items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 gap-2 ">
+  <Image
+    src="/Assets/location_fill.svg"
+    alt="Location"
+    width={20}
+    height={20}
+    style={{ cursor: "pointer" }}
+    onClick={() => {
+      setSelectedLocation(null);
+      if (autocompleteRef.current) {
+        setTimeout(() => {
+          autocompleteRef.current.value = "";
+        }, 0);
+      }
+      fetchUserLocation();
+    }}
+  />
+  <input
+    ref={autocompleteRef}
+    type="text"
+    className="text-sm font-medium text-blacky placeholder-blackca"
+    placeholder={address?.suburb || "Search location..."}
+    style={{ all: "unset", width: "100%" }}
+    onFocus={(e) => (e.target.placeholder = "")}
+    onBlur={(e) => {
+      if (!e.target.value) {
+        e.target.placeholder = address?.suburb || "Search location...";
+      }
+    }}
+  />
+</div>
+
+
+
+
+
       </div>
       {/* Optional message UI */}
       {/* {message.text && (

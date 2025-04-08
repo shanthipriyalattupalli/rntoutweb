@@ -15,8 +15,8 @@ const Benefits = [
   "🎧 24/7 VIP Customer Support "
 ]
 
-const Subscription = ({ plans,setIsSubscription,subscriptions }) => {
-  console.log(subscriptions,"subscriptions")
+const Subscription = ({ plans,setIsSubscription }) => {
+
   console.log(plans,"plans")
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const userId = Cookies.get("userId");
@@ -28,7 +28,8 @@ const Subscription = ({ plans,setIsSubscription,subscriptions }) => {
   const [displayRazorpay, setDisplayRazorpay] = useState(false);
   const [subscriptionPlanId, setSubscriptionPlanId] = useState(null);
   const [selectedPlanId, setSelectedPlanId] = useState(null);
-  const [subscription,setSubscription] = useState(null)
+  const [subscriptions,setSubscription] = useState(null);
+  
   const apiKey = "rzp_test_a4GiGqcTxFZlKT";
 
 
@@ -83,43 +84,15 @@ const Subscription = ({ plans,setIsSubscription,subscriptions }) => {
       setDisplayRazorpay(false);
     }
   };
-  const fetchSubscription=async()=>{
-    try {
-      console.log(subscriptionId)
-      const response=await axios.get(`${BASE_URL}/subscription-plans/plan/${subscriptionId}`,{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      console.log(response)
-      if(response?.data?.data != null){
-        Cookies.set("hasSubscription", response?.data?.data?._id, { expires: 7, secure: true, sameSite: "Strict" });
-        Cookies.set("SubscriptionId", response?.data?.data?.isActive, { expires: 7, secure: true, sameSite: "Strict" });
-        setSubscription(response?.data?.data)
 
-      }
-      console.log(response.data.data,"response in subscription")
-      
-    } catch (error) {
-      console.log(error,"error in subscription")
-      
-    }
-  }
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetchSubscription();
-    };
-  
-    fetchData();
-  }, [subscriptionId]);
-  console.log(subscriptions,subscription,"subscription from file")
+  console.log(subscriptions,"subscription from file")
 
 
     const fetchUserSubscriptionPlans = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/subscription-plans/user-plans`);
         console.log(response.data, "response of plans")
-     
+        setSubscription(response.data.data[0])
       } catch (error) {
         console.log(error, "error")
   

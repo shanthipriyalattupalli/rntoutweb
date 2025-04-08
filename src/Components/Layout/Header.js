@@ -339,9 +339,13 @@ function Header() {
         </div>
 
 
-        {/* Right Section - Location, Distance, Profile, and Buttons */}
         <div className="flex items-center gap-4 md:gap-4 cursor-pointer">
-        <LocationSearch />
+
+        <div className="hidden lg:block">
+  <LocationSearch />
+</div>
+
+
 {/*  */}
           {/* Distance Selection */}
           {latitude && longitude && <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 cursor-pointer">
@@ -494,12 +498,9 @@ function Header() {
             </ul>
           )}
         </div>
-        <div className="sm:flex md:flex lg:hidden w-full flex h-10 px-1 items-center bg-white border border-gray-300 rounded-lg hover:bg-gray-100 gap-2">
-          <Image src={locations} alt="location" width={18} height={18} />
-          <span className="text-sm font-medium text-blacky md:mr-3 truncate w-full block">
-            {address.suburb}
-          </span>
-        </div>
+
+        <LocationSearch />
+ 
         <div className="sm:flex md:flex lg:hidden  w-1/2 h-10 flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
           <Image src={nearby} alt="location" width={16} height={16} />
           <select className="bg-transparent text-xs cursor-pointer mr-2" value={selectedDistance} onChange={handleDistanceChange}>
