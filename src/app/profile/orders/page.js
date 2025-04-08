@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from "react";
 import Switch from "react-switch";
+
 // import "@/styles/Orders.css";
 import '../../../styles/Orders.css';
 import axios from "axios";
@@ -258,7 +259,7 @@ orderItems.length > 0 ? orderItems.map((orderItem,index) => (
                 <img
                   src={item.variantId?.images?.[0]}
                   alt="Dell 27 inch Monitor"
-                  class="product-image"
+                  className="product-image"
                 />
 </div>
                 <div class="product-info">

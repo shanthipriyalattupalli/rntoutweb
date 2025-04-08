@@ -118,9 +118,9 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
         Cookies.set("hasSubscription", user.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" });
       }
 
-      if (user?.currentSubscription) {
-        Cookies.set("SubscriptionId", user.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" });
-      }
+      // if (user?.currentSubscription) {
+      //   Cookies.set("SubscriptionId", user.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" });
+      // }
       Cookies.set("isKyc", response?.data?.kycVerified, { expires: 7, secure: true, sameSite: "Strict" });
       Cookies.set("userName", user.name, { expires: 7, secure: true, sameSite: "Strict" });
       Cookies.set("userEmail", user.email, { expires: 7, secure: true, sameSite: "Strict" });

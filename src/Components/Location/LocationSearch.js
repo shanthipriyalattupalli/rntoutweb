@@ -7,10 +7,7 @@ import { IoIosInformationCircleOutline } from "react-icons/io";
 import { MAP_API } from "../../services/GMap";
 
 const loadGoogleMapsScript = (callback) => {
-/** @type {any} */
   const googleAny = window.google;
-
-  console.log("googlemapscript",typeof googleAny)
 
   if (googleAny && googleAny.maps) {
     callback();
@@ -40,8 +37,6 @@ const LocationSearch = () => {
   const [error, setError] = useState(null);
   const autocompleteRef = useRef(null);
   const autocompleteInstance = useRef(null);
-
-  // Get initial radius value from cookies or default to 10 km
   const [radius, setRadius] = useState(() => Cookies.get("radius") || "10");
 
   const getLocationFromCoordinates = async (lat, lon) => {
@@ -118,72 +113,84 @@ const LocationSearch = () => {
   useEffect(() => {
     const googleAny = window.google;
 
-    // loadGoogleMapsScript(() => {
-      if (googleAny && googleAny.maps && autocompleteRef.current) {
-        autocompleteInstance.current = new googleAny.maps.places.Autocomplete(
-          autocompleteRef.current,
-          { types: ["geocode"] }
-        );
+    if (googleAny && googleAny.maps && autocompleteRef.current) {
+      autocompleteInstance.current = new googleAny.maps.places.Autocomplete(
+        autocompleteRef.current,
+        { types: ["geocode"] }
+      );
 
-        autocompleteInstance.current.addListener("place_changed", () => {
-          const place = autocompleteInstance.current.getPlace();
-          if (!place.geometry) {
-            setMessage({
-              type: "error",
-              text: "Invalid location. Please select from the suggestions.",
-            });
-            return;
-          }
-          const { lat, lng } = place.geometry.location;
-          setSelectedLocation({
-            name: place.formatted_address,
-            latitude: lat(),
-            longitude: lng(),
-          });
-
-          // Set the input value explicitly
-          autocompleteRef.current.value = place.formatted_address;
-
-          Cookies.set("latitude", lat(), { expires: 7, sameSite: "Strict" });
-          Cookies.set("longitude", lng(), { expires: 7, sameSite: "Strict" });
-
+      autocompleteInstance.current.addListener("place_changed", () => {
+        const place = autocompleteInstance.current.getPlace();
+        if (!place.geometry) {
           setMessage({
-            type: "success",
-            text: "Your location has been updated successfully.",
+            type: "error",
+            text: "Invalid location. Please select from the suggestions.",
           });
-
-          import("sweetalert2").then((Swal) => {
-            Swal.default.fire({
-              icon: "success",
-              title: "Location Updated",
-              text: "Your location has been set automatically.",
-              timer: 2000,
-              showConfirmButton: false,
-            });
-          });
+          return;
+        }
+        const { lat, lng } = place.geometry.location;
+        setSelectedLocation({
+          name: place.formatted_address,
+          latitude: lat(),
+          longitude: lng(),
         });
-      } else {
-        setError("Google Maps API failed to load.");
-      }
-    // });
+
+        autocompleteRef.current.value = place.formatted_address;
+
+        Cookies.set("latitude", lat(), { expires: 7, sameSite: "Strict" });
+        Cookies.set("longitude", lng(), { expires: 7, sameSite: "Strict" });
+
+        setMessage({
+          type: "success",
+          text: "Your location has been updated successfully.",
+        });
+
+        import("sweetalert2").then((Swal) => {
+          Swal.default.fire({
+            icon: "success",
+            title: "Location Updated",
+            text: "Your location has been set automatically.",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+          window.location.reload();
+        });
+    
+      });
+    } else {
+      setError("Google Maps API failed to load.");
+    }
   }, []);
 
   useEffect(() => {
-    fetchUserLocation();
+    const lat = Cookies.get("latitude");
+    const lon = Cookies.get("longitude");
+
+    if (!lat || !lon) {
+      fetchUserLocation();
+    } else {
+      const latitude = parseFloat(lat);
+      const longitude = parseFloat(lon);
+      setUserLocation({ latitude, longitude });
+      getLocationFromCoordinates(latitude, longitude);
+      setMessage({
+        type: "success",
+        text: "Your saved location has been loaded successfully.",
+      });
+      setLoading(false);
+    }
   }, []);
 
   return (
     <div className="location-container">
-      {/* <div className="heading">CURRENT LOCATION</div> */}
-      {/* style={{ width: "68%" }} */}
       <div style={{ display: "flex", gap: "14px", width: "100%" }}>
-        <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 gap-2 " >
+        <div className="hidden lg:flex items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 gap-2">
           <Image
             src="/Assets/location_fill.svg"
             alt="Location"
             width={20}
-            style={{ cursor: "pointer" }}
             height={20}
+            style={{ cursor: "pointer" }}
             onClick={() => {
               setSelectedLocation(null);
               if (autocompleteRef.current) {
@@ -209,6 +216,7 @@ const LocationSearch = () => {
           />
         </div>
       </div>
+      {/* Optional message UI */}
       {/* {message.text && (
         <p
           style={{

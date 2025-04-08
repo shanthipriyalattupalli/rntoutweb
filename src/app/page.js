@@ -108,9 +108,12 @@ const fetchBlogs = async () => {
 
 const Home = async () => {
   const cookieStore = cookies();
+  
   const latitude = cookieStore.get('latitude');
   const longitude= cookieStore.get('longitude');
   const radius=cookieStore.get('selectedDistance')
+
+  console.log(latitude,longitude,radius,"fegbjhefbv")
   const banners = await fetchBanners();
   const banner = await fetchBanner();
   const categories = await fetchCategories();
@@ -125,7 +128,7 @@ const Home = async () => {
       <CategoryList categories={categories} />
       <Products categories={categories} />
       <CuratedCollections />
-      <ITInfrastructure products={products["It Infrastructure"] || []} categoryId={categories[0]?._id} />
+      <ITInfrastructure products={products["IT Infrastructure"] || []} categoryId={categories[0]?._id} />
       <Furniture products={products["Furniture"] || []} categoryId={categories[1]?._id} />
       <PromotionalAd banner={banner[0]} />
       <MedicalEquipment products={products["Medical Equipment"] || []} categoryId={categories[2]?._id} />

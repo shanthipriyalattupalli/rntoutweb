@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import axios from "axios";
 
 // import "@/styles/OrderTrackingWithNavigate.css";
@@ -11,6 +11,7 @@ import '../../../../../styles/orderReview.css';
 import '../../../../../styles/Orderpage.css';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { RiCloseLine } from "react-icons/ri";
+import Swal from "sweetalert2";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useParams } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
@@ -40,18 +41,19 @@ const OrderReview = () => {
   const [formData, setFormData] = useState({
     rating: 0,
     title: "",
-    review: "",
+    comment: "",
   });
 
   console.log(formData,"formdata")
+  const [hover, setHover] = useState(0);
   const [orderData, setOrderData] = useState({});
   const router = useRouter();
   const params = useParams();
   const productId = params.productId;
   const searchParams = useSearchParams();
   console.log(searchParams,"params")
-  const reviewId = searchParams.get("reviewId")
-  console.log(reviewId)
+  const variantId = searchParams.get("variantId")
+  console.log(variantId,"variantId")
 
 
   const fetchProductById = async () => {
@@ -59,7 +61,8 @@ const OrderReview = () => {
       const response = await axios.get(`${BASE_URL}/orders/suborder/${productId}`);
 
       const data = response.data.variantId;
-      setOrderData(response.data.order)
+      setOrderData(response.data)
+      console.log(response.data.reviews[0]._id,"suborderby id")
 
     } catch (error) {
       console.error("Error fetching product:", error);
@@ -69,6 +72,22 @@ const OrderReview = () => {
     fetchProductById();
   }, [productId]);
 
+
+
+  const fetchReviewById = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/reviews/variant/${variantId}`);
+
+console.log(response.data,"responseof review")
+setFormData(response.data.data[0])
+
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
+  };
+  useEffect(() => {
+    fetchReviewById();
+  }, [variantId]);
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
@@ -108,8 +127,8 @@ const OrderReview = () => {
   };
 
 
-  const handleSubmit = async (variantId) => {
-    const { rating, title, review } = formData;
+  const handleSubmit = async (variantId,reviewId) => {
+    const { rating, title, comment } = formData;
 
     if (!rating || !review) {
       toast.error("Please provide both rating and review!");
@@ -120,8 +139,9 @@ const OrderReview = () => {
       const payload = {
         variantId: variantId,
         userId,
+        subOrderId:productId,
         rating,
-        comment: review,
+        comment: comment,
         title: title,
       };
 
@@ -134,20 +154,40 @@ const OrderReview = () => {
         },
       };
 
-      const response = await axios.post(`${BASE_URL}/reviews`, payload, config);
+      let response;
+
+      // If variantId exists and you're editing an existing review
+      if (variantId && reviewId) {
+        response = await axios.put(`${BASE_URL}/reviews/${reviewId}`, payload, config);
+      } else {
+        response = await axios.post(`${BASE_URL}/reviews`, payload, config);
+      }
+
       console.log(response)
       if (response.status === 201 || response.status === 200) {
+        console.log(response,"response of review")
         toast.success("Review submitted successfully!");
-        setFormData({ rating: 0, headline: "", review: "" });
+        setFormData({ rating: 0, title: "", comment: "" });
+        router.back()
       } else {
         toast.error("Something went wrong. Please try again.");
       }
     } catch (error) {
       console.error("Error submitting review:", error);
       if (error.response && error.response.status === 401) {
-        toast.error("Unauthorized! Please log in again.");
+             Swal.fire({
+               icon: "error",
+               title: "Login Required",
+               text: "Please login to proceed with payment.",
+             });
       } else {
-        toast.error("Error submitting review. Please try again.");
+              Swal.fire({
+                icon: "warning",
+                title: "Note",
+                text: error.response.data.message,
+                confirmButtonText: "OK",
+
+              });
       }
     }
   };
@@ -163,7 +203,7 @@ const OrderReview = () => {
         </div>
         <div
           
-          onClick={() => handleSubmit(orderData?.variantId?._id)}
+          onClick={() => handleSubmit(orderData.order?.variantId?._id,orderData?.reviews[0]?._id)}
         >
           Submit
         </div>
@@ -172,7 +212,7 @@ const OrderReview = () => {
         <div className='order_item-frame'>
 
           {/* <OrderItem  orderData={orderData} hideHeader={true}/> */}
-          {<div className="order-item" key={orderData._id}>
+          {<div className="order-item" key={orderData.order?._id}>
 
 
 
@@ -181,18 +221,18 @@ const OrderReview = () => {
               <img
                 src={
 
-                  orderData?.variantId?.images?.[0] ||
+                  orderData?.order?.variantId?.images?.[0] ||
                   "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"
                 }
-                alt={orderData?.variantId?.title || "Product Image"}
+                alt={orderData?.order?.variantId?.title || "Product Image"}
                 className="product-image"
               />
               <div className="product-info">
-                <h4>{orderData?.variantId?.title}</h4>
+                <h4>{orderData?.order?.variantId?.title}</h4>
                 <div className="product_info_detail_name">
                   <p>
-                    <span>₹{orderData.price}</span> / {orderData.rentalPeriod}
-                    <span>{orderData.quantity} item(s)</span>
+                    <span>₹{orderData.order?.price}</span> / {orderData.order?.rentalPeriod}
+                    <span>{orderData?.order?.quantity} item(s)</span>
                   </p>
                 </div>
 
@@ -220,32 +260,27 @@ const OrderReview = () => {
         <div className="order_overall">
           <div className="bg-white p-4">
             <h6>Overall Rating</h6>
-            <div className='rating_frame'>
-              <div
-                className='rating_scale'
-                style={{
-                  background: getDynamicBackground(),
-                  transition: "background 0.3s ease-in-out",
-                }}
+        <div className="flex items-center border-b p-4">
+          <div className="flex justify-center space-x-2 my-2">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button
+                key={star}
+                onMouseEnter={() => setHover(star)}
+                onMouseLeave={() => setHover(0)}
+                onClick={() => handleRating(star)}
               >
-                {[...Array(5)].map((_, index) => {
-                  const value = index + 1;
-                  return (
-                    <span
-                      key={value}
-                      className={`rating-btn ${formData.rating === value ? "selected" : ""
-                        }`}
-                      onClick={() => handleRating(value)}
-                    >
-                      <a href='#'>{value}</a>
-                    </span>
-                  );
-                })}
-              </div>
-              <span className='rating-status'>
-                {formData.rating ? `You selected: ${formData.rating}` : "Not Given Rating"}
-              </span>
-            </div>
+                {star <= (hover || formData.rating) ? (
+                  <AiFillStar className="text-yellow-500 text-2xl" />
+                ) : (
+                  <AiOutlineStar className="text-gray-400 text-2xl" />
+                )}
+              </button>
+            ))}
+          </div>
+          <p className="text-sm text-gray-500 ml-auto">
+            {formData.rating === 0 ? "Not Given Rating" : `You rated ${formData.rating} stars`}
+          </p>
+        </div>
           </div>
 
           {/* Feedback Form */}
@@ -260,7 +295,7 @@ const OrderReview = () => {
                   id='tilte'
                   placeholder="What's most important to know?"
                   value={formData.title}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))} 
+                  onChange={e => setFormData((prev) => ({ ...prev, title: e.target.value }))} 
                 />
               </div>
               <div className="form-group">
@@ -269,12 +304,12 @@ const OrderReview = () => {
                   id="review"
                   rows="4"
                   placeholder="What did you like or dislike? What did you use this product for?"
-                  value={formData.review}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, review: e.target.value }))}
+                  value={formData.comment}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, comment: e.target.value }))}
                 ></textarea>
                 {/* <button onClick={handleSubmit}>Submit Review</button> */}
               </div>
-              <div className='form-group'>
+              {/* <div className='form-group'>
                 <label htmlFor='photo'>Add a photo</label>
                 <div className='file-upload'>
                   <input
@@ -309,7 +344,7 @@ const OrderReview = () => {
                     ))}
                   </div>
                 </div>
-              </div>
+              </div> */}
             </form>
           </div>
         </div>

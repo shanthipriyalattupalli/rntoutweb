@@ -20,7 +20,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [expandedSubOrderIds, setExpandedSubOrderIds] = useState([]);  // Changed to an array
   const [subOrderHistories, setSubOrderHistories] = useState({});
-
+console.log(subOrderHistories,"response of suborderhistores")
   if (!orderData || !orderData.subOrders || orderData.subOrders.length === 0) {
     return <p>No orders found</p>;
   }
@@ -57,7 +57,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
       const reviews = Array.isArray(response.data.reviews) ? response.data.reviews : [];
       setSubOrderHistories((prev) => ({
         ...prev,
-        [subOrderId]: reviews, // Store data in state by suborder ID
+        [subOrderId]: reviews, 
       }));
     } catch (error) {
       console.error(`Error fetching suborder history for ${subOrderId}:`, error);
@@ -73,12 +73,12 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
           <div className="flex flex-col sm:flex-row justify-between w-full">
           <div className="order-product">
             <img
-              src={item.variantId.images?.[0] || "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"}
-              alt={item.variantId.title || "Product Image"}
+              src={item?.variantId?.images?.[0] || "/static/media/orderHistoryImage.f6b21b67034c337ac59b.png"}
+              alt={item?.variantId?.title || "Product Image"}
               className="product-image"
             />
             <div className="product-info">
-              <h4>{item.variantId.title || "Apple 14 pro"}</h4>
+              <h4>{item?.variantId?.title || "Apple 14 pro"}</h4>
               <div className="product_info_detail_name">
                 <p>
                   <span>₹{item.price || "0"}</span> / {item.rentalPeriod}
@@ -111,8 +111,8 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                 <div className="suborder-history">
                   {/* Check if reviews exist */}
                   {subOrderHistories[item._id].length > 0 && (
-                    subOrderHistories[item._id].map((review) => (
-                      <div className="flex flex-row space-x-2">
+                    subOrderHistories[item._id].map((review,index) => (
+                      <div className="flex flex-row space-x-2" key={index}>
                         <div className="flex flex-col space-x-2">
                           {review.rating && (
                             <p
@@ -135,7 +135,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                 
               }
                <p>{review.comment}</p>
-                        <a   href={`/profile/orders/orderreview/${item._id}?reviewId=${review._id}`}className="w-4 h-4"><Edit2Icon className="w-4 h-4" /></a>
+                        <a   href={`/profile/orders/orderreview/${item._id}?variantId=${review.variantId}`}className="w-4 h-4"><Edit2Icon className="w-4 h-4" /></a>
                     
                         {/* <p>{new Date(review.createdAt).toLocaleDateString()}</p> */}
                       </div>

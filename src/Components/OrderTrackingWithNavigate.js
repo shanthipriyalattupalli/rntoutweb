@@ -147,7 +147,7 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
 
           <div class='payment-section'>
             <div class='payment-info'>
-              <span class='icon'>
+              <span className='icon'>
                 {/* <MdDone /> */}
                 <img src={payment_icon} alt='Icon' />
               </span>

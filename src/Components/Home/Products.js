@@ -8,6 +8,8 @@ import ProductGrid from "../../Components/Home/ProductGrid";
 import ProductCard from "../Shimmer/ProductCard";
 import axios from "axios";
 import Cookies from "js-cookie";
+const emptyproducts = "/Assets/emptyproducts.svg";
+
 // Dynamically import the ProductItems component for lazy loading
 const ProductItems = dynamic(() => import("../Home/ProductItems"), {
   suspense: true,
@@ -20,9 +22,9 @@ const Products = ({categories}) => {
     const [categoryProducts, setCategoryProducts] = useState({});
       const [isLoading, setIsLoading] = useState(true);
       const [categoryId,setCategoryId]=useState(null);
-      const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
-      const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
-      const distance = (typeof window !== 'undefined') ? localStorage.getItem("selectedDistance") : null
+      const latitude = Cookies.get("latitude");
+      const longitude = Cookies.get("longitude");
+      const distance = Cookies.get("selectedDistance")
 
   console.log(categoryId,"categoryId")
 
@@ -82,7 +84,7 @@ let products=categoryProducts[categoryId] || []
   return (
     <>
           <ProductGrid categories={category} isLoading={isLoading} categoryIds={handleCategoryClick}/>
-<div className='2xl:px-[80px] px-8 sm:px-8 md:px-10 lg:px-24 xl:px-20'>
+{products.length>0 ?<div className='2xl:px-[80px] px-8 sm:px-8 md:px-10 lg:px-24 xl:px-20'>
   <ToastContainer />
 
   {/* Product Grid */}
@@ -108,7 +110,22 @@ let products=categoryProducts[categoryId] || []
       </Link>
     </div>
   </div>
-</div>
+</div>:
+        <div className="flex flex-col gap-4 items-center justify-center w-80 mx-auto h-[500px] text-center">
+        <img
+          src={emptyproducts}
+          alt="No products available"
+          className="w-full animate-float"
+        />
+        <span className="pt-10 font-medium text-xl">No Rental Items found</span>
+        <span className="font-poppins font-normal text-[12px] leading-[18px] tracking-normal text-center text-[rgba(7,7,7,0.8)]">
+          No product found in this category so meanwhile you can explore our other categories.
+        </span>
+        {/* <a href="/" className="border p-3 rounded-[8px] font-[500] text-[14px] cursor-pointer" style={{ borderColor: "rgba(255, 45, 85, 0.6) ", color:"rgba(255, 45, 85, 1)" }}>
+Explore Now
+</a> */}
+
+      </div>}
 </>
 
   );

@@ -83,9 +83,26 @@ const Subscription = ({ plans,setIsSubscription,subscriptions }) => {
 
 
 
+
+    const fetchUserSubscriptionPlans = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/subscription-plans/user-plans`);
+        console.log(response.data, "response of plans")
+     
+      } catch (error) {
+        console.log(error, "error")
+  
+      }
+    }
+
+    useEffect(()=>{
+      fetchUserSubscriptionPlans()
+
+    },[])
+
   return (
     <>
-{ subscriptions !=null ?       
+{  isSubscription === "true" ?       
  <div className="flex flex-col gap-[24px] p-6 sm:p-[20px]" key={subscriptions?.planId._id}>
 
 <div className="flex justify-center items-center mb-4">

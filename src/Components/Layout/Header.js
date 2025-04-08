@@ -27,10 +27,11 @@ function Header() {
   const userId = Cookies.get("userId");
   const token = Cookies.get("userToken") || null;
   const names = Cookies.get("userName");
+  const latitude=Cookies.get("latitude");
+  const longitude=Cookies.get("longitude")
   const [profilePic, setProfilePic] = useState((typeof window !== 'undefined') ? localStorage.getItem("profilePic") : null || Photo);
   const [name, setName] = useState(names)
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [location, setLocation] = useState(null);
   const [variants, setVariants] = useState([]);
   const [selectedDistance, setSelectedDistance] = useState("");
   const [locationsList, setLocationsList] = useState([]);
@@ -343,7 +344,7 @@ function Header() {
         <LocationSearch />
 {/*  */}
           {/* Distance Selection */}
-          {address?.suburb && <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 cursor-pointer">
+          {latitude && longitude && <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 cursor-pointer">
             <Image src={nearby} alt="location" width={18} height={18} />
             <select className="bg-transparent text-sm cursor-pointer md:mr-3" value={selectedDistance} onChange={handleDistanceChange}>
               <option className="cursor-pointer" value="20">20 km</option>
