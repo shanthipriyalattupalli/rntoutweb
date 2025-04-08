@@ -8,7 +8,6 @@ import Razorpay from '../RazorPay/RazorPay';
 import { CrossIcon } from 'lucide-react';
 import { TiCancelOutline } from 'react-icons/ti';
 import { MdCancel, MdOutlineCancel } from 'react-icons/md';
-const subscription = '/Assets/subscription2.svg'
 
 const Benefits = [
   "🚚 Get all your rented items delivered free",
@@ -29,7 +28,11 @@ const Subscription = ({ plans,setIsSubscription,subscriptions }) => {
   const [displayRazorpay, setDisplayRazorpay] = useState(false);
   const [subscriptionPlanId, setSubscriptionPlanId] = useState(null);
   const [selectedPlanId, setSelectedPlanId] = useState(null);
+  const [subscription,setSubscription] = useState(null)
   const apiKey = "rzp_test_a4GiGqcTxFZlKT";
+
+
+
 
   const handleSubscriptionCheckout = async (planId) => {
     const payload = {
@@ -80,8 +83,36 @@ const Subscription = ({ plans,setIsSubscription,subscriptions }) => {
       setDisplayRazorpay(false);
     }
   };
+  const fetchSubscription=async()=>{
+    try {
+      console.log(subscriptionId)
+      const response=await axios.get(`${BASE_URL}/subscription-plans/plan/${subscriptionId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(response)
+      if(response?.data?.data != null){
+        Cookies.set("hasSubscription", response?.data?.data?._id, { expires: 7, secure: true, sameSite: "Strict" });
+        Cookies.set("SubscriptionId", response?.data?.data?.isActive, { expires: 7, secure: true, sameSite: "Strict" });
+        setSubscription(response?.data?.data)
 
-
+      }
+      console.log(response.data.data,"response in subscription")
+      
+    } catch (error) {
+      console.log(error,"error in subscription")
+      
+    }
+  }
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchSubscription();
+    };
+  
+    fetchData();
+  }, [subscriptionId]);
+  console.log(subscriptions,subscription,"subscription from file")
 
   return (
     <>
@@ -90,7 +121,7 @@ const Subscription = ({ plans,setIsSubscription,subscriptions }) => {
 
 <div className="flex justify-center items-center mb-4">
   <div className="bg-orange-100 p-3 rounded-full">
-    <img src={subscription} alt='subscription' className='' />
+    <img src='/Assets/subscription2.svg' alt='subscription' className='' />
   </div>
 </div>
 <h2 className="text-xl text-center font-bold">RntOut Subscription</h2>
@@ -132,7 +163,7 @@ const Subscription = ({ plans,setIsSubscription,subscriptions }) => {
 
         <div className="flex justify-center items-center mb-4">
           <div className="bg-orange-100 p-3 rounded-full">
-            <img src={subscription} alt='subscription' className='' />
+            <img src='/Assets/subscription2.svg' alt='subscription' className='' />
           </div>
         </div>
         <h2 className="text-xl text-center font-bold">RntOut Subscription</h2>

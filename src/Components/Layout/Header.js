@@ -343,7 +343,7 @@ function Header() {
         <LocationSearch />
 {/*  */}
           {/* Distance Selection */}
-          {address?.suburb && <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 cursor-pointer">
+           <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 cursor-pointer">
             <Image src={nearby} alt="location" width={18} height={18} />
             <select className="bg-transparent text-sm cursor-pointer md:mr-3" value={selectedDistance} onChange={handleDistanceChange}>
               <option className="cursor-pointer" value="20">20 km</option>
@@ -353,7 +353,7 @@ function Header() {
               <option value="60">60 km</option>
               <option value="100">100 + km</option>
             </select>
-          </div>}
+          </div>
 
 
           {(name || token) && (
