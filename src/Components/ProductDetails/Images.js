@@ -24,7 +24,7 @@ export const Images = ({ product, productId,variant}) => {
     try {
       const response = await axios.post(
         `${BASE_URL}/favorites/add`,
-        { variantId: String(productId) },
+        { variantId:(productId) },
         {
           headers: {
             Authorization: `Bearer ${token}`,
