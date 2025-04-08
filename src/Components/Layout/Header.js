@@ -354,7 +354,7 @@ function Header() {
               <option value="60">60 km</option>
               <option value="100">100 + km</option>
             </select>
-          </div>}
+          </div>
 
 
           {(name || token) && (
