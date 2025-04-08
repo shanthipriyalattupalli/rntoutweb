@@ -99,7 +99,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                   className="text-blue-500 font-semibold sm:px-4 px-0 rounded items-left text-left"
                   onClick={() => handleShowTracking(item)}
                 >
-                  {expandedSubOrderIds === item._id ? (
+                  {expandedSubOrderIds.includes(item._id) ? (
                     <>Hide Tracking &#x25BE;</> // Down arrow
                   ) : (
                     <>Show Tracking &#x276F;</> // Side arrow
