@@ -22,6 +22,7 @@ const Products = ({categories}) => {
     const [categoryProducts, setCategoryProducts] = useState({});
       const [isLoading, setIsLoading] = useState(true);
       const [categoryId,setCategoryId]=useState(null);
+      console.log(categoryId,"categorId in home")
       const latitude = Cookies.get("latitude");
       const longitude = Cookies.get("longitude");
       const distance = Cookies.get("selectedDistance")

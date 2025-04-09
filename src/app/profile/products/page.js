@@ -76,7 +76,7 @@ export default function Dashboard({ products }) {
           id :productId
         }
       });
-      console.log(response,"c")
+      console.log(response,"response in product delter")
       fetchUserProducts();
     } catch (error) {
       console.error("Error deleting product:", error);

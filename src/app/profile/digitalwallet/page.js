@@ -59,7 +59,7 @@ const WithdrawalRequest = async() => {
           .map((transaction) => {
             const duration = formatDistanceToNow(new Date(transaction.createdAt), { addSuffix: true });
             return(
-            <div key={transaction.id} className="flex items-center justify-between border border-[#E1E6EF] p-4 rounded-lg shadow-sm">
+            <div key={transaction._id} className="flex items-center justify-between border border-[#E1E6EF] p-4 rounded-lg shadow-sm">
               <div>
                 <h3 className="text-gray-800 font-semibold">{transaction.productId}</h3>
                 <p className="text-gray-500 text-sm">{transaction.productId} • Duration: {duration}</p>

@@ -123,11 +123,11 @@ const ProductItem = ({ product }) => {
         variant_id: productId,
         quantity: 1,
         rentalPeriod: selectedRentalPeriod,
-        startDate:  new Date()
+
       };
       console.log(payload,"payload in card")
 
-      const response = await axios.post(`${BASE_URL}/cart/new-add`, payload, {
+      const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

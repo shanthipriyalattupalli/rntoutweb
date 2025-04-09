@@ -407,7 +407,7 @@ const CartPage = () => {
       setDisplayRazorpay(false);
       // router.push("/profile/orders")
       // await handleContinueClick(orderDetails);
-      setFormData(initialFormData);
+
     } else if (status === "cancelled") {
       setDisplayRazorpay(false);
     }

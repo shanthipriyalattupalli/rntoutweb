@@ -423,34 +423,36 @@ const MainContent = () => {
   };
 
 
-  const handleMapClick = async (event) => {
-    const lat = event.latLng.lat();
-    const lng = event.latLng.lng();
-
-    setFormData((prevData) => ({
-      ...prevData,
-      location: {
-        type: "Point", // Add default type if missing
-        coordinates: [lng, lat], // Correct order: [longitude, latitude]
-      },
-    }));
-
-    // Reverse geocode to get the address
-    try {
-      const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${MAP_API}`
-      );
-
-      if (response.data.results[0]) {
-        setFormData((prevData) => ({
-          ...prevData,
-          pickupAddress: response.data.results[0].formatted_address,
-        }));
+   const fetchAddress = async (lat, lng) => {
+      try {
+        const response = await axios.get(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${MAP_API}`
+        );
+  
+        console.log(response,"maps address")
+  
+        if (response.data.results[0]) {
+          setFormData((prev) => ({
+            ...prev,
+            pickupAddress: response.data.results[0].formatted_address,
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching address:", error);
       }
-    } catch (error) {
-      console.error("Error fetching address:", error);
-    }
-  };
+    };
+
+    const handleMapClick = async (event) => {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+  
+      setFormData((prev) => ({
+        ...prev,
+        location: { type: "Point", coordinates: [lng, lat] },
+      }));
+  
+      fetchAddress(lat, lng);
+    };
 
   console.log(formData, "formdata")
 

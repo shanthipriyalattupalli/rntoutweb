@@ -183,7 +183,7 @@ const LocationSearch = () => {
 
   return (
     <div className="location-container">
-      <div style={{ display: "flex", gap: "14px", width: "80%" }}>
+      <div style={{ display: "flex", gap: "14px", width: "100%" }}>
       <div className="flex items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 gap-2 ">
   <Image
     src="/Assets/location_fill.svg"

@@ -46,6 +46,7 @@ const MainContent = () => {
     rentalAvailability: "",
     stockQuantity: "",
     pickupAddress: "",
+    rentalPrice:""
   });
 
 
@@ -456,6 +457,9 @@ const MainContent = () => {
   console.log(formData, "formdata");
 
   const handlePublishProduct = async () => {
+
+
+    console.log(formData)
     setErrors({
       title: "",
       description: "",
@@ -464,6 +468,7 @@ const MainContent = () => {
       rentalAvailability: "",
       stockQuantity: "",
       pickupAddress: "",
+      rentalPrice:""
     });
 
     let newErrors = {};
@@ -494,16 +499,24 @@ const MainContent = () => {
       newErrors.stockQuantity = "This field is required";
       missingFields.push("Stock Quantity");
     }
-    if (!formData.pickupAddress.trim()) {
+    if (!formData.pickupAddress ) {
       newErrors.pickupAddress = "This field is required";
       missingFields.push("Pickup Address");
     }
-
+    const allPricesAreZero = formData.rentalPrice.every(
+      (item) => !item.price || Number(item.price) === 0
+    );
+    
+    if (allPricesAreZero) {
+      newErrors.rentalPrice = "At least one price must be greater than 0";
+      missingFields.push("rentalPrice");
+    }
 
     // Check if errors exist
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-
+      console.log(newErrors)
+      console.log(missingFields)
       if (missingFields.length === Object.keys(newErrors).length) {
         // Show only one toast if everything is empty
         toast.error("Please fill all required fields.", { autoClose: 3000 });
@@ -515,6 +528,8 @@ const MainContent = () => {
       }
       return;
     }
+    console.log(newErrors)
+    console.log(missingFields)
 
     // ✅ If No Errors, Proceed with API Call
     try {
@@ -904,7 +919,9 @@ const MainContent = () => {
         <div className='form-section4'>
           <h2 className='ba-in'>
             PRICING INFO{" "}
-            {/* <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span> */}
+            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+          {errors.rentalPrice && <p className="text-red-500 text-sm">{errors.rentalPrice}</p>}
+
           </h2>
           <div className='pricing-section'>
             {[
