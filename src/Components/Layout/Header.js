@@ -107,6 +107,24 @@ function Header() {
 
     } catch (error) {
       console.error(error);
+      if (error.response && error.response.status === 401) {
+        Swal.fire({
+          title: 'Session Expired',
+          text: 'Your session has expired. Please log in again.',
+          icon: 'warning',
+          confirmButtonText: 'ok',
+          allowOutsideClick: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Clear all cookies
+            document.cookie.split(";").forEach(cookie => {
+              const name = cookie.split("=")[0].trim();
+              document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+            });
+            window.location.reload();
+          }
+        })
+      }
     }
   };
 

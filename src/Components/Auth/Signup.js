@@ -112,7 +112,7 @@ const Signup = ({ setIsRegisterOpen }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("respons of profile submite",response.data)
-      const user = response.data.user;
+      const user = response?.data?.user;
       const profiles = response.data.profile;
 
       toast.success("Profile updated successfully!");
@@ -122,8 +122,8 @@ const Signup = ({ setIsRegisterOpen }) => {
       localStorage.setItem("profilePic", profile.profilePic || profile_avatar);
 
       Cookies.set("gender", profiles.gender, { expires: 7, secure: true, sameSite: "Strict" });
-      Cookies.set("userName", user.name, { expires: 7, secure: true, sameSite: "Strict" });
-      Cookies.set("userEmail", user.email, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userName", user?.name, { expires: 7, secure: true, sameSite: "Strict" });
+      Cookies.set("userEmail", user?.email, { expires: 7, secure: true, sameSite: "Strict" });
       Cookies.set("profilePic", profile.profilePic || profile_avatar, { expires: 7, secure: true, sameSite: "Strict" });
 
       router.push("/");

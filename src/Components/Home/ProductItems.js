@@ -261,13 +261,13 @@ const ProductItem = ({ product }) => {
               </>
             ) : (
               <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
-                <Image
+{ images[0] &&    <Image
                   src={images[0]}
                   alt={title}
                   className="w-full h-[220px] object-cover rounded-t-[12px]"
                   width={308}
                   height={220}
-                />
+                />}
               </Link>
             )}
 

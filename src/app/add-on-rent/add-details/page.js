@@ -10,18 +10,18 @@ import { FiPlus, FiTrash } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-// import { MAP_API } from '../../../services/GMap';
+import { MAP_API } from '../../../services/GMap';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 const upload = "/Assets/upload.png";
 const emptyproducts = "/Assets/emptyproducts.svg";
-
+import Cookies from "js-cookie";
 
 
 const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  const MAP_API = process.env.NEXT_PUBLIC_MAP_API_KEY;
+  // const MAP_API = process.env.NEXT_PUBLIC_MAP_API_KEY;
   console.log(MAP_API);
   const router = useRouter();
   const [products, setProducts] = useState([]);
@@ -53,8 +53,9 @@ const MainContent = () => {
   const categoryId = (typeof window !== 'undefined') ? localStorage.getItem("selectedcategoryId") : null;
   const subCategoryId = (typeof window !== 'undefined') ? localStorage.getItem("selectedSubCategoryId") : null;
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
-  const latitude = (typeof window !== 'undefined') ? parseFloat(localStorage.getItem("latitude") || "0") : null;
-  const longitude = (typeof window !== 'undefined') ? parseFloat(localStorage.getItem("longitude") || "0") : null;
+  const latitude = Cookies.get("latitude");
+  const longitude = Cookies.get("longitude");
+
 
 
   useEffect(() => {
@@ -423,6 +424,8 @@ const MainContent = () => {
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${MAP_API}`
       );
 
+      console.log(response,"maps address")
+
       if (response.data.results[0]) {
         setFormData((prev) => ({
           ...prev,
@@ -495,6 +498,7 @@ const MainContent = () => {
       newErrors.pickupAddress = "This field is required";
       missingFields.push("Pickup Address");
     }
+
 
     // Check if errors exist
     if (Object.keys(newErrors).length > 0) {

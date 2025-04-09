@@ -102,6 +102,11 @@ const fetchBlogs = async () => {
 
 
 
+// app/page.tsx
+export const metadata = {
+  title: "rntout",
+  description: "Welcome to my awesome website!",
+};
 
 
 
@@ -149,4 +154,10 @@ const Home = async () => {
 }
 
 export default Home;
+
+
+
+
+
+
 

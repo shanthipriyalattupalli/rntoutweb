@@ -35,11 +35,13 @@ const fetchProductById = async (productId, token,userId) => {
 
   try {
     const response = await axios.get(
-      `${BASE_URL}/variants/${productId}?includeRelated=true`,
+      `${BASE_URL}/variants/${productId}`,
       {
         params:{
+          includeRelated: true,
           userId:userId
-        }
+        },  
+        timeout: 10000, 
       }
     );
     console.log(response.data, "response in product")
