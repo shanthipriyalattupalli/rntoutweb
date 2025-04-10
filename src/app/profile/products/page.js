@@ -82,6 +82,8 @@ export default function Dashboard({ products }) {
       console.error("Error deleting product:", error);
     }
   }
+
+  
   const fetchProductById = async (productId) => {
     try {
         const response = await axios.get(`${BASE_URL}/variants/${productId}?includeRelated=false`);

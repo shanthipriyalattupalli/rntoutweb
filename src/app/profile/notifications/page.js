@@ -14,6 +14,7 @@ const Notifications = () => {
   const fetchNotifications = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/notifications/user/${userId}`);
+      console.log(response.data,"response of notifications")
       setNotifications(response.data);
     } catch (error) {
       console.error("Error fetching notifications:", error);

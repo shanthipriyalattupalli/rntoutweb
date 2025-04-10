@@ -75,7 +75,7 @@ export default function BusinessInformation2() {
   }
   const [formData, setFormData] = useState(initialFormData);
 
-
+console.log(formData,"formdata")
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const keys = name.split(".");
@@ -151,6 +151,23 @@ export default function BusinessInformation2() {
 
   };
 
+
+  const handleRemoveImage = (indexToRemove) => {
+    // Remove the preview image
+    const updatedPreviews = previewImages.filter((_, index) => index !== indexToRemove);
+  
+    // Remove the file from formData.bannerImages
+    const updatedFiles = formData.bannerImages.filter((_, index) => index !== indexToRemove);
+  
+    // Update state
+    setPreviewImages(updatedPreviews);
+    setFormData((prev) => ({
+      ...prev,
+      bannerImages: updatedFiles,
+    }));
+  };
+
+  
 
   const handleBusinessInformation = async () => {
 
@@ -318,226 +335,58 @@ export default function BusinessInformation2() {
           <div className="bi2-main-div">
 
 
-            {/* Business Details Section */}
-            <div className="section">
-              <div className='address-bar'>
-                <div className="input-item">
-                  <label htmlFor="business-name">Business Name
-                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-
-                  </label>
-                  <input id="business-name"
-                    type="text"
-                    placeholder="Enter name"
-                    className='full-width'
-                    name='businessName'
-                    value={formData?.businessName}
-                    onChange={handleInputChange}
-                     />
-                  {errorMessage.businessName && <p className="text-red-500 text-sm">{errorMessage.businessName}</p>}
-
-                </div>
-              </div>
+          <div className="section">
+              <h3 className="section-title">OWNER INFO</h3>
               <div className="input-group">
-                <div className="input-item">
-                  <label htmlFor="store-name">Store Name
+{     userName !="undefined" &&           <div className="input-item">
+                  <label htmlFor="accountNumber">Owner Name
                     <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
 
                   </label>
-                  <input id="store-name"
+                  <input id="accountNumber"
                     type="text"
-                    placeholder="Enter name"
-                    name='storeName'
-                    value={formData?.storeName}
-                    onChange={handleInputChange}
+                    placeholder="Enter code"
+                    value={userName}
+                  disabled
                      />
-                  {errorMessage.storeName && <p className="text-red-500 text-sm">{errorMessage.storeName}</p>}
+          
 
-                </div>
-                <div className="input-item">
-                  <label htmlFor="mobile-number">Mobile Number
+                </div>}
+
+   { userEmail !="undefined" &&            <div className="input-item">
+                  <label htmlFor="accountNumber">Owner Email Address
                     <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
 
                   </label>
-                  <input id="mobile-number"
-                    type="number"
+                  <input id="accountNumber"
+                    type="text"
+                    placeholder="Enter code"
+                    value={userEmail}
+                  disabled
+                     />
+          
+
+                </div>}
+
+                <div className="input-item">
+                  <label htmlFor="bank-mobile">Owner Mobile Number
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
+                  <input id="bank-mobile"
+                    type="text"
                     placeholder="Enter mobile number"
-                    className={`${errorMessage ? "border-red-500" : ""}`}
-                    name='contactPhone'
-                    value={formData?.contactPhone}
-                    onChange={handleInputChange}
+                    value="83748019534"
+                    disabled
                      />
-                  {errorMessage.contactPhone && <p className="text-red-500 text-sm">{errorMessage.contactPhone}</p>}
-
-                </div>
-
-                <div className="input-item">
-                  <label htmlFor="email-address">Email Address
-                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-
-                  </label>
-                  <input id="email-address"
-                    type="email"
-                    placeholder="Enter email address"
-                    name='contactEmail'
-                    value={formData?.contactEmail}
-                    onChange={handleInputChange}
-                     />
-                  {errorMessage.contactEmail && <p className="text-red-500 text-sm">{errorMessage.contactEmail}</p>}
-
                 </div>
               </div>
-              <div className='address-bar'>
-                <div className="input-item">
-                  <label htmlFor="Address">Address</label>
-                  <input type="text"
-                    placeholder="Business-address"
-                    className="full-width"
-                    name='businessAddress.full'
-                    value={formData?.businessAddress.full}
-                    onChange={handleInputChange}
-                     />
-                </div>
-
-                <label className="checkbox-label">
-                  <input type="checkbox" />
-                  Same address as the store
-                </label>
-              </div>
-
-              <div className='address-bar'>
-                <div className="input-item ">
-                  <label htmlFor="store-description">Store Description
-                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-
-                  </label>
-                  <textarea id="store-description"
-                    placeholder="Enter description"
-                    className="full-width"
-                    rows={5}
-                    name='storeDescription'
-                    value={formData?.storeDescription}
-                    onChange={handleInputChange}
-                    ></textarea>
-                  {errorMessage.storeDescription && <p className="text-red-500 text-sm">{errorMessage.storeDescription}</p>}
-
-                </div></div>
             </div>
 
 
-            {/* Basic Info Section */}
-            <div className="section">
-              <h3 className="section-title">Basic Info    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span></h3>
- 
-              <div className="basic-info">
-                <div className="icon-text">
-                  <div className="icon">
-                    {/* Display uploaded image preview if available */}
-                    {previewProfileImage ? (
-                      <img src={previewProfileImage} alt="Profile Preview" className="w-[7rem] h-[5.5rem] rounded-full" />
-                    ) : formData?.profileImage ? (
-                      <img src={formData?.profileImage} alt="Default Icon" className="w-[7rem] h-[5.5rem] rounded-full" />
-                    ) : (
-                      <div className="rounded-full">
-                        <img src={storeimage} alt="Default Icon" className="ml-2  px-4 py-5" />
-                      </div>
-                    )}
-
-
-                  </div>
-
-                </div>
-
-                <div className="icon-button">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files[0];
-                      if (file) {
-                        const imageUrl = URL.createObjectURL(file);
-                        setPreviewProfileImage(imageUrl);
-
-                        setFormData((prev) => ({
-                          ...prev,
-                          profileImage: file,
-                        }));
-                      }
-                    }}
-                    style={{ display: "none" }}
-                    id="upload-profile-image"
-                  />
-
-                  {/* Button to trigger image upload */}
-                  <button
-                    className="edit-image-button"
-                    onClick={() => document.getElementById("upload-profile-image").click()}
-                  >
-                    Upload Image
-                  </button>
-                </div>
-
-              </div>
-              {errorMessage.profileImage && <p className="text-red-500 text-sm my-4">{errorMessage.profileImage}</p>}
-              <h4 className="info-title">Advertisement Banner</h4>
-
-              <div className="banner-upload">
-                <div className="bi-file-upload">
-                  <div className="upload-icon">
-                    <img src="/upload-file.svg" alt="" className="icon" /> {/* Use any upload icon here */}
-                  </div>
-                  <p className="image-direction">
-                    Drag your file(s) or{" "}
-                    <span
-                      className="browse-link"
-                      onClick={handleIconClick}
-                      
-                    >
-                      browse
-                    </span>
-                  </p>
-                  <p className="image-format">Image format will be JPEG, PNG, JPG</p>
-                  <input
-                    type="file"
-                    id="fileInput"
-                    ref={fileInputRef}
-                    accept=".jpg,.jpeg,.png"
-                    multiple
-                    // style={{ display: "none" }}
-                    onChange={handleFileUpload}
-                    // 
-                    className="ml-28"
-                  />
-
-                  {/* Preview uploaded files */}
-                  <div className='image-preview-container' style={{alignSelf:"flex-start"}}>
-                    {previewImages.map((src, index) => (
-                      <div key={index} className='image-preview-box'>
-                        <img
-                          src={src}
-                          alt={`Preview ${index + 1}`}
-                          className='preview-image'
-                        />
-                      </div>
-                    ))}
-
-                  </div>
-
-                </div>
-
-
-
-              </div>
-              <p className="upload-note">
-                Kindly make sure to upload a minimum of 1 image. <span className="icon">&#128247;</span>
-              </p>
-
-            </div>
-
-
-            {/* Bank Details Section */}
-            <div className="section">
-              <h3 className="section-title">Bank Details</h3>
+{/* Bank details*/}
+          <div className="section">
+              <h3 className="section-title">BANK DETAILS</h3>
               <div className="input-group">
                 <div className="input-item">
                   <label htmlFor="bank-select">Bank
@@ -617,6 +466,245 @@ export default function BusinessInformation2() {
                 </div>
               </div>
             </div>
+
+            {/* Business Details Section */}
+
+
+
+            {/* Basic Info Section */}
+            <div className="section">
+              <h3 className="section-title">BASIC INFO    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span></h3>
+ 
+              <div className="basic-info">
+                <div className="icon-text">
+                  <div className="icon">
+                    {/* Display uploaded image preview if available */}
+                    {previewProfileImage ? (
+                      <img src={previewProfileImage} alt="Profile Preview" className="w-[5rem] h-[5.5rem] rounded-full" />
+                    ) : formData?.profileImage ? (
+                      <img src={formData?.profileImage} alt="Default Icon" className="w-[5rem] h-[5.5rem] rounded-full" />
+                    ) : (
+                      <div className="rounded-full">
+                        <img src={storeimage} alt="Default Icon" className="p-[20px]" />
+                      </div>
+                    )}
+
+
+                  </div>
+
+                </div>
+
+                <div className="icon-button">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        const imageUrl = URL.createObjectURL(file);
+                        setPreviewProfileImage(imageUrl);
+
+                        setFormData((prev) => ({
+                          ...prev,
+                          profileImage: file,
+                        }));
+                      }
+                    }}
+                    style={{ display: "none" }}
+                    id="upload-profile-image"
+                  />
+
+                  {/* Button to trigger image upload */}
+                  <button
+                    className="edit-image-button"
+                    onClick={() => document.getElementById("upload-profile-image").click()}
+                  >
+                    Upload Image
+                  </button>
+                </div>
+
+              </div>
+              {errorMessage.profileImage && <p className="text-red-500 text-sm my-4">{errorMessage.profileImage}</p>}
+              <h4 className="info-title">Advertisement Banner</h4>
+
+              <div className="banner-upload">
+                <div className="bi-file-upload">
+                  <div className="upload-icon">
+                    <img src="/upload-file.svg" alt="" className="icon" /> {/* Use any upload icon here */}
+                  </div>
+                  <p className="image-direction">
+                    Drag your file(s) or{" "}
+                    <span
+                      className="browse-link"
+                      onClick={handleIconClick}
+                      
+                    >
+                      browse
+                    </span>
+                  </p>
+                  <p className="image-format">Image format will be JPEG, PNG, JPG</p>
+                  <input
+                    type="file"
+                    id="fileInput"
+                    ref={fileInputRef}
+                    accept=".jpg,.jpeg,.png"
+                    multiple
+                    // style={{ display: "none" }}
+                    onChange={handleFileUpload}
+                    // 
+                    className="ml-28"
+                  />
+
+                  {/* Preview uploaded files */}
+                  <div className='image-preview-container' style={{ alignSelf: "flex-start" }}>
+  {previewImages.map((src, index) => (
+    <div key={index} className='image-preview-box' style={{ position: 'relative' }}>
+      <img
+        src={src}
+        alt={`Preview ${index + 1}`}
+        className='preview-image'
+      />
+      <button
+        onClick={() => handleRemoveImage(index)}
+        style={{
+          position: 'absolute',
+          top: '5px',
+          right: '5px',
+          border: '1px solid #ccc',
+          borderRadius: '50%',
+          cursor: 'pointer',
+          padding: '2px 5px',
+          fontSize: '12px',
+        }}
+        title="Remove"
+        className='bg-red-600 text-white'
+      >
+        ✕
+      </button>
+    </div>
+  ))}
+</div>
+
+
+                </div>
+
+
+
+              </div>
+              <p className="upload-note">
+                Kindly make sure to upload a minimum of 1 image. <span className="icon">&#128247;</span>
+              </p>
+
+            </div>
+
+            <div className="section1">
+              <div className='address-bar'>
+                <div className="input-item">
+                  <label htmlFor="business-name">Business Name
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
+                  <input id="business-name"
+                    type="text"
+                    placeholder="Enter name"
+                    className='full-width'
+                    name='businessName'
+                    value={formData?.businessName}
+                    onChange={handleInputChange}
+                     />
+                  {errorMessage.businessName && <p className="text-red-500 text-sm">{errorMessage.businessName}</p>}
+
+                </div>
+              </div>
+              <div className="input-group">
+                <div className="input-item">
+                  <label htmlFor="store-name">Store Name
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
+                  <input id="store-name"
+                    type="text"
+                    placeholder="Enter name"
+                    name='storeName'
+                    value={formData?.storeName}
+                    onChange={handleInputChange}
+                     />
+                  {errorMessage.storeName && <p className="text-red-500 text-sm">{errorMessage.storeName}</p>}
+
+                </div>
+                <div className="input-item">
+                  <label htmlFor="mobile-number">Mobile Number
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
+                  <input id="mobile-number"
+                    type="number"
+                    placeholder="Enter mobile number"
+                    className={`${errorMessage ? "border-red-500" : ""}`}
+                    name='contactPhone'
+                    value={formData?.contactPhone}
+                    onChange={handleInputChange}
+                     />
+                  {errorMessage.contactPhone && <p className="text-red-500 text-sm">{errorMessage.contactPhone}</p>}
+
+                </div>
+
+                <div className="input-item">
+                  <label htmlFor="email-address">Email Address
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
+                  <input id="email-address"
+                    type="email"
+                    placeholder="Enter email address"
+                    name='contactEmail'
+                    value={formData?.contactEmail}
+                    onChange={handleInputChange}
+                     />
+                  {errorMessage.contactEmail && <p className="text-red-500 text-sm">{errorMessage.contactEmail}</p>}
+
+                </div>
+              </div>
+              <div className='address-bar'>
+                <div className="input-item">
+                  <label htmlFor="Address">Address</label>
+                  <input type="text"
+                    placeholder="Business-address"
+                    className="full-width"
+                    name='businessAddress.full'
+                    value={formData?.businessAddress.full}
+                    onChange={handleInputChange}
+                     />
+                </div>
+
+                {/* <label className="checkbox-label">
+                  <input type="checkbox" />
+                  Same address as the store
+                </label> */}
+              </div>
+
+              <div className='address-bar'>
+                <div className="input-item ">
+                  <label htmlFor="store-description">Store Description
+                    <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                  </label>
+                  <textarea id="store-description"
+                    placeholder="Enter description"
+                    className="full-width"
+                    rows={5}
+                    name='storeDescription'
+                    value={formData?.storeDescription}
+                    onChange={handleInputChange}
+                    ></textarea>
+                  {errorMessage.storeDescription && <p className="text-red-500 text-sm">{errorMessage.storeDescription}</p>}
+
+                </div></div>
+            </div>
+
+
+            {/* Bank Details Section */}
+
 
 
             <div className="businness-submit-button">

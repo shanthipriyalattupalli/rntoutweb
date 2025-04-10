@@ -138,6 +138,13 @@
     text-decoration: none;
     color: #F48003;
 }
+.return-order{
+    cursor: pointer;
+    text-decoration: underline;
+    color:rgba(224, 45, 60, 1);
+    font-size: 12px;
+    font-weight: 500;
+}
 
 .order-actions {
     min-height: 20px;

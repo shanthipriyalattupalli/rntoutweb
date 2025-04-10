@@ -51,6 +51,7 @@ export default function Orders() {
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
+  console.log(orderItems,"orderitems")
   const statusClass = "Completed" ? "completed" : "in-progress";
   const [trackingStatuses, setTrackingStatuses] = useState([]);
 const [selectedSubOrder, setSelectedSubOrder] = useState(null);
@@ -194,11 +195,11 @@ orderItems.length > 0 ? orderItems.map((orderItem,index) => (
             {/* <a href="#" class="cancel-order">
               Cancel Order
             </a> */}
-            {trackingStatuses[index]==="delivered" &&
+            {/* {trackingStatuses[index]==="delivered" &&
                  <a href="#" class="download-invoice">
                  Download Invoice seeing {trackingStatuses[index]}
                 </a>
-              }
+              } */}
 
           </div>
           <div class="order-actions-price-status">
@@ -262,7 +263,7 @@ orderItems.length > 0 ? orderItems.map((orderItem,index) => (
                   className="product-image"
                 />
 </div>
-                <div class="product-info">
+                <div className="product-info">
                   <h4>
                  {item.variantId?.title}
                   </h4>
@@ -283,11 +284,11 @@ orderItems.length > 0 ? orderItems.map((orderItem,index) => (
             {/* <a href="#" class="cancel-order">
               Cancel Order
             </a> */}
-            {trackingStatuses[index]==="delivered" &&
+            {/* {trackingStatuses[index]==="delivered" &&
                  <a href="#" class="download-invoice">
                  Download Invoice
                 </a>
-              }
+              } */}
             {(order.orderStatus === "placed") && (
                   <a
   className="inline-flex w-full sm:w-auto items-center gap-1.5 justify-start no-underline text-red-500 font-medium cursor-pointer text-left"

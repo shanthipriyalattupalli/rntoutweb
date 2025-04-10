@@ -363,11 +363,13 @@ export default function BusinessInformation2() {
                       </div>
                     </div>
                     <p className="text-gray-700 text-sm mt-2">{formData?.storeDescription}</p>
+                    {formData?.bankBranchAddress?.full && <strong className="flex mt-4">Address :</strong>}
+                    {formData?.bankBranchAddress?.full && <p className="flex items-center gap-2 mt-2 text-sm"><FaMapMarkerAlt className="text-gray-500" />{formData?.businessAddress?.full}</p>}
                   </div>
                 </div>
 
                 {/* Advertisement Banner */}
-                <div className="mb-2 p-6 bg-white">
+{ formData.bannerImages.length >0 &&               <div className="mb-2 p-6 bg-white">
                   <h3 className="text-md justify-center pt-6 font-semibold text-yellow-600 ">ADVERTISEMENT BANNER</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
                     {formData.bannerImages.map((src, index) => (
@@ -379,7 +381,7 @@ export default function BusinessInformation2() {
 />
                     ))}
                   </div>
-                </div>
+                </div>}
               </div>
             </div>
           </div>

@@ -11,8 +11,11 @@ export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep 
                 }
                 return true; 
               })
+
+              
               .map((step, index, filteredSteps) => {
                 const currentStep = getCurrentStep(selectedSubOrder.orderStatus);
+                console.log(currentStep,"curretn step")
                 const isCompleted = Array.isArray(currentStep)
                   ? currentStep.includes(index)
                   : index <= currentStep;
