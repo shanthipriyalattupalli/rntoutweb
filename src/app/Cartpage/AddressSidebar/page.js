@@ -7,6 +7,7 @@ import '../../../styles/AddressSidebar.css';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
 
 const edit = "/Assets/editicon.svg";
@@ -25,7 +26,8 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
 
-  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const token =Cookies.get("userToken");
+  console.log(token)
 
   useEffect(() => {
     if (addresses.length > 0) {
@@ -262,6 +264,24 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
     }
   };
 
+  const handleSelectAddress = async (addressId) => {
+    console.log(addressId,"jghfbn")
+    try {
+      const response = await axios.patch(`${BASE_URL}/profile/selected/${addressId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          addressId: addressId,
+        },
+      });
+  
+      console.log(response, "response of selecting address");
+    } catch (error) {
+      console.log(error, "error in selecting");
+    }
+  };
+  
 
   const handleDeleteAddress = async (addressId) => {
     try {
@@ -533,8 +553,11 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
                             type="checkbox"
                             checked={selectedAddressIndex === index}
                             onChange={() => {
+                              handleSelectAddress(address._id)
                               setSelectedAddressIndex(index);
+
                               onAddressSelect(address);
+
                             }}
                             className="peer hidden"
                           />

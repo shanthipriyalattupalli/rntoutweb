@@ -93,8 +93,8 @@ export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep,
         </div>
 
 
-       {selectedSubOrder?.returnStatus === "return Placed" && <span className="text-[16px] font-[500]">Return Status</span>}
-{ selectedSubOrder?.returnStatus === "return Placed" &&       <div className="flex flex-col items-center py-6 relative md:flex-row md:justify-between">
+       {selectedSubOrder?.returnStatus === "return-approved" && <span className="text-[16px] font-[500]">Return Status</span>}
+{ selectedSubOrder?.returnStatus === "return-approved" &&       <div className="flex flex-col items-center py-6 relative md:flex-row md:justify-between">
           <div className="flex flex-col md:flex-row md:items-center md:space-x-6 w-full">
             {returnSteps
               .filter((step, index) => {
