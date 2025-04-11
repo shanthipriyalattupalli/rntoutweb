@@ -44,6 +44,7 @@ const CartPage = () => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [discountedPrice, setDiscountedPrice] = useState(0);
   const [couponcode, setCouponCode] = useState("");
+  const [delivery,setIsDelivery]=useState({})
   const [addressId, setAddressId] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [selectedCartItems, setSelectedCartItems] = useState([]);
@@ -56,6 +57,25 @@ const CartPage = () => {
   const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
 
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+
+
+const fetchDeliveryCharges=async()=>{
+  try {
+    const response=await axios.get(`${BASE_URL}/cart/calculate-delivery-charges`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setIsDelivery(response.data);
+    console.log(response.data,"response of delivery charges")
+  } catch (error) {
+    console.log(error,"error in fetching delivery charges")
+  }
+}
+
+useEffect(()=>{
+  fetchDeliveryCharges();
+},[])
 
 
 
@@ -83,6 +103,7 @@ const CartPage = () => {
 
       fetchCartDetails();
       toast.success(response.data.message);
+      fetchDeliveryCharges()
     } catch (error) {
       console.error("Error updating cart item selection:", error);
       toast.error("Error updating cart item selection.");
@@ -581,6 +602,7 @@ const CartPage = () => {
                   type="checkbox"
                   defaultChecked
                   className="w-5 h-5 accent-red-500"
+               
                 />
                 <h4>{selectedAddress.name}</h4>
                 <p>|</p>
@@ -597,6 +619,7 @@ const CartPage = () => {
           onClose={handleAddressToggle}
           onAddressSelect={setSelectedAddress}
           addressId={handleAddress}
+          onAddressSelectedSuccess={fetchDeliveryCharges}
         />
 
         <div className='summary-address'>
@@ -686,10 +709,14 @@ const CartPage = () => {
           {/* Cost Breakdown (Hidden by Default) */}
           {isOpen && (
             <div className="mt-4 space-y-2 text-gray-700">
-              {/* <div className="flex justify-between">
-                <span>Total Rent</span>
-                <span className="font-medium">{totalPrice}</span>
-              </div> */}
+              <div className="flex justify-between">
+                <span>Total</span>
+                <span className="font-medium">₹ {discountedPrice ? discountedPrice : totalPrice}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Delivery charges</span>
+                <span className="font-medium">+{delivery.totalDeliveryCharges}</span>
+              </div>
               {/* <div className="flex justify-between">
                 <span>Discount Price</span>
                 <span className="font-medium">-{disAmount}</span>
@@ -709,7 +736,7 @@ const CartPage = () => {
               </div> */}
               <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
-                <span className="text-black">₹ {discountedPrice ? discountedPrice : totalPrice}</span>
+                <span className="text-black">₹ {totalPrice+delivery.totalDeliveryCharges}</span>
               </div>
             </div>
           )}

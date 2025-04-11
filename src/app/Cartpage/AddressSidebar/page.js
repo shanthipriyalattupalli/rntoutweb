@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 const edit = "/Assets/editicon.svg";
 const emptyaddress = "/Assets/emptyaddress.svg";
 
-const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
+const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId,onAddressSelectedSuccess }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selected, setSelected] = useState("Home");
@@ -267,14 +267,17 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId }) => {
   const handleSelectAddress = async (addressId) => {
     console.log(addressId,"jghfbn")
     try {
-      const response = await axios.patch(`${BASE_URL}/profile/selected/${addressId}`, {
+      const response = await axios.patch(`${BASE_URL}/profile/selected/${addressId}`,{}, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "content-type":"application/json"
         },
         params: {
           addressId: addressId,
         },
       });
+      onAddressSelectedSuccess?.();
+      onClose();
   
       console.log(response, "response of selecting address");
     } catch (error) {
