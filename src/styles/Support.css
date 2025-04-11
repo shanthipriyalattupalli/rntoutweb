@@ -11,7 +11,22 @@
     flex-direction: column;
     justify-content: space-between;
 }
+.help-content{
 
+margin-bottom: 120px;
+    
+}
+.support-content{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    border: 1px solid gray;
+    border-radius: 20px;
+    width: 50%;
+    margin-left: 20%;
+    font-size: 12px;
+    font-weight: 500;
+}
 .help-header h2 {
     font-size: 16px;
     font-weight: 600;
@@ -26,9 +41,16 @@
 }
 
 .welcome-section {
-    text-align: center;
+    justify-content: center;
+    /* text-align: center; */
     margin-bottom: 20px;
 }
+.welcome-section h3{
+text-align: center;
+}
+.welcome-section p{
+    text-align: center;
+    }
 .welcome-section img{
     margin-top: 20px;
     margin-left: 350px;
@@ -71,7 +93,7 @@
     /* border-radius: 8px; */
     padding: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 100px;
+    /* margin-top: 100px; */
 
 }
 

@@ -2,8 +2,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import '../../styles/Add.css';
+import Swal from "sweetalert2";
 import { MdCheckCircle } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 
 const CategoryGrid = () => {
@@ -11,8 +13,10 @@ const CategoryGrid = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedCategoryLabel, setSelectedCategoryLabel] = useState(""); 
+  const [isRenterInfo,setRenterInfo]=useState()
   const [error, setError] = useState("");
   const router = useRouter();
+  const token =Cookies.get("userToken")
   // Define background colors
   const categoryColors = [
     "#008A000D",
@@ -68,19 +72,56 @@ const CategoryGrid = () => {
   }, []);
 
 
- 
+ const fetchBusinessProfile=async()=>{
+  try {
+    const response=await axios.get(`${BASE_URL}/users/business/check`,{
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log(response.data,"response of business");
+    setRenterInfo(response.data.success)
+  } catch (error) {
+    console.log(error,"error in business");
+         if (error.response && error.response.status === 401) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Login Required",
+                  text: "Please login to proceed with payment.",
+                });
+              }
+    
+  }
+ }
+
+ useEffect(()=>{
+  fetchBusinessProfile()
+ },[])
 
 
 
-  const handleNextClick = () => {
-    if (selectedCategoryLabel && selectedCategory) {
+  const handleNextClick =async () => {
+    if (selectedCategoryLabel && selectedCategory && isRenterInfo === "true") {
       const encodedLable = encodeURIComponent(selectedCategoryLabel);
       router.push(`/add-on-rent/add-details?name=${encodedLable}`);
     }
-     else {
-      setError("Please select a category before proceeding.");
+      else {
+            // Show confirmation alert before redirecting
+            const result = await Swal.fire({
+              title: "KYC Required",
+              text: "To add a rent an item, you need a renter info",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#d33",
+              cancelButtonColor: "#3085d6",
+              confirmButtonText: "clik OK to add renter info",
+              cancelButtonText: "Cancel",
+            });
+        
+            if (result.isConfirmed) {
+              router.push("/profile/Renter-information");
+            }
+          }
     }
-  };
+  
 
   return (
     <div className='category-container'>

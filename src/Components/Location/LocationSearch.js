@@ -5,6 +5,7 @@ import axios from "axios";
 import Image from "next/image";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { MAP_API } from "../../services/GMap";
+import Swal from "sweetalert2";
 
 const loadGoogleMapsScript = (callback) => {
   const googleAny = window.google;
@@ -73,6 +74,13 @@ const LocationSearch = () => {
       }
     } catch (error) {
       console.log(error);
+      if (error.response && error.response.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Login Required",
+          text: "Please login to proceed with payment.",
+        });
+      }
       setError("Failed to fetch location data.");
     } finally {
       setLoading(false);

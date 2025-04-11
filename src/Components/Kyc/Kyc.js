@@ -8,6 +8,7 @@ import '../../styles/BusinessInformation2.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 const KYCVerification = ({ setIsKyc }) => {
     const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -78,6 +79,13 @@ const KYCVerification = ({ setIsKyc }) => {
             }
         } catch (error) {
             console.log(error, "error");
+            if (error.response && error.response.status === 401) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Login Required",
+                  text: "Please login to proceed with payment.",
+                });
+            }
             if(error){
                 setIsKycSuccess(null);
                 Cookies.set("kycstatus", undefined, { expires: 7, secure: true, sameSite: "Strict" });

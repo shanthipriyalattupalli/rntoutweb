@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { ToastContainer } from "react-toastify";
+import ProductCard from "../Shimmer/ProductCard";
 
 const pro1 = "/Assets/laptop-1.jpg";
 const pro2 = "/Assets/laptop-2.jpg";
@@ -31,7 +32,7 @@ const CategoryProducts = ({ products }) => {
       <ToastContainer />
       {products?.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div><ProductCard/></div>}>
             {products.map((product) => (
               <ProductItems key={product._id} product={product} />
             ))}

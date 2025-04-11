@@ -53,7 +53,14 @@ const Subscription = ({ plans,setIsSubscription }) => {
         setDisplayRazorpay(true);
       }
     } catch (error) {
-      console.log(error, "error in plans")
+      console.log(error, "error in plans");
+      if (error.response && error.response.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Login Required",
+          text: "Please login to proceed with payment.",
+        });
+      }
 
     }
   }
@@ -95,6 +102,13 @@ const Subscription = ({ plans,setIsSubscription }) => {
         setSubscription(response.data.data[0])
       } catch (error) {
         console.log(error, "error")
+        if (error.response && error.response.status === 401) {
+          Swal.fire({
+            icon: "error",
+            title: "Login Required",
+            text: "Please login to proceed with payment.",
+          });
+        }
   
       }
     }

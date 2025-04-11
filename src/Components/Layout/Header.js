@@ -250,6 +250,14 @@ function Header() {
         setShowSuggestions(true);
       } catch (error) {
         console.error("Error fetching variants:", error);
+        if (error.response && error.response.status === 401) {
+          Swal.fire({
+            icon: "error",
+            title: "Login Required",
+            text: "Please login to proceed with payment.",
+          });
+        }
+
       }
     } else {
       setVariants([]);
@@ -280,6 +288,13 @@ function Header() {
       setSubscriptionPlans(response.data.data)
     } catch (error) {
       console.log(error, "error")
+      if (error.response && error.response.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Login Required",
+          text: "Please login to proceed with payment.",
+        });
+      }
 
     }
   }

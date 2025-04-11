@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { ToastContainer } from "react-toastify";
+import ProductCard from "../Shimmer/ProductCard";
 
 const pro1 = "/Assets/laptop-1.jpg";
 const pro2 = "/Assets/laptop-2.jpg";
@@ -14,7 +15,7 @@ const pro5 = "/Assets/laptop-5.jpg";
 const noproducts = "/Assets/noproducts.svg";
 const emptyproducts = "/Assets/emptyproducts.svg";
 
-// Dynamically import the ProductItems component for lazy loading
+
 const ProductItems = dynamic(() => import("./ProductItems"), {
   suspense: true,
 });
@@ -22,7 +23,7 @@ const ProductItems = dynamic(() => import("./ProductItems"), {
 const CategoryProducts = ({ products }) => {
   const router = useRouter();
   const handleProducts = () => {
-    router.push("/Products"); // Navigate to the products page
+    router.push("/Products"); 
   };
 
   return (
@@ -31,7 +32,7 @@ const CategoryProducts = ({ products }) => {
       {products?.length > 0 ? (
         <div className="px-6 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 2xl:pl-10 mt-3">
 
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div><ProductCard/></div>}>
             {products.map((product) => (
               <ProductItems key={product._id} product={product} />
             ))}

@@ -13,10 +13,11 @@ import CancelOrder from "./Orders/CancelOrder";
 import { Edit, Edit2Icon } from "lucide-react";
 const stars = "/Assets/stars.svg";
 const download = "/Assets/download.svg";
+import Swal from "sweetalert2";
 
 
 
-const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, steps, getCurrentStep }) => {
+const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, steps, getCurrentStep,returnSteps,getReturnedCurrentStep }) => {
 
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
@@ -31,12 +32,12 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
 
 
   const handleShowTracking = (item) => {
-    // Check if the item ID is already in the expanded list
+
     if (expandedSubOrderIds.includes(item._id)) {
-      // Remove the item ID from the expanded list (collapse the suborder)
+
       setExpandedSubOrderIds(prev => prev.filter(id => id !== item._id));
     } else {
-      // Add the item ID to the expanded list (expand the suborder)
+
       setExpandedSubOrderIds(prev => [...prev, item._id]);
       onShowTracking(item);
     }
@@ -48,7 +49,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
         await fetchSuborderHistory(item._id);
       });
     }
-  }, [orderData]); // Fetch history whenever orderData changes
+  }, [orderData]); 
 
   const fetchSuborderHistory = async (subOrderId) => {
     try {
@@ -69,20 +70,46 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
   };
 
 
-  const fetchDownloadInvioce =async(subOrderId)=>{
+  const fetchDownloadInvioce = async (subOrderId) => {
     try {
-      const response=await axios.get(`${BASE_URL}/invoice/download/${subOrderId}`,{
-        params:{
-          orderId:subOrderId
-        }
+      const response = await axios.get(`${BASE_URL}/invoice/download/${subOrderId}`, {
+        responseType: 'blob',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      console.log(response,"response of invoice")
-      
+  
+      const file = new Blob([response.data], { type: 'application/pdf' }); 
+      const fileURL = URL.createObjectURL(file);
+      const link = document.createElement('a');
+      link.href = fileURL;
+      link.setAttribute('download', `Invoice_${subOrderId}.pdf`); 
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(fileURL); 
     } catch (error) {
-      console.log(error,"error in invoice")
-      
+      console.log(error, "error in invoice");
+      if (error.response && error.response.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Login Required",
+          text: "Please login to proceed with payment.",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to download invoice. Please try again later.",
+        });
+      }
     }
-  }
+  };
+  
+
+
+  
+
   return (
     <div>
       <ToastContainer />
@@ -212,6 +239,8 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
               selectedSubOrder={item}  // Assuming 'item' contains the relevant suborder data
               steps={steps}
               getCurrentStep={getCurrentStep}
+              getReturnedCurrentStep={getReturnedCurrentStep}
+              returnSteps={returnSteps}
             />
           )}
 

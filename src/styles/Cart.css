@@ -58,6 +58,7 @@
 .cart-item {
     display: flex;
     align-items: center;
+    gap:10px;
     padding: 20px;
     border-bottom: 1px solid #e5e7eb;
     /* padding: 16px 0; */
@@ -78,7 +79,7 @@
 }
 
 .item-details {
-    margin-left: 16px;
+    /* margin-left: 16px; */
     flex: 1;
     /* border: 1px solid red; */
 }

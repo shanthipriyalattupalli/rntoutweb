@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const CartIcon = ({ userId }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -19,6 +20,13 @@ const CartIcon = ({ userId }) => {
       setCartItems(response?.data?.cartItems?.length || 0);
     } catch (error) {
       console.log(error);
+      if (error.response && error.response.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Login Required",
+          text: "Please login to proceed with payment.",
+        });
+      }
       setCartItems(0);
     }
   };

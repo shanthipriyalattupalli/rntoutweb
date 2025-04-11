@@ -140,7 +140,7 @@ const Home = async () => {
       <VacationEquipment products={products["Vacation Equipment"] || []} categoryId={categories[3]?._id} />
       <PromotionalAd banner={banner[1]} />
       <Vehicles products={products["Vehicles"] || []} categoryId={categories[4]?._id} />
-      {/* <PartyMaterial products={products["Party Material"] || []} categoryId={categories[5]?._id} /> */}
+      <PartyMaterial products={products["Party Material"] || []} categoryId={categories[5]?._id} />
       <SportsGym products={products["Sport & Gym"] || []} categoryId={categories[6]?._id} />
       <HouseholdKitchen products={products["Household & Kitchen"] || []} categoryId={categories[7]?._id} />
       <Services />

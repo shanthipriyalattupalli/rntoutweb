@@ -29,7 +29,8 @@ const fetchWalletTransaction=async(userId)=>{
 
     
   } catch (error) {
-    console.log(error,"error in wallet")
+    console.log(error,"error in wallet");
+    
     
   }
 }

@@ -99,11 +99,22 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
     { label: "Canceled", date: "7th Nov 2024", icon: "❌" },
   ];
 
+  
+  const returnSteps = [
+    { label: "return Placed", date: "6th Nov 2024", icon: "✔" },
+    { label: "return Confirmed", date: "6th Nov 2024", icon: "📦" },
+    { label: "Shipped", date: "7th Nov 2024", icon: "🚚" },
+    { label: "Delivered", date: "7th Nov 2024", icon: "✅" },
+ 
+  ];
+
+
+
   const trackingSteps = ["Order Confirmed", "Order Packed", "Out for Delivery"];
 
   const getCurrentStep = (orderStatus) => {
     if (orderStatus === "canceled") {
-      return 4; // Return steps 1 and 4 if canceled
+      return 4; 
     }
 
     switch (orderStatus) {
@@ -118,7 +129,34 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
       default:
         return 0;
     }
+    
+    
+
   };
+
+  
+  const getReturnedCurrentStep = (orderStatus) => {
+    if (orderStatus === "returned") {
+      return 4; 
+    }
+
+    switch (orderStatus) {
+      case "return-approved":
+        return 0;
+      case "pickup-scheduled":
+        return 1;
+      case "return-in-transit":
+        return 2;
+      case "returned":
+        return 3;
+      default:
+        return 0;
+    }
+    
+    
+
+  };
+
 
 
   const router = useRouter();
@@ -139,7 +177,7 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
       <div className='order-tracking-container'>
         <div className='order_item-frame'>
 
-          <OrderItem key={orders._id} orderData={orders} onShowTracking={handleShowTracking} selectedSubOrder={selectedSubOrder} steps={steps} getCurrentStep={getCurrentStep} />
+          <OrderItem key={orders._id} orderData={orders} onShowTracking={handleShowTracking} selectedSubOrder={selectedSubOrder} steps={steps} getCurrentStep={getCurrentStep} getReturnedCurrentStep={getReturnedCurrentStep} returnSteps={returnSteps} />
 
         </div>
 

@@ -240,7 +240,7 @@ className="cursor-pointer"
  onClick={() => {
   const categoryContainer = document.getElementById("product-container");
   if (categoryContainer) {
-    categoryContainer.scrollBy({ left: 300, behavior: "smooth" }); // Scroll right by 200px smoothly
+    categoryContainer.scrollBy({ left: 300, behavior: "smooth" }); 
   }
 }}><span>{">>"}</span> </p>
   
