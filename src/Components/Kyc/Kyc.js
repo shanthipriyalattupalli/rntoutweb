@@ -70,7 +70,7 @@ const KYCVerification = ({ setIsKyc }) => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log(response.data,"response of aadhar")
+
             setIsPreview(response.data.data.aadhaarPhoto);
             setIsKycSuccess(response.data.data.status);
             if(response.data.data.status){

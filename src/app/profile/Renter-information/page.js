@@ -210,7 +210,7 @@ export default function BusinessInformation2() {
         formData.bannerImages.forEach((banner, index) => {
           if (banner instanceof File) {
             formDataToSend.append("bannerImages", banner);
-            console.log(`Banner Image ${index + 1} Added (Web):`, banner.name);
+      
           } else if (banner.uri || banner.imageUrl) {
             let bannerUri = banner.imageUrl || banner.uri;
             if (bannerUri.startsWith("file://") || bannerUri.startsWith("content://")) {
@@ -224,7 +224,7 @@ export default function BusinessInformation2() {
               };
 
               formDataToSend.append("bannerImages", fileToSend);
-              console.log(`Banner Image ${index + 1} Added (Mobile):`, fileToSend);
+    
             } else {
               console.log(`Skipping Banner Image ${index + 1}: Not a valid file`, bannerUri);
             }
@@ -293,11 +293,7 @@ export default function BusinessInformation2() {
     handlefetchBusinessInfo()
   }, [token])
 
-  const handleBackclick = () => {
-    console.log("clicked button")
-    setBusinessId(null)
-    router.refresh()
-  }
+
 
 
   return (

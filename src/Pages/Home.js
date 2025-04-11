@@ -147,7 +147,7 @@ const [categoryId,setCategoryId]=useState(true)
 
 
   const handleCategoryClick = (categoryId) => {
-    console.log(categoryId, "categoryIdssssssssss");
+
     setCategoryId(categoryId);
     localStorage.setItem("categoryId", categoryId);
   };

@@ -13,7 +13,6 @@ const Blog = () => {
   const fetchBlogs = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/blogs`);
-      console.log(response, "aPI hit in blogs")
       setBlogs(response?.data?.blogs)
       return;
     } catch (error) {

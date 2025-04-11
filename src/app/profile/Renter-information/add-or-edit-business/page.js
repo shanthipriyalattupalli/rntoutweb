@@ -75,7 +75,7 @@ export default function BusinessInformation2() {
   }
   const [formData, setFormData] = useState(initialFormData);
 
-console.log(formData,"formdata")
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const keys = name.split(".");
@@ -227,7 +227,7 @@ console.log(formData,"formdata")
         formData.bannerImages.forEach((banner, index) => {
           if (banner instanceof File) {
             formDataToSend.append("bannerImages", banner);
-            console.log(`Banner Image ${index + 1} Added (Web):`, banner.name);
+
           } else if (banner.uri || banner.imageUrl) {
             let bannerUri = banner.imageUrl || banner.uri;
             if (bannerUri.startsWith("file://") || bannerUri.startsWith("content://")) {
@@ -273,7 +273,7 @@ console.log(formData,"formdata")
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response)
+
       if (response.status === 200) {
         Swal.fire({
           icon: 'success',

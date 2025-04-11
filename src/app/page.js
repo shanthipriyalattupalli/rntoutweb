@@ -72,7 +72,7 @@ const fetchCategories = async () => {
 
 
 const fetchProducts = async (latitude,longitude,radius) => {
-  console.log(latitude?.value,longitude?.value,radius?.value,"products fetchingsss")
+
   try {
     const response = await axios.get(`${BASE_URL}/variants/variants-by-category`,{
       params:{
@@ -81,7 +81,6 @@ const fetchProducts = async (latitude,longitude,radius) => {
         radius :radius?.value
       }
     });
-    console.log(response.data, "responsse in products");
     return response.data.data;
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -118,14 +117,13 @@ const Home = async () => {
   const longitude= cookieStore.get('longitude');
   const radius=cookieStore.get('selectedDistance')
 
-  console.log(latitude,longitude,radius,"fegbjhefbv")
+
   const banners = await fetchBanners();
   const banner = await fetchBanner();
   const categories = await fetchCategories();
   const products = await fetchProducts(latitude,longitude,radius);
   const blogs = await fetchBlogs()
 
-  console.log(products["Party Material"], "party material")
   return (
     <div>
       <FirebaseComponent />

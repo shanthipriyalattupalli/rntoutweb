@@ -22,7 +22,7 @@ import Cookies from "js-cookie";
 const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   // const MAP_API = process.env.NEXT_PUBLIC_MAP_API_KEY;
-  console.log(MAP_API);
+
   const router = useRouter();
   const [products, setProducts] = useState([]);
 
@@ -425,7 +425,6 @@ const MainContent = () => {
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${MAP_API}`
       );
 
-      console.log(response,"maps address")
 
       if (response.data.results[0]) {
         setFormData((prev) => ({
@@ -451,15 +450,9 @@ const MainContent = () => {
     fetchAddress(lat, lng);
   };
 
-
-
-
-  console.log(formData, "formdata");
-
   const handlePublishProduct = async () => {
 
 
-    console.log(formData)
     setErrors({
       title: "",
       description: "",
@@ -515,8 +508,6 @@ const MainContent = () => {
     // Check if errors exist
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      console.log(newErrors)
-      console.log(missingFields)
       if (missingFields.length === Object.keys(newErrors).length) {
         // Show only one toast if everything is empty
         toast.error("Please fill all required fields.", { autoClose: 3000 });
@@ -528,8 +519,7 @@ const MainContent = () => {
       }
       return;
     }
-    console.log(newErrors)
-    console.log(missingFields)
+
 
     // ✅ If No Errors, Proceed with API Call
     try {

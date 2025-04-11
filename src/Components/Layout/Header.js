@@ -95,12 +95,12 @@ function Header() {
 
 
   const fetchProfile = async () => {
-    console.log(token,"token while fetching profile...")
+
     try {
       const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response?.data, "profile fetch")
+
       const profileData = response?.data?.profile;
 
       setProfilePic(profileData?.profilePic);
@@ -129,7 +129,7 @@ function Header() {
   };
 
   useEffect(() => {
-    console.log(token,"token available")
+
     if (token) {
       fetchProfile();
     }
@@ -284,7 +284,6 @@ function Header() {
   const fetchSubscriptionPlans = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/subscription-plans/plans`);
-      console.log(response.data, "response of plans")
       setSubscriptionPlans(response.data.data)
     } catch (error) {
       console.log(error, "error")

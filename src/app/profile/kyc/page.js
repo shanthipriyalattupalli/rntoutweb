@@ -70,8 +70,7 @@ const KYCVerification = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log(response,"aadhaar response")
-            console.log(response.data,"response of aadhar")
+
             setIsPreview(response.data.data.aadhaarPhoto);
             setIsKycSuccess(response.data.data.status);
             if(response.data.data.status){
@@ -93,7 +92,7 @@ const KYCVerification = () => {
     useEffect(() => {
         fetchAadharKyc();
     }, []);
-console.log(isKycSuccess,"kyc status")
+
     return (
         <>
                         <ToastContainer />

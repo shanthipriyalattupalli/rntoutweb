@@ -111,7 +111,7 @@ const Signup = ({ setIsRegisterOpen }) => {
       const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, profile, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log("respons of profile submite",response.data)
+
       const user = response?.data?.user;
       const profiles = response.data.profile;
 

@@ -13,7 +13,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL
 const fetchFaqQandA = async (faqId) => {
     try {
         const response = await axios.get(`${BASE_URL}/faq/categories/${faqId}/questions`);
-      console.log(response.data,"response of faq")
+
 return response.data.data
     } catch (error) {
         console.error("Error fetching FAQ categories:", error);
@@ -23,7 +23,7 @@ return response.data.data
 const FAQSection = async({params}) => {
 
 const {faqId}=await params;
-console.log(faqId,"faqid")
+
 const faqQuestions=await fetchFaqQandA(faqId)
 
 

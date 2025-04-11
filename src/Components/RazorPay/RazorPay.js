@@ -30,7 +30,7 @@ const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, 
     handler: async (response) => {
       1
       if (response.razorpay_payment_id) {
-        console.log(orderId, response.razorpay_payment_id, response.razorpay_signature, planId, "values to send")
+
         try {
           const token = localStorage.getItem('userToken');
           const result = await axios.post(`${BASE_URL}/user-subscription/verify-payment`, {
@@ -51,7 +51,7 @@ const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, 
             text: "Payment is Successfull.",
             confirmButtonColor: "#d33", 
           });  
-          console.log(result, "response in verify-payment")
+
 
           if (result.data.success  === true) {
             handlePayment('succeeded', {

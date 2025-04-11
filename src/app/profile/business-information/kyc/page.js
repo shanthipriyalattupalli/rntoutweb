@@ -33,7 +33,7 @@ const KYCVerification = () => {
           },
         }
       );
-      console.log(response, "response of gst");
+
 
       if (response.data && response.data.success) {
         setGstDetails(response.data.data);

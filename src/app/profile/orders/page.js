@@ -51,7 +51,7 @@ export default function Orders() {
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
-  console.log(orderItems,"orderitems")
+
   const statusClass = "Completed" ? "completed" : "in-progress";
   const [trackingStatuses, setTrackingStatuses] = useState([]);
 const [selectedSubOrder, setSelectedSubOrder] = useState(null);
@@ -69,7 +69,7 @@ const [isOn, setIsOn] = useState(false);
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response,"order history")
+
       setOrders(response.data);
       const filteredOrders = response?.data
       .map(order => {
@@ -293,7 +293,6 @@ orderItems.length > 0 ? orderItems.map((orderItem,index) => (
                   <a
   className="inline-flex w-full sm:w-auto items-center gap-1.5 justify-start no-underline text-red-500 font-medium cursor-pointer text-left"
   onClick={() => {
-    console.log("Clicked order ID:", order._id); 
     setSelectedOrderId(order._id); 
     setIsCanceled(true);
   }}

@@ -8,15 +8,12 @@ import { useSearchParams } from "next/navigation";
 
 
 const OrderReview = ({ product }) => {
-  console.log("this page is visible")
+
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const searchParams = useSearchParams();
-  console.log("All query params:", searchParams.toString()); // 👉 "reviewId=abc123"
-  console.log(searchParams,"available params")
+
   const reviewId = searchParams.get("reviewId");
-  
-  console.log("Review ID:", reviewId);
-  
+
 
   const [formData, setFormData] = useState({
     rating: 0,

@@ -123,7 +123,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
           Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
         },
       });
-      console.log(response)
+
 
       window.dispatchEvent(new CustomEvent("cartUpdated",));
 
@@ -153,7 +153,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data.message, "removal of items")
+
       fetchFavorites()
       Swal.fire({
         icon: "success",

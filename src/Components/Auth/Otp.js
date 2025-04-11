@@ -93,7 +93,6 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
         phoneNumber: mobileNumber,
       });
 
-      console.log(response.data, "response of login")
 
       if (response.data.message === "Invalid OTP") {
         toast.error("Invalid OTP. Please try again.");

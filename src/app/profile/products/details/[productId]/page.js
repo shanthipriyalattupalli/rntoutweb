@@ -24,7 +24,7 @@ const MainContent = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const params = useParams();
   const productId = params.productId;
-  console.log(productId, "productIdsd")
+
   const [products, setProducts] = useState([]);
   const router = useRouter();
   const [productName, setProductName] = useState("");
@@ -298,10 +298,10 @@ const MainContent = () => {
     });
 
   const fetchProducts = async () => {
-    console.log(productId, "productId")
+
     try {
       const response = await axios.get(`${BASE_URL}/variants/${productId}`);
-      console.log(response.data, "productIds")
+
       setFormData(response.data);
       setFormData(
         (prevData) => ({
@@ -428,8 +428,7 @@ const MainContent = () => {
         const response = await axios.get(
           `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${MAP_API}`
         );
-  
-        console.log(response,"maps address")
+
   
         if (response.data.results[0]) {
           setFormData((prev) => ({
@@ -454,7 +453,7 @@ const MainContent = () => {
       fetchAddress(lat, lng);
     };
 
-  console.log(formData, "formdata")
+
 
   const handlePublishProduct = async () => {
     setErrors({
@@ -564,7 +563,7 @@ const MainContent = () => {
         },
       });
 
-      console.log(response, "response for variant update")
+
 
       if (response.data.success) {
         toast.success("Product published successfully!");

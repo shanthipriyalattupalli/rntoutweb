@@ -24,8 +24,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
   const [expandedSubOrderIds, setExpandedSubOrderIds] = useState([]);  // Changed to an array
   const [subOrderHistories, setSubOrderHistories] = useState({});
   const [isReturned, setIsReturned] = useState(false);
-  
-  console.log(subOrderHistories, "response of suborderhistores")
+
   if (!orderData || !orderData.subOrders || orderData.subOrders.length === 0) {
     return <p>No orders found</p>;
   }
@@ -58,7 +57,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data, "response of suborder")
+
       const reviews = Array.isArray(response.data.reviews) ? response.data.reviews : [];
       setSubOrderHistories((prev) => ({
         ...prev,

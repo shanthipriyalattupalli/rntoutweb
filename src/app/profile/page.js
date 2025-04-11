@@ -25,7 +25,6 @@ export default function ProfileSettings() {
   const [avatar, setAvatar] = useState(profile_avatar);
   const fileInputRef = useRef(null);
   const [isEditable, setIsEditable] = useState(false);
-  console.log(isEditable, "iseditable")
   const [isKyc, setIsKyc] = useState(false);
   const [profile, setProfile] = useState({
     user: {
@@ -62,7 +61,6 @@ export default function ProfileSettings() {
       const response = await axios.get(`${BASE_URL}/profile/view-profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response.data, "profile")
       const profileData = response.data.profile;
 
 
@@ -103,7 +101,7 @@ export default function ProfileSettings() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name)
+
     const keys = name.split(".");
     if  (name === 'user. name')
       setErrors({name:""})
@@ -202,7 +200,7 @@ export default function ProfileSettings() {
         },
       });
 
-      console.log(response, "response in profile");
+
 
       if (response.status === 200) {
         setIsEditable(!isEditable);
@@ -260,7 +258,7 @@ export default function ProfileSettings() {
 
 
   const router = useRouter();
-  console.log(profile, "profile")
+
 
   return (
     <div className="profile-settings bg-white ">

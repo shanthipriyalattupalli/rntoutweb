@@ -76,7 +76,7 @@ export default function Dashboard({ products }) {
           id :productId
         }
       });
-      console.log(response,"response in product delter")
+
       fetchUserProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -119,7 +119,7 @@ const handleClick=(itemId)=>{
   }
 }
 
-console.log(userProducts)
+
 
   return (
     <div className='prod-container-page'>

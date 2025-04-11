@@ -22,7 +22,7 @@ export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep,
               
               .map((step, index, filteredSteps) => {
                 const currentStep = getCurrentStep(selectedSubOrder.orderStatus);
-                console.log(currentStep,"curretn step")
+
                 const isCompleted = Array.isArray(currentStep)
                   ? currentStep.includes(index)
                   : index <= currentStep;
@@ -107,7 +107,7 @@ export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep,
               
               .map((step, index, filteredSteps) => {
                 const currentStep = getReturnedCurrentStep(selectedSubOrder.returnStatus);
-                console.log(currentStep,"curretn step")
+
                 const isCompleted = Array.isArray(currentStep)
                   ? currentStep.includes(index)
                   : index <= currentStep;

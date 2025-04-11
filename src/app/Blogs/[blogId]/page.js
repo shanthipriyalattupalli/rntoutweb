@@ -44,7 +44,6 @@ const BlogPage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response,"from blog page")
         setBlog(response.data);
       } catch (error) {
         console.error("Error fetching blogs:", error);
@@ -56,7 +55,6 @@ const BlogPage = () => {
     }, [blogId]);
 
 
-    console.log(blogs)
   return (
     <div className=" min-h-screen p-6 flex justify-center w-full">
       <div className=" w-full bg-white shadow-lg p-6 rounded-lg flex flex-col md:flex-row gap-6">

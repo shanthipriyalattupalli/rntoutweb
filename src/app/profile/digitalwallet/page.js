@@ -23,7 +23,7 @@ const transactions = [
 const fetchWalletTransaction=async(userId)=>{
   try {
     const response=await axios.get(`${BASE_URL}/business-info/sellerInfo?ownerId=${userId}`);
-    console.log(response.data,"response of wallet");
+
     return response.data?.data?.businessInfo
 
 
@@ -38,7 +38,7 @@ const fetchWalletTransaction=async(userId)=>{
 const WithdrawalRequest = async() => {
   const cookieStore=cookies();
   let userId = cookieStore.get(`userId`)?.value;
-  console.log(userId,"userId")
+
   const transactionsWallet=await fetchWalletTransaction(userId);
   return (
     <div className="mx-auto p-4 bg-white">

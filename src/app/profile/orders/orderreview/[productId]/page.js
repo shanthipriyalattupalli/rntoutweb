@@ -44,16 +44,16 @@ const OrderReview = () => {
     comment: "",
   });
 
-  console.log(formData,"formdata")
+
   const [hover, setHover] = useState(0);
   const [orderData, setOrderData] = useState({});
   const router = useRouter();
   const params = useParams();
   const productId = params.productId;
   const searchParams = useSearchParams();
-  console.log(searchParams,"params")
+
   const variantId = searchParams.get("variantId")
-  console.log(variantId,"variantId")
+
 
 
   const fetchProductById = async () => {
@@ -62,7 +62,7 @@ const OrderReview = () => {
 
       const data = response.data.variantId;
       setOrderData(response.data)
-      console.log(response.data.reviews[0]._id,"suborderby id")
+
 
     } catch (error) {
       console.error("Error fetching product:", error);
@@ -78,7 +78,7 @@ const OrderReview = () => {
     try {
       const response = await axios.get(`${BASE_URL}/reviews/variant/${variantId}`);
 
-console.log(response.data,"responseof review")
+
 setFormData(response.data.data[0])
 
     } catch (error) {
@@ -145,7 +145,7 @@ setFormData(response.data.data[0])
         title: title,
       };
 
-      console.log(payload,"formData")
+ 
 
       const config = {
         headers: {
@@ -163,9 +163,9 @@ setFormData(response.data.data[0])
         response = await axios.post(`${BASE_URL}/reviews`, payload, config);
       }
 
-      console.log(response)
+
       if (response.status === 201 || response.status === 200) {
-        console.log(response,"response of review")
+
         toast.success("Review submitted successfully!");
         setFormData({ rating: 0, title: "", comment: "" });
         router.back()

@@ -67,7 +67,6 @@ const fetchDeliveryCharges=async()=>{
       },
     });
     setIsDelivery(response.data);
-    console.log(response.data,"response of delivery charges")
   } catch (error) {
     console.log(error,"error in fetching delivery charges")
   }
@@ -210,7 +209,7 @@ useEffect(()=>{
   };
 
   const handleAddToCart = async (variantId, quantity, rentalPeriod) => {
-    console.log(variantId, quantity, rentalPeriod, "in handlecart")
+
     try {
       const payload = {
         user_id: userId,
@@ -234,7 +233,7 @@ useEffect(()=>{
   const fetchCartDetails = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
-      console.log(response)
+
       const cartData = response.data.cartItems || [];
       setCartItems(cartData);
       if (cartData.length === 0) {
@@ -351,12 +350,12 @@ useEffect(()=>{
         cancelButtonColor: "#3085d6",
       }).then((result) => {
         if (result.isConfirmed) {
-          console.log("User clicked OK");
+       
           if (errorMessage === "KYC verification is required before checkout.") {
             router.push("/profile/kyc");
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          console.log("User clicked Cancel");
+   
           // Handle cancel action if needed
         }
       });
@@ -378,7 +377,7 @@ useEffect(()=>{
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response, "resonde of paymnet")
+
       // Axios response data is already parsed
       if (response.data.order && response.data.order.id) {
         setDisplayRazorpay(true);
@@ -464,8 +463,7 @@ useEffect(()=>{
     annual: "Year",
   };
 
-  console.log(cartItems, "cart items")
-  console.log(totalPrice, "total price")
+
 
 
   return (

@@ -158,7 +158,6 @@ export default function ProductInformation2() {
       const response = await axios.get(`${BASE_URL}/variants/${productId}`);
 
       const data = response.data;
-      console.log(data,"response in product")
       setProduct(data)
       setImages(response.data.images)
 

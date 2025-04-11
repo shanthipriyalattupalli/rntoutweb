@@ -27,7 +27,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId,onAddressS
 
 
   const token =Cookies.get("userToken");
-  console.log(token)
+
 
   useEffect(() => {
     if (addresses.length > 0) {
@@ -265,7 +265,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId,onAddressS
   };
 
   const handleSelectAddress = async (addressId) => {
-    console.log(addressId,"jghfbn")
+
     try {
       const response = await axios.patch(`${BASE_URL}/profile/selected/${addressId}`,{}, {
         headers: {
@@ -279,7 +279,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId,onAddressS
       onAddressSelectedSuccess?.();
       onClose();
   
-      console.log(response, "response of selecting address");
+
     } catch (error) {
       console.log(error, "error in selecting");
     }

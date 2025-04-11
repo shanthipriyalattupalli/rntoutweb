@@ -22,12 +22,12 @@ const Products = ({categories}) => {
     const [categoryProducts, setCategoryProducts] = useState({});
       const [isLoading, setIsLoading] = useState(true);
       const [categoryId,setCategoryId]=useState(null);
-      console.log(categoryId,"categorId in home")
+
       const latitude = Cookies.get("latitude");
       const longitude = Cookies.get("longitude");
       const distance = Cookies.get("selectedDistance")
 
-  console.log(categoryId,"categoryId")
+
 
   const fetchProductsByCategory = async () => {
     try {
@@ -41,7 +41,7 @@ const Products = ({categories}) => {
 
         },
       });
-      console.log(response.data.data,"response in productby category")
+
 
       setCategoryProducts(prevState => ({
         ...prevState,
@@ -60,7 +60,7 @@ const Products = ({categories}) => {
 
   
   const handleCategoryClick = (categoryId) => {
-    console.log(categoryId, "categoryIdssssssssss");
+
     setCategoryId(categoryId);
                 Cookies.set("categoryId", categoryId, { expires: 7, secure: true, sameSite: "Strict" });
     localStorage.setItem("categoryId", categoryId);

@@ -45,7 +45,7 @@ const Subscription = ({ plans,setIsSubscription }) => {
           Authorization: `Bearer ${token}`,
         }
       });
-      console.log(response.data,"response of data")
+
       if (response.data.order.id) {
         setOrderId(response.data.order.id);
         setSelectedPlanId(planId);
@@ -98,7 +98,7 @@ const Subscription = ({ plans,setIsSubscription }) => {
     const fetchUserSubscriptionPlans = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/subscription-plans/user-plans`);
-        console.log(response.data, "response of plans")
+
         setSubscription(response.data.data[0])
       } catch (error) {
         console.log(error, "error")

@@ -44,7 +44,7 @@ const fetchProductById = async (productId, token,userId) => {
         timeout: 10000, 
       }
     );
-    console.log(response.data, "response in product")
+
     const data = response.data;
     return response.data;
 
@@ -58,7 +58,6 @@ const fetchProductRatings = async (productId) => {
     const response = await axios.get(`${BASE_URL}/reviews/variant/${productId}`);
 
     const data = response.data;
-    console.log(response.data,"ratings")
     return response.data.data;
   } catch (error) {
     console.error("Error fetching product:", error);
@@ -73,12 +72,12 @@ const ProductPage = async ({ params }) => {
   const cookieStore = cookies();
   let token = cookieStore.get(`userToken`)?.value;
   let userId=cookieStore.get(`userId`)?.value;
-  console.log(token, "token");
+
   const { productId } = await params;
-  console.log(productId, "productId")
+
   const variant = await fetchProductById(productId, token,userId)
   const userRatings = await fetchProductRatings(productId)
-  console.log(variant, "variants")
+
   const product = variant.variant;
   const relatedItems = variant.relatedItems;
 

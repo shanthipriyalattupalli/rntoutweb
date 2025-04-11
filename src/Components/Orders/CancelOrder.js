@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 const CancelOrder = ({ setIsCanceled, OrderId, order }) => {
-  console.log(OrderId,"suborderId")
+
   const [selectedReason, setSelectedReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -42,7 +42,6 @@ const CancelOrder = ({ setIsCanceled, OrderId, order }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-console.log(response,"repsonse of order")
       // Show success message
       if(response.data.success === true){
       Swal.fire({

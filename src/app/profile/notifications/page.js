@@ -14,7 +14,7 @@ const Notifications = () => {
   const fetchNotifications = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/notifications/user/${userId}`);
-      console.log(response.data,"response of notifications")
+
       setNotifications(response.data);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -31,7 +31,7 @@ const Notifications = () => {
       await axios.delete(`${BASE_URL}/notifications/${id}`);
       setNotifications(notifications.filter((notification) => notification._id !== id));
       setSelectedNotificationId(null);
-      console.log("Notification deleted successfully!");
+
     } catch (error) {
       console.error("Error deleting notification:", error);
     }

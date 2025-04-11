@@ -20,7 +20,6 @@ const MenuItems = () => {
     }
   }, []);
 
-  console.log(selectedCategoryLabel, "label available");
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
   const [subcategories, setSubcategories] = useState([]);

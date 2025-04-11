@@ -33,7 +33,7 @@ const SellerCarouselProfile = () => {
       const response = await axios.get(`${BASE_URL}/business-info/sellerInfo?ownerId=${sellerId}`);
 
       const data = response.data.data;
-console.log(response.data.data,"seller details")
+
       setSellerDetails(data)
       setproducts(data.variants)
     } catch (error) {

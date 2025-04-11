@@ -125,7 +125,7 @@ const ProductItem = ({ product }) => {
         rentalPeriod: selectedRentalPeriod,
 
       };
-      console.log(payload,"payload in card")
+
 
       const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
         headers: {
