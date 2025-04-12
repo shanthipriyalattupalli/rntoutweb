@@ -78,6 +78,8 @@ const CategoryGrid = () => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
+    console.log(response.data,"response of success")
+
     setRenterInfo(response.data.success)
   } catch (error) {
 
@@ -99,7 +101,7 @@ const CategoryGrid = () => {
 
 
   const handleNextClick =async () => {
-    if (selectedCategoryLabel && selectedCategory && isRenterInfo === "true") {
+    if (selectedCategoryLabel && selectedCategory && isRenterInfo === true) {
       const encodedLable = encodeURIComponent(selectedCategoryLabel);
       router.push(`/add-on-rent/add-details?name=${encodedLable}`);
     }

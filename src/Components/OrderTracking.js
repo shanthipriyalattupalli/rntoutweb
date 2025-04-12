@@ -98,7 +98,7 @@ export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep,
           <div className="flex flex-col md:flex-row md:items-center md:space-x-6 w-full">
             {returnSteps
               .filter((step, index) => {
-                if (selectedSubOrder.returnStatus === "canceled") {
+                if (selectedSubOrder.returnStatus === "returned") {
                   return index === 0 || index === steps.length - 1;
                 }
                 return true; 
