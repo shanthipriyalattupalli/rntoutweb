@@ -44,7 +44,7 @@ const fetchProductById = async (productId, token,userId) => {
         timeout: 10000, 
       }
     );
-
+console.log(response.data,"response of product")
     const data = response.data;
     return response.data;
 
@@ -120,7 +120,7 @@ const ProductPage = async ({ params }) => {
   return (
     <>
       <ScrollToTop />
-      <div className='max-w-7xl mx-auto px-4'>
+      <div className=' mx-auto px-20'>
 
         {/* Top Section */}
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8 py-6'>
@@ -152,11 +152,16 @@ const ProductPage = async ({ params }) => {
               <div className='flex items-center space-x-2 cursor-pointer'>
                 {product.owner && (
                   <Link href={`/SellerProfile/${product.owner._id}`}>
-                    <img
-                      src={sample}
+{product?.businessProfile?.profileImage?                
+    <img
+                      src={product?.businessProfile.profileImage}
                       alt='Seller'
                       className='w-6 h-6 rounded-full'
-                    />
+                    />:    <img
+                    src={sample}
+                    alt='sample'
+                    className='w-6 h-6 rounded-full'
+                  />}
                   </Link>
                 )}
                 {product.owner && (

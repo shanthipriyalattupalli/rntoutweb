@@ -865,8 +865,8 @@ const MainContent = () => {
                 {formData.location.coordinates && formData.location.coordinates.length === 2 && (
                   <Marker
                     position={{
-                      lat: parseFloat(formData.location.coordinates[1]), // latitude
-                      lng: parseFloat(formData.location.coordinates[0]), // longitude
+                      lat: parseFloat(formData.location.coordinates[1]), 
+                      lng: parseFloat(formData.location.coordinates[0]), 
                     }}
                   />
                 )}

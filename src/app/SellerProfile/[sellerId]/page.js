@@ -313,7 +313,9 @@ const SellerCarouselProfile = () => {
           </p>}
           <p className='seller-business-name'>
             <strong>Business Name : </strong>{sellerDetails?.businessInfo?.businessName}
-            Co Ltd
+          </p>
+          <p className='seller-business-name'>
+            <strong>Store description : </strong>{sellerDetails?.businessInfo?.storeDescription}
           </p>
         </div>
 
@@ -336,12 +338,7 @@ const SellerCarouselProfile = () => {
           >
             Products
           </button>
-          {/* <button
-            className={`seller-tab ${activeTab === "reviews" ? "active" : ""}`}
-            onClick={() => setActiveTab("reviews")}
-          >
-            Rating & Reviews
-          </button> */}
+
           <button
             className={`seller-tab ${activeTab === "about" ? "active" : ""}`}
             onClick={() => setActiveTab("about")}

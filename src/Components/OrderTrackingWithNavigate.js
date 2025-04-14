@@ -14,6 +14,16 @@ const HistoryImage = "/Assets/HistoryImage.png";
 const shipping = "/Assets/shipping.svg";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
+const checkIcon ="/Assets/check_circle_fill.svg"
+const packed ="/Assets/packed.svg"
+const truck_line ="/Assets/truck_line.svg"
+const delivered ="/Assets/delivered.svg"
+const packedblue="/Assets/packedblue.svg"
+const truck_fillblue="/Assets/truck_fillblue.svg"
+const deliveredblue="/Assets/deliveredblue.svg"
+const Cancledicon ="/Assets/check_circle_fill.svg"
+
+
 
 
 const OrderTrackingWithNavigate = ({ orderId }) => {
@@ -64,6 +74,7 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response.data,"orders by id")
       setOrders(response.data)
       setSubOrders(response.data.subOrders)
 
@@ -92,19 +103,19 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
 
 
   const steps = [
-    { label: "Order Placed", date: "6th Nov 2024", icon: "✔" },
-    { label: "Order Confirmed", date: "6th Nov 2024", icon: "📦" },
-    { label: "Shipped", date: "7th Nov 2024", icon: "🚚" },
-    { label: "Delivered", date: "7th Nov 2024", icon: "✅" },
-    { label: "Canceled", date: "7th Nov 2024", icon: "❌" },
+    { label: "Order Placed", date: "6th Nov 2024", icon: checkIcon, blueIcon:checkIcon},
+    { label: "Order Confirmed", date: "6th Nov 2024", icon: packed,blueIcon:packedblue },
+    { label: "Shipped", date: "7th Nov 2024", icon: truck_line,blueIcon:truck_fillblue},
+    { label: "Delivered", date: "7th Nov 2024", icon: delivered,blueIcon:deliveredblue},
+    { label: "Canceled", date: "7th Nov 2024", icon: checkIcon,blueIcon:packedblue},
   ];
 
   
   const returnSteps = [
-    { label: "return Placed", date: "6th Nov 2024", icon: "✔" },
-    { label: "return Confirmed", date: "6th Nov 2024", icon: "📦" },
-    { label: "Shipped", date: "7th Nov 2024", icon: "🚚" },
-    { label: "Delivered", date: "7th Nov 2024", icon: "✅" },
+    { label: "return Placed", date: "6th Nov 2024", icon: checkIcon, blueIcon:checkIcon },
+    { label: "return Confirmed", date: "6th Nov 2024", icon: packed,blueIcon:packedblue },
+    { label: "Shipped", date: "7th Nov 2024", icon: truck_line,blueIcon:truck_fillblue },
+    { label: "Returned", date: "7th Nov 2024", icon: delivered,blueIcon:deliveredblue },
  
   ];
 
@@ -137,7 +148,7 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
   
   const getReturnedCurrentStep = (orderStatus) => {
     if (orderStatus === "returned") {
-      return 4; 
+      return 3; 
     }
 
     switch (orderStatus) {

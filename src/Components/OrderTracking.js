@@ -1,169 +1,178 @@
-export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep,returnSteps,getReturnedCurrentStep }) {
+export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep, returnSteps, getReturnedCurrentStep }) {
+
+  console.log(selectedSubOrder,"selected suborder")
   return (
     <div className="w-full px-4 md:px-6 lg:px-8">
       {selectedSubOrder ? (
         <>
-       <span className="text-[16px] font-[500]">Order Status</span>
-        <div className="flex flex-col items-center py-6 relative md:flex-row md:justify-between">
-          <div className="flex flex-col md:flex-row md:items-center md:space-x-6 w-full">
-            {steps
-              .filter((step, index) => {
-                const isCanceledStatus = selectedSubOrder.orderStatus === "canceled";
+          <span className="text-[16px] font-[500]">Order Status</span>
+          <div className="flex flex-col items-center py-6 relative md:flex-row md:justify-between">
+            <div className="flex flex-col md:flex-row md:items-center md:space-x-6 w-full">
+              {steps
+                .filter((step, index) => {
+                  const isCanceledStatus = selectedSubOrder.orderStatus === "canceled";
 
-         
-                if (isCanceledStatus) {
-                  return index === 0 || index === steps.length - 1;
-                }
-            
 
-                return step.label.toLowerCase() !== "canceled"; 
-              })
+                  if (isCanceledStatus) {
+                    return index === 0 || index === steps.length - 1;
+                  }
 
-              
-              .map((step, index, filteredSteps) => {
-                const currentStep = getCurrentStep(selectedSubOrder.orderStatus);
 
-                const isCompleted = Array.isArray(currentStep)
-                  ? currentStep.includes(index)
-                  : index <= currentStep;
-                const isDelivered = selectedSubOrder.orderStatus === "delivered";
-                const isCanceled = selectedSubOrder.orderStatus === "canceled";
+                  return step.label.toLowerCase() !== "canceled";
+                })
 
-                return (
-                  <div
-                    key={index}
-                    className={`flex flex-col items-center w-full relative last:pb-0 pb-8 md:pb-0`}
-                  >
 
+                .map((step, index, filteredSteps) => {
+                  const currentStep = getCurrentStep(selectedSubOrder.orderStatus);
+
+                  const isCompleted = Array.isArray(currentStep)
+                    ? currentStep.includes(index)
+                    : index <= currentStep;
+                  const isDelivered = selectedSubOrder.orderStatus === "delivered";
+                  const isCanceled = selectedSubOrder.orderStatus === "canceled";
+
+                  return (
                     <div
-                      className={`text-center text-md sm:text-sm md:text-base mb-2 md:mb-4 font-medium ${
-                        isCanceled && index === filteredSteps.length - 1
-                          ? "text-red-500"
-                          : isDelivered && index === currentStep
-                          ? "text-green-500"
-                          : isCompleted
-                          ? "text-blue-500"
-                          : "text-gray-300"
-                      }`}
+                      key={index}
+                      className={`flex flex-col items-center w-full relative last:pb-0 pb-8 md:pb-0`}
                     >
-                      {step.label}
-                    </div>
 
-                    <div
-                      className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full border-2 z-10 text-lg font-semibold ${
-                        isCanceled && index === filteredSteps.length - 1
+                      <div
+                        className={`text-center text-md sm:text-sm md:text-base mb-2 md:mb-4 font-[600] ${isCanceled && index === filteredSteps.length - 1
+                          ? "text-red-500 "
+                          : isDelivered && index === currentStep
+                            ? "text-[#08875D]"
+                            : isCompleted
+                              ? "text-blue-500"
+                              : "text-gray-300"
+                          }`}
+                      >
+                        {step.label}
+                      </div>
+
+                      <div
+                        className={`w-[3rem] h-[3rem] flex items-center justify-center rounded-full border-2 z-10 text-lg font-semibold ${isCanceled && index === filteredSteps.length - 1
                           ? "border-red-500 bg-red-100 text-red-500"
                           : isDelivered && index === currentStep
-                          ? "border-green-500 bg-green-100 text-green-500"
-                          : isCompleted
-                          ? "border-blue-500 bg-blue-100 text-blue-500"
-                          : "border-gray-300 bg-gray-100 text-gray-400"
-                      }`}
-                    >
-                      {step.icon}
-                    </div>
+                            ? "border-[#08875D] bg-[#08875D] text-green-500"
+                            : isCompleted
+                              ? "border-blue-500 bg-blue-100 text-blue-500"
+                              : "border-gray-300 bg-gray-100 text-gray-400"
+                          }`}
+                      >
+                        <img
+                          src={
+                            isCompleted ? step.blueIcon || step.icon : step.icon
+                          }
+                          alt="icon"
+                        />
+                      </div>
 
-                    {index < filteredSteps.length - 1 && (
-                      <div
-                        className={`absolute w-0.5 h-12 sm:h-14 border-l-2 border-dashed md:hidden bottom-[0px]
-                        ${isCanceled ? "border-red-500" 
-                        : isDelivered ? "border-green-500" 
-                        : index < currentStep ? "border-blue-500" 
-                        : "border-gray-300"}`}
-                      ></div>
-                    )}
+                      {index < filteredSteps.length - 1 && (
+                        <div
+                          className={`absolute w-0.5 h-12 sm:h-14 border-l-2 border-dashed md:hidden bottom-[0px]
+                        ${isCanceled ? "border-red-500"
+                                : index < currentStep ? "border-blue-500"
+                                  : "border-gray-300"}`}
+                        ></div>
+                      )}
 
-                    {index < filteredSteps.length - 1 && (
-                      <div
-                        className={`absolute top-1/2 md:top-[69%] lg:top-[69%] left-[100%] transform -translate-x-1/2 h-0.5 border-t-2 border-dashed hidden md:block ${
-                          isCanceled
-                            ? "border-red-500 md:w-[20rem] w-[10rem] sm:w-[14rem] lg:w-[28rem] 2xl:w-[30rem]" 
-                            : isDelivered
-                            ? "border-green-500 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[14rem]"
+                      {index < filteredSteps.length - 1 && (
+                        <div
+                          className={`absolute top-1/2 md:top-[69%] lg:top-[69%] left-[104%] transform -translate-x-1/2 h-0.5 border-t-2 border-dashed hidden md:block ${isCanceled
+                            ? "border-red-500 md:w-[20rem] w-[10rem] sm:w-[14rem] lg:w-[28rem] 2xl:w-[30rem]"
                             : index < currentStep
-                            ? "border-blue-500 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[14rem]"
-                            : "border-gray-300 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[14rem]"
-                        }`}
-                      ></div>
-                    )}
-                  </div>
-                );
-              })}
+                              ? "border-blue-500 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[22rem]"
+                              : "border-gray-300 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[22rem]"
+                            }`}
+                        ></div>
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
           </div>
-        </div>
 
 
-       {selectedSubOrder?.returnStatus === "return-approved" && <span className="text-[16px] font-[500]">Return Status</span>}
-{ selectedSubOrder?.returnStatus === "return-approved" &&       <div className="flex flex-col items-center py-6 relative md:flex-row md:justify-between">
-          <div className="flex flex-col md:flex-row md:items-center md:space-x-6 w-full">
-            {returnSteps
-              .filter((step, index) => {
-                if (selectedSubOrder.returnStatus === "returned") {
-                  return index === 0 || index === steps.length - 1;
-                }
-                return true; 
-              })
+          {selectedSubOrder?.endDate && <span className="text-[16px] font-[500]">Return Status</span>}
+{selectedSubOrder?.endDate  &&          <div className="flex flex-col items-center py-6 relative md:flex-row md:justify-between">
+            <div className="flex flex-col md:flex-row md:items-center md:space-x-6 w-full">
+              {returnSteps
+                .filter((step, index) => {
+                  const isReturnStatus = selectedSubOrder.orderStatus === "returned";
 
-              
-              .map((step, index, filteredSteps) => {
-                const currentStep = getReturnedCurrentStep(selectedSubOrder.returnStatus);
 
-                const isCompleted = Array.isArray(currentStep)
-                  ? currentStep.includes(index)
-                  : index <= currentStep;
-                const isDelivered = selectedSubOrder.returnStatus === "Delivered";
+                  if (isReturnStatus) {
+                    return index === 0 || index === steps.length - 1;
+                  }
 
-                return (
-                  <div
-                    key={index}
-                    className={`flex flex-col items-center w-full relative last:pb-0 pb-8 md:pb-0`}
-                  >
 
+                  return true;
+
+                })
+
+
+                .map((step, index, filteredSteps) => {
+                  const currentStep = getReturnedCurrentStep(selectedSubOrder.returnStatus);
+
+                  const isCompleted = Array.isArray(currentStep)
+                    ? currentStep.includes(index)
+                    : index <= currentStep;
+                  const isDelivered = selectedSubOrder.returnStatus === "returned";
+
+                  return (
                     <div
-                      className={`text-center text-md sm:text-sm md:text-base mb-2 md:mb-4 font-medium ${
-        isDelivered && index === currentStep
-                          ? "text-green-500"
+                      key={index}
+                      className={`flex flex-col items-center w-full relative last:pb-0 pb-8 md:pb-0`}
+                    >
+
+                      <div
+                        className={`text-center text-md sm:text-sm md:text-base mb-2 md:mb-4 font-[600] ${isDelivered && index === currentStep
+                          ? "text-[#08875D]"
                           : isCompleted
-                          ? "text-blue-500"
-                          : "text-gray-300"
-                      }`}
-                    >
-                      {step.label}
-                    </div>
+                            ? "text-blue-500"
+                            : "text-gray-300"
+                          }`}
+                      >
+                        {step.label}
+                      </div>
 
-                    <div
-                      className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full border-2 z-10 text-lg font-semibold ${ isDelivered && index === currentStep
-                          && "border-green-500 bg-green-100 text-green-500"
-
-                      }`}
-                    >
-                      {step.icon}
-                    </div>
-
-                    {index < filteredSteps.length - 1 && (
                       <div
-                        className={`absolute w-0.5 h-12 sm:h-14 border-l-2 border-dashed md:hidden bottom-[0px]
-                        ${ isDelivered ? "border-green-500" 
-                        : index < currentStep ? "border-blue-500" 
-                        : "border-gray-300"}`}
-                      ></div>
-                    )}
+                        className={`w-[3rem] h-[3rem] flex items-center justify-center rounded-full border-2 z-10 text-lg font-semibold ${isDelivered && index === currentStep
+                          ? "border-[#08875D] bg-[#08875D] text-[#08875D]" : isCompleted ? "border-blue-500 bg-blue-100 text-blue-500" : "border-gray-300"
 
-                    {index < filteredSteps.length - 1 && (
-                      <div
-                        className={`absolute top-1/2 md:top-[69%] lg:top-[69%] left-[100%] transform -translate-x-1/2 h-0.5 border-t-2 border-dashed hidden md:block ${isDelivered
-                            ? "border-green-500 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[14rem]"
-                            : index < currentStep
-                            ? "border-blue-500 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[14rem]"
-                            : "border-gray-300 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[14rem]"
-                        }`}
-                      ></div>
-                    )}
-                  </div>
-                );
-              })}
-          </div>
-        </div>}
+                          }`}
+                      >
+                        <img
+                          src={
+                            isCompleted ? step.blueIcon || step.icon : step.icon
+                          }
+                          alt="icon"
+                        />
+
+                      </div>
+
+                      {index < filteredSteps.length - 1 && (
+                        <div
+                          className={`absolute w-0.5 h-12 sm:h-14 border-l-2 border-dashed md:hidden bottom-[0px]
+                        ${ index < currentStep ? "border-blue-500"
+                                : "border-gray-300"}`}
+                        ></div>
+                      )}
+
+                      {index < filteredSteps.length - 1 && (
+                        <div
+                          className={`absolute top-1/2 md:top-[69%] lg:top-[69%] left-[103%] transform -translate-x-1/2 h-0.5 border-t-2 border-dashed hidden md:block ${ index < currentStep
+                              ? "border-blue-500 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[30rem]"
+                              : "border-gray-300 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[30rem]"
+                            }`}
+                        ></div>
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
+          </div>}
 
         </>
 

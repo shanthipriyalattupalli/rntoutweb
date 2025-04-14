@@ -16,6 +16,7 @@ import RenderRazorpay from "../PayModule/PayModule";
 import "react-toastify/dist/ReactToastify.css";
 import PromoCoupon from "./PromoCoupon/page";
 import { ArrowLeft } from "lucide-react";
+import Cookies from "js-cookie";
 const cube = "/Assets/cube_fill.svg";
 const deleteicon = "/Assets/deleteicon.svg";
 const stock = "/Assets/stock.svg";
@@ -56,8 +57,8 @@ const CartPage = () => {
 
   const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
 
-  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
-
+  const token = Cookies.get("userToken");
+const userName=Cookies.get("userName")
 
 const fetchDeliveryCharges=async()=>{
   try {
@@ -313,7 +314,7 @@ useEffect(()=>{
         userId: String(userId),
         couponCode: String(couponcode),
         addressId: String(selectedAddress._id),
-        desiredStartDate: "2025-03-13"
+ 
       };
 
 
@@ -324,7 +325,7 @@ useEffect(()=>{
         },
       });
       const { orderId, finalAmount } = response.data;
-
+console.log(response.data,"final amount")
 
       // If orderId is present, proceed to initiate payment
       if (orderId) {
@@ -377,7 +378,7 @@ useEffect(()=>{
           Authorization: `Bearer ${token}`,
         },
       });
-
+console.log(response.data,"paymnet initiate")
       // Axios response data is already parsed
       if (response.data.order && response.data.order.id) {
         setDisplayRazorpay(true);
@@ -638,7 +639,7 @@ useEffect(()=>{
               disabled={totalPrice <= 0}
               style={{ cursor: totalPrice <= 0 ? 'not-allowed' : 'pointer' }}
             >
-              Pay ₹{totalPrice}
+              Pay ₹{delivery?.totalDeliveryCharges?totalPrice+delivery.totalDeliveryCharges:totalPrice}
             </button>
 
 
@@ -646,11 +647,11 @@ useEffect(()=>{
               <RenderRazorpay
                 orderId={orderId}
                 razorpayOrderId={razorpayOrderId}
-                amount={discountedPrice ? discountedPrice * 100 : totalPrice * 100}
+                // amount={delivery?.totalDeliveryCharges}
                 currency={"INR"}
                 keyId={apiKey}
                 handlePayment={handlePayment}
-                name={(typeof window !== 'undefined') ? localStorage.getItem("userName") : null}
+                name={userName}
               />
             )}
           </div>
@@ -715,26 +716,10 @@ useEffect(()=>{
                 <span>Delivery charges</span>
                 <span className="font-medium">+{delivery.totalDeliveryCharges}</span>
               </div>
-              {/* <div className="flex justify-between">
-                <span>Discount Price</span>
-                <span className="font-medium">-{disAmount}</span>
-              </div>
-              <div className="flex justify-between text-green-500">
-                <span>Discounts</span>
-                <span className="font-medium">{disValue}%</span>
-              </div> */}
 
-              {/* <div className="flex justify-between border-t pt-2">
-                <span>Total Costs</span>
-                <span className="font-medium">{discountedPrice ? discountedPrice : totalPrice}</span>
-              </div> */}
-              {/* <div className="flex justify-between">
-                <span>GST</span>
-                <span className="font-medium">₹512 (18%)</span>
-              </div> */}
               <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
-                <span className="text-black">₹ {totalPrice+delivery.totalDeliveryCharges}</span>
+                <span className="text-black">₹ {delivery.totalDeliveryCharges?totalPrice+delivery.totalDeliveryCharges:totalPrice}</span>
               </div>
             </div>
           )}

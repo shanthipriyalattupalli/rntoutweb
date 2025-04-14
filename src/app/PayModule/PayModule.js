@@ -40,6 +40,7 @@ const RenderRazorpay = ({ orderId,razorpayOrderId, keyId, currency, amount, hand
               Authorization: `Bearer ${token}`,
             }
           });
+          console.log(result.data,"payment status")
           if (result.data.transactionStatus === 'completed') {
             handlePayment('succeeded', {
               orderId,
@@ -63,7 +64,7 @@ const RenderRazorpay = ({ orderId,razorpayOrderId, keyId, currency, amount, hand
             // window.location.href = '/payment-failed';
           }
         } catch (error) {
-          console.error('Payment verification error:', error);
+          console.error('Payment status error:', error);
           handlePayment('failed', {
             orderId,
             error: error.response?.data?.message || 'Payment verification failed'

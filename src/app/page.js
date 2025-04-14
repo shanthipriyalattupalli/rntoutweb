@@ -71,14 +71,14 @@ const fetchCategories = async () => {
 };
 
 
-const fetchProducts = async (latitude,longitude,radius) => {
+const fetchProducts = async (latitude, longitude, radius) => {
 
   try {
-    const response = await axios.get(`${BASE_URL}/variants/variants-by-category`,{
-      params:{
-        latitude :latitude?.value,
-        longitude :longitude?.value,
-        radius :radius?.value
+    const response = await axios.get(`${BASE_URL}/variants/variants-by-category`, {
+      params: {
+        latitude: latitude?.value,
+        longitude: longitude?.value,
+        radius: radius?.value
       }
     });
     return response.data.data;
@@ -112,16 +112,15 @@ export const metadata = {
 
 const Home = async () => {
   const cookieStore = cookies();
-  
   const latitude = cookieStore.get('latitude');
-  const longitude= cookieStore.get('longitude');
-  const radius=cookieStore.get('selectedDistance')
+  const longitude = cookieStore.get('longitude');
+  const radius = cookieStore.get('selectedDistance')
 
 
   const banners = await fetchBanners();
   const banner = await fetchBanner();
   const categories = await fetchCategories();
-  const products = await fetchProducts(latitude,longitude,radius);
+  const products = await fetchProducts(latitude, longitude, radius);
   const blogs = await fetchBlogs()
 
   return (

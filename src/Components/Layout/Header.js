@@ -27,8 +27,8 @@ function Header() {
   const userId = Cookies.get("userId");
   const token = Cookies.get("userToken") || null;
   const names = Cookies.get("userName");
-  const latitude=Cookies.get("latitude");
-  const longitude=Cookies.get("longitude")
+  const latitude = Cookies.get("latitude");
+  const longitude = Cookies.get("longitude")
   const [profilePic, setProfilePic] = useState((typeof window !== 'undefined') ? localStorage.getItem("profilePic") : null || Photo);
   const [name, setName] = useState(names)
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -44,7 +44,7 @@ function Header() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const isKyc=Cookies.get("isKyc");
+  const isKyc = Cookies.get("isKyc");
 
   useEffect(() => {
     const handleProfilePicUpdate = (event) => {
@@ -83,10 +83,10 @@ function Header() {
 
 
   useEffect(() => {
-    const storedDistance=Cookies.get("selectedDistance") 
+    const storedDistance = Cookies.get("selectedDistance")
     if (storedDistance) {
       setSelectedDistance(storedDistance);
-    }else{
+    } else {
       Cookies.set("selectedDistance", 20, { expires: 7, secure: true, sameSite: "Strict" });
 
     }
@@ -235,7 +235,7 @@ function Header() {
 
 
 
-  
+
 
   const handleSearchInputChange = async (searchTerm) => {
     setSearchValue(searchTerm);
@@ -275,12 +275,13 @@ function Header() {
 
   const handleDistanceChange = (e) => {
     const distance = e.target.value;
+    console.log(distance, "selected distance")
     setSelectedDistance(distance);
     localStorage.setItem("selectedDistance", distance);
     Cookies.set("selectedDistance", distance, { expires: 7, secure: true, sameSite: "Strict" });
     window.location.reload();
   };
-  
+
   const fetchSubscriptionPlans = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/subscription-plans/plans`);
@@ -319,13 +320,13 @@ function Header() {
         confirmButtonText: "Yes, Verify Now",
         cancelButtonText: "Cancel",
       });
-  
+
       if (result.isConfirmed) {
         router.push("/profile/kyc");
       }
     }
   };
-  
+
 
   return (
     <>
@@ -373,24 +374,25 @@ function Header() {
 
         <div className="flex items-center gap-4 md:gap-4 cursor-pointer">
 
-        <div className="hidden lg:block">
-  <LocationSearch />
-</div>
+          <div className="hidden lg:block">
+            <LocationSearch />
+          </div>
 
 
-{/*  */}
+          {/*  */}
           {/* Distance Selection */}
-          {latitude && longitude && <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 cursor-pointer">
-            <Image src={nearby} alt="location" width={18} height={18} />
-            <select className="bg-transparent text-sm cursor-pointer md:mr-3" value={selectedDistance} onChange={handleDistanceChange}>
-              <option className="cursor-pointer" value="20">20 km</option>
-              <option className="cursor-pointer" value="30">30 km</option>
-              <option value="40">40 km</option>
-              <option value="50">50 km</option>
-              <option value="60">60 km</option>
-              <option value="100">100 + km</option>
-            </select>
-          </div>}
+          {latitude && longitude &&
+            <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 cursor-pointer">
+              <Image src={nearby} alt="location" width={18} height={18} />
+              <select className="bg-transparent text-sm cursor-pointer md:mr-3" value={selectedDistance} onChange={handleDistanceChange}>
+                <option className="cursor-pointer" value="20">20 km</option>
+                <option className="cursor-pointer" value="30">30 km</option>
+                <option value="40">40 km</option>
+                <option value="50">50 km</option>
+                <option value="60">60 km</option>
+                <option value="100">100 + km</option>
+              </select>
+            </div>}
 
 
           {(name || token) && (
@@ -435,7 +437,7 @@ function Header() {
               </div>
             </div>
           )}
-    
+
           <CartIcon userId={userId} />
           {name || token ? (
             <button
@@ -532,7 +534,7 @@ function Header() {
         </div>
 
         <LocationSearch />
- 
+
         <div className="sm:flex md:flex lg:hidden  w-1/2 h-10 flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
           <Image src={nearby} alt="location" width={16} height={16} />
           <select className="bg-transparent text-xs cursor-pointer mr-2" value={selectedDistance} onChange={handleDistanceChange}>

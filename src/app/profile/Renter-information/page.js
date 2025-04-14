@@ -320,7 +320,13 @@ export default function BusinessInformation2() {
                         <div className="text-sm font-normal text-left">{userName}</div>
                       </div>
                       <p className="flex flex-col">
-                        <div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong>Email:</strong></div>
+                      <div className="flex flex-col">
+  <div className="flex gap-2">
+    <FaEnvelope className="text-gray-500" /> 
+    <strong>Email:</strong>
+  </div>
+</div>
+
                         <div className="text-sm">{userEmail}</div>
                       </p>
                       <p className="flex flex-col">

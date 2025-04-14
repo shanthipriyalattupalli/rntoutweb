@@ -301,9 +301,9 @@
 
 /* Large Screens - 1441px and above */
 @media (min-width: 1441px) {
-    .Orders_page_section {
+    /* .Orders_page_section {
         max-width: 1440px;
-    }
+    } */
 
     .order-actions {
         justify-content: space-between;

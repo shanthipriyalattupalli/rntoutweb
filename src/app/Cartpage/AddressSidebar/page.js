@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 const edit = "/Assets/editicon.svg";
 const emptyaddress = "/Assets/emptyaddress.svg";
 
-const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId,onAddressSelectedSuccess }) => {
+const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddressSelectedSuccess }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selected, setSelected] = useState("Home");
@@ -26,15 +26,26 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId,onAddressS
   const [errorMessage, setErrorMessage] = useState("");
 
 
-  const token =Cookies.get("userToken");
+  const token = Cookies.get("userToken");
 
 
   useEffect(() => {
     if (addresses.length > 0) {
       onAddressSelect(addresses[0]);
+  
     }
   }, [addresses, onAddressSelect]);
 
+
+  useEffect(() => {
+    if (addresses.length > 0 && selectedAddressIndex === null) {
+      const firstAddress = addresses[0];
+      handleSelectAddress(firstAddress._id);
+      setSelectedAddressIndex(0);           
+      onAddressSelect(firstAddress);      
+    }
+  }, [addresses]);
+  
 
 
   const fetchAddress = async () => {
@@ -267,10 +278,10 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId,onAddressS
   const handleSelectAddress = async (addressId) => {
 
     try {
-      const response = await axios.patch(`${BASE_URL}/profile/selected/${addressId}`,{}, {
+      const response = await axios.patch(`${BASE_URL}/profile/selected/${addressId}`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "content-type":"application/json"
+          "content-type": "application/json"
         },
         params: {
           addressId: addressId,
@@ -278,13 +289,13 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId,onAddressS
       });
       onAddressSelectedSuccess?.();
       onClose();
-  
+
 
     } catch (error) {
       console.log(error, "error in selecting");
     }
   };
-  
+
 
   const handleDeleteAddress = async (addressId) => {
     try {

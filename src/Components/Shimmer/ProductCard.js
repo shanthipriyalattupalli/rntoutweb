@@ -1,7 +1,8 @@
 import React from 'react'
 
-const ProductCard = () => {
+const ProductCard = (products) => {
   return (
+    <>
     <div className="animate-pulse">
     <div className="w-full h-[220px] bg-gray-300 rounded-lg"></div>
     <div className="mt-4">
@@ -9,6 +10,7 @@ const ProductCard = () => {
       <div className="w-1/2 h-4 bg-gray-300 rounded"></div>
     </div>
   </div>
+  </>
   )
 }
 
