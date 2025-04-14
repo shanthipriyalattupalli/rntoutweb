@@ -234,6 +234,7 @@ useEffect(()=>{
   const fetchCartDetails = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
+      console.log(response.data,"cart items")
 
       const cartData = response.data.cartItems || [];
       setCartItems(cartData);

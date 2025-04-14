@@ -237,6 +237,11 @@ const MainContent = () => {
   const handleRemoveImage = (indexToRemove) => {
     setPreviewImages((prev) => prev.filter((_, index) => index !== indexToRemove));
 
+    console.log(indexToRemove,"indextoremove");
+
+    console.log((prev) => prev.filter((_, index) => index !== indexToRemove),"removing the prev image")
+
+
     setFormData((prev) => ({
       ...prev,
       images: prev.images.filter((_, index) => index !== indexToRemove),
@@ -285,7 +290,7 @@ const MainContent = () => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
-
+console.log(formData,"formData")
 
     const [errors, setErrors] = useState({
       title: "",
@@ -766,7 +771,7 @@ const MainContent = () => {
 
           <span> {errors.rentalAvailability && <p className="text-red-500 text-sm mt-10">{errors.rentalAvailability}</p>}</span>
         </div>
-        <div className="mt-12">
+        {/* <div className="mt-12">
           <label>Location</label>
           <div className="relative">
             <input
@@ -777,12 +782,12 @@ const MainContent = () => {
 
             <GrLocation className="absolute left-96 ml-20 top-1/2 transform -translate-y-1/2 h-1/2" />
           </div>
-        </div>
+        </div> */}
 
         <div className="mt-4 mb-4 flex flex-col gap-3">
           <label className="text-[14px] font-semibold">Select Pick up address</label>
           <div className="google-content">
-            <LoadScript googleMapsApiKey={MAP_API}>
+          
               <GoogleMap
                 mapContainerStyle={{
                   height: "300px",
@@ -802,7 +807,7 @@ const MainContent = () => {
                   />
                 )}
               </GoogleMap>
-            </LoadScript>
+      
           </div>
         </div>
         <p>
