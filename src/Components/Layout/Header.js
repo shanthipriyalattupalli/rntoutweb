@@ -34,7 +34,7 @@ function Header() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [variants, setVariants] = useState([]);
   const [selectedDistance, setSelectedDistance] = useState("");
-  const [locationsList, setLocationsList] = useState([]);
+  const [userPlans, setUserPlans] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [subscriptionPlans, setSubscriptionPlans] = useState([])
   const [address, setAddress] = useState({ suburb: "" });
@@ -134,6 +134,37 @@ function Header() {
       fetchProfile();
     }
   }, [token]);
+
+
+
+  
+  const fetchUserSubscriptionPlans = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/subscription-plans/user-plans`,{
+        headers: { Authorization: `Bearer ${token}` },
+
+      });
+console.log(response,"user plans");
+setUserPlans(response.data.data[0]);
+    Cookies.set("planId",response.data.data[0]?.planId , { expires: 7, secure: true, sameSite: "Strict" });
+    } catch (error) {
+      console.log(error, "error")
+      if (error.response && error.response.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Login Required",
+          text: "Please login to proceed with payment.",
+        });
+      }
+
+    }
+  }
+
+  useEffect(()=>{
+    fetchUserSubscriptionPlans()
+
+  },[])
+
 
 
 
@@ -433,7 +464,7 @@ function Header() {
                   ✕
                 </button>
 
-                <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans} />
+                <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans} userPlans={userPlans} />
               </div>
             </div>
           )}

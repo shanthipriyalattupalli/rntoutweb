@@ -207,48 +207,59 @@ const MainContent = () => {
       toast.error("No files selected");
       return;
     }
+  
     const previews = [];
+    const newFiles = [...files]; 
 
-    Array.from(files).forEach((file) => {
+    const replacementIndexes = [];
+  
+    files.forEach((file, i) => {
+      const targetIndex = previewImages.length + i; 
+      replacementIndexes.push(targetIndex);
+  
       const reader = new FileReader();
       reader.onload = () => {
-        previews.push(reader.result);
+        previews.push({ index: targetIndex, src: reader.result });
+  
         if (previews.length === files.length) {
-          setPreviewImages(previews);
+   
+          const sortedPreviews = [...previewImages];
+  
+          previews.forEach(({ index, src }) => {
+            sortedPreviews[index] = src;
+          });
+  
+          setPreviewImages(sortedPreviews);
         }
       };
       reader.readAsDataURL(file);
     });
-    if (!files.length) {
-      toast.error("No files selected");
-      return;
-    }
-    // Clear previous images in formData
-    setFormData((prev) => ({ ...prev, images: [] }));
-    // Add the selected files to formData
+  
+
     setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, ...files],
+      images: [...(prev.images || []), ...files],
+      replaceImageIndex: [...(prev.replaceImageIndex || []), ...replacementIndexes],
     }));
-    // Show toast notification for successful upload
+  
     toast.success("Files added successfully!");
   };
+  
 
   const handleRemoveImage = (indexToRemove) => {
+    console.log(indexToRemove,"indextoremove")
     setPreviewImages((prev) => prev.filter((_, index) => index !== indexToRemove));
-
-    console.log(indexToRemove,"indextoremove");
-
-    console.log((prev) => prev.filter((_, index) => index !== indexToRemove),"removing the prev image")
 
 
     setFormData((prev) => ({
       ...prev,
-      images: prev.images.filter((_, index) => index !== indexToRemove),
+      removeImages: [...(prev.removeImages || []), indexToRemove],
     }));
 
     toast.info("Image removed!");
   };
+
+  
 
 
   const handleIconClick = () => {
@@ -261,6 +272,9 @@ const MainContent = () => {
     title: "",
     description: "",
     images: [],
+    replaceImageIndex:0 , 
+  removeImages: "[]", 
+  imageOrder: [],
     categoryId: "",
     subCategoryId: "",
     productId: "",
@@ -363,15 +377,17 @@ console.log(formData,"formData")
       [name]: value,
     }));
   };
+
   const handleDateChange = (date) => {
     setFormData((prevData) => ({
       ...prevData,
       rentalAvailability: {
         ...prevData.rentalAvailability,
-        startDate: date, // Update only the startDate
+        startDate: date,
       },
     }));
   };
+  
   const handleEndDateChange = (date) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -527,6 +543,18 @@ console.log(formData,"formData")
         formData.images.forEach((file) => {
           formDataToSend.append("images", file);
         });
+      }
+
+      if (formData.replaceImageIndex !== undefined) {
+        formDataToSend.append("replaceImageIndex", formData.replaceImageIndex);
+      }
+      
+      if (formData.removeImages && formData.removeImages.length > 0) {
+        formDataToSend.append("removeImages", JSON.stringify(formData.removeImages));
+      }
+      
+      if (formData.imageOrder && formData.imageOrder.length > 0) {
+        formDataToSend.append("imageOrder", JSON.stringify(formData.imageOrder));
       }
 
       formDataToSend.append('categoryId', formData.categoryId);

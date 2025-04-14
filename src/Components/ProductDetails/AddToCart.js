@@ -96,6 +96,9 @@ const [selectedDuration, setSelectedDuration] = useState(product?.rentalPrice?.[
             </div> 
             
             <div className='flex items-center space-x-4'>
+
+              
+
   <div className={`flex items-center border ${isDateExpired ? 'border border-[rgba(255,45,85,0.6)] cursor-not-allowed' : 'border-red-500 bg-[#FF2D55]'} text-white font-[600] rounded-lg`}>
     <button
       className={`p-2 w-64 ${isDateExpired ? 'text-[rgba(255,45,85,0.6)] cursor-not-allowed' : ''}`}

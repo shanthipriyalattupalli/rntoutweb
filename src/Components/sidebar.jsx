@@ -77,19 +77,8 @@ const buttonsData = [
     icon: <IoIosHelpCircleOutline />,
     route: "/profile/support",
   },
-  {
-    id: 12,
-    title: "Terms and conditions",
-    icon: <GrNotes />,
-    route: "/profile/terms-and-conditions",
-  },
-  {
-    id: 13,
-    title: "Privacy Policy",
-    icon: <BsShieldCheck />,
-    route: "/profile/privacy-policy",
-  },
-  { id: 14, title: "Log Out", icon: <MdOutlineLogout />, route: "/" },
+
+  { id: 12, title: "Log Out", icon: <MdOutlineLogout />, route: "/" },
 ];
 
 
