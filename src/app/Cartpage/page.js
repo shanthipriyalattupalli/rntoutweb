@@ -642,7 +642,7 @@ console.log(response.data,"paymnet initiate")
               disabled={totalPrice <= 0}
               style={{ cursor: totalPrice <= 0 ? 'not-allowed' : 'pointer' }}
             >
-              Pay ₹{delivery.totalDeliveryCharges?cartdetails?.grandTotal+delivery.totalDeliveryCharges:cartdetails?.grandTotal}
+              Pay ₹{delivery?.totalDeliveryCharges?cartdetails?.grandTotal+delivery?.totalDeliveryCharges:cartdetails?.grandTotal}
             </button>
 
 
@@ -713,20 +713,20 @@ console.log(response.data,"paymnet initiate")
             <div className="mt-4 space-y-2 text-gray-700">
               <div className="flex justify-between">
                 <span>Total</span>
-                <span className="font-medium">₹ {cartdetails.totalCartValue}</span>
+                <span className="font-medium">₹ {cartdetails?.totalCartValue}</span>
               </div>
               <div className="flex justify-between">
-                <span>Gst({cartdetails.taxes.cgst.rate +cartdetails.taxes.sgst.rate}%)</span>
-                <span className="font-medium">+{cartdetails.taxes.totalTax}</span>
+                <span>Gst({cartdetails?.taxes?.cgst?.rate +cartdetails?.taxes?.sgst?.rate}%)</span>
+                <span className="font-medium">+{cartdetails?.taxes?.totalTax}</span>
               </div>
               <div className="flex justify-between">
                 <span>Delivery charges</span>
-                <span className="font-medium">+ {delivery.totalDeliveryCharges}</span>
+                <span className="font-medium">+ {delivery?.totalDeliveryCharges}</span>
               </div>
 
               <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
-                <span className="text-black">₹ {delivery.totalDeliveryCharges?cartdetails?.grandTotal+delivery.totalDeliveryCharges:cartdetails?.grandTotal}</span>
+                <span className="text-black">₹ {delivery?.totalDeliveryCharges?cartdetails?.grandTotal+delivery?.totalDeliveryCharges:cartdetails?.grandTotal}</span>
               </div>
             </div>
           )}
