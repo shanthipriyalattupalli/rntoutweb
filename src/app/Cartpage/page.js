@@ -36,7 +36,7 @@ const rcb = '/Assets/RCB.svg'
 const CartPage = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [cartItems, setCartItems] = useState([]);
-  const [cartdetails,setCartDeetails]=useState({})
+  const [cartdetails, setCartDeetails] = useState({})
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAddressSidebarOpen, setIsAddressSidebarOpen] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -46,7 +46,7 @@ const CartPage = () => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [discountedPrice, setDiscountedPrice] = useState(0);
   const [couponcode, setCouponCode] = useState("");
-  const [delivery,setIsDelivery]=useState({})
+  const [delivery, setIsDelivery] = useState({})
   const [addressId, setAddressId] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [selectedCartItems, setSelectedCartItems] = useState([]);
@@ -59,24 +59,24 @@ const CartPage = () => {
   const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
 
   const token = Cookies.get("userToken");
-const userName=Cookies.get("userName")
+  const userName = Cookies.get("userName")
 
-const fetchDeliveryCharges=async()=>{
-  try {
-    const response=await axios.get(`${BASE_URL}/cart/calculate-delivery-charges`,{
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setIsDelivery(response.data);
-  } catch (error) {
-    console.log(error,"error in fetching delivery charges")
+  const fetchDeliveryCharges = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/cart/calculate-delivery-charges`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setIsDelivery(response.data);
+    } catch (error) {
+      console.log(error, "error in fetching delivery charges")
+    }
   }
-}
 
-useEffect(()=>{
-  fetchDeliveryCharges();
-},[])
+  useEffect(() => {
+    fetchDeliveryCharges();
+  }, [])
 
 
 
@@ -158,7 +158,7 @@ useEffect(()=>{
 
   const handleAddressToggle = () => {
     setIsAddressSidebarOpen(!isAddressSidebarOpen);
-    
+
   };
 
   const increaseQuantity = async (variantId) => {
@@ -235,7 +235,7 @@ useEffect(()=>{
   const fetchCartDetails = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
-      console.log(response.data,"cart items")
+      console.log(response.data, "cart items")
 
       const cartData = response.data.cartItems || [];
       setCartDeetails(response?.data)
@@ -317,7 +317,8 @@ useEffect(()=>{
         userId: String(userId),
         couponCode: String(couponcode),
         addressId: String(selectedAddress._id),
- 
+        deliveryCharge:"50"
+
       };
 
 
@@ -328,12 +329,12 @@ useEffect(()=>{
         },
       });
       const { orderId, finalAmount } = response.data;
-console.log(response.data,"final amount")
+      console.log(response.data, "final amount")
 
       // If orderId is present, proceed to initiate payment
       if (orderId) {
 
-        setOrderId(orderId); // Save orderId for future use
+        setOrderId(orderId); 
         await handleContinueClick(orderId, finalAmount);
         router.push('/profile/orders')
         window.dispatchEvent(new CustomEvent("cartUpdated", { detail: 0 }));
@@ -354,12 +355,12 @@ console.log(response.data,"final amount")
         cancelButtonColor: "#3085d6",
       }).then((result) => {
         if (result.isConfirmed) {
-       
+
           if (errorMessage === "KYC verification is required before checkout.") {
             router.push("/profile/kyc");
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-   
+
           // Handle cancel action if needed
         }
       });
@@ -381,7 +382,7 @@ console.log(response.data,"final amount")
           Authorization: `Bearer ${token}`,
         },
       });
-console.log(response.data,"paymnet initiate")
+      console.log(response.data, "paymnet initiate")
       // Axios response data is already parsed
       if (response.data.order && response.data.order.id) {
         setDisplayRazorpay(true);
@@ -604,7 +605,7 @@ console.log(response.data,"paymnet initiate")
                   type="checkbox"
                   defaultChecked
                   className="w-5 h-5 accent-red-500"
-               
+
                 />
                 <h4>{selectedAddress.name}</h4>
                 <p>|</p>
@@ -642,7 +643,7 @@ console.log(response.data,"paymnet initiate")
               disabled={totalPrice <= 0}
               style={{ cursor: totalPrice <= 0 ? 'not-allowed' : 'pointer' }}
             >
-              Pay ₹{delivery?.totalDeliveryCharges?cartdetails?.grandTotal+delivery?.totalDeliveryCharges:cartdetails?.grandTotal}
+              Pay ₹{delivery?.totalDeliveryCharges ? cartdetails?.grandTotal + delivery?.totalDeliveryCharges : cartdetails?.grandTotal}
             </button>
 
 
@@ -711,22 +712,22 @@ console.log(response.data,"paymnet initiate")
           {/* Cost Breakdown (Hidden by Default) */}
           {isOpen && (
             <div className="mt-4 space-y-2 text-gray-700">
-              <div className="flex justify-between">
+              {cartdetails?.totalCartValue && <div className="flex justify-between">
                 <span>Total</span>
                 <span className="font-medium">₹ {cartdetails?.totalCartValue}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Gst({cartdetails?.taxes?.cgst?.rate +cartdetails?.taxes?.sgst?.rate}%)</span>
+              </div>}
+              {cartdetails?.taxes?.totalTax && <div className="flex justify-between">
+                <span>Gst({cartdetails?.taxes?.cgst?.rate + cartdetails?.taxes?.sgst?.rate}%)</span>
                 <span className="font-medium">+{cartdetails?.taxes?.totalTax}</span>
-              </div>
-              <div className="flex justify-between">
+              </div>}
+              {delivery?.totalDeliveryCharges && <div className="flex justify-between">
                 <span>Delivery charges</span>
                 <span className="font-medium">+ {delivery?.totalDeliveryCharges}</span>
-              </div>
+              </div>}
 
               <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
-                <span className="text-black">₹ {delivery?.totalDeliveryCharges?cartdetails?.grandTotal+delivery?.totalDeliveryCharges:cartdetails?.grandTotal}</span>
+                <span className="text-black">₹ {delivery?.totalDeliveryCharges ? cartdetails?.grandTotal + delivery?.totalDeliveryCharges : cartdetails?.grandTotal}</span>
               </div>
             </div>
           )}
