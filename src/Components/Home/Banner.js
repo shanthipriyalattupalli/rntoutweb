@@ -29,8 +29,8 @@ const Banner = ({ banners, isLoading }) => {
         ? <Shimmer /> // Show shimmer when loading
         : (
           <>
- {         banners.map((banner, index) => (
-  <div className="relative px-[36px] sm:px-[80px] py-[20px] md:py-10" key={index}>
+
+  <div className="relative px-[36px] sm:px-[80px] py-[20px] md:py-10">
 
 
             <button
@@ -42,8 +42,8 @@ const Banner = ({ banners, isLoading }) => {
               <img src={left} alt="Previous" className="rotate-360" />
             </button>
             <button className={`absolute right-2  sm:right-[5rem] md:right-[5rem] lg:right-[5rem] top-1/2 transform -translate-y-1/2 z-20 
-              ${activeIndex === (banner.images.length - 1) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} 
-              onClick={() => swiperRef.current?.slideNext()} disabled={activeIndex === (banner.images.length - 1)} >
+              ${activeIndex === (banners.images.length - 1) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} 
+              onClick={() => swiperRef.current?.slideNext()} disabled={activeIndex === (banners.images.length - 1)} >
              <img src={left} alt="Next" className="rotate-180 " />
              </button>
             
@@ -56,7 +56,7 @@ const Banner = ({ banners, isLoading }) => {
             autoplay={{ delay: 3000 }}
             className="rounded-[40px] md:rounded-[40px] border border-gray-200 h-[250px] sm:h-[536px] md:h-[536px]"
           >
-            {banner.images?.map((image, idx) => (
+            {banners.images?.map((image, idx) => (
               <SwiperSlide key={idx} className="h-full">
                 <div className="relative h-full">
                   <img
@@ -83,7 +83,7 @@ const Banner = ({ banners, isLoading }) => {
             ))}
           </Swiper>
         </div>
-      ))}</>)}
+      </>)}
     </div>
   );
 };

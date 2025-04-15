@@ -28,6 +28,9 @@ html, body {
   overflow-x: hidden;
   width: 100%;
 }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   color: var(--foreground);
@@ -93,6 +96,29 @@ body {
   -ms-overflow-style: none; /* Hides scrollbar in IE, Edge */
   scrollbar-width: none; /* Hides scrollbar in Firefox */
 }
+
+/* Global CSS */
+.shimmer {
+  background: linear-gradient(
+    to right,
+    #eeeeee 0%,
+    #dddddd 20%,
+    #eeeeee 40%,
+    #eeeeee 100%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -800px 0;
+  }
+  100% {
+    background-position: 800px 0;
+  }
+}
+
 
 @media (min-width: 320px) and (max-width: 768px) {
   .item-header{

@@ -23,7 +23,7 @@ const ProductItems = dynamic(() => import("./ProductItems"), {
 const CategoryProducts = ({ products }) => {
   const router = useRouter();
   const handleProducts = () => {
-    router.push("/Products"); 
+    router.push("/Products");
   };
 
   return (
@@ -31,12 +31,11 @@ const CategoryProducts = ({ products }) => {
       <ToastContainer />
       {products?.length > 0 ? (
         <div className="px-6 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 2xl:pl-10 mt-3">
-
-          <Suspense fallback={<div><ProductCard/></div>}>
-            {products.map((product) => (
+          {products.map((product) => (
+            <Suspense fallback={<div><ProductCard /></div>}>
               <ProductItems key={product._id} product={product} />
-            ))}
-          </Suspense>
+            </Suspense>
+          ))}
 
         </div>) : (
         <div className="flex flex-col gap-4 items-center justify-center w-80 mx-auto h-[500px] text-center">

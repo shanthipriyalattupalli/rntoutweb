@@ -553,9 +553,9 @@ console.log(formData,"formData")
         formDataToSend.append("removeImages", JSON.stringify(formData.removeImages));
       }
       
-      if (formData.imageOrder && formData.imageOrder.length > 0) {
-        formDataToSend.append("imageOrder", JSON.stringify(formData.imageOrder));
-      }
+      // if (formData.imageOrder && formData.imageOrder.length > 0) {
+      //   formDataToSend.append("imageOrder", JSON.stringify(formData.imageOrder));
+      // }
 
       formDataToSend.append('categoryId', formData.categoryId);
       formDataToSend.append('subCategoryId', formData.subCategoryId);

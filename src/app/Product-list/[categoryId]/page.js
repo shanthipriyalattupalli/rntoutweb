@@ -7,7 +7,7 @@ import Sidebar from "../../Products/ProductList/Sidebar";
 import { useParams } from "next/navigation";
 import CategoryProducts from '@/Components/Home/CategoryProducts';
 import Breadcrumb from "@/Components/Breadcrumb/Breadcrumb";
-import ScrollToTop from "@/app/ScrollToTop";
+import ScrollToTop from "@/Components/ScrollToTop";
 
 const ProductList = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -196,7 +196,7 @@ const handleRating=(rating)=>{
 
   return (
     <main className="min-h-screen  w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5">
-      <ScrollToTop/>
+      {/* <ScrollToTop/> */}
       <div className="px-8 sm:px-8 md:px-2 xl:px-14 lg:px-16 2xl:px-16">
       <Breadcrumb categoryName={breadcrumbCategoryName} />
       </div>

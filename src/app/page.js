@@ -1,6 +1,6 @@
 
 import React from "react";
-import ScrollToTop from "./ScrollToTop";
+import ScrollToTop from "../Components/ScrollToTop";
 import Banner from "../Components/Home/Banner";
 import CategoryList from "../Components/Home/CategoryList";
 import Products from "../Components/Home/Products";
@@ -36,6 +36,8 @@ const fetchBanners = async () => {
         theme_type: "light",
       },
     });
+
+    console.log(response.data,"resposne of banners")
     return response.data.data;
   } catch (error) {
     console.error("Error fetching banners:", error);
@@ -101,11 +103,12 @@ const fetchBlogs = async () => {
 
 
 
-// app/page.tsx
 export const metadata = {
   title: "rntout",
   description: "Welcome to my awesome website!",
 };
+
+
 
 
 
@@ -125,8 +128,9 @@ const Home = async () => {
 
   return (
     <div>
+
       <FirebaseComponent />
-      <Banner banners={banners} />
+      <Banner banners={banners[0]} />
       <CategoryList categories={categories} />
       <Products categories={categories} />
       <CuratedCollections />
@@ -145,7 +149,7 @@ const Home = async () => {
       <Blogs blogs={blogs} />
       <Testimonials />
       {/* <HomeComponent /> */}
-      <ScrollToTop />
+  
     </div>
   );
 }

@@ -75,6 +75,8 @@ export default function BusinessInformation2() {
   }
   const [formData, setFormData] = useState(initialFormData);
 
+  console.log(formData,"formdata of renter")
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

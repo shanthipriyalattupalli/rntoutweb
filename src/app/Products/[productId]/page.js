@@ -26,7 +26,7 @@ const stock = '/Assets/stock.svg';
 const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 import { cookies } from "next/headers";
 import { FaGrinTongueWink } from "react-icons/fa";
-import ScrollToTop from "@/app/ScrollToTop";
+import ScrollToTop from "@/Components/ScrollToTop";
 
 
 
@@ -119,7 +119,7 @@ const ProductPage = async ({ params }) => {
 
   return (
     <>
-      <ScrollToTop />
+      {/* <ScrollToTop /> */}
       <div className=' mx-auto px-20'>
 
         {/* Top Section */}

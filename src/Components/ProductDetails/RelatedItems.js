@@ -7,6 +7,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
 import ProductItem from "@/Components/Home/ProductItems";
+import ProductCard from "../Shimmer/ProductCard";
 const left = '/Assets/leftarrow.svg';
 
 
@@ -47,7 +48,7 @@ const RelatedItems = ({ relatedItems }) => {
                         }}
                     >
                         {relatedItems.map((product) => (
-                            <SwiperSlide key={product._id} className="flex justify-center">
+                            <SwiperSlide key={product._id}  fallback={<ProductCard/>} className="flex justify-center">
                                 <ProductItem product={product} />
                             </SwiperSlide>
                         ))}

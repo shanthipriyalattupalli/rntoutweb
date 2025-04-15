@@ -359,7 +359,7 @@ export default function BusinessInformation2() {
                       <img src={formData?.profileImage} alt="Profile" className="w-16 h-16 rounded-full" />
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4 w-full">
                         <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Business Name:</strong></div><div className="text-sm">{formData?.businessName}</div></p>
-                        <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Store Name:</strong></div><div className="text-sm">Codefacts Furniss Shop</div></p>
+                        <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Store Name:</strong></div><div className="text-sm">{formData?.storeName}</div></p>
                         <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong></div><div className="text-sm">{formData?.contactPhone}</div></p>
                         <p className="flex flex-col"><div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong>Email:</strong></div><div className="text-sm">{formData?.contactEmail}</div></p>
                       </div>

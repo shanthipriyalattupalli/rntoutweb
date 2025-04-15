@@ -3,12 +3,12 @@
 import Sidebar from "@/Components/sidebar";
 import "@/styles/ProfileMenus.css";
 import '../../styles/ProfileMenus.css';
-import ScrollToTop from "../ScrollToTop";
+import ScrollToTop from "../../Components/ScrollToTop";
 
 export default function ProfileLayout({ children }) {
   return (
     <>
-    <ScrollToTop/>
+    {/* <ScrollToTop/> */}
     <div className="w-full xl:w-full xl:px-20 sm:px-14 md:px-20 lg:px-20 2xl:px-20 pt-10  py-20">
       <div className="app_wbgeubeqb">
         <Sidebar /> 

@@ -7,6 +7,7 @@ import {
     FaBoxes, FaIdCard, FaEllipsisH, FaReceipt, FaGift, FaSyncAlt, FaUndoAlt
 } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { fetchFaq } from "@/services/faq.service";
 
 
 
@@ -16,29 +17,20 @@ import { useRouter } from "next/navigation";
 
 
 const FaqPage = () => {
-      const router = useRouter();
-
-    const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL
+    const router = useRouter();
     const [categories, setCategories] = useState([])
-
     const fetchFaqQuestions = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/faq/categories`);
-            setCategories(response?.data?.data);
-
+            const response = await fetchFaq()
+            console.log();
+            setCategories(response?.data);
         } catch (error) {
             console.error("Error fetching FAQ categories:", error.response?.data || error.message);
         }
     };
-
-
-
     useEffect(() => {
         fetchFaqQuestions();
     }, []);
-
-
-
     return (
         <div className="max-w-7xl mx-auto p-4">
             <div className="text-center m-8">
@@ -51,7 +43,7 @@ const FaqPage = () => {
                     <div
                         key={index}
                         className="border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition duration-300 cursor-pointer"
-                        onClick={()=>router.push(`/Faq/${category._id}`)}
+                        onClick={() => router.push(`/Faq/${category._id}`)}
                     >
                         <div className="flex items-center space-x-3 mb-4">
                             <div className="bg-green-600 p-2 rounded-lg flex justify-center items-center">

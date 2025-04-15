@@ -36,6 +36,7 @@ const rcb = '/Assets/RCB.svg'
 const CartPage = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [cartItems, setCartItems] = useState([]);
+  const [cartdetails,setCartDeetails]=useState({})
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAddressSidebarOpen, setIsAddressSidebarOpen] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -237,6 +238,7 @@ useEffect(()=>{
       console.log(response.data,"cart items")
 
       const cartData = response.data.cartItems || [];
+      setCartDeetails(response?.data)
       setCartItems(cartData);
       if (cartData.length === 0) {
         setQuantities({});
@@ -631,7 +633,7 @@ console.log(response.data,"paymnet initiate")
               </div>
               <div className="md:ml-4">
                 {" "}
-                <span className='amount'>₹{totalPrice}</span>
+                {/* <span className='amount'>₹{totalPrice}</span> */}
               </div>
             </div>
             <button
@@ -640,7 +642,7 @@ console.log(response.data,"paymnet initiate")
               disabled={totalPrice <= 0}
               style={{ cursor: totalPrice <= 0 ? 'not-allowed' : 'pointer' }}
             >
-              Pay ₹{delivery?.totalDeliveryCharges?totalPrice+delivery.totalDeliveryCharges:totalPrice}
+              Pay ₹{delivery.totalDeliveryCharges?cartdetails?.grandTotal+delivery.totalDeliveryCharges:cartdetails?.grandTotal}
             </button>
 
 
@@ -711,16 +713,20 @@ console.log(response.data,"paymnet initiate")
             <div className="mt-4 space-y-2 text-gray-700">
               <div className="flex justify-between">
                 <span>Total</span>
-                <span className="font-medium">₹ {discountedPrice ? discountedPrice : totalPrice}</span>
+                <span className="font-medium">₹ {cartdetails.totalCartValue}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Gst({cartdetails.taxes.cgst.rate +cartdetails.taxes.sgst.rate}%)</span>
+                <span className="font-medium">+{cartdetails.taxes.totalTax}</span>
               </div>
               <div className="flex justify-between">
                 <span>Delivery charges</span>
-                <span className="font-medium">+{delivery.totalDeliveryCharges}</span>
+                <span className="font-medium">+ {delivery.totalDeliveryCharges}</span>
               </div>
 
               <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
-                <span className="text-black">₹ {delivery.totalDeliveryCharges?totalPrice+delivery.totalDeliveryCharges:totalPrice}</span>
+                <span className="text-black">₹ {delivery.totalDeliveryCharges?cartdetails?.grandTotal+delivery.totalDeliveryCharges:cartdetails?.grandTotal}</span>
               </div>
             </div>
           )}

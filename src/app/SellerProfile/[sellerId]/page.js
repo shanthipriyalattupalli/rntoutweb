@@ -8,7 +8,7 @@ import SellerProfile from '../../../Components/Seller/SellerProducts'
 import '../../../styles/Sellerprofile.css'
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import ScrollToTop from "@/app/ScrollToTop";
+import ScrollToTop from "@/Components/ScrollToTop";
 const startfill='/Assets/star_fill.svg'
 const stars = "/Assets/stars.svg";
 const userProfile = '/Assets/userProfile.svg';
@@ -122,7 +122,7 @@ const SellerCarouselProfile = () => {
         return (
           
           <div className="px-16 py-5 bg-none">
-            <ScrollToTop/>
+            {/* <ScrollToTop/> */}
           <div className='seller-tab-content'>
             <h2 className="p-2 text-blue-500 font-semibold text-md">Ratings and Reviews</h2>
            <div className="flex flex-col w-full gap-2 border b-black-200 bg-white-900 p-10 rounded-lg text-center justify-center">
@@ -245,7 +245,7 @@ const SellerCarouselProfile = () => {
 
   return (
     <>
-    <ScrollToTop/>
+    {/* <ScrollToTop/> */}
  <div className="seller-carousel-container">
     {bannerImages.length > 0 && (
       <>

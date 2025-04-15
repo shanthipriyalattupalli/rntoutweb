@@ -1,6 +1,6 @@
 
 "use client"
-
+import { useEffect } from "react";
 import axios from "axios";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -11,12 +11,13 @@ import HomeComponent from "../Pages/Home";
 import { ToastContainer, toast } from "react-toastify";
 import MobileApp from "@/Components/Home/MobileApp";
 import GoogleMapsProvider from "../Components/Location/GoogleMapsProvider";
+import ScrollToTop from '../Components/ScrollToTop';
+import GlobalLoading from "@/Components/GlobalLoading ";
+
 
 
 
 export default function RootLayout({ children }) {
-
-
 
 
 
@@ -25,6 +26,8 @@ export default function RootLayout({ children }) {
       <body
         className={` antialiased`}
       >
+{/* <ScrollToTop/> */}
+{/* <GlobalLoading/> */}
         <GoogleMapsProvider>
         <Header />
         <Navigation />

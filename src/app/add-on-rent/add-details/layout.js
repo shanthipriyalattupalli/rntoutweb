@@ -6,12 +6,12 @@ import MenuItems from '@/Components/submenuadd';
 import '../../../styles/Adddetail.css';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ScrollToTop from '@/app/ScrollToTop';
+import ScrollToTop from '@/Components/ScrollToTop';
 
 
 const Layout = ({ children }) => (
     <>
-    <ScrollToTop/>
+    {/* <ScrollToTop/> */}
      <div className="container-para">
                 <h1>    Rent Out Your Items & Earn Easily! 🚀</h1>
                 <p>List your items for rent and start earning today.</p>

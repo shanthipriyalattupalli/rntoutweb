@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
@@ -19,6 +19,16 @@ export const Images = ({ product, productId,variant}) => {
 
   const [isFavorite, setIsFavorite] = useState(isFavorites);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+
+  useEffect(() => {
+    setIsLoading(true);
+    const img = new Image();
+    img.src = images[selectedImage];
+    img.onload = () => setIsLoading(false);
+  }, [selectedImage]);
+
 
   const handleAddToFavorites = async () => {
     try {
@@ -98,43 +108,59 @@ export const Images = ({ product, productId,variant}) => {
 
   return (
     <div className="space-y-4">
-      <div className="relative">
+    <div className="relative">
+      {/* Favorite icon */}
+      {isFavorite ? (
+        <span
+          className="absolute top-4 right-4 cursor-pointer w-8 h-8 rounded-full flex items-center justify-center"
+          onClick={handleRemoveFavorites}
+          style={{ backgroundColor: "rgba(255, 45, 85, 1)" }}
+        >
+          <img src={favorited} />
+        </span>
+      ) : (
+        <span
+          className="absolute top-4 right-4 cursor-pointer"
+          onClick={handleAddToFavorites}
+        >
+          <img src={favorite} />
+        </span>
+      )}
 
-        {isFavorite ? (
-          <span
-            className="absolute top-4 right-4 cursor-pointer w-8 h-8 rounded-full flex items-center justify-center"
-            onClick={handleRemoveFavorites}
-            style={{ backgroundColor: "rgba(255, 45, 85, 1)" }}
-          >
-            <img src={favorited} />
-          </span>
-        ) : (
-          <span
-            className="absolute top-4 right-4 cursor-pointer"
-            onClick={handleAddToFavorites}
-          >
-            <img src={favorite} />
-          </span>
+      {/* Main Image with shimmer */}
+      <div className="w-full h-[500px] rounded-lg shadow-lg overflow-hidden bg-gray-100 relative">
+        {isLoading && (
+          <div className="absolute inset-0 shimmer rounded-lg" />
         )}
         <img
           src={images[selectedImage]}
           alt="Product Image"
-          className="w-full h-[500px] rounded-lg shadow-lg"
+          className={`w-full h-full object-cover transition-opacity duration-300 ${
+            isLoading ? "opacity-0" : "opacity-100"
+          }`}
+          onLoad={() => setIsLoading(false)}
         />
       </div>
-
-      <div className="grid grid-cols-6 gap-2">
-        {images.map((image, index) => (
-          <button
-            key={index}
-            className={`border-2 rounded-lg overflow-hidden ${selectedImage === index ? "border-red-500" : "border-gray-200"
-              }`}
-            onClick={() => setSelectedImage(index)}
-          >
-            <img src={image} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
-          </button>
-        ))}
-      </div>
     </div>
+
+    {/* Thumbnails */}
+    <div className="grid grid-cols-6 gap-2">
+      {images.map((image, index) => (
+        <button
+          key={index}
+          className={`border-2 rounded-lg overflow-hidden ${
+            selectedImage === index ? "border-red-500" : "border-gray-200"
+          }`}
+          onClick={() => setSelectedImage(index)}
+        >
+          <img
+            src={image}
+            alt={`Thumbnail ${index + 1}`}
+            className="w-full h-full object-cover"
+          />
+        </button>
+      ))}
+    </div>
+  </div>
   );
 };

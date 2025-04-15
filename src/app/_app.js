@@ -4,11 +4,15 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import '@/styles/globals.css';
 import  { AppProps } from "next/app";
-import ScrollToTop from './ScrollToTop';
+import ScrollToTop from '../Components/ScrollToTop';
 import UseFcmToken from '../Components/PushNotificationClient';
 
 
 function MyApp({ Component, pageProps }) {
+
+
+
+
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
