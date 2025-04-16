@@ -237,6 +237,14 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
               <div className="text-gray-600">Total Rent</div>
               <div className="text-gray-800 font-medium">₹ {orders.totalAmount}/-</div>
               </div>
+              <div className="flex justify-between items-center mb-2">
+              <div className="text-gray-600">Gst</div>
+              <div className="text-gray-800 font-medium">₹ {orders?.taxDetails?.totalTax}/-</div>
+              </div>
+              <div className="flex justify-between items-center mb-2">
+              <div className="text-gray-600">Delivery charges</div>
+              <div className="text-gray-800 font-medium">₹ {orders?.deliveryCharge}/-</div>
+              </div>
               {/* <div className="flex justify-between items-center mb-2">
               <div className="text-gray-600">Discounts</div>
               <div className="text-gray-800 font-medium">--</div> 

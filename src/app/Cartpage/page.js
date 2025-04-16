@@ -317,7 +317,7 @@ const CartPage = () => {
         userId: String(userId),
         couponCode: String(couponcode),
         addressId: String(selectedAddress._id),
-        deliveryCharge:"50"
+        deliveryCharge:delivery?.totalDeliveryCharges
 
       };
 

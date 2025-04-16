@@ -137,33 +137,27 @@ function Header() {
 
 
 
-  
+
   const fetchUserSubscriptionPlans = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/subscription-plans/user-plans`,{
+      const response = await axios.get(`${BASE_URL}/subscription-plans/user-plans`, {
         headers: { Authorization: `Bearer ${token}` },
 
       });
-console.log(response,"user plans");
-setUserPlans(response.data.data[0]);
-    Cookies.set("planId",response.data.data[0]?.planId , { expires: 7, secure: true, sameSite: "Strict" });
+      console.log(response, "user plans");
+      setUserPlans(response.data.data[0]);
+      Cookies.set("planId", response.data.data[0]?.planId, { expires: 7, secure: true, sameSite: "Strict" });
     } catch (error) {
       console.log(error, "error")
-      if (error.response && error.response.status === 401) {
-        Swal.fire({
-          icon: "error",
-          title: "Login Required",
-          text: "Please login to proceed with payment.",
-        });
-      }
+
 
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchUserSubscriptionPlans()
 
-  },[])
+  }, [])
 
 
 
@@ -281,13 +275,7 @@ setUserPlans(response.data.data[0]);
         setShowSuggestions(true);
       } catch (error) {
         console.error("Error fetching variants:", error);
-        if (error.response && error.response.status === 401) {
-          Swal.fire({
-            icon: "error",
-            title: "Login Required",
-            text: "Please login to proceed with payment.",
-          });
-        }
+
 
       }
     } else {
@@ -319,13 +307,7 @@ setUserPlans(response.data.data[0]);
       setSubscriptionPlans(response.data.data)
     } catch (error) {
       console.log(error, "error")
-      if (error.response && error.response.status === 401) {
-        Swal.fire({
-          icon: "error",
-          title: "Login Required",
-          text: "Please login to proceed with payment.",
-        });
-      }
+
 
     }
   }
@@ -500,9 +482,13 @@ setUserPlans(response.data.data[0]);
             >
               {profilePic ? <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" /> :
                 <img src={profile_avatar} alt="user" className="w-8 h-8 rounded-full object-cover" />}
-              <p className="hidden sm:flex md:flex text-sm truncate w-auto">
-                {name === undefined || name === "undefined" ? "User" : name}
-              </p>
+              <div className="flex items-center space-x-2">
+                <p className="text-sm truncate max-w-[80px] overflow-hidden whitespace-nowrap text-ellipsis py-1">
+                  {name === undefined || name === "undefined" ? "User" : name}
+                </p>
+              </div>
+
+
 
 
             </div>

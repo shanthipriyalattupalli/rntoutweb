@@ -34,6 +34,7 @@ const fetchBanners = async () => {
         device_type: "website",
         banner_type: "landing_page_banner",
         theme_type: "light",
+     
       },
     });
 
@@ -130,7 +131,7 @@ const Home = async () => {
     <div>
 
       <FirebaseComponent />
-      <Banner banners={banners[0]} />
+      <Banner banners={banners} />
       <CategoryList categories={categories} />
       <Products categories={categories} />
       <CuratedCollections />
