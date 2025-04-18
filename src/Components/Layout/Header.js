@@ -483,7 +483,7 @@ function Header() {
               {profilePic ? <img src={profilePic} alt="user" className="w-8 h-8 rounded-full object-cover" /> :
                 <img src={profile_avatar} alt="user" className="w-8 h-8 rounded-full object-cover" />}
               <div className="flex items-center space-x-2">
-                <p className="text-sm truncate max-w-[80px] overflow-hidden whitespace-nowrap text-ellipsis py-1">
+                <p className="hidden sm:flex text-sm truncate max-w-[80px] overflow-hidden whitespace-nowrap text-ellipsis py-1">
                   {name === undefined || name === "undefined" ? "User" : name}
                 </p>
               </div>
@@ -505,8 +505,8 @@ function Header() {
             </button>
           )}
           {isLoginOpen && (
-            <div className="modal-overlay">
-              <div className="modal-content">
+            <div className="modal-overlay" >
+              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-button" onClick={() => setIsLoginOpen(false)}>
                   ✕
                 </button>

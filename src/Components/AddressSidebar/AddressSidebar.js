@@ -296,12 +296,14 @@ const AddressSidebar = ({ isOpen, onClose, setEditingAddressId, editingAddressId
           </label>
 
           <input
-            type="number"
+            type="tel"
             placeholder="Receiver’s contact number"
             className={`text-input ${errorMessage ? "border-red-500" : ""}`}
             name="mobile"
             value={formData.mobile}
             onChange={handleInputChange}
+            pattern="[0-9]{10}"
+            maxLength="10"
             required
           />
 

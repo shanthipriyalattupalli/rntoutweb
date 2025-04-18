@@ -20,7 +20,7 @@ const ProductItems = dynamic(() => import("./ProductItems"), {
   suspense: true,
 });
 
-const CategoryProducts = ({ products }) => {
+const CategoryProducts = ({ products,loading,moreData }) => {
   const router = useRouter();
   const handleProducts = () => {
     router.push("/Products");
@@ -30,6 +30,7 @@ const CategoryProducts = ({ products }) => {
     <>
       <ToastContainer />
       {products?.length > 0 ? (
+        <>
         <div className="px-6 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 2xl:pl-10 mt-3">
           {products.map((product) => (
             <Suspense fallback={<div><ProductCard /></div>}>
@@ -37,7 +38,19 @@ const CategoryProducts = ({ products }) => {
             </Suspense>
           ))}
 
-        </div>) : (
+        </div>
+        {/* {
+                loading &&
+                <div>Loading</div>
+            }
+            {
+                !loading &&
+                !moreData &&
+                <div>
+                    No more data
+                </div>
+            } */}
+        </>) : (
         <div className="flex flex-col gap-4 items-center justify-center w-80 mx-auto h-[500px] text-center">
           <img
             src={emptyproducts}

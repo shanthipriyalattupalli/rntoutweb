@@ -14,7 +14,7 @@ const pro4 = "/Assets/laptop-4.jpg";
 const pro5 = "/Assets/laptop-5.jpg";
 const noproducts = "/Assets/noproducts.svg";
 
-// Dynamically import the ProductItems component for lazy loading
+// Dynamically import the ProductItems component for lazy loadingc
 const ProductItems = dynamic(() => import("../Home/ProductItems"), {
   suspense: true,
 });

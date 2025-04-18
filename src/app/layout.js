@@ -27,14 +27,14 @@ export default function RootLayout({ children }) {
         className={` antialiased`}
       >
 {/* <ScrollToTop/> */}
-{/* <GlobalLoading/> */}
-        <GoogleMapsProvider>
+<GlobalLoading/>
+        {/* <GoogleMapsProvider> */}
         <Header />
         <Navigation />
         {children}
         <MobileApp/>
         <Newsletter />
-        </GoogleMapsProvider>
+        {/* </GoogleMapsProvider> */}
       </body>
     </html>
   );

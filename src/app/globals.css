@@ -119,6 +119,25 @@ body {
   }
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin 1.5s linear infinite;
+  }
+  .animate-spin-reverse-slower {
+    animation: spin-reverse 2.5s linear infinite;
+  }
+
+  @keyframes spin-reverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+}
+
+
 
 @media (min-width: 320px) and (max-width: 768px) {
   .item-header{

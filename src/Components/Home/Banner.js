@@ -29,64 +29,66 @@ const Banner = ({ banners, isLoading }) => {
         ? <Shimmer /> // Show shimmer when loading
         : (
           <>
-{activeBanners?.map((banner,index)=>(
-  <div className="relative px-[36px] sm:px-[80px] py-[20px] md:py-10" key={index}>
+            {activeBanners?.map((banner, index) => (
+              <div className="relative px-[36px] sm:px-[80px] py-[20px] md:py-10" key={index}>
 
 
-  <button
-    className={`absolute left-2 sm:left-[5rem] md:left-[5rem] lg:left-[5rem] top-1/2 transform -translate-y-1/2 z-10 
+                <button
+                  className={`absolute left-2 sm:left-[5rem] md:left-[5rem] lg:left-[5rem] top-1/2 transform -translate-y-1/2 z-10 
       ${activeIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-    onClick={() => swiperRef.current?.slidePrev()}
-    disabled={activeIndex === 0}
-  >
-    <img src={left} alt="Previous" className="rotate-360" />
-  </button>
-  <button className={`absolute right-2  sm:right-[5rem] md:right-[5rem] lg:right-[5rem] top-1/2 transform -translate-y-1/2 z-20 
-    ${activeIndex === (banner.images.length - 1) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} 
-    onClick={() => swiperRef.current?.slideNext()} disabled={activeIndex === (banner.images.length - 1)} >
-   <img src={left} alt="Next" className="rotate-180 " />
-   </button>
-  
-<Swiper
-  onSwiper={(swiper) => (swiperRef.current = swiper)}
-  onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
-  navigation={false}
-  pagination={{ clickable: true }}
-  modules={[Navigation, Pagination, Autoplay]}
-  autoplay={{ delay: 3000 }}
-  className="rounded-[40px] md:rounded-[40px] border border-gray-200 h-[250px] sm:h-[536px] md:h-[536px]"
->
-  {banner.images?.map((image, idx) => (
-    <SwiperSlide key={idx} className="h-full">
-      <div className="relative h-full">
-        <img
-          src={image}
-          alt={`Slide ${idx + 1}`}
-          className="w-full h-[250px] sm:h-[536px] md:h-[536px] rounded-[40px]"
-        />
-        <div className="absolute inset-0 bg-black opacity-0"></div>
-        <div className="absolute top-16 sm:top-24 md:top-28 left-4 sm:left-10 text-slate-600 text-sm sm:text-base md:text-lg">
-          {/* <h1 className="text-xl sm:text-3xl md:text-5xl font-bold"></h1>
+                  onClick={() => swiperRef.current?.slidePrev()}
+                  disabled={activeIndex === 0}
+                >
+                  <img src={left} alt="Previous" className="rotate-360" />
+                </button>
+                <button className={`absolute right-2  sm:right-[5rem] md:right-[5rem] lg:right-[5rem] top-1/2 transform -translate-y-1/2 z-20 
+    ${activeIndex === (banner.images.length - 1) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                  onClick={() => swiperRef.current?.slideNext()} disabled={activeIndex === (banner.images.length - 1)} >
+                  <img src={left} alt="Next" className="rotate-180 " />
+                </button>
+
+                <Swiper
+                  onSwiper={(swiper) => (swiperRef.current = swiper)}
+                  onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+                  navigation={false}
+                  pagination={{ clickable: true }}
+                  modules={[Navigation, Pagination, Autoplay]}
+                  autoplay={{ delay: 3000 }}
+                  className="rounded-[40px] md:rounded-[40px] border border-gray-200 h-[250px] sm:h-[536px] md:h-[536px]"
+                >
+                  {banner.images?.map((image, idx) => (
+                    <SwiperSlide key={idx} className="h-full">
+                      <div className="relative h-full">
+                        <img
+                          src={image}
+                          alt={`Slide ${idx + 1}`}
+                          className="w-full h-[250px] sm:h-[536px] md:h-[536px] rounded-[40px]"
+                        />
+                        <div className="absolute inset-0 bg-black opacity-0"></div>
+                        <div className="absolute top-16 sm:top-24 md:top-28 left-4 sm:left-10 text-slate-600 text-sm sm:text-base md:text-lg">
+                          {/* <h1 className="text-xl sm:text-3xl md:text-5xl font-bold"></h1>
           <p className="text-sm sm:text-xl"></p>
           <p className="mt-4 sm:mt-6 text-xs sm:text-lg">
        
           </p> */}
-          <button
-            className="mt-[14rem]  px-4 sm:px-6 py-2 sm:py-3 bg-[rgb(255,45,85,1)] hover:bg-[rgb(255,45,85,1)] text-white font-bold rounded-[16px]"
-            onClick={() => router.push("/add-on-rent")}
-          >
-            Rent Now!
-          </button>
-        </div>
-      </div>
-    </SwiperSlide>
-  ))}
-</Swiper>
-</div>
-))
+                          <button
+                            className="mt-[14rem] px-6 py-3 bg-[rgb(255,45,85)] text-white font-bold rounded-[16px] shadow-xl
+             transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl"
+                            onClick={() => router.push("/add-on-rent")}
+                          >
+                            Rent Now!
+                          </button>
 
-}
-      </>)}
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            ))
+
+            }
+          </>)}
     </div>
 
   );

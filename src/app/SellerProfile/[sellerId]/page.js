@@ -9,11 +9,11 @@ import '../../../styles/Sellerprofile.css'
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ScrollToTop from "@/Components/ScrollToTop";
-const startfill='/Assets/star_fill.svg'
+const startfill = '/Assets/star_fill.svg'
 const stars = "/Assets/stars.svg";
 const userProfile = '/Assets/userProfile.svg';
-const storeimage="/Assets/store_2_fill.svg";
-const storename="/Assets/storeimage.svg"
+const storeimage = "/Assets/store_2_fill.svg";
+const storename = "/Assets/storeimage.svg"
 
 
 // Lazy load components
@@ -26,7 +26,7 @@ const SellerCarouselProfile = () => {
   const params = useParams();
   const sellerId = params.sellerId;
   const [sellerDetails, setSellerDetails] = useState([]);
-  const [products,setproducts]=useState([])
+  const [products, setproducts] = useState([])
 
   const fetchSellerById = async () => {
     try {
@@ -47,18 +47,18 @@ const SellerCarouselProfile = () => {
 
 
   const [userRatings, setUserRatings] = useState([])
-  
+
 
 
   const [currentSlide, setCurrentSlide] = useState(0);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 1;
-    const totalPages = Math.ceil(userRatings.length / itemsPerPage);
-  
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 1;
+  const totalPages = Math.ceil(userRatings.length / itemsPerPage);
+
   const [activeTab, setActiveTab] = useState("products");
 
-  const bannerImages = sellerDetails?.bannerImages || []; 
-  
+  const bannerImages = sellerDetails?.bannerImages || [];
+
 
   useEffect(() => {
     if (bannerImages.length > 1) {
@@ -101,18 +101,18 @@ const SellerCarouselProfile = () => {
     switch (activeTab) {
       case "products":
         return (
-          <Suspense fallback={<div>Loading Products...</div>}>
+          <Suspense fallback={<div>gfvbnm </div>}>
             <div className="p-5">
-            {/* <div className='seller-tab-content'> */}
+              {/* <div className='seller-tab-content'> */}
               {/* <Products /> */}
-              <SellerProfile products={products}/>
-            {/* </div> */}
+              <SellerProfile products={products} />
+              {/* </div> */}
             </div>
           </Suspense>
         );
       case "about":
         return (
-          <Suspense fallback={<div>Loading About Us...</div>}>
+          <Suspense fallback={<div>Loading</div>}>
             <div className="p-5">
               <Aboutus />
             </div>
@@ -120,119 +120,118 @@ const SellerCarouselProfile = () => {
         );
       case "reviews":
         return (
-          
+
           <div className="px-16 py-5 bg-none">
             {/* <ScrollToTop/> */}
-          <div className='seller-tab-content'>
-            <h2 className="p-2 text-blue-500 font-semibold text-md">Ratings and Reviews</h2>
-           <div className="flex flex-col w-full gap-2 border b-black-200 bg-white-900 p-10 rounded-lg text-center justify-center">
-             <h2 className="text-black-500 text-5xl font-bold ">4.7</h2>
-             <div className="flex gap-2 text-center justify-center">
-             <img src={startfill} alt="Rating stars"className="" />
-             <img src={startfill} alt="Rating stars"className="" />
-             <img src={startfill} alt="Rating stars"className="" />
-             <img src={startfill} alt="Rating stars"className="" />
-             <img src={startfill} alt="Rating stars"className="" />
-             </div>
-             </div>
-             {/* <div className="pt-3 w-full justify-center text-center">
+            <div className='seller-tab-content'>
+              <h2 className="p-2 text-blue-500 font-semibold text-md">Ratings and Reviews</h2>
+              <div className="flex flex-col w-full gap-2 border b-black-200 bg-white-900 p-10 rounded-lg text-center justify-center">
+                <h2 className="text-black-500 text-5xl font-bold ">4.7</h2>
+                <div className="flex gap-2 text-center justify-center">
+                  <img src={startfill} alt="Rating stars" className="" />
+                  <img src={startfill} alt="Rating stars" className="" />
+                  <img src={startfill} alt="Rating stars" className="" />
+                  <img src={startfill} alt="Rating stars" className="" />
+                  <img src={startfill} alt="Rating stars" className="" />
+                </div>
+              </div>
+              {/* <div className="pt-3 w-full justify-center text-center">
              <button className="border b-orange-200 bg-orange-400 p-3 w-80 rounded-lg text-white font-semibold">write a review</button>
              </div> */}
-   
-         
-         <h2 className='pb-4 pt-8 font-semibold text-black-700'>
-           Community Feedback
-         </h2>
-         <div className="flex gap-2 mb-4">
-          <input type="search" placeholder="Search Reviews" className="w-1/2 border b-grey-100 p-2 rounded-md"/>
-          <select className="border b-grey-100 p-2 rounded-md">
-            <option value="Top Reviews">Top Reviews</option>
-            <option value="Top Reviews">Top Reviews</option>
-            <option value="Top Reviews">Top Reviews</option>
-          </select>
-          <select className="border b-grey-100 p-2 rounded-md">
-            <option value="Top Reviews">All starts</option>
-            <option value="Top Reviews">All starts</option>
-            <option value="Top Reviews">All starts</option>
-          </select>
-          <select className="border b-grey-100 p-2 rounded-md">
-            <option value="Top Reviews">All Text and Image Reviews</option>
-            <option value="Top Reviews">All Text and Image Reviews</option>
-            <option value="Top Reviews">All Text and Image Reviews</option>
-          </select>
-         </div>
-         <div>
-         {/* {currentRatings.map((rating) => ( */}
-           <div  className="flex flex-col gap-3">
-             <table className="flex flex-col gap-2 w-[610px]  text-sm p-4">
-               <tbody>
-                 <tr>
-                   <div className="flex flex-col gap-2">
-                     <div className="flex gap-3">
-                       <p
-                         className={`flex gap-1 items-center px-2 bg-green-700  rounded-full text-white `}
-                       >
-                         <img src={stars} alt="Rating stars" className="w-4 h-4 " />
-                         <span className="ml-1">4.5</span>
-                       </p>
-                       <p className="text-[14px] font-medium leading-[20px] ">Best chair at this budget</p>
-                     </div>
-                     <p className="text-[14px] font-medium leading-[20px] ">Chair quality is good it's value for money as it's a sale deal, back support and massager is best , fabric is also breathable</p>
-                   </div>
-                 </tr>
-               </tbody>
-             </table>
-             <div className="flex gap-2 p-2">
-               <img src={userProfile} alt="User Profile" />
-               <p className="flex gap-2 text-[14px] font-medium text-gray-500 text-left">
-                Nikitha <span>. Just Now</span>
-                 {/* {formatDistanceToNow(new Date(rating.createdAt), { addSuffix: true })} */}
-               </p>
-             </div>
-           </div>
-         {/* ))} */}
-   
-         {/* Pagination Controls */}
-         <div className="flex mt-4 gap-2">
-           {/* Previous Button */}
-           <button
-             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-             disabled={currentPage === 1}
-             className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-           >
-             Prev
-           </button>
-   
-           {/* Page Numbers */}
-           {getPaginationNumbers().map((page, index) => (
-             <button
-               key={index}
-               onClick={() => typeof page === "number" && setCurrentPage(page)}
-               className={`px-3 py-1 border rounded-full ${
-                 currentPage === page ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
-               }`}
-               disabled={page === "..."}
-             >
-               {page}
-             </button>
-           ))}
-   
-           {/* Next Button */}
-           <button
-             onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-             disabled={currentPage === totalPages}
-             className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-           >
-             Next
-           </button>
-         </div>
-       </div>
-          </div>
+
+
+              <h2 className='pb-4 pt-8 font-semibold text-black-700'>
+                Community Feedback
+              </h2>
+              <div className="flex gap-2 mb-4">
+                <input type="search" placeholder="Search Reviews" className="w-1/2 border b-grey-100 p-2 rounded-md" />
+                <select className="border b-grey-100 p-2 rounded-md">
+                  <option value="Top Reviews">Top Reviews</option>
+                  <option value="Top Reviews">Top Reviews</option>
+                  <option value="Top Reviews">Top Reviews</option>
+                </select>
+                <select className="border b-grey-100 p-2 rounded-md">
+                  <option value="Top Reviews">All starts</option>
+                  <option value="Top Reviews">All starts</option>
+                  <option value="Top Reviews">All starts</option>
+                </select>
+                <select className="border b-grey-100 p-2 rounded-md">
+                  <option value="Top Reviews">All Text and Image Reviews</option>
+                  <option value="Top Reviews">All Text and Image Reviews</option>
+                  <option value="Top Reviews">All Text and Image Reviews</option>
+                </select>
+              </div>
+              <div>
+                {/* {currentRatings.map((rating) => ( */}
+                <div className="flex flex-col gap-3">
+                  <table className="flex flex-col gap-2 w-[610px]  text-sm p-4">
+                    <tbody>
+                      <tr>
+                        <div className="flex flex-col gap-2">
+                          <div className="flex gap-3">
+                            <p
+                              className={`flex gap-1 items-center px-2 bg-green-700  rounded-full text-white `}
+                            >
+                              <img src={stars} alt="Rating stars" className="w-4 h-4 " />
+                              <span className="ml-1">4.5</span>
+                            </p>
+                            <p className="text-[14px] font-medium leading-[20px] ">Best chair at this budget</p>
+                          </div>
+                          <p className="text-[14px] font-medium leading-[20px] ">Chair quality is good it's value for money as it's a sale deal, back support and massager is best , fabric is also breathable</p>
+                        </div>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div className="flex gap-2 p-2">
+                    <img src={userProfile} alt="User Profile" />
+                    <p className="flex gap-2 text-[14px] font-medium text-gray-500 text-left">
+                      Nikitha <span>. Just Now</span>
+                      {/* {formatDistanceToNow(new Date(rating.createdAt), { addSuffix: true })} */}
+                    </p>
+                  </div>
+                </div>
+                {/* ))} */}
+
+                {/* Pagination Controls */}
+                <div className="flex mt-4 gap-2">
+                  {/* Previous Button */}
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                  >
+                    Prev
+                  </button>
+
+                  {/* Page Numbers */}
+                  {getPaginationNumbers().map((page, index) => (
+                    <button
+                      key={index}
+                      onClick={() => typeof page === "number" && setCurrentPage(page)}
+                      className={`px-3 py-1 border rounded-full ${currentPage === page ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+                        }`}
+                      disabled={page === "..."}
+                    >
+                      {page}
+                    </button>
+                  ))}
+
+                  {/* Next Button */}
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 border rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         );
       case "faq":
         return (
-          <Suspense fallback={<div>Loading FAQ...</div>}>
+          <Suspense fallback={<div>Loadin</div>}>
             <div>
               <Fqa />
             </div>
@@ -245,37 +244,37 @@ const SellerCarouselProfile = () => {
 
   return (
     <>
-    {/* <ScrollToTop/> */}
- <div className="seller-carousel-container">
-    {bannerImages.length > 0 && (
-      <>
-        <div className="seller-carousel-slide">
-          <img
-            src={bannerImages[currentSlide]} 
-            className="seller-carousel-image"
-          />
-        </div>
-        <button className="seller-carousel-prev-button" onClick={handlePrev}>
-          &#x276E;
-        </button>
-        <button className="seller-carousel-next-button" onClick={handleNext}>
-          &#x276F;
-        </button>
-        <div className="seller-carousel-indicators">
-          {bannerImages.map((_, index) => (
-            <span
-              key={index}
-              className={`seller-carousel-indicator  ${index === currentSlide ? "active" : ""}`}
-              onClick={() => setCurrentSlide(index)}
-            ></span>
-          ))}
-        </div>
-      </>
-    ) }
-  </div>
-  <div className="store-image-container ">
- {sellerDetails.businessInfo?.profileImage? <Image src={sellerDetails.businessInfo.profileImage} width={60} height={80}  className="h-[60px] rounded-full"/> :<Image src={storeimage} width={20} height={20} />}
-  </div>
+      {/* <ScrollToTop/> */}
+      <div className="seller-carousel-container">
+        {bannerImages.length > 0 && (
+          <>
+            <div className="seller-carousel-slide">
+              <img
+                src={bannerImages[currentSlide]}
+                className="seller-carousel-image"
+              />
+            </div>
+            <button className="seller-carousel-prev-button" onClick={handlePrev}>
+              &#x276E;
+            </button>
+            <button className="seller-carousel-next-button" onClick={handleNext}>
+              &#x276F;
+            </button>
+            <div className="seller-carousel-indicators">
+              {bannerImages.map((_, index) => (
+                <span
+                  key={index}
+                  className={`seller-carousel-indicator  ${index === currentSlide ? "active" : ""}`}
+                  onClick={() => setCurrentSlide(index)}
+                ></span>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+      <div className="store-image-container ">
+        {sellerDetails.businessInfo?.profileImage ? <Image src={sellerDetails.businessInfo.profileImage} width={60} height={80} className="h-[60px] rounded-full" /> : <Image src={storeimage} width={20} height={20} />}
+      </div>
 
       <div className='seller-profile-container'>
         {/* Header Section */}
@@ -305,8 +304,8 @@ const SellerCarouselProfile = () => {
         {/* About Us Section */}
         <div className='seller-about-us'>
           <h2>About Us</h2>
- {!sellerDetails?.businessInfo?.storeDescription === "string" &&   <p>
-      {sellerDetails?.businessInfo?.storeDescription}{" "}
+          {!sellerDetails?.businessInfo?.storeDescription === "string" && <p>
+            {sellerDetails?.businessInfo?.storeDescription}{" "}
             <a href='#' className='seller-read-more'>
               read more...
             </a>

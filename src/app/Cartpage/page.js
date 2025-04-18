@@ -40,6 +40,7 @@ const CartPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAddressSidebarOpen, setIsAddressSidebarOpen] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
+  console.log(selectedAddress,"slectedaddress")
   const [isCoupon, setIsCoupon] = useState(false)
   const [quantities, setQuantities] = useState({});
   const [displayRazorpay, setDisplayRazorpay] = useState(false);
@@ -78,6 +79,31 @@ const CartPage = () => {
     fetchDeliveryCharges();
   }, [])
 
+
+
+  const handleSelectAddress = async (addressId) => {
+
+    try {
+      const response = await axios.patch(`${BASE_URL}/profile/selected/${selectedAddress._id}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "content-type": "application/json"
+        },
+        params: {
+          addressId: selectedAddress._id,
+        },
+      });
+
+      fetchDeliveryCharges();
+
+    } catch (error) {
+      console.log(error, "error in selecting");
+    }
+  };
+
+useEffect(()=>{
+  handleSelectAddress()
+},[selectedAddress])
 
 
   const handleCheckboxChange = async (cartId, isChecked) => {

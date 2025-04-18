@@ -113,7 +113,7 @@ const Blog = ({ blogs }) => {
             {blogs.map((blog, index) => (
               <div
                 key={index}
-                className="w-[300px] bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden cursor-pointer"
+                className="sm:w-[300px] w-[345px] bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden cursor-pointer"
                 onClick={() => router.push(`/Blogs/${blog._id}`)}
               >
                 <img

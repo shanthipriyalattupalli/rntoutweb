@@ -37,14 +37,14 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
   }, [addresses, onAddressSelect]);
 
 
-  useEffect(() => {
-    if (addresses.length > 0 && selectedAddressIndex === null) {
-      const firstAddress = addresses[0];
-      handleSelectAddress(firstAddress._id);
-      setSelectedAddressIndex(0);           
-      onAddressSelect(firstAddress);      
-    }
-  }, [addresses]);
+  // useEffect(() => {
+  //   if (addresses.length > 0 && selectedAddressIndex === null) {
+  //     const firstAddress = addresses[0];
+  //     handleSelectAddress(firstAddress._id);
+  //     setSelectedAddressIndex(0);           
+  //     onAddressSelect(firstAddress);      
+  //   }
+  // }, [addresses]);
   
 
 
@@ -275,26 +275,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
     }
   };
 
-  const handleSelectAddress = async (addressId) => {
 
-    try {
-      const response = await axios.patch(`${BASE_URL}/profile/selected/${addressId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "content-type": "application/json"
-        },
-        params: {
-          addressId: addressId,
-        },
-      });
-      onAddressSelectedSuccess?.();
-      onClose();
-
-
-    } catch (error) {
-      console.log(error, "error in selecting");
-    }
-  };
 
 
   const handleDeleteAddress = async (addressId) => {
@@ -438,6 +419,8 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
                 name="mobile"
                 value={formData.mobile}
                 onChange={handleInputChange}
+                pattern="[0-9]{10}"
+                maxLength="10"
                 required
               />
               {formData.mobile && formData.mobile.length > 0 && formData.mobile.length < 10 && (
@@ -567,7 +550,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
                             type="checkbox"
                             checked={selectedAddressIndex === index}
                             onChange={() => {
-                              handleSelectAddress(address._id)
+                              // handleSelectAddress(address._id)
                               setSelectedAddressIndex(index);
 
                               onAddressSelect(address);

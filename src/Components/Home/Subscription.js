@@ -38,7 +38,7 @@ const Subscription = ({ plans,setIsSubscription,userPlans }) => {
         headers: { Authorization: `Bearer ${token}` },
 
       });
-console.log(response.data.data,"subscription by id");
+console.log(response.data,"subscription by id");
 setSubscription(response.data?.data)
 
     } catch (error) {
@@ -134,7 +134,7 @@ setSubscription(response.data?.data)
 <div className='flex-flex-col gap-[4px]'>
 <span className='text-left'>Next invoice issue date</span>
 <div className='flex justify-between'>
-<span>{new Date(userPlans.endDate).toLocaleDateString('en-US', {
+<span>{new Date(userPlans?.endDate).toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric'

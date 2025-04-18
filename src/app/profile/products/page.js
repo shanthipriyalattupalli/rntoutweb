@@ -35,8 +35,11 @@ export default function Dashboard({ products }) {
   const [owner, setOwner] = useState({});
   const [images, setImages] = useState([]);
   const [relatedItems, setRelatedItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [itemActive, setItemActive] = useState()
+  const [itemActive, setItemActive] = useState();
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const pageSize = 10;
+  const [moreData, setMoreData] = useState(true);
 
   const kyc = Cookies.get("kycstatus");
 
@@ -63,6 +66,55 @@ console.log(response.data,"userproducts")
     }
   }, [token]);
 
+
+
+  
+  useEffect(() => {
+    const loadMoreData = async () => {
+        try {
+            setLoading(true);
+            const newData = await fetchUserProducts(page, 2);
+            if (Array.isArray(newData)
+                && newData.length > 0) {
+                  setUserProducts(
+                    prevData =>
+                        [...prevData, ...newData]
+                );
+                setPage(prevPage => prevPage + 1);
+            }
+            else {
+                setMoreData(false);
+            }
+        }
+        catch (error) {
+            console.error('Error fetching data:', error);
+            setMoreData(false);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (moreData && !loading) {
+        loadMoreData();
+    }
+}, [page, pageSize, moreData, loading]);
+
+
+const handleScroll = () => {
+  if (
+      window.innerHeight +
+      document.documentElement.scrollTop ===
+      document.documentElement.offsetHeight
+  ) {
+      setPage(prevPage => prevPage + 1);
+  }
+};
+
+useEffect(() => {
+  window.addEventListener('scroll', handleScroll);
+  return () =>
+      window.removeEventListener('scroll', handleScroll);
+}, []);
 
 
   const router = useRouter();
@@ -119,6 +171,7 @@ console.log(response.data,"userproducts")
     month: "short",
     year: "numeric",
   });
+
   const formattedendDate = new Date(
     rentalAvailability?.endDate
   ).toLocaleDateString("en-US", {
@@ -182,7 +235,8 @@ console.log(response.data,"userproducts")
             <Suspense fallback={<ProductCard />}></Suspense> :
 
             userProducts && userProducts.length > 0 ? (
-              <div className='items-grid'>
+              <>
+              <div className='items-grid infiniteScroll'>
                 {userProducts.map((item) => (
                   <div className='item-card' key={item._id} >
                     <div className="action-menu2">
@@ -265,6 +319,18 @@ console.log(response.data,"userproducts")
                   </div>
                 ))}
               </div>
+              {
+                loading &&
+                <div>Loading</div>
+            }
+            {
+                !loading &&
+                !moreData &&
+                <div>
+                    No more data
+                </div>
+            }
+              </>
 
             ) : (
               <div className="flex flex-col items-center justify-center w-80 mx-auto h-[500px] text-center">

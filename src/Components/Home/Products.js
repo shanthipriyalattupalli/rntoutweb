@@ -89,7 +89,7 @@ const Products = ({ categories }) => {
         <ToastContainer />
 
         {/* Product Grid */}
-        <div className='grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-2 sm:gap-4 md:gap-6 2xl:gap-10 gap-3   mt-3'>
+        <div className='grid grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-2 sm:gap-4 md:gap-6 2xl:gap-10 gap-3   mt-3'>
 
           {products.map((product) => (
             <Suspense key={product._id} fallback={<ProductCard />}>

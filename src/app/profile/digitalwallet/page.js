@@ -3,6 +3,7 @@ import axios from "axios";
 import { formatDistanceToNow } from "date-fns";
 import { format } from "date-fns";
 import { cookies } from "next/headers";
+import Withdraw from "@/Components/Withdraw/Withdraw";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL
 
@@ -35,6 +36,11 @@ const fetchWalletTransaction=async(userId)=>{
   }
 }
 
+
+
+
+
+
 const WithdrawalRequest = async() => {
   const cookieStore=cookies();
   let userId = cookieStore.get(`userId`)?.value;
@@ -49,9 +55,7 @@ const WithdrawalRequest = async() => {
         <span className="text-gray-800 font-bold text-lg">
           Balance: <span className="text-blue-600">₹{transactionsWallet?.walletBalance ? transactionsWallet?.walletBalance.toFixed(2) :"0"}</span>
         </span>
-        <button className="bg-red-600 p-2 text-white border border-red-300 rounded-lg font-semibold">
-         Withdrawal
-        </button>
+<Withdraw amount={transactionsWallet?.walletBalance} fetchWalletTransaction={fetchWalletTransaction()}/>
         </div>
       </div>
 
