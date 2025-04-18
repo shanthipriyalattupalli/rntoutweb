@@ -319,7 +319,7 @@ useEffect(() => {
                   </div>
                 ))}
               </div>
-              {
+              {/* {
                 loading &&
                 <div>Loading</div>
             }
@@ -329,7 +329,7 @@ useEffect(() => {
                 <div>
                     No more data
                 </div>
-            }
+            } */}
               </>
 
             ) : (
