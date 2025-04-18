@@ -1,15 +1,19 @@
-// components/GoogleMapsProvider.js
-"use client";
-import { LoadScript } from "@react-google-maps/api";
+"use client"
+import { useEffect, useState } from "react";
+import Script from "next/script";
 import { MAP_API } from "@/services/GMap";
 
-const libraries = ["places"];
-
 const GoogleMapsProvider = ({ children }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   return (
-    <LoadScript googleMapsApiKey={MAP_API} libraries={libraries}>
-      {children}
-    </LoadScript>
+    <>
+      <Script
+        src={`https://maps.googleapis.com/maps/api/js?key=${MAP_API}&libraries=places`}
+        onLoad={() => setIsLoaded(true)}
+      />
+      {isLoaded ? children : null}
+    </>
   );
 };
 

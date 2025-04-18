@@ -28,13 +28,13 @@ export default function RootLayout({ children }) {
       >
 {/* <ScrollToTop/> */}
 <GlobalLoading/>
-        {/* <GoogleMapsProvider> */}
+        <GoogleMapsProvider>
         <Header />
         <Navigation />
         {children}
         <MobileApp/>
         <Newsletter />
-        {/* </GoogleMapsProvider> */}
+        </GoogleMapsProvider>
       </body>
     </html>
   );
