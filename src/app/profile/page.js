@@ -41,8 +41,8 @@ export default function ProfileSettings() {
   const [selectedFile, setSelectedFile] = useState(null);
   
 
-  const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
-
+  const token = Cookies.get("userToken");
+const Mobile=Cookies.get("userMobile")
 
 
   // useEffect(() => {
@@ -338,6 +338,17 @@ export default function ProfileSettings() {
               className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-sm font-semibold">Mobile <span className="text-red-500">*</span></label>
+            <input
+              type="text"
+              value={Mobile}
+              placeholder="Enter your name"
+              disabled
+              className="w-full border rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            />
           </div>
 
           {/* Email Input */}

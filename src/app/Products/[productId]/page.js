@@ -1,7 +1,7 @@
 
 import React from "react";
 import axios from "axios";
-import Link from "next/link"; 
+import Link from "next/link";
 import { Images } from "@/Components/ProductDetails/Images";
 import ServerSideImageTabs from '../../../Components/ProductDetails/Images'
 import AddToCart from "../../../Components/ProductDetails/AddToCart";
@@ -31,20 +31,20 @@ import ScrollToTop from "@/Components/ScrollToTop";
 
 
 
-const fetchProductById = async (productId, token,userId) => {
+const fetchProductById = async (productId, token, userId) => {
 
   try {
     const response = await axios.get(
       `${BASE_URL}/variants/${productId}`,
       {
-        params:{
+        params: {
           includeRelated: true,
-          userId:userId
-        },  
-        timeout: 10000, 
+          userId: userId
+        },
+        timeout: 10000,
       }
     );
-console.log(response.data,"response of product")
+    console.log(response.data, "response of product")
     const data = response.data;
     return response.data;
 
@@ -71,11 +71,11 @@ const fetchProductRatings = async (productId) => {
 const ProductPage = async ({ params }) => {
   const cookieStore = cookies();
   let token = cookieStore.get(`userToken`)?.value;
-  let userId=cookieStore.get(`userId`)?.value;
+  let userId = cookieStore.get(`userId`)?.value;
 
   const { productId } = await params;
 
-  const variant = await fetchProductById(productId, token,userId)
+  const variant = await fetchProductById(productId, token, userId)
   const userRatings = await fetchProductRatings(productId)
 
   const product = variant.variant;
@@ -127,7 +127,7 @@ const ProductPage = async ({ params }) => {
           {/* Product Images */}
           {/* <ServerSideImageTabs images={product?.images} searchParams={searchParams} /> */}
 
-          <Images product={product} productId={productId} variant={variant}/>
+          <Images product={product} productId={productId} variant={variant} />
 
 
           {/* Product Details */}
@@ -152,16 +152,16 @@ const ProductPage = async ({ params }) => {
               <div className='flex items-center space-x-2 cursor-pointer'>
                 {product.owner && (
                   <Link href={`/SellerProfile/${product.owner._id}`}>
-{product?.businessProfile?.profileImage?                
-    <img
-                      src={product?.businessProfile.profileImage}
-                      alt='Seller'
-                      className='w-6 h-6 rounded-full'
-                    />:    <img
-                    src={sample}
-                    alt='sample'
-                    className='w-6 h-6 rounded-full'
-                  />}
+                    {product?.businessProfile?.profileImage ?
+                      <img
+                        src={product?.businessProfile.profileImage}
+                        alt='Seller'
+                        className='w-6 h-6 rounded-full'
+                      /> : <img
+                        src={sample}
+                        alt='sample'
+                        className='w-6 h-6 rounded-full'
+                      />}
                   </Link>
                 )}
                 {product.owner && (
@@ -240,35 +240,35 @@ const ProductPage = async ({ params }) => {
           <div className='space-y-6'>
 
             <div className=''>
-            <table className='flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4'>
-  <thead>
-    <tr>
-      <th colSpan="2" className='text-lg font-semibold mb-3 text-[#2F6FED] text-left p-2'>
-        Product Details
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    {productDetails.map((detail, index) => (
-      <tr key={index}>
-        <td className='p-2 font-semibold'>{detail.label}</td>
-        <td className='p-2 text-gray-600'>{detail.value}</td>
-      </tr>
-    ))}
-  </tbody>
-</table>
+              <table className='flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4'>
+                <thead>
+                  <tr>
+                    <th colSpan="2" className='text-lg font-semibold mb-3 text-[#2F6FED] text-left p-2'>
+                      Product Details
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {productDetails.map((detail, index) => (
+                    <tr key={index}>
+                      <td className='p-2 font-semibold'>{detail.label}</td>
+                      <td className='p-2 text-gray-600'>{detail.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
 
             </div>
 
             <div>
               <table className='flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4'>
-              <thead>
-    <tr>
-      <th colSpan="2" className='text-lg font-semibold mb-3 text-[#2F6FED] text-left p-2'>
-        Other Details
-      </th>
-    </tr>
-  </thead> 
+                <thead>
+                  <tr>
+                    <th colSpan="2" className='text-lg font-semibold mb-3 text-[#2F6FED] text-left p-2'>
+                      Other Details
+                    </th>
+                  </tr>
+                </thead>
                 <tbody>
                   {otherDetails?.map((detail, index) => (
                     <tr key={index} className=''>
@@ -281,54 +281,54 @@ const ProductPage = async ({ params }) => {
             </div>
             <div>
               <table className='flex flex-col w-full border bg-[#FFFFFF] border-slate-200 text-sm rounded-3xl p-4'>
-              <thead>
-    <tr>
-      <th colSpan="2" className='text-lg font-semibold mb-3 text-[#2F6FED] text-left p-2'>
-        Product description
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td className="font-sm text-md text-gray-700 leading-relaxed text-justify">
-      {product.description}
-    </td>
-  </tr>
-</tbody>
+                <thead>
+                  <tr>
+                    <th colSpan="2" className='text-lg font-semibold mb-3 text-[#2F6FED] text-left p-2'>
+                      Product description
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="font-sm text-md text-gray-700 leading-relaxed text-justify">
+                      {product.description}
+                    </td>
+                  </tr>
+                </tbody>
 
               </table>
             </div>
           </div>
         </div>}
         {product.averageRating && (
-  <div className="flex mt-6 flex-col w-full md:w-1/2 gap-2 border border-black-200 bg-white p-6 md:p-10 rounded-lg text-center justify-center">
-    <h2 className="text-black-500 text-5xl md:text-5xl font-bold">
-      {product.averageRating} 
-    </h2>
-    <div className="flex gap-2 justify-center">
-      {[...Array(5)].map((_, index) => {
-        const fullStars = Math.floor(product.averageRating);
-        const hasHalfStar = product.averageRating % 1 >= 0.5;
-        let starIcon = starline; // Default empty star
+          <div className="flex mt-6 flex-col w-full md:w-1/2 gap-2 border border-black-200 bg-white p-6 md:p-10 rounded-lg text-center justify-center">
+            <h2 className="text-black-500 text-5xl md:text-5xl font-bold">
+              {product.averageRating}
+            </h2>
+            <div className="flex gap-2 justify-center">
+              {[...Array(5)].map((_, index) => {
+                const fullStars = Math.floor(product.averageRating);
+                const hasHalfStar = product.averageRating % 1 >= 0.5;
+                let starIcon = starline; // Default empty star
 
-        if (index < fullStars) {
-          starIcon = startfill; // Full star
-        } else if (index === fullStars && hasHalfStar) {
-          starIcon = starHallFill; // Half-filled star
-        }
+                if (index < fullStars) {
+                  starIcon = startfill; // Full star
+                } else if (index === fullStars && hasHalfStar) {
+                  starIcon = starHallFill; // Half-filled star
+                }
 
-        return (
-          <img
-            key={index}
-            src={starIcon}
-            alt="Rating star"
-            className="w-6 h-6 md:w-8 md:h-8"
-          />
-        );
-      })}
-    </div>
-  </div>
-)}
+                return (
+                  <img
+                    key={index}
+                    src={starIcon}
+                    alt="Rating star"
+                    className="w-6 h-6 md:w-8 md:h-8"
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         <Ratings userRatings={userRatings} />
         <RelatedItems relatedItems={relatedItems} />

@@ -202,7 +202,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
       addressId: editingAddressId,
       type: formData.type,
       name: formData.name,
-      mobile: parseInt(formData.mobile, 10),
+      mobile: formData.mobile,
       flatOrHouseNo: formData.flatOrHouseNo,
       street: formData.street,
       landmark: formData.landmark,
