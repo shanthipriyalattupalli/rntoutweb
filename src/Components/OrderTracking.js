@@ -10,7 +10,7 @@ export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep,
             <div className="flex flex-col md:flex-row md:items-center md:space-x-6 w-full">
               {steps
                 .filter((step, index) => {
-                  const isCanceledStatus = selectedSubOrder.orderStatus === "canceled";
+                  const isCanceledStatus = selectedSubOrder.orderStatus === "cancelled";
 
 
                   if (isCanceledStatus) {
@@ -18,7 +18,7 @@ export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep,
                   }
 
 
-                  return step.label.toLowerCase() !== "canceled";
+                  return step.label.toLowerCase() !== "cancelled";
                 })
 
 
@@ -29,7 +29,7 @@ export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep,
                     ? currentStep.includes(index)
                     : index <= currentStep;
                   const isDelivered = selectedSubOrder.orderStatus === "delivered";
-                  const isCanceled = selectedSubOrder.orderStatus === "canceled";
+                  const isCanceled = selectedSubOrder.orderStatus === "cancelled";
 
                   return (
                     <div

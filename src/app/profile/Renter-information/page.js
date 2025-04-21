@@ -19,15 +19,17 @@ const storeimage = "/Assets/store_2_fill.svg";
 
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaBuilding, FaCreditCard } from "react-icons/fa";
 import Link from 'next/link';
+import Cookies from 'js-cookie';
 export default function BusinessInformation2() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [businessId, setBusinessId] = useState();
   const [isEditable, setIsEditable] = useState(false);
   const [previewProfileImage, setPreviewProfileImage] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const userName = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
-  const userEmail = (typeof window !== 'undefined') ? localStorage.getItem("userEmail") : null;
-  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const userName = Cookies.get("userName");
+  const userEmail = Cookies.get("userEmail");
+  const token = Cookies.get("userToken");
+  const Mobile=Cookies.get("userMobile")
   const [previewImages, setPreviewImages] = useState([]);
   const toggleEdit = () => {
     // setIsBuisness(true)
@@ -331,7 +333,7 @@ export default function BusinessInformation2() {
                       </p>
                       <p className="flex flex-col">
                         <div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong></div>
-                        <div className="text-sm">8374801954</div>
+                        <div className="text-sm">{Mobile}</div>
                       </p>
                     </div>
                   </div>

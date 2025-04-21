@@ -124,7 +124,7 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
   const trackingSteps = ["Order Confirmed", "Order Packed", "Out for Delivery"];
 
   const getCurrentStep = (orderStatus) => {
-    if (orderStatus === "canceled") {
+    if (orderStatus === "cancelled") {
       return 4; 
     }
 

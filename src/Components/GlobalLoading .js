@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
-const GlobalLoading = () => {
+const MinimalLoading = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -11,36 +11,45 @@ const GlobalLoading = () => {
     const handleStart = () => setLoading(true);
     const handleComplete = () => setLoading(false);
 
-    router.events?.on('routeChangeStart', handleStart);
-    router.events?.on('routeChangeComplete', handleComplete);
-    router.events?.on('routeChangeError', handleComplete);
+    // Next.js 13+ App Router doesn't use router.events
+    // We need to create listeners for navigation state
+    const handleRouteChangeStart = () => {
+      setLoading(true);
+    };
+    
+    const handleRouteChangeComplete = () => {
+      setLoading(false);
+    };
 
+    // Add event listeners for navigation
+    window.addEventListener('beforeunload', handleRouteChangeStart);
+    
     // Initial page load
     handleStart();
     setTimeout(() => {
       handleComplete();
-    }, 1000);
+    }, 800);
 
     return () => {
-      router.events?.off('routeChangeStart', handleStart);
-      router.events?.off('routeChangeComplete', handleComplete);
-      router.events?.off('routeChangeError', handleComplete);
+      window.removeEventListener('beforeunload', handleRouteChangeStart);
     };
   }, [pathname]);
 
   if (!loading) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-md">
-      <div className="relative w-20 h-20 mb-6">
-        <div className="absolute inset-0 rounded-full border-4 border-blue-400 border-t-transparent animate-spin-slow shadow-lg" />
-        <div className="absolute inset-4 rounded-full border-4 border-purple-500 border-b-transparent animate-spin-reverse-slower" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/20 backdrop-blur-sm">
+      <div className="flex flex-col items-center">
+        <div className="space-x-8 flex">
+          <div className="w-10 h-10 rounded-full animate-bounce" style={{background:"rgba(255, 45, 85, 1)"}}></div>
+          <div className="w-10 h-10  rounded-full animate-bounce" style={{ animationDelay: '0.2s' ,background:"rgba(255, 45, 85, 1)"}}></div>
+          <div className="w-10 h-10  rounded-full animate-bounce" style={{ animationDelay: '0.4s' ,background:"rgba(255, 45, 85, 1)"}}></div>
+          <div className="w-10 h-10  rounded-full animate-bounce" style={{ animationDelay: '0.6s' ,background:"rgba(255, 45, 85, 1)"}}></div>
+        </div>
+        <p className="mt-4 text-md font-medium text-white">Loading....</p>
       </div>
-      <p className="text-xl font-semibold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse">
-        Please wait, loading...
-      </p>
     </div>
   );
 };
 
-export default GlobalLoading;
+export default MinimalLoading;
