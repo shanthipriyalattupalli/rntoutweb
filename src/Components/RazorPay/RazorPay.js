@@ -64,7 +64,7 @@ const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, 
             Cookies.set("hasSubscription",result.data.success , { expires: 7, secure: true, sameSite: "Strict" });
             Cookies.set("SubscriptionId",result.data.subscription.planId , { expires: 7, secure: true, sameSite: "Strict" });
 
-          
+          window.location.reload();
                         
 
         
