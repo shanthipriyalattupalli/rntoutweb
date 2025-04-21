@@ -15,12 +15,14 @@ const Withdraw = ({fetchWalletTransaction}) => {
     console.log(amount,"amount")
 
     const handleWithDrawRequest = async () => {
+        const payload={
+            amount:Number(amount)
+        }
         try {
-            const response = await axios.post(`${BASE_URL}/wallet/withdraw-requset`, {
-                amount: amount
-            }, {
+            const response = await axios.post(`${BASE_URL}/wallet/withdraw-requset`,payload, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 }
             });
             console.log(response.data, "resposne of wallet")
@@ -34,8 +36,9 @@ const Withdraw = ({fetchWalletTransaction}) => {
                     confirmButtonText: "OK"
                   }).then(async() => {
                     setIsWithdrawlOpen(false);
+                    window.location.reload();
                     await fetchWalletTransaction();
-                    window.location.reload()
+            
                   });
                   
              
@@ -45,6 +48,13 @@ const Withdraw = ({fetchWalletTransaction}) => {
 
         } catch (error) {
             console.log(error, "error in wallet")
+            setIsWithdrawlOpen(false);
+            Swal.fire({
+                icon:"info",
+                title:"Note",
+                text:error?.response?.data?.message,
+                confirmButtonText:"Ok"
+            })
 
         }
     }

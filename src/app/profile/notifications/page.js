@@ -3,12 +3,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../../styles/Notifications.css";
 import { FaEllipsisV, FaBell } from "react-icons/fa";
+import Cookies from "js-cookie";
 
 const Notifications = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [notifications, setNotifications] = useState([]);
   const [selectedNotificationId, setSelectedNotificationId] = useState(null);
-  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+  const userId = Cookies.get("userId");
 
   // Fetch notifications from API
   const fetchNotifications = async () => {

@@ -4,6 +4,7 @@ import axios from "axios";
 const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 import { useEffect, useRef } from 'react';
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
 const loadScript = (src ) => new Promise((resolve) => {
   const script = document.createElement('script');
@@ -29,7 +30,7 @@ const RenderRazorpay = ({ orderId,razorpayOrderId, keyId, currency, amount, hand
     handler: async (response) => {1
       if (response.razorpay_payment_id) {
         try {
-          const token = localStorage.getItem('userToken'); 
+          const token = Cookies.get("userToken"); 
           const result = await axios.post(`${BASE_URL}/payments/status`, {
             orderId,
             razorpayOrderId,

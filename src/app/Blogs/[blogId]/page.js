@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 const blog = "/Assets/blog1.svg";
 const blogs ="/Assets/blogs-image.svg"
@@ -15,7 +16,7 @@ const BlogPage = () => {
 
     const params = useParams();
     const blogId = params.blogId
-  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const token = Cookies.get("userToken");
   const [blogs, setBlogs] = useState([]);
   const [blog,setBlog] = useState()
     const fetchBlogs = async () => {

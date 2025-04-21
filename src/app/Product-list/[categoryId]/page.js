@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import CategoryProducts from '@/Components/Home/CategoryProducts';
 import Breadcrumb from "@/Components/Breadcrumb/Breadcrumb";
 import ScrollToTop from "@/Components/ScrollToTop";
+import Cookies from "js-cookie";
 
 const ProductList = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -29,8 +30,8 @@ const ProductList = () => {
   const params = useParams();
   const categoryId = params.categoryId; // Extract categoryId directly from params
   const subcategoryId = (typeof window !== 'undefined') ? localStorage.getItem(`subcategoryId_${categoryId}`) : null;
-  const latitude = (typeof window !== 'undefined') ? localStorage.getItem("latitude") : null;
-  const longitude = (typeof window !== 'undefined') ? localStorage.getItem("longitude") : null;
+  const latitude=Cookies.get("latitude");
+  const longitude=Cookies.get("longitude");
   const distances = (typeof window !== 'undefined') ? localStorage.getItem("selectedDistance") : null
 
   const fetchProducts = async (page) => {

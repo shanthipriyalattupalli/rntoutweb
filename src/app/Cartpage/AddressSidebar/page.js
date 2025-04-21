@@ -76,11 +76,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
     state: "",
     country: "India",
     zip: "",
-    location: {
-      latitude: latitude,
-      longitude: longitude,
 
-    },
   }
 
   const [formData, setFormData] = useState(initialFormData);
@@ -135,16 +131,31 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
 
 
   const handleSaveAddress = async () => {
-
-    if (!formData.mobile || formData.mobile.length !== 10) {
-      setErrorMessage("Mobile number must be 10 digits.");
-      return;
+    const requiredFields = {
+      name: "Name is required.",
+      mobile: "Mobile number must be 10 digits.",
+      flatOrHouseNo: "Flat or House No. is required.",
+      street: "Area is required.",
+      city: "City is required.",
+      state: "State is required.",
+      country: "Country is required.",
+      zip: "ZIP code is required.",
+    };
+  
+    // Validate fields (except landmark)
+    for (const field in requiredFields) {
+      if (!formData[field] || (field === "mobile" && formData[field].length !== 10)) {
+        setErrorMessage(requiredFields[field]);
+        toast.error(requiredFields[field])
+        return;
+      }
     }
+  
     if (!token) {
       toast.error("Please login to add address.");
       return;
     }
-
+  
     setErrorMessage("");
 
     try {
@@ -186,16 +197,31 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
       return;
     }
 
-    // Validate mobile number
-    if (!formData.mobile || formData.mobile.length !== 10) {
-      setErrorMessage("Mobile number must be 10 digits.");
-      return;
+    const requiredFields = {
+      name: "Name is required.",
+      mobile: "Mobile number must be 10 digits.",
+      flatOrHouseNo: "Flat or House No. is required.",
+      street: "Area is required.",
+      city: "City is required.",
+      state: "State is required.",
+      country: "Country is required.",
+      zip: "ZIP code is required.",
+    };
+  
+    // Validate fields (except landmark)
+    for (const field in requiredFields) {
+      if (!formData[field] || (field === "mobile" && formData[field].length !== 10)) {
+        setErrorMessage(requiredFields[field]);
+        toast.error(requiredFields[field])
+        return;
+      }
     }
+  
     if (!token) {
       toast.error("Please login to add address.");
       return;
     }
-
+  
     setErrorMessage("");
 
     const payload = {
@@ -210,16 +236,16 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
       state: formData.state,
       country: formData.country,
       zip: formData.zip,
-      location: {
-        lat: latitude,
-        lng: longitude,
-      },
+      // location: {
+      //   lat: latitude,
+      //   lng: longitude,
+      // },
     };
 
 
 
     try {
-      const token = typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
+      const token = Cookies.get("userToken");
       if (!token) {
         Swal.fire({
           icon: "error",
@@ -280,7 +306,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
 
   const handleDeleteAddress = async (addressId) => {
     try {
-      const token = typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
+      const token = Cookies.get("userToken");
       if (!token) {
         Swal.fire({
           icon: "error",
@@ -428,7 +454,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
               )}
 
 
-              {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          
               <label className="pt-4">Flat/ House no/ Floor / Building<span className="text-red-500">*</span></label>
 
               <input
@@ -440,6 +466,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
                 onChange={handleInputChange}
                 required
               />
+         
               <label className="pt-4">Area / Sector / Locality<span className="text-red-500">*</span></label>
               <input
                 type='text'

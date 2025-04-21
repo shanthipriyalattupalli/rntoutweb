@@ -16,7 +16,7 @@ const KYCVerification = () => {
     const [Preview, setIsPreview] = useState(null);
     const [isVerifying, setIsVerifying] = useState(false);
     const [isKycSuccess, setIsKycSuccess] = useState();
-    const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+    const token = Cookies.get("userToken");
     const fileInputRef = useRef(null); 
 
     // Function to handle file upload

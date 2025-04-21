@@ -8,6 +8,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
 const edit = "/Assets/editicon.svg";
 
@@ -20,7 +21,7 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
   const [editingAddressId, setEditingAddressId] = useState(null);
 
   const token =
-    typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
+    Cookies.get("userToken");
 
   useEffect(() => {
     const fetchCoupons = async () => {

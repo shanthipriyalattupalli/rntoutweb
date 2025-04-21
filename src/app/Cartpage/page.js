@@ -57,7 +57,7 @@ const CartPage = () => {
   const [razorpayOrderId, setRazorpayOrderId] = useState()
   const router = useRouter();
 
-  const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
+  const userId = Cookies.get("userId");
 
   const token = Cookies.get("userToken");
   const userName = Cookies.get("userName")
@@ -129,7 +129,7 @@ useEffect(()=>{
       );
 
       fetchCartDetails();
-      toast.success(response.data.message);
+      // toast.success(response.data.message);
       fetchDeliveryCharges()
     } catch (error) {
       console.error("Error updating cart item selection:", error);
@@ -531,7 +531,7 @@ useEffect(()=>{
 
               <div className="item-details">
                 <div className="flex justify-between items-center gap-2 sm:gap-4">
-                  <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 line-clamp-1">
+                  <h3 className="w-[93%] text-sm sm:text-base md:text-lg font-semibold text-gray-900 line-clamp-1">
                     {item.variant_id.title}
                   </h3>
 

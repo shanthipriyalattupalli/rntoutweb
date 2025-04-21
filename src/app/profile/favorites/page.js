@@ -16,13 +16,14 @@ const hp33 = "/Assets/hp33.png";
 const hp34 = "/Assets/hp34.png";
 const vector = "/Assets/Vector.png";
 import { Heart } from "lucide-react";
+import Cookies from "js-cookie";
 
 
 export default function Profile({ }) {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
   const [products, setProducts] = useState([])
-  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const token = Cookies.get("userToken");
 
   const fetchFavorites = async () => {
     try {

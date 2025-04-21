@@ -9,6 +9,7 @@ import { FaEllipsisV } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
 
 const edit = "/Assets/editicon.svg";
@@ -32,7 +33,7 @@ export default function ManageAddresses() {
   //   setToken(token);
   // }, []);
 
-  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const token = Cookies.get("userToken");
 
   const fetchAddress = async () => {
     try {
@@ -82,7 +83,7 @@ export default function ManageAddresses() {
 
   const handleDeleteAddress = async (addressId) => {
     try {
-      const token = typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
+      const token = Cookies.get("userToken");
       if (!token) {
         Swal.fire({
           icon: "error",

@@ -10,9 +10,8 @@ import { useRouter } from "next/navigation";
 import { MdPayments } from "react-icons/md";
 import CancelOrder from "../../../Components/Orders/CancelOrder";
 const emptycart = "/Assets/emptycart.svg";
-
-
 import OrderItem from "@/Components/OrderItem";
+import Cookies from "js-cookie";
 
 const orderHistoryImage = "/Assets/orderHistoryImage.png";
 
@@ -48,7 +47,7 @@ const orders = [
 export default function Orders() {
 
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const token = Cookies.get("userToken");
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
 

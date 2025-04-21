@@ -17,6 +17,7 @@ const Userprofile = "../../Assets/User-icon.svg";
 const card = "../../Assets/card-img1.svg";
 const card1 = "../../Assets/card-img2.svg";
 const storeimage = "/Assets/store_2_fill.svg";
+import Cookies from 'js-cookie';
 
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaBuilding, FaCreditCard } from "react-icons/fa";
 export default function BusinessInformation2() {
@@ -25,9 +26,10 @@ export default function BusinessInformation2() {
   const [isEditable, setIsEditable] = useState(false);
   const [previewProfileImage, setPreviewProfileImage] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const userName = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
-  const userEmail = (typeof window !== 'undefined') ? localStorage.getItem("userEmail") : null;
-  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
+  const userName = Cookies.get("userName");
+  const userEmail = Cookies.get("userEmail");
+  const token = Cookies.get("userToken");
+  const Mobile=Cookies.get("userMobile");
   const [previewImages, setPreviewImages] = useState([]);
   const toggleEdit = () => {
     // setIsBuisness(true)
@@ -378,7 +380,7 @@ export default function BusinessInformation2() {
                 <input id="bank-mobile"
                   type="text"
                   placeholder="Enter mobile number"
-                  value="83748019534"
+                  value={Mobile}
                   disabled
                 />
               </div>
