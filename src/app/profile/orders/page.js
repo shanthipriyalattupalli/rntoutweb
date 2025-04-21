@@ -117,7 +117,7 @@ export default function Orders() {
       if (statuses.includes("accepted")) return "accepted";
       if (statuses.includes("in-transit")) return "in-transit";
       if (statuses.every(status => status === "delivered")) return "delivered";
-      if (statuses.includes("canceled")) return "canceled";
+      if (statuses.includes("cancelled")) return "cancelled";
 
       return "pending"; // Default case
     });

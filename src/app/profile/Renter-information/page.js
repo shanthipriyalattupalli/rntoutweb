@@ -321,7 +321,7 @@ export default function BusinessInformation2() {
                         <div className="flex gap-2"><FaUser className="text-gray-500" /> <strong>Owner Name</strong></div>
                         <div className="text-sm font-normal text-left">{userName}</div>
                       </div>
-                      <p className="flex flex-col">
+                      <div className="flex flex-col">
                       <div className="flex flex-col">
   <div className="flex gap-2">
     <FaEnvelope className="text-gray-500" /> 
@@ -330,11 +330,11 @@ export default function BusinessInformation2() {
 </div>
 
                         <div className="text-sm">{userEmail}</div>
-                      </p>
-                      <p className="flex flex-col">
+                      </div>
+                      <div className="flex flex-col">
                         <div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong></div>
                         <div className="text-sm">{Mobile}</div>
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </div>

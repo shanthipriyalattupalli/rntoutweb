@@ -107,7 +107,7 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
     { label: "Order Confirmed", date: "6th Nov 2024", icon: packed,blueIcon:packedblue },
     { label: "Shipped", date: "7th Nov 2024", icon: truck_line,blueIcon:truck_fillblue},
     { label: "Delivered", date: "7th Nov 2024", icon: delivered,blueIcon:deliveredblue},
-    { label: "Canceled", date: "7th Nov 2024", icon: checkIcon,blueIcon:packedblue},
+    { label: "Cancelled", date: "7th Nov 2024", icon: checkIcon,blueIcon:packedblue},
   ];
 
   
