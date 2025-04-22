@@ -638,7 +638,7 @@ useEffect(()=>{
                 <p>{selectedAddress.mobile}</p>
                 <span>{selectedAddress.type}</span>
               </div>
-              <p>{selectedAddress.flatOrHouseNo}, {selectedAddress.street}, {selectedAddress.city}, {selectedAddress.state}, {selectedAddress.country}, ({selectedAddress.zip})</p>
+              <p>{selectedAddress.flatOrHouseNo},{selectedAddress?.landmark} ,{selectedAddress.street}, {selectedAddress.city}, {selectedAddress.state}, {selectedAddress.country}, ({selectedAddress.zip})</p>
 
             </>
           )}

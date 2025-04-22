@@ -181,7 +181,7 @@ line-height: 32px; /* 145.455% */
 .item-det-section{
   padding-top: 0;
   padding-bottom: 8px;
-  border-bottom: 1px solid #ddd;
+  /* border-bottom: 1px solid #ddd; */
   display: flex;
   flex-direction: column;
   gap:6px;

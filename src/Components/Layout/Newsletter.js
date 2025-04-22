@@ -8,7 +8,7 @@ const facebook = '/Assets/face book.svg'
 const twitter = '/Assets/twitter.svg'
 const instagram = '/Assets/instagram.svg'
 const youtube = '/Assets/youtub.svg'
-const rentoutlogo = '/Assets/Rntout_Logo.png'
+const rentoutlogo = '/Assets/rentoutlogo.svg'
 import { useRouter } from "next/navigation"; 
 const Newsletter = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;

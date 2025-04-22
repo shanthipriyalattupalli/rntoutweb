@@ -6,7 +6,7 @@ const termsData = [
     {
       title: "Definitions",
       points: [
-        `"Platform" refers to our online rental website irentout.com and associated services.`,
+        `"Platform" refers to our online rental website rntout.com and associated services.`,
         `"User" or "You" refers to any individual or entity using our Platform.`,
         `"Product(s)" refers to the items available for rent from our own inventory.`,
         `"Renter" refers to a User renting a Product.`,
@@ -87,7 +87,7 @@ const termsData = [
     {
       title: "Governing Law",
       points: [
-        `These Terms shall be governed by and construed in accordance with the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the courts in Bangalore, India.`
+        `These Terms shall be governed by and construed in accordance with the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the courts in Hyderabad, India.`
       ]
     }
   ];
@@ -95,7 +95,7 @@ export default function Terms() {
     return (
         <div className="px-20 flex flex-col gap-5 pt-10 mx-auto">
           <h1 className='text-[16px] font-bold'>Welcome to rntout</h1>
-          <span>Welcome to our online rental platform irentout.com, headquartered in Bangalore, India. These Terms and Conditions ("Terms") govern your use of our website and services. By accessing and using our website, you agree to be bound by these Terms. If you do not agree with any part of these Terms, please do not use our services.</span>
+          <span>Welcome to our online rental platform rntout.com, headquartered in Bangalore, India. These Terms and Conditions ("Terms") govern your use of our website and services. By accessing and using our website, you agree to be bound by these Terms. If you do not agree with any part of these Terms, please do not use our services.</span>
         {termsData.map((section, index) => (
           <div key={index} className="mb-6">
             <h2 className="text-[14px] font-bold mb-2">{section.title}</h2>

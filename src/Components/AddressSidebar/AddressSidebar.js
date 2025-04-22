@@ -71,16 +71,31 @@ const AddressSidebar = ({ isOpen, onClose, setEditingAddressId, editingAddressId
   };
 
   const handleSaveAddress = async () => {
-
-    if (!formData.mobile || formData.mobile.length !== 10) {
-      setErrorMessage("Mobile number must be 10 digits.");
-      return;
+    const requiredFields = {
+      name: "Name is required.",
+      mobile: "Mobile number must be 10 digits.",
+      flatOrHouseNo: "Flat or House No. is required.",
+      street: "Area is required.",
+      city: "City is required.",
+      state: "State is required.",
+      country: "Country is required.",
+      zip: "ZIP code is required.",
+    };
+  
+    // Validate fields (except landmark)
+    for (const field in requiredFields) {
+      if (!formData[field] || (field === "mobile" && formData[field].length !== 10)) {
+        setErrorMessage(requiredFields[field]);
+        toast.error(requiredFields[field])
+        return;
+      }
     }
+  
     if (!token) {
       toast.error("Please login to add address.");
       return;
     }
-
+  
     setErrorMessage("");
 
     try {
@@ -93,23 +108,15 @@ const AddressSidebar = ({ isOpen, onClose, setEditingAddressId, editingAddressId
           },
         }
       );
-      const result = await Swal.fire({
+      Swal.fire({
         icon: "success",
         title: "Done!",
         text: "Address added successfully",
         confirmButtonColor: "#d33",
       });
-
-      // These actions happen immediately, before user clicks OK
       setFormData(initialFormData);
       setIsAddAddress(false);
       fetchAddress();
-
-      // This runs **only if the user clicks OK**
-      if (result.isConfirmed) {
-        router.refresh();
-        onClose();
-      }
     } catch (error) {
       const errorResponse = error.response.data.message;
       const errorMessages =
@@ -130,11 +137,26 @@ const AddressSidebar = ({ isOpen, onClose, setEditingAddressId, editingAddressId
       });
       return;
     }
+    const requiredFields = {
+      name: "Name is required.",
+      mobile: "Mobile number must be 10 digits.",
+      flatOrHouseNo: "Flat or House No. is required.",
+      street: "Area is required.",
+      city: "City is required.",
+      state: "State is required.",
+      country: "Country is required.",
+      zip: "ZIP code is required.",
+    };
 
-    if (!formData.mobile || formData.mobile.length !== 10) {
-      setErrorMessage("Mobile number must be 10 digits.");
-      return;
+    // Validate fields (except landmark)
+    for (const field in requiredFields) {
+      if (!formData[field] || (field === "mobile" && formData[field].length !== 10)) {
+        setErrorMessage(requiredFields[field]);
+        toast.error(requiredFields[field])
+        return;
+      }
     }
+
     if (!token) {
       toast.error("Please login to add address.");
       return;
@@ -262,7 +284,7 @@ const AddressSidebar = ({ isOpen, onClose, setEditingAddressId, editingAddressId
       <div className='sidebar' onClick={(e) => e.stopPropagation()}>
         <div className='sidebar-header'>
           <h2 onClick={() => setIsAddAddress(false)}>Add New Address</h2>
-          <button onClick={onClose} className='close-button' style={{position:"unset"}}>
+          <button onClick={onClose} className='close-button' style={{ position: "unset" }}>
             &times;
           </button>
         </div>
@@ -329,7 +351,7 @@ const AddressSidebar = ({ isOpen, onClose, setEditingAddressId, editingAddressId
             onChange={handleInputChange}
             required
           />
-          <label className="pt-4">Nearby Landmark<span className="text-red-500">*</span></label>
+          <label className="pt-4">Nearby Landmark<span className="text-gray-500">(Optional)</span></label>
           <input
             type="text"
             placeholder="Nearby Landmark"

@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
 const favorite = "/Assets/favorite.svg";
-const favorited = "/Assets/heart_fill.svg";
+const favorited = "/Assets/Heart.svg";
 
 export const Images = ({ product, productId,variant}) => {
   const images = product.images;
@@ -114,9 +114,9 @@ console.log(isFavorites,"is favorite")
       <span
         className="absolute top-4 right-4 cursor-pointer w-8 h-8 rounded-full flex items-center justify-center"
         onClick={handleRemoveFavorites}
-        style={{ backgroundColor: "rgba(255, 45, 85, 1)" }}
+    
       >
-        <img src={favorited} alt="Favorited" className="w-5 h-5" />
+        <img src={favorited} alt="Favorited" className="w-10 h-10" />
       </span>
     ) : (
       <span

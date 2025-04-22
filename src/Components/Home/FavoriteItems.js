@@ -15,7 +15,7 @@ const cartIconHov = "/Assets/Icons/add-to-cart-white.png";
 const stars = "/Assets/stars.svg";
 const favIcon = "/Assets/bookmarks_line.svg"
 const Badge = '/Assets/Offer Badge.svg';
-const favorited = '/Assets/heart_fill.svg'
+const favorited = '/Assets/Heart.svg'
 import Link from "next/link";
 // import DeliveryIcon from '/public/Assets/Icons/delivery.png';
 // import AvailabilityIcon from '/public/Assets/Icons/availability.png';
@@ -159,8 +159,8 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
         icon: "success",
         title: "Done!",
         text: response.data.message,
-     timer:1000,
-     showConfirmButton:false
+        timer: 1000,
+        showConfirmButton: false
       });
     } catch (error) {
       console.error("Error removing product from favorites:", error);
@@ -230,11 +230,11 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                 >
                   {images.map((img, index) => (
                     <SwiperSlide key={index}>
-                      <Link href={`/Products/${_id}`}>
+                      <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
                         <Image
                           src={img}
                           alt={`${title} - ${index + 1}`}
-                          className="w-full h-[220px] object-cover rounded-t-[12px]"
+                          className="w-full max-width-[308px] h-[220px] object-cover rounded-t-[12px]"
                           width={308}
                           height={220}
                         />
@@ -245,11 +245,11 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
               </>
             ) : (
               // <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
-              <Link href={`/products/${_id}`}>
+              <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
                 <Image
                   src={images[0]}
                   alt={title}
-                  className="w-full h-[220px] object-cover  rounded-t-[12px]"
+                  className="w-full h-[220px] max-width-[308px] object-cover  rounded-t-[12px]"
                   width={308}
                   height={220}
                 />
@@ -266,9 +266,9 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
               <button
                 className="cursor-pointer w-8 h-8 rounded-full flex items-center justify-center"
                 onClick={handleRemoveFavorites}
-                style={{ backgroundColor: "rgba(255, 45, 85, 1)" }}
+
               >
-                <img src={favorited} className="w-5" alt="Favorite icon" />
+                <img src={favorited} className="w-7" alt="Favorite icon" />
               </button>
 
             </div>
@@ -372,31 +372,30 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
               </span>
             </div>
 
-<button
-  className={`${stockQuantity > 0 && !isDateExpired
-    ? "cart-btn border border-[rgba(255,45,85,0.6)] hover:bg-[rgba(255,45,85,1)] text-[rgba(255,45,85,1)] hover:text-white font-bold px-4 py-1  rounded-[8px] mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-    : "cart-btn border border-[rgba(255,45,85,0.6)] text-white font-bold px-4 py-1 rounded-[8px] mt-4 text-center w-full  flex items-center justify-center space-x-2 group"
-    } ${isHovered && stockQuantity > 0 && !isDateExpired ? "bg-[rgba(255,45,85,1)] hover:text-white cart-hover-shadow" : ""}`}
-  onClick={() => stockQuantity > 0 && !isDateExpired && handleAddCart()}
-  disabled={stockQuantity <= 0 || isDateExpired}
->
-  <Image
-    src={isHovered && stockQuantity > 0 && !isDateExpired ? cartIconHov : cartIcon}
-    alt="Cart icon"
-    className="w-4 h-4"
-    width={500}
-    height={300}
-  />
-  <span className={`text-sm ${
-    stockQuantity > 0 && !isDateExpired
-      ? isHovered
-        ? "text-white"
-        : ""
-      : "text-gray-400"
-  }`}>
-    Add to cart
-  </span>
-</button>
+            <button
+              className={`${stockQuantity > 0 && !isDateExpired
+                ? "cart-btn border border-[rgba(255,45,85,0.6)] hover:bg-[rgba(255,45,85,1)] text-[rgba(255,45,85,1)] hover:text-white font-bold px-4 py-1  rounded-[8px] mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+                : "cart-btn border border-[rgba(255,45,85,0.6)] text-white font-bold px-4 py-1 rounded-[8px] mt-4 text-center w-full  flex items-center justify-center space-x-2 group"
+                } ${isHovered && stockQuantity > 0 && !isDateExpired ? "bg-[rgba(255,45,85,1)] hover:text-white cart-hover-shadow" : ""}`}
+              onClick={() => stockQuantity > 0 && !isDateExpired && handleAddCart()}
+              disabled={stockQuantity <= 0 || isDateExpired}
+            >
+              <Image
+                src={isHovered && stockQuantity > 0 && !isDateExpired ? cartIconHov : cartIcon}
+                alt="Cart icon"
+                className="w-4 h-4"
+                width={500}
+                height={300}
+              />
+              <span className={`text-sm ${stockQuantity > 0 && !isDateExpired
+                  ? isHovered
+                    ? "text-white"
+                    : ""
+                  : "text-gray-400"
+                }`}>
+                Add to cart
+              </span>
+            </button>
             {/* ) */}
             {/* } */}
 

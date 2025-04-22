@@ -643,10 +643,10 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
 
                     <div>
                       <p>
-                        {address.flatOrHouseNo}, {address.street}, {address.city}, {address.state},{" "}
-                        {address.country}
+                        {address?.flatOrHouseNo},{address?.landmark} {address?.street}, {address?.city}, {address?.state},{" "}
+                        {address?.country}
                       </p>
-                      <p>({address.zip})</p>
+                      <p>({address?.zip})</p>
                     </div>
                   </div>
                 ))
