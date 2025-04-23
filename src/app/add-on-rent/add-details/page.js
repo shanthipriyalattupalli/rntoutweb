@@ -754,7 +754,7 @@ const MainContent = () => {
             </p>
             <p className='file-note'>Image format will be a JPEG, PNG, JPG</p>
           </div>
-          <p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 4 images. 📸</p>
+          <p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 1 image. 📸</p>
           {errors.images && <p className="text-red-500 text-sm">{errors.images}</p>}
           {/* Render Preview Images */}
           <div className='image-preview-container'>

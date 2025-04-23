@@ -123,7 +123,7 @@ export default function Orders() {
     });
   };
 
-  console.log(orderItems,"orderitems")
+  console.log(orderItems, "orderitems")
 
   return (
 
@@ -319,11 +319,11 @@ export default function Orders() {
                 <div className="suborders-status">
 
 
-                  <p className={`download-invoice progress d-flex gap-5 ${trackingStatuses[index]}`}>
+                  <p className={`flex gap-2 download-invoice progress  ${trackingStatuses[index]}`}>
                     <span>
                       <FaTruck />
                     </span>{" "}
-                    <p className="text-[14px] font-[600]">  Delivery status :</p>
+                    <p className="text-[14px] font-[600]">Delivery status :</p>
 
                     {trackingStatuses[index]}
                   </p>
@@ -332,14 +332,15 @@ export default function Orders() {
 
               <div className="">
 
-                {order.paymentStatus === "pending" ? <p className={`flex gap-2 download-invoice progress ${order.paymentStatus}`} >
-                  <span>
-                    <MdPayments />
-                  </span>{" "}
-                  <p className="text-[14px] font-[600]">  Payment status :</p>
+                {order.paymentStatus === "pending" ?
+                  <p className={`flex gap-2 download-invoice progress ${order.paymentStatus}`} >
+                    <span>
+                      <MdPayments />
+                    </span>{" "}
+                    <p className="text-[14px] font-[600]">  Payment status :</p>
 
-                  {order.paymentStatus}
-                </p>
+                    {order.paymentStatus}
+                  </p>
 
                   :
                   <p class={`flex gap-2 download-invoice progress ${order.paymentStatus}`}>

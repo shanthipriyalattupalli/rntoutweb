@@ -126,7 +126,7 @@ const Home = async () => {
   const categories = await fetchCategories();
   const products = await fetchProducts(latitude, longitude, radius);
   const blogs = await fetchBlogs()
-
+  const activeBanners = banner.filter(banner => banner.status === "active");
   return (
     <div>
 
@@ -137,10 +137,10 @@ const Home = async () => {
       <CuratedCollections />
       <ITInfrastructure products={products["IT Infrastructure"] || []} categoryId={categories[0]?._id} />
       <Furniture products={products["Furniture"] || []} categoryId={categories[1]?._id} />
-      <PromotionalAd banner={banner[0]} />
       <MedicalEquipment products={products["Medical Equipment"] || []} categoryId={categories[2]?._id} />
       <VacationEquipment products={products["Vacation Equipment"] || []} categoryId={categories[3]?._id} />
-      <PromotionalAd banner={banner[1]} />
+      <PromotionalAd banner={activeBanners[0]} />
+      {/* <PromotionalAd banner={activeBanners[1]} /> */}
       <Vehicles products={products["Vehicles"] || []} categoryId={categories[4]?._id} />
       <PartyMaterial products={products["Party Material"] || []} categoryId={categories[5]?._id} />
       <SportsGym products={products["Sport & Gym"] || []} categoryId={categories[6]?._id} />
