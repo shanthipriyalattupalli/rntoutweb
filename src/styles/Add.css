@@ -26,7 +26,7 @@
 
 .category-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
 }
 
@@ -198,7 +198,7 @@
 /* Laptops & Desktops (769px - 1200px) */
 @media (min-width: 769px) and (max-width: 1200px) {
     .category-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         /* 3 columns for desktops */
     }
 }
@@ -206,7 +206,7 @@
 /* Large Screens (1201px and above) */
 @media (min-width: 1201px) {
     .category-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         /* 4 columns for extra-large screens */
     }
 

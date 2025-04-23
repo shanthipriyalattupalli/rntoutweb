@@ -69,6 +69,7 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response ,"response of delivery charges")
       setIsDelivery(response.data);
     } catch (error) {
       console.log(error, "error in fetching delivery charges")
@@ -335,15 +336,23 @@ useEffect(()=>{
     window.dispatchEvent(new CustomEvent("cartUpdated"));
   }, [cartItems]);
 
-
+  const variantDeliveryCharges = delivery?.variantDeliveryCharges?.map((item) => ({
+    variantId: item.variantId,
+    deliveryCharge: item.deliveryCharge,
+    distance: item.distance
+  }));
+  
+  console.log(variantDeliveryCharges,"variantDeliveryCharges")
 
   const handleOrderCheckout = async () => {
+
     try {
       const payload = {
         userId: String(userId),
         couponCode: String(couponcode),
         addressId: String(selectedAddress._id),
-        deliveryCharge:delivery?.totalDeliveryCharges
+        deliveryCharge:delivery?.totalDeliveryCharges,
+        variantDeliveryCharges :variantDeliveryCharges
 
       };
 
