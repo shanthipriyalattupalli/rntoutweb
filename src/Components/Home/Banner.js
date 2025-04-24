@@ -7,6 +7,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { useRouter } from "next/navigation";
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import Swal from "sweetalert2";
+import Cookies from "js-cookie";
+
 
 const left = '/Assets/leftarrow.svg';
 
@@ -14,6 +17,7 @@ const Banner = ({ banners, isLoading }) => {
   const router = useRouter();
   const swiperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+    const isKyc = Cookies.get("isKyc");
 
   // Shimmer Placeholder
   const Shimmer = () => (
@@ -23,6 +27,28 @@ const Banner = ({ banners, isLoading }) => {
   );
   // const [activeIndex, setActiveIndex] = useState(0);
   const activeBanners = banners.filter(banner => banner.status === "active");
+  
+    const handleAddOnRent = async () => {
+      if (isKyc === "true") {
+        router.push("/add-on-rent");
+      } else {
+        // Show confirmation alert before redirecting
+        const result = await Swal.fire({
+          title: "KYC Required",
+          text: "KYC should be verified before adding on rent. Do you want to verify now?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, Verify Now",
+          cancelButtonText: "Cancel",
+        });
+  
+        if (result.isConfirmed) {
+          router.push("/profile/kyc");
+        }
+      }
+    };
   return (
     <div className="w-full">
       {isLoading
@@ -74,7 +100,7 @@ const Banner = ({ banners, isLoading }) => {
                           <button
                             className="mt-[14rem] px-6 py-3 bg-[rgb(255,45,85)] text-white font-bold rounded-[16px] shadow-xl
              transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl"
-                            onClick={() => router.push("/add-on-rent")}
+             onClick={() => handleAddOnRent()}
                           >
                             Rent Now!
                           </button>

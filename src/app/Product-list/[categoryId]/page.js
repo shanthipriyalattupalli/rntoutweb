@@ -273,7 +273,7 @@ const ProductList = () => {
                   onClick={() => {
                     const categoryContainer = document.getElementById("product-container");
                     if (categoryContainer) {
-                      categoryContainer.scrollBy({ left: -200, behavior: "smooth" }); // Scroll right by 200px smoothly
+                      categoryContainer.scrollBy({ left: -250, behavior: "smooth" }); // Scroll right by 200px smoothly
                     }
                   }}><span>{"<<"}</span> </p>
                 <div id="product-container" className="w-[956px] h-[32px] overflow-x-auto border overflow-visible whitespace-nowrap rounded-lg scrollbar-hide">
@@ -281,7 +281,7 @@ const ProductList = () => {
                     {product?.map((productItem) => (
                       <div
                         key={productItem._id}
-                        className={`h-[29px] w-[316px] justify-center text-center rounded-lg px-[8px] py-[4px] cursor-pointer ${active === productItem._id ? 'bg-[#2F6FED] text-white' : ''
+                        className={`h-[29px] sm:w-[316px] w-[250px] justify-center text-center rounded-lg px-[8px] py-[4px] cursor-pointer ${active === productItem._id ? 'bg-[#2F6FED] text-white' : ''
                           }`}
                         onClick={() => handleProductClick(productItem._id)}
                       >
