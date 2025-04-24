@@ -14,14 +14,14 @@ const HistoryImage = "/Assets/HistoryImage.png";
 const shipping = "/Assets/shipping.svg";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
-const checkIcon ="/Assets/check_circle_fill.svg"
-const packed ="/Assets/packed.svg"
-const truck_line ="/Assets/truck_line.svg"
-const delivered ="/Assets/delivered.svg"
-const packedblue="/Assets/packedblue.svg"
-const truck_fillblue="/Assets/truck_fillblue.svg"
-const deliveredblue="/Assets/deliveredblue.svg"
-const Cancledicon ="/Assets/check_circle_fill.svg"
+const checkIcon = "/Assets/check_circle_fill.svg"
+const packed = "/Assets/packed.svg"
+const truck_line = "/Assets/truck_line.svg"
+const delivered = "/Assets/delivered.svg"
+const packedblue = "/Assets/packedblue.svg"
+const truck_fillblue = "/Assets/truck_fillblue.svg"
+const deliveredblue = "/Assets/deliveredblue.svg"
+const Cancledicon = "/Assets/check_circle_fill.svg"
 
 
 
@@ -74,7 +74,7 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data,"orders by id")
+      console.log(response.data, "orders by id")
       setOrders(response.data)
       setSubOrders(response.data.subOrders)
 
@@ -103,20 +103,20 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
 
 
   const steps = [
-    { label: "Order Placed", date: "6th Nov 2024", icon: checkIcon, blueIcon:checkIcon},
-    { label: "Order Confirmed", date: "6th Nov 2024", icon: packed,blueIcon:packedblue },
-    { label: "Shipped", date: "7th Nov 2024", icon: truck_line,blueIcon:truck_fillblue},
-    { label: "Delivered", date: "7th Nov 2024", icon: delivered,blueIcon:deliveredblue},
-    { label: "Cancelled", date: "7th Nov 2024", icon: checkIcon,blueIcon:packedblue},
+    { label: "Order Placed", date: "6th Nov 2024", icon: checkIcon, blueIcon: checkIcon },
+    { label: "Order Confirmed", date: "6th Nov 2024", icon: packed, blueIcon: packedblue },
+    { label: "Shipped", date: "7th Nov 2024", icon: truck_line, blueIcon: truck_fillblue },
+    { label: "Delivered", date: "7th Nov 2024", icon: delivered, blueIcon: deliveredblue },
+    { label: "Cancelled", date: "7th Nov 2024", icon: checkIcon, blueIcon: packedblue },
   ];
 
-  
+
   const returnSteps = [
-    { label: "return Placed", date: "6th Nov 2024", icon: checkIcon, blueIcon:checkIcon },
-    { label: "return Confirmed", date: "6th Nov 2024", icon: packed,blueIcon:packedblue },
-    { label: "Shipped", date: "7th Nov 2024", icon: truck_line,blueIcon:truck_fillblue },
-    { label: "Returned", date: "7th Nov 2024", icon: delivered,blueIcon:deliveredblue },
- 
+    { label: "return Placed", date: "6th Nov 2024", icon: checkIcon, blueIcon: checkIcon },
+    { label: "return Confirmed", date: "6th Nov 2024", icon: packed, blueIcon: packedblue },
+    { label: "Shipped", date: "7th Nov 2024", icon: truck_line, blueIcon: truck_fillblue },
+    { label: "Returned", date: "7th Nov 2024", icon: delivered, blueIcon: deliveredblue },
+
   ];
 
 
@@ -125,7 +125,7 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
 
   const getCurrentStep = (orderStatus) => {
     if (orderStatus === "cancelled") {
-      return 4; 
+      return 4;
     }
 
     switch (orderStatus) {
@@ -140,15 +140,15 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
       default:
         return 0;
     }
-    
-    
+
+
 
   };
 
-  
+
   const getReturnedCurrentStep = (orderStatus) => {
     if (orderStatus === "returned") {
-      return 3; 
+      return 3;
     }
 
     switch (orderStatus) {
@@ -163,8 +163,8 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
       default:
         return 0;
     }
-    
-    
+
+
 
   };
 
@@ -234,16 +234,19 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
 
             <div className="flex flex-col text-sm">
               <div className="flex justify-between items-center mb-2">
-              <div className="text-gray-600">Total Rent</div>
-              <div className="text-gray-800 font-medium">₹ {orders.totalAmount}/-</div>
+                <div className="text-gray-600">Total Rent</div>
+                <div className="text-gray-800 font-medium">
+                  ₹ {subOrders.reduce((total, suborder) => total + suborder.price, 0)}/-
+                </div>
+
               </div>
               <div className="flex justify-between items-center mb-2">
-              <div className="text-gray-600">Gst</div>
-              <div className="text-gray-800 font-medium">₹ {orders?.taxDetails?.totalTax}/-</div>
+                <div className="text-gray-600">Gst</div>
+                <div className="text-gray-800 font-medium">₹ {orders?.taxDetails?.totalTax}/-</div>
               </div>
               <div className="flex justify-between items-center mb-2">
-              <div className="text-gray-600">Delivery charges</div>
-              <div className="text-gray-800 font-medium">₹ {orders?.deliveryCharge}/-</div>
+                <div className="text-gray-600">Delivery charges</div>
+                <div className="text-gray-800 font-medium">₹ {orders?.deliveryCharge}/-</div>
               </div>
               {/* <div className="flex justify-between items-center mb-2">
               <div className="text-gray-600">Discounts</div>

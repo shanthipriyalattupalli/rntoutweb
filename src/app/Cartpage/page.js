@@ -353,7 +353,6 @@ useEffect(()=>{
         addressId: String(selectedAddress._id),
         deliveryCharge:delivery?.totalDeliveryCharges,
         variantDeliveryCharges :variantDeliveryCharges
-
       };
 
 

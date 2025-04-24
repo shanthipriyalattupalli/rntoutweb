@@ -22,6 +22,8 @@ const Signup = ({ setIsRegisterOpen }) => {
     profilePic: ""
   });
 
+  console.log(profile,"profile")
+
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -108,9 +110,15 @@ const Signup = ({ setIsRegisterOpen }) => {
 
     try {
       setIsLoading(true);
-      const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, profile, {
+      const payload = {
+        ...profile,
+        name: profile.user.name,
+        email: profile.user.email,
+      };
+      const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(profile,"in response profile")
 
       const user = response?.data?.user;
       const profiles = response.data.profile;
