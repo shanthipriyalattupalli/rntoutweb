@@ -70,7 +70,7 @@ const Testimonials = () => {
       <div className="px-4 py-8 md:py-16 2xl:px-16 xl:px-16">
         <div className="text-center mb-6 md:mb-12">
           <p className="text-red-600 text-xs sm:text-sm font-semibold mb-1 sm:mb-2">
-            OVER 1.5 LAC HAPPY CUSTOMERS
+            {/* OVER 1.5 LAC HAPPY CUSTOMERS */}
           </p>
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
             Real Stories from Satisfied Customers
@@ -107,7 +107,7 @@ const Testimonials = () => {
                     className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mb-2 sm:mb-4"
                   />
                   <h3 className="text-lg sm:text-xl font-semibold mb-1">
-                    {testimonial.name}
+                    {testimonial.name ? testimonial.name :"rntout User"}
                   </h3>
                   <p className="text-gray-600 text-xs sm:text-sm mb-4">{testimonial.role}</p>
                   <p className="text-gray-700 text-sm sm:text-base italic">

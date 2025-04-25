@@ -9,7 +9,7 @@ export default function Aboutus() {
             <h2 className="about-header">About Us</h2>
 
             <div className="about-section">
-                <h3 className="about-subtitle">Welcome to Rentout</h3>
+                <h3 className="about-subtitle">Welcome to rentout</h3>
                 <p className="about-text">
                     Your one-stop destination for renting high-quality products with ease and affordability!
                     Whether you need furniture, laptops, gym gear, household essentials, vehicles, or party supplies — we’ve got you covered.
@@ -19,7 +19,7 @@ export default function Aboutus() {
             <div className="about-section">
                 <h3 className="about-subtitle">Who We Are</h3>
                 <p className="about-text">
-                    At Rentout, we believe in making life more convenient by offering a seamless rental experience.
+                    At rentout, we believe in making life more convenient by offering a seamless rental experience.
                     Our mission is to help individuals and businesses access premium products without the burden of ownership.
                 </p>
             </div>

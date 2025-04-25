@@ -303,7 +303,7 @@ const MainContent = () => {
     },
     seoTags: [],
     isForSale: true,
-    salePrice: 0,
+    // salePrice: 0,
     stockQuantity: 0,
     pickupAddress: "",
     location: {
@@ -547,7 +547,7 @@ const MainContent = () => {
       formDataToSend.append("rentalAvailability", JSON.stringify(formData.rentalAvailability));
       formDataToSend.append("seoTags", formData.seoTags);
       formDataToSend.append("isForSale", formData.isForSale);
-      formDataToSend.append("salePrice", formData.salePrice);
+      // formDataToSend.append("salePrice", formData.salePrice);
       formDataToSend.append("stockQuantity", formData.stockQuantity);
       formDataToSend.append("pickupAddress", formData.pickupAddress);
 
@@ -576,6 +576,7 @@ const MainContent = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response,"reesposne of update")
 
       if (response.data.success) {
         setFormData(initialFormData);

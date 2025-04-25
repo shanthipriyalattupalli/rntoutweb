@@ -43,7 +43,8 @@ const FaqPage = () => {
                     <div
                         key={index}
                         className="border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition duration-300 cursor-pointer"
-                        onClick={() => router.push(`/Faq/${category._id}`)}
+                        onClick={() => router.push(`/Faq/${category._id}?name=${encodeURIComponent(category.name)}`)}
+
                     >
                         <div className="flex items-center space-x-3 mb-4">
                             <div className="bg-green-600 p-2 rounded-lg flex justify-center items-center">
@@ -59,7 +60,7 @@ const FaqPage = () => {
                                 </h2>
 
 
-                                <p className="text-sm text-gray-500 mb-2">No. of questions: {category.numberOfQuestions}</p>
+                                {category.numberOfQuestions != 0 && <p className="text-sm text-gray-500 mb-2">No. of questions: {category.numberOfQuestions}</p>}
                             </div>
                         </div>
                         <h3 className="text-xs font-semibold text-gray-500">  {category.isTrending ? "TRENDING QUESTION" : ""}</h3>

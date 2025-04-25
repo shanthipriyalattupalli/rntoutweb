@@ -293,7 +293,7 @@ const MainContent = () => {
     },
     seoTags: [],
     isForSale: true,
-    salePrice: 0,
+    // salePrice: 0,
     stockQuantity: 0,
     location: {
       type: "Point",
@@ -330,6 +330,8 @@ console.log(formData,"formData")
           productId: response.data.productId?._id
         })
       )
+
+      console.log(response.data,"response of peroduct by id")
       // Map fetched itemDetails to productDetails format
       const fetchedItemDetails = response.data.itemDetails || {};
       const formattedDetails = Object.entries(fetchedItemDetails).map(
@@ -571,7 +573,7 @@ console.log(formData,"formData")
 
       formDataToSend.append('seoTags', formData.seoTags);
       formDataToSend.append('isForSale', formData.isForSale);
-      formDataToSend.append('salePrice', formData.salePrice);
+      // formDataToSend.append('salePrice', formData.salePrice);
       formDataToSend.append('stockQuantity', formData.stockQuantity);
       formDataToSend.append('pickupAddress', formData.pickupAddress);
       const coordinates = formData.location.coordinates;
@@ -595,6 +597,7 @@ console.log(formData,"formData")
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response,"response in  update ")
 
 
 

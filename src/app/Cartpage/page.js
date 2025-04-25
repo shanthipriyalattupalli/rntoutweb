@@ -474,13 +474,13 @@ useEffect(()=>{
 
 
 
-  // const handleDiscountedPrice = (newDiscountedPrice, couponcode, discountValue, maxDiscountAmount) => {
-  //   setDiscountedPrice(newDiscountedPrice);
-  //   setCouponCode(couponcode);
-  //   setDisValue(discountValue);
-  //   setDisAmount(maxDiscountAmount)
+  const handleDiscountedPrice = (newDiscountedPrice, couponcode, discountValue, maxDiscountAmount) => {
+    setDiscountedPrice(newDiscountedPrice);
+    setCouponCode(couponcode);
+    setDisValue(discountValue);
+    setDisAmount(maxDiscountAmount)
 
-  // };
+  };
 
   const handleAddress = (addressId) => {
     setAddressId(addressId);
@@ -503,7 +503,7 @@ useEffect(()=>{
   };
 
 
-
+console.log(cartdetails,"cartdetails")
 
   return (
     <div className='cart-page'>
@@ -659,42 +659,8 @@ useEffect(()=>{
           onAddressSelectedSuccess={fetchDeliveryCharges}
         />
 
-        <div className='summary-address'>
-          <div className='summary-item address'>
-            <div className="flex gap-50">
-              <div className='address-content'>
-                <img src={payment} />
-                <span>Payable Amount</span>
-              </div>
-              <div className="md:ml-4">
-                {" "}
-                {/* <span className='amount'>₹{totalPrice}</span> */}
-              </div>
-            </div>
-            <button
-              className='pay-btn'
-              onClick={totalPrice > 0 ? createPayment : undefined}
-              disabled={totalPrice <= 0}
-              style={{ cursor: totalPrice <= 0 ? 'not-allowed' : 'pointer' }}
-            >
-              Pay ₹{delivery?.totalDeliveryCharges ? cartdetails?.grandTotal + delivery?.totalDeliveryCharges : cartdetails?.grandTotal}
-            </button>
 
-
-            {displayRazorpay && (
-              <RenderRazorpay
-                orderId={orderId}
-                razorpayOrderId={razorpayOrderId}
-                // amount={delivery?.totalDeliveryCharges}
-                currency={"INR"}
-                keyId={apiKey}
-                handlePayment={handlePayment}
-                name={userName}
-              />
-            )}
-          </div>
-        </div>
-        {/* <div className="summary-item address" onClick={handleCouponToggle}>
+        <div className="summary-item address" onClick={handleCouponToggle}>
           <div className="flex justify-between align-center text-center items-center">
             <div className="flex flex-row items-center gap-4">
               <img src={coupon} alt="Coupon Icon" />
@@ -716,16 +682,16 @@ useEffect(()=>{
             <MdOutlineKeyboardArrowRight />
 
           </div>
-        </div> */}
+        </div> 
 
-        {/* {isCoupon && (
+         {isCoupon && (
           <PromoCoupon
             isOpen={isCoupon}
             onClose={handleCouponToggle} // Properly pass the toggle function
-            totalPrice={totalPrice}
+            totalPrice={delivery?.totalDeliveryCharges ? cartdetails?.grandTotal + delivery?.totalDeliveryCharges : cartdetails?.grandTotal}
             onDiscountedPrice={handleDiscountedPrice}
           />
-        )} */}
+        )}
 
         <div className="mx-auto bg-white shadow-lg rounded-xl p-5 border mb-4">
           {/* Header with Dropdown Toggle */}
@@ -758,6 +724,10 @@ useEffect(()=>{
                 <span>Delivery charges</span>
                 <span className="font-medium">+ {delivery?.totalDeliveryCharges}</span>
               </div>}
+              {disAmount !=0 && <div className="flex justify-between">
+                <span> Promo coupon</span>
+                <span className="font-medium">+ {disAmount}</span>
+              </div>}
 
               <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
@@ -765,6 +735,41 @@ useEffect(()=>{
               </div>
             </div>
           )}
+        </div>
+        <div className='summary-address'>
+          <div className='summary-item address'>
+            <div className="flex gap-50">
+              <div className='address-content'>
+                <img src={payment} />
+                <div>Payable Amount  : <span>{delivery?.totalDeliveryCharges ? cartdetails?.grandTotal + delivery?.totalDeliveryCharges : cartdetails?.grandTotal}</span> </div>
+              </div>
+              <div className="md:ml-4">
+                {" "}
+                {/* <span className='amount'>₹{totalPrice}</span> */}
+              </div>
+            </div>
+            <button
+              className='pay-btn'
+              onClick={totalPrice > 0 ? createPayment : undefined}
+              disabled={totalPrice <= 0}
+              style={{ cursor: totalPrice <= 0 ? 'not-allowed' : 'pointer' }}
+            >
+              Pay ₹{delivery?.totalDeliveryCharges ? cartdetails?.grandTotal + delivery?.totalDeliveryCharges : cartdetails?.grandTotal}
+            </button>
+
+
+            {displayRazorpay && (
+              <RenderRazorpay
+                orderId={orderId}
+                razorpayOrderId={razorpayOrderId}
+                // amount={delivery?.totalDeliveryCharges}
+                currency={"INR"}
+                keyId={apiKey}
+                handlePayment={handlePayment}
+                name={userName}
+              />
+            )}
+          </div>
         </div>
         {/* <div className='summary-item'>
           <img src={delivery} /> <span>Delivery Estimate</span>

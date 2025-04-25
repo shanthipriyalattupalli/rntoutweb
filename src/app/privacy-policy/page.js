@@ -130,7 +130,15 @@ export default function Privacypolicy() {
         By email: rntouthyd@gmail.com
         <br />
         By visiting this page on our website:
-        <a href="https://rntout.com/" target="_blank" rel="noopener noreferrer" className='text-blue text-underline'>https://rntout.com/</a>
+        <a
+          href="https://rntout.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 underline ml-3"
+        >
+          https://rntout.com/
+        </a>
+
       </div>
 
     </div>

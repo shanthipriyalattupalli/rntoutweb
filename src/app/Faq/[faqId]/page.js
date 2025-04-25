@@ -20,21 +20,23 @@ return response.data.data
     }
 };
 
-const FAQSection = async({params}) => {
+const FAQSection = async({params,searchParams }) => {
 
 const {faqId}=await params;
+const categoryName = searchParams.name;
+console.log(categoryName,"categoryName")
 
 const faqQuestions=await fetchFaqQandA(faqId)
-
+console.log(faqQuestions,"faqQuestions")
 
 
 
 
     return (
         <div className="max-w-5x2 mx-auto px-[6rem] py-10">
-            <h2 className="text-2xl font-bold text-center">General Questions</h2>
+            <h2 className="text-2xl font-bold text-center">{categoryName}</h2>
             <p className="text-gray-600 text-center mt-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. */}
             </p>
 <FaqQandA faqQuestions ={faqQuestions}/>
 

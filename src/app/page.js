@@ -134,7 +134,7 @@ const Home = async () => {
       <Banner banners={banners} />
       <CategoryList categories={categories} />
       <Products categories={categories} />
-      <CuratedCollections />
+      {/* <CuratedCollections /> */}
       <ITInfrastructure products={products["IT Infrastructure"] || []} categoryId={categories[0]?._id} />
       <Furniture products={products["Furniture"] || []} categoryId={categories[1]?._id} />
       <MedicalEquipment products={products["Medical Equipment"] || []} categoryId={categories[2]?._id} />
@@ -146,7 +146,7 @@ const Home = async () => {
       <SportsGym products={products["Sport & Gym"] || []} categoryId={categories[6]?._id} />
       <HouseholdKitchen products={products["Household & Kitchen"] || []} categoryId={categories[7]?._id} />
       <Services />
-      <Achievements />
+      {/* <Achievements /> */}
       <Blogs blogs={blogs} />
       <Testimonials />
       {/* <HomeComponent /> */}

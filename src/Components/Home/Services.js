@@ -39,7 +39,7 @@ const OurBestServices = () => {
         Our Best Services
       </h1>
       <p className='text-gray-600 text-center mb-8'>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Find Everything You Need, When You Need It
       </p>
 
       {/* Responsive Links Section */}

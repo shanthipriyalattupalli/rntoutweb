@@ -106,11 +106,11 @@ const Newsletter = () => {
   {/* Footer Links */}
   <div className="border-t-2  border-[rgba(255, 255, 255, 0.1)] py-4 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
     <div>© 2025 All rights reserved</div>
-    <div className="flex space-x-4 mt-4 md:mt-0">
+    {/* <div className="flex space-x-4 mt-4 md:mt-0">
       <a href="/" className="hover:text-white">Terms</a>
       <a href="/" className="hover:text-white">Privacy</a>
       <a href="/" className="hover:text-white">Cookies</a>
-    </div>
+    </div> */}
     <div className="flex space-x-4 mt-4 md:mt-0">
       <a href="https://www.facebook.com/"><img src={facebook} alt="Facebook icon" className="w-6 h-6"/></a>
       <a href="https://x.com/?lang=en-in"><img src={twitter} alt="Twitter icon" className="w-6 h-6"/></a>
