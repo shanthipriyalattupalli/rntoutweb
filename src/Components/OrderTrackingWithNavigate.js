@@ -203,7 +203,7 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
               <div class='payment-details'>
                 <div className='payment-details_completed'>
                   <h4>Payment {orders.paymentStatus}</h4>
-                  <p>{formattedDate}</p>
+                  {/* <p>{formattedDate}</p> */}
                 </div>
               </div>
             </div>

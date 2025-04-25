@@ -45,7 +45,8 @@ const WithdrawalRequest = async() => {
   const cookieStore=cookies();
   let userId = cookieStore.get(`userId`)?.value;
 
-  const transactionsWallet=await fetchWalletTransaction(userId);
+  let  transactionsWallet=await fetchWalletTransaction(userId);
+  console.log(transactionsWallet,"transactionsWallet")
   return (
     <div className="mx-auto p-4 bg-white">
       {/* Header */}
@@ -60,18 +61,17 @@ const WithdrawalRequest = async() => {
       </div>
 
       <div className="mt-4 space-y-4">
-        {transactionsWallet?.walletTransactions
-          .map((transaction) => {
+        {[...transactionsWallet?.walletTransactions]?.reverse().map((transaction) => {
             const duration = formatDistanceToNow(new Date(transaction.createdAt), { addSuffix: true });
             return(
             <div key={transaction._id} className="flex items-center justify-between border border-[#E1E6EF] p-4 rounded-lg shadow-sm">
               <div>
-                <h3 className="text-gray-800 font-semibold">{transaction.productId}</h3>
-                <p className="text-gray-500 text-sm">{transaction.productId} • Duration: {duration}</p>
+                <h3 className="text-gray-800 font-semibold">{transaction._id}</h3>
+                <p className="text-gray-500 text-sm">{transaction._id} • Duration: {duration}</p>
               </div>
               <div className="text-right">
-                <span className="text-sm font-semibold text-green-500">
-                  + ₹{transaction.amount}
+                <span className={`text-sm font-semibold  ${transaction.transactionType === 'order' ?"text-green-500" :" text-[#FF2D55]"}`}  >{transaction.transactionType === 'order' ? '+' : '-'} ₹{transaction.amount}
+                  {/* + ₹ */}
                 </span>
                 <div className="text-gray-500 text-xs">
   {format(new Date(transaction.createdAt), "dd-MM-yyyy")} • {format(new Date(transaction.createdAt), "hh:mm a")}

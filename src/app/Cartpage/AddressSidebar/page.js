@@ -543,6 +543,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
                     className='text-input'
                     name='zip'
                     value={formData.zip}
+                    maxLength={6}
                     onChange={handleInputChange}
                     required
                   />

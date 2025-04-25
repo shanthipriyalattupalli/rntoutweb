@@ -418,6 +418,7 @@ const AddressSidebar = ({ isOpen, onClose, setEditingAddressId, editingAddressId
                 name='zip'
                 value={formData.zip}
                 onChange={handleInputChange}
+                maxLength={6}
                 required
               />
             </div>

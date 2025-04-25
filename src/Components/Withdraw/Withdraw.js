@@ -33,7 +33,8 @@ const Withdraw = ({fetchWalletTransaction}) => {
                     title: "Done",
                     text: response.data.message,
                     icon: "success",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    confirmButtonColor:"#FF2D55"
                   }).then(async() => {
                     setIsWithdrawlOpen(false);
                     window.location.reload();
@@ -53,7 +54,8 @@ const Withdraw = ({fetchWalletTransaction}) => {
                 icon:"info",
                 title:"Note",
                 text:error?.response?.data?.message,
-                confirmButtonText:"Ok"
+                confirmButtonText:"Ok",
+                confirmButtonColor:"#FF2D55"
             })
 
         }
