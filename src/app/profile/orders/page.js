@@ -289,7 +289,7 @@ export default function Orders() {
                  Download Invoice
                 </a>
               } */}
-              {(order.orderStatus === "placed") && (
+              {order.subOrders.every(subOrder => subOrder.orderStatus === "placed") && (
                 <a
                   className="inline-flex w-full sm:w-auto items-center gap-1.5 justify-start no-underline text-red-500 font-medium cursor-pointer text-left"
                   onClick={() => {
@@ -299,8 +299,8 @@ export default function Orders() {
                 >
                   Cancel Order
                 </a>
-
               )}
+
               {isCanceled && (
                 <div className="modal-overlays" onClick={() => setIsCanceled(false)}>
                   <div className="modal-contents" onClick={(e) => e.stopPropagation()}>

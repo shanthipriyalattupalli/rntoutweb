@@ -94,85 +94,78 @@ export default function OrderTracking({ selectedSubOrder, steps, getCurrentStep,
           </div>
 
 
-          {selectedSubOrder?.endDate && <span className="text-[16px] font-[500]">Return Status</span>}
-{selectedSubOrder?.endDate  &&          <div className="flex flex-col items-center py-6 relative md:flex-row md:justify-between">
-            <div className="flex flex-col md:flex-row md:items-center md:space-x-6 w-full">
-              {returnSteps
-                .filter((step, index) => {
-                  const isReturnStatus = selectedSubOrder.orderStatus === "returned";
+          {selectedSubOrder?.endDate && new Date(selectedSubOrder.endDate).toDateString() === new Date().toDateString() && (
+  <span className="text-[16px] font-[500]">Return Status</span>
+)}
 
+{selectedSubOrder?.endDate && new Date(selectedSubOrder.endDate).toDateString() === new Date().toDateString() && (
+  <div className="flex flex-col items-center py-6 relative md:flex-row md:justify-between">
+    <div className="flex flex-col md:flex-row md:items-center md:space-x-6 w-full">
+      {returnSteps
+        .filter((step, index) => {
+          const isReturnStatus = selectedSubOrder.orderStatus === "returned";
 
-                  if (isReturnStatus) {
-                    return index === 0 || index === steps.length - 1;
-                  }
+          if (isReturnStatus) {
+            return index === 0 || index === steps.length - 1;
+          }
 
+          return true;
+        })
+        .map((step, index, filteredSteps) => {
+          const currentStep = getReturnedCurrentStep(selectedSubOrder.returnStatus);
 
-                  return true;
+          const isCompleted = Array.isArray(currentStep)
+            ? currentStep.includes(index)
+            : index <= currentStep;
+          const isDelivered = selectedSubOrder.returnStatus === "returned";
 
-                })
+          return (
+            <div key={index} className="flex flex-col items-center w-full relative last:pb-0 pb-8 md:pb-0">
+              <div
+                className={`text-center text-md sm:text-sm md:text-base mb-2 md:mb-4 font-[600] ${isDelivered && index === currentStep
+                  ? "text-[#08875D]"
+                  : isCompleted
+                    ? "text-blue-500"
+                    : "text-gray-300"
+                  }`}
+              >
+                {step.label}
+              </div>
 
+              <div
+                className={`w-[3rem] h-[3rem] flex items-center justify-center rounded-full border-2 z-10 text-lg font-semibold ${isDelivered && index === currentStep
+                  ? "border-[#08875D] bg-[#08875D] text-[#08875D]" : isCompleted ? "border-blue-500 bg-blue-100 text-blue-500" : "border-gray-300"
+                  }`}
+              >
+                <img
+                  src={isCompleted ? step.blueIcon || step.icon : step.icon}
+                  alt="icon"
+                />
+              </div>
 
-                .map((step, index, filteredSteps) => {
-                  const currentStep = getReturnedCurrentStep(selectedSubOrder.returnStatus);
+              {index < filteredSteps.length - 1 && (
+                <div
+                  className={`absolute w-0.5 h-12 sm:h-14 border-l-2 border-dashed md:hidden bottom-[0px]
+                        ${index < currentStep ? "border-blue-500"
+                    : "border-gray-300"}`}
+                ></div>
+              )}
 
-                  const isCompleted = Array.isArray(currentStep)
-                    ? currentStep.includes(index)
-                    : index <= currentStep;
-                  const isDelivered = selectedSubOrder.returnStatus === "returned";
-
-                  return (
-                    <div
-                      key={index}
-                      className={`flex flex-col items-center w-full relative last:pb-0 pb-8 md:pb-0`}
-                    >
-
-                      <div
-                        className={`text-center text-md sm:text-sm md:text-base mb-2 md:mb-4 font-[600] ${isDelivered && index === currentStep
-                          ? "text-[#08875D]"
-                          : isCompleted
-                            ? "text-blue-500"
-                            : "text-gray-300"
-                          }`}
-                      >
-                        {step.label}
-                      </div>
-
-                      <div
-                        className={`w-[3rem] h-[3rem] flex items-center justify-center rounded-full border-2 z-10 text-lg font-semibold ${isDelivered && index === currentStep
-                          ? "border-[#08875D] bg-[#08875D] text-[#08875D]" : isCompleted ? "border-blue-500 bg-blue-100 text-blue-500" : "border-gray-300"
-
-                          }`}
-                      >
-                        <img
-                          src={
-                            isCompleted ? step.blueIcon || step.icon : step.icon
-                          }
-                          alt="icon"
-                        />
-
-                      </div>
-
-                      {index < filteredSteps.length - 1 && (
-                        <div
-                          className={`absolute w-0.5 h-12 sm:h-14 border-l-2 border-dashed md:hidden bottom-[0px]
-                        ${ index < currentStep ? "border-blue-500"
-                                : "border-gray-300"}`}
-                        ></div>
-                      )}
-
-                      {index < filteredSteps.length - 1 && (
-                        <div
-                          className={`absolute top-1/2 md:top-[69%] lg:top-[69%] left-[103%] transform -translate-x-1/2 h-0.5 border-t-2 border-dashed hidden md:block ${ index < currentStep
-                              ? "border-blue-500 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[30rem]"
-                              : "border-gray-300 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[30rem]"
-                            }`}
-                        ></div>
-                      )}
-                    </div>
-                  );
-                })}
+              {index < filteredSteps.length - 1 && (
+                <div
+                  className={`absolute top-1/2 md:top-[69%] lg:top-[69%] left-[103%] transform -translate-x-1/2 h-0.5 border-t-2 border-dashed hidden md:block ${index < currentStep
+                    ? "border-blue-500 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[30rem]"
+                    : "border-gray-300 md:w-[8rem] lg:w-[10rem] xl:w-[12rem] 2xl:w-[30rem]"
+                    }`}
+                ></div>
+              )}
             </div>
-          </div>}
+          );
+        })}
+    </div>
+  </div>
+)}
+
 
         </>
 

@@ -65,7 +65,7 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-
+console.log(response,"respone of coupon validate")
       if (response.data.success === true) {
         try {
           const response = await axios.post(
@@ -74,9 +74,9 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
             { headers: { Authorization: `Bearer ${token}` } }
           );
 
-
-          onDiscountedPrice(response.data.data.finalAmount, couponcode,response.data.data.coupon.discountValue,response.data.data.coupon.maxDiscountAmount);
-          onClose()
+console.log(response,"response of applied coupon")
+          onDiscountedPrice(response.data.data.finalAmount, couponcode,response.data.data.coupon.discountValue,response.data.data.discountAmount);
+          // onClose()
           toast.success(
             response.data.message || "Coupon applied successfully!"
           );

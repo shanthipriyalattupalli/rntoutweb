@@ -687,7 +687,7 @@ console.log(cartdetails,"cartdetails")
          {isCoupon && (
           <PromoCoupon
             isOpen={isCoupon}
-            onClose={handleCouponToggle} // Properly pass the toggle function
+            onClose={handleCouponToggle} 
             totalPrice={delivery?.totalDeliveryCharges ? cartdetails?.grandTotal + delivery?.totalDeliveryCharges : cartdetails?.grandTotal}
             onDiscountedPrice={handleDiscountedPrice}
           />
@@ -724,7 +724,7 @@ console.log(cartdetails,"cartdetails")
                 <span>Delivery charges</span>
                 <span className="font-medium">+ ₹{delivery?.totalDeliveryCharges}</span>
               </div>}
-              {disAmount !=0 && <div className="flex justify-between">
+              {disAmount !=0 && couponcode && <div className="flex justify-between">
                 <span> Promo coupon</span>
                 <span className="font-medium">- ₹{disAmount}</span>
               </div>}
