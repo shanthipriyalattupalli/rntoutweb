@@ -21,6 +21,8 @@ const Ratings = ({ userRatings }) => {
     currentPage * itemsPerPage
   );
 
+  console.log(currentRatings, "currentRatings")
+
   const getPaginationNumbers = () => {
     const pages = [];
     if (totalPages <= 10) {
@@ -64,7 +66,7 @@ const Ratings = ({ userRatings }) => {
                             <img src={stars} alt="Rating stars" className="w-4 h-3" />
                             <span className="ml-1">{rating.rating}</span>
                           </p>
-                          <p className="text-[14px] text-[rgba(7, 7, 7, 1)] font-[500] leading-[20px] ">{rating.comment}</p>
+                          {rating.title && <p className="text-[14px] text-[rgba(7, 7, 7, 1)] font-[500] leading-[20px] ">{rating.title}</p>}
                         </div>
                         <p className="text-[14px] font-[400] leading-[20px] ">{rating.comment}</p>
                       </td>
@@ -85,8 +87,6 @@ const Ratings = ({ userRatings }) => {
 
               </div>
             ))}
-
-
             <div className="flex mt-4 gap-2">
 
               <button

@@ -13,7 +13,7 @@ const pro5 = "/Assets/laptop-5.jpg";
 // Lazy loading ProductItem component
 const ProductItems = lazy(() => import("../Home/ProductItems"));
 
-const ITInfrastructure = ({ products, categoryId,isLoading }) => {
+const ITInfrastructure = ({ products,title,categoryId,isLoading }) => {
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
@@ -77,7 +77,7 @@ const ITInfrastructure = ({ products, categoryId,isLoading }) => {
     {/* Heading Section */}
     <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
       <h1 className="text-lg sm:text-xl md:text-2xl xl:text-3xl font-bold text-gray-800 text-center sm:text-left">
-        IT Infrastructure{" "}
+        {title}{" "}
         {/* <span className="text-white font-normal p-1 px-2 bg-teal-700 text-xs ml-2 rounded-lg">
           {products.length} Products
         </span> */}

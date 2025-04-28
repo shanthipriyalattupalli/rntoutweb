@@ -718,15 +718,15 @@ console.log(cartdetails,"cartdetails")
               </div>}
               {cartdetails?.taxes?.totalTax && <div className="flex justify-between">
                 <span>Gst({cartdetails?.taxes?.cgst?.rate + cartdetails?.taxes?.sgst?.rate}%)</span>
-                <span className="font-medium">+{cartdetails?.taxes?.totalTax}</span>
+                <span className="font-medium">+ ₹{cartdetails?.taxes?.totalTax}</span>
               </div>}
               {delivery?.totalDeliveryCharges && <div className="flex justify-between">
                 <span>Delivery charges</span>
-                <span className="font-medium">+ {delivery?.totalDeliveryCharges}</span>
+                <span className="font-medium">+ ₹{delivery?.totalDeliveryCharges}</span>
               </div>}
               {disAmount !=0 && <div className="flex justify-between">
                 <span> Promo coupon</span>
-                <span className="font-medium">+ {disAmount}</span>
+                <span className="font-medium">- ₹{disAmount}</span>
               </div>}
 
               <div className="flex justify-between border-t pt-3 font-bold text-lg">

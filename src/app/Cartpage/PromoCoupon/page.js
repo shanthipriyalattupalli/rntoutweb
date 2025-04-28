@@ -145,12 +145,14 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
                       {coupon.code}
                     </span>
                     <p className="font-medium">
-                      Get up to ₹{coupon.maxDiscountAmount} off with{" "}
-                      {coupon.discountValue}% discount.
+                      Get up to ₹{coupon.maxDiscountAmount} off 
+                      {/* with{" "}
+                      {coupon.discountValue}% discount. */}
                     </p>
                     <p className="font-normal text-xs">
-                      Valid on orders over ₹{coupon.minRentAmount}. Usable{" "}
-                      {remainingUsage} more{" "}
+                      Valid on orders over ₹{coupon.minRentAmount}
+                       {/* Usable{" "}
+                      {remainingUsage} more{" "} */}
                       {remainingUsage === 1 ? "time" : "times"}.
                     </p>
 

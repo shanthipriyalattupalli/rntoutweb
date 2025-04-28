@@ -17,7 +17,7 @@ import Swal from "sweetalert2";
 
 
 
-const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, steps, getCurrentStep,returnSteps,getReturnedCurrentStep }) => {
+const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, steps, getCurrentStep, returnSteps, getReturnedCurrentStep }) => {
 
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
@@ -48,7 +48,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
         await fetchSuborderHistory(item._id);
       });
     }
-  }, [orderData]); 
+  }, [orderData]);
 
   const fetchSuborderHistory = async (subOrderId) => {
     try {
@@ -58,7 +58,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
         },
       });
 
-      console.log(response.data,"response of suborders")
+      console.log(response.data, "response of suborders")
 
       const reviews = Array.isArray(response.data.reviews) ? response.data.reviews : [];
       setSubOrderHistories((prev) => ({
@@ -79,16 +79,16 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
           Authorization: `Bearer ${token}`,
         },
       });
-  
-      const file = new Blob([response.data], { type: 'application/pdf' }); 
+
+      const file = new Blob([response.data], { type: 'application/pdf' });
       const fileURL = URL.createObjectURL(file);
       const link = document.createElement('a');
       link.href = fileURL;
-      link.setAttribute('download', `Invoice_${subOrderId}.pdf`); 
+      link.setAttribute('download', `Invoice_${subOrderId}.pdf`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      URL.revokeObjectURL(fileURL); 
+      URL.revokeObjectURL(fileURL);
     } catch (error) {
       console.log(error, "error in invoice");
       if (error.response && error.response.status === 401) {
@@ -106,10 +106,10 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
       }
     }
   };
-  
 
 
-  
+
+
 
   return (
     <div>
@@ -142,27 +142,27 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                         Write Product Review
                       </a>
                     )}
-                {(item.orderStatus === "delivered") &&  <span className="hidden sm:flex" style={{ color: "rgba(7, 7, 7, 0.1)" }}> |</span>}
+                  {(item.orderStatus === "delivered") && <span className="hidden sm:flex" style={{ color: "rgba(7, 7, 7, 0.1)" }}> |</span>}
                   {(item.orderStatus === "delivered") &&
                     Array.isArray(subOrderHistories[item._id]) &&
                     subOrderHistories[item._id].length === 0 && (
-                      <span className="return-order" onClick={()=>{
+                      <span className="return-order" onClick={() => {
                         setIsReturned(true)
                       }}>
                         Return Product?
                       </span>
                     )}
-                                    {isReturned && (
-                  <div className="modal-overlays" onClick={() => setIsReturned(false)}>
-                    <div className="modal-contents" onClick={(e)=>e.stopPropagation()}>
+                  {isReturned && (
+                    <div className="modal-overlays" onClick={() => setIsReturned(false)}>
+                      <div className="modal-contents" onClick={(e) => e.stopPropagation()}>
 
-                  
-                      <ReturnOrder setIsReturned={setIsReturned} item={item}/>
 
+                        <ReturnOrder setIsReturned={setIsReturned} item={item} />
+
+                      </div>
                     </div>
-                  </div>
-                )}
-                {(item.orderStatus === "delivered") &&  <span className="hidden sm:flex" style={{ color: "rgba(7, 7, 7, 0.1)" }}> |</span>}
+                  )}
+                  {(item.orderStatus === "delivered") && <span className="hidden sm:flex" style={{ color: "rgba(7, 7, 7, 0.1)" }}> |</span>}
                   <button
                     className="text-blue-500 font-semibold sm:px-4 px-0 rounded items-left text-left"
                     onClick={() => handleShowTracking(item)}
@@ -197,12 +197,13 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                             )}
 
                           </div>
+                          <div className="flex flex-col">
 
+                            {review.title && <p className="text-[14px] font-[500]">{review.title}</p>
 
-                          {review.title && <p>{review.title}</p>
-
-                          }
-                          <p>{review.comment}</p>
+                            }
+                            <p>{review.comment}</p>
+                          </div>
                           <a href={`/profile/orders/orderreview/${item._id}?variantId=${review.variantId}`} className="w-4 h-4"><Edit2Icon className="w-4 h-4" /></a>
 
                           {/* <p>{new Date(review.createdAt).toLocaleDateString()}</p> */}
@@ -228,9 +229,9 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                 )}
               </div>
             </div>
-            <div className="flex gap-2">
-              <Image src={download} alt="" width={20} height={20} className="pb-[35px]" />
-              <a href="#" className="font-semibold text-[#0b827c] " onClick={()=>fetchDownloadInvioce(item._id)} >
+            <div className="flex gap-2 h-[20px]">
+              <Image src={download} alt="" width={20} height={5}  />
+              <a href="#" className="font-semibold text-[#0b827c] " onClick={() => fetchDownloadInvioce(item._id)} >
                 Download Invoice
               </a>
             </div>

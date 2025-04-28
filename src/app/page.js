@@ -34,11 +34,11 @@ const fetchBanners = async () => {
         device_type: "website",
         banner_type: "landing_page_banner",
         theme_type: "light",
-     
+
       },
     });
 
-    console.log(response.data,"resposne of banners")
+    console.log(response.data, "resposne of banners")
     return response.data.data;
   } catch (error) {
     console.error("Error fetching banners:", error);
@@ -125,7 +125,8 @@ const Home = async () => {
   const banner = await fetchBanner();
   const categories = await fetchCategories();
   const products = await fetchProducts(latitude, longitude, radius);
-  const blogs = await fetchBlogs()
+  console.log(products, "products")
+  const blogs = await fetchBlogs();
   const activeBanners = banner.filter(banner => banner.status === "active");
   return (
     <div>
@@ -135,22 +136,43 @@ const Home = async () => {
       <CategoryList categories={categories} />
       <Products categories={categories} />
       {/* <CuratedCollections /> */}
-      <ITInfrastructure products={products["IT Infrastructure"] || []} categoryId={categories[0]?._id} />
-      <Furniture products={products["Furniture"] || []} categoryId={categories[1]?._id} />
+      {Object.entries(products).map(([categoryName, productsArray], index) => {
+        const categoryId = productsArray[0]?.categoryId?._id;
+
+        return (
+          <div key={categoryName}>
+            <ITInfrastructure
+              title={categoryName}
+              products={productsArray}
+              categoryId={categoryId}
+            />
+
+            {index === 3 && (
+              <div className="my-4">
+                <PromotionalAd banner={activeBanners[0]} />
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      {/* <PromotionalAd banner={activeBanners[1]} /> */}
+      {/* <ITInfrastructure products={products["IT Infrastructure"] || []} categoryId={categories[0]?._id} /> */}
+      {/* <Furniture products={products["Furniture"] || []} categoryId={categories[1]?._id} />
       <MedicalEquipment products={products["Medical Equipment"] || []} categoryId={categories[2]?._id} />
       <VacationEquipment products={products["Vacation Equipment"] || []} categoryId={categories[3]?._id} />
       <PromotionalAd banner={activeBanners[0]} />
       {/* <PromotionalAd banner={activeBanners[1]} /> */}
-      <Vehicles products={products["Vehicles"] || []} categoryId={categories[4]?._id} />
+      {/* <Vehicles products={products["Vehicles"] || []} categoryId={categories[4]?._id} />
       <PartyMaterial products={products["Party Material"] || []} categoryId={categories[5]?._id} />
       <SportsGym products={products["Sport & Gym"] || []} categoryId={categories[6]?._id} />
-      <HouseholdKitchen products={products["Household & Kitchen"] || []} categoryId={categories[7]?._id} />
+      <HouseholdKitchen products={products["Household & Kitchen"] || []} categoryId={categories[7]?._id} />  */}
       <Services />
       {/* <Achievements /> */}
       <Blogs blogs={blogs} />
       <Testimonials />
       {/* <HomeComponent /> */}
-  
+
     </div>
   );
 }
