@@ -675,13 +675,15 @@ const CartPage = () => {
         />
 
 
-        <div className="summary-item address" onClick={handleCouponToggle}>
+        <div className="summary-item address" >
           <div className="flex justify-between align-center text-center items-center">
             <div className="flex flex-row items-center gap-4">
               <img src={coupon} alt="Coupon Icon" />
               <span>{couponcode ? couponcode : "Promo Coupon"}</span>
 
-              {couponcode && (
+
+            </div>
+            {couponcode ? (
                 <button
                   className="remove-coupon-btn"
                   onClick={(e) => {
@@ -692,9 +694,8 @@ const CartPage = () => {
                 >
                   ✖
                 </button>
-              )}
-            </div>
-            <MdOutlineKeyboardArrowRight />
+              ): <MdOutlineKeyboardArrowRight  onClick={handleCouponToggle}/>}
+           
 
           </div>
         </div>
