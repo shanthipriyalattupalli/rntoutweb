@@ -40,7 +40,7 @@ const CartPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAddressSidebarOpen, setIsAddressSidebarOpen] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
-  console.log(selectedAddress,"slectedaddress")
+  console.log(selectedAddress, "slectedaddress")
   const [isCoupon, setIsCoupon] = useState(false)
   const [quantities, setQuantities] = useState({});
   const [displayRazorpay, setDisplayRazorpay] = useState(false);
@@ -69,7 +69,7 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response ,"response of delivery charges")
+      console.log(response, "response of delivery charges")
       setIsDelivery(response.data);
     } catch (error) {
       console.log(error, "error in fetching delivery charges")
@@ -102,9 +102,9 @@ const CartPage = () => {
     }
   };
 
-useEffect(()=>{
-  handleSelectAddress()
-},[selectedAddress])
+  useEffect(() => {
+    handleSelectAddress()
+  }, [selectedAddress])
 
 
   const handleCheckboxChange = async (cartId, isChecked) => {
@@ -341,8 +341,8 @@ useEffect(()=>{
     deliveryCharge: item.deliveryCharge,
     distance: item.distance
   }));
-  
-  console.log(variantDeliveryCharges,"variantDeliveryCharges")
+
+  console.log(variantDeliveryCharges, "variantDeliveryCharges")
 
   const handleOrderCheckout = async () => {
 
@@ -351,8 +351,8 @@ useEffect(()=>{
         userId: String(userId),
         couponCode: String(couponcode),
         addressId: String(selectedAddress._id),
-        deliveryCharge:delivery?.totalDeliveryCharges,
-        variantDeliveryCharges :variantDeliveryCharges
+        deliveryCharge: delivery?.totalDeliveryCharges,
+        variantDeliveryCharges: variantDeliveryCharges
       };
 
 
@@ -368,7 +368,7 @@ useEffect(()=>{
       // If orderId is present, proceed to initiate payment
       if (orderId) {
 
-        setOrderId(orderId); 
+        setOrderId(orderId);
         await handleContinueClick(orderId, finalAmount);
         router.push('/profile/orders')
         window.dispatchEvent(new CustomEvent("cartUpdated", { detail: 0 }));
@@ -503,7 +503,7 @@ useEffect(()=>{
   };
 
 
-console.log(cartdetails,"cartdetails")
+  console.log(cartdetails, "cartdetails")
 
   return (
     <div className='cart-page'>
@@ -565,41 +565,56 @@ console.log(cartdetails,"cartdetails")
 
                   </div>
                   <div className="flex items-center gap-2">
-                    <img src={cube} alt="Cube Icon" className="w-5 h-5" />
-                    <p className="text-[#2F6FED] text-sm font-medium">In stock</p>
+                    <img
+                      src={cube}
+                      alt="Cube Icon"
+                      className={`w-5 h-5 ${item.variant_id.stockQuantity > 0 ? '' : 'text-red-400'}`}
+                    />
+                    <p className={`text-sm font-medium ${item.variant_id.stockQuantity > 0 ? 'text-[#2F6FED]' : 'text-red-500'}`}>
+                      {item.variant_id.stockQuantity > 0 ? "In stock" : "Out of Stock"}
+                    </p>
                   </div>
+
+
+
                 </div>
 
-                <div className="quantity-controls">
-                  <div className="flex gap-2 items-center bg-white border rounded-md">
-                    <button
-                      className="quantity-btn"
-                      onClick={() => decreaseQuantity(item.variant_id._id, item.quantity)}
+                <div className="quantity-controls  flex justify-between">
+                  <div className="flex gap-2">
+                    <div className="flex gap-2 items-center bg-white border rounded-md">
+                      <button
+                        className="quantity-btn"
+                        onClick={() => decreaseQuantity(item.variant_id._id, item.quantity)}
+                      >
+                        -
+                      </button>
+                      <span className="quantity">{item.quantity || 1}</span>
+                      <button
+                        className="quantity-btn"
+                        onClick={() => increaseQuantity(item.variant_id._id, item.quantity)}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <select
+                      className="duration-select"
+                      value={selectedOptions[item.variant_id._id]?.period || item.rentalPeriod}
+                      onChange={(e) => handleSelectChange(item.variant_id._id, e.target.value)}
                     >
-                      -
-                    </button>
-                    <span className="quantity">{item.quantity || 1}</span>
-                    <button
-                      className="quantity-btn"
-                      onClick={() => increaseQuantity(item.variant_id._id, item.quantity)}
-                    >
-                      +
-                    </button>
+
+                      {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
+                        <option key={rentalPrice._id} value={rentalPrice.period}>
+                          {/* {rentalPrice.period} */}
+                          {periodMapping[rentalPrice.period] || rentalPrice.period.charAt(0).toUpperCase() + rentalPrice.period.slice(1)}
+
+                        </option>
+                      ))}
+                    </select>
                   </div>
-                  <select
-                    className="duration-select"
-                    value={selectedOptions[item.variant_id._id]?.period || item.rentalPeriod}
-                    onChange={(e) => handleSelectChange(item.variant_id._id, e.target.value)}
-                  >
+                  <div className="flex items-center gap-2">
 
-                    {item?.variant_id?.rentalPrice?.map((rentalPrice) => (
-                      <option key={rentalPrice._id} value={rentalPrice.period}>
-                        {/* {rentalPrice.period} */}
-                        {periodMapping[rentalPrice.period] || rentalPrice.period.charAt(0).toUpperCase() + rentalPrice.period.slice(1)}
-
-                      </option>
-                    ))}
-                  </select>
+                    <p className="text-sm font-medium">Total: {item.lineTotal}</p>
+                  </div>
 
                   {/* <p>Total: {item.lineTotal}</p> */}
                 </div>
@@ -682,12 +697,12 @@ console.log(cartdetails,"cartdetails")
             <MdOutlineKeyboardArrowRight />
 
           </div>
-        </div> 
+        </div>
 
-         {isCoupon && (
+        {isCoupon && (
           <PromoCoupon
             isOpen={isCoupon}
-            onClose={handleCouponToggle} 
+            onClose={handleCouponToggle}
             totalPrice={delivery?.totalDeliveryCharges ? cartdetails?.grandTotal + delivery?.totalDeliveryCharges : cartdetails?.grandTotal}
             onDiscountedPrice={handleDiscountedPrice}
           />
@@ -724,7 +739,7 @@ console.log(cartdetails,"cartdetails")
                 <span>Delivery charges</span>
                 <span className="font-medium">+ ₹{delivery?.totalDeliveryCharges}</span>
               </div>}
-              {disAmount !=0 && couponcode && <div className="flex justify-between">
+              {disAmount != 0 && couponcode && <div className="flex justify-between">
                 <span> Promo coupon</span>
                 <span className="font-medium">- ₹{disAmount}</span>
               </div>}
@@ -756,7 +771,7 @@ console.log(cartdetails,"cartdetails")
             >
               {/* Pay ₹{delivery?.totalDeliveryCharges ? cartdetails?.grandTotal + delivery?.totalDeliveryCharges : cartdetails?.grandTotal}
                */}
-               Checkout
+              Checkout
             </button>
 
 
