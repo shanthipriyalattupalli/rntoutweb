@@ -65,7 +65,7 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-console.log(response,"respone of coupon validate")
+      console.log(response, "respone of coupon validate")
       if (response.data.success === true) {
         try {
           const response = await axios.post(
@@ -74,8 +74,8 @@ console.log(response,"respone of coupon validate")
             { headers: { Authorization: `Bearer ${token}` } }
           );
 
-console.log(response,"response of applied coupon")
-          onDiscountedPrice(response.data.data.finalAmount, couponcode,response.data.data.coupon.discountValue,response.data.data.discountAmount);
+          console.log(response, "response of applied coupon")
+          onDiscountedPrice(response.data.data.finalAmount, couponcode, response.data.data.coupon.discountValue, response.data.data.discountAmount);
           // onClose()
           toast.success(
             response.data.message || "Coupon applied successfully!"
@@ -98,7 +98,7 @@ console.log(response,"response of applied coupon")
       );
       toast.error(
         error.response?.data?.message ||
-          "Coupon validation failed. Please try again."
+        "Coupon validation failed. Please try again."
       );
     }
   };
@@ -128,15 +128,14 @@ console.log(response,"response of applied coupon")
             const buttonText = isUnavailable
               ? "Inactive"
               : coupon.isActive
-              ? "Apply"
-              : "Inactive";
+                ? "Apply"
+                : "Inactive";
             const isTermsVisible = selectedCouponId === coupon._id; // Check if this coupon is selected
 
             return (
               <div
-                className={`container coupons-card ${
-                  index === 0 ? "no-border" : ""
-                }`}
+                className={`container coupons-card ${index === 0 ? "no-border" : ""
+                  }`}
                 key={coupon._id}
               >
                 <div className="delivery-content">
@@ -145,15 +144,15 @@ console.log(response,"response of applied coupon")
                       {coupon.code}
                     </span>
                     <p className="font-medium">
-                      Get up to ₹{coupon.maxDiscountAmount} off 
+                      Get up to ₹{coupon.maxDiscountAmount} off
                       {/* with{" "}
                       {coupon.discountValue}% discount. */}
                     </p>
                     <p className="font-normal text-xs">
                       Valid on orders over ₹{coupon.minRentAmount}
-                       {/* Usable{" "}
+                      {/* Usable{" "}
                       {remainingUsage} more{" "} */}
-                    
+
                     </p>
 
                     {/* Toggle Terms & Conditions */}
@@ -178,11 +177,10 @@ console.log(response,"response of applied coupon")
                     )}
 
                     <button
-                      className={`px-4 py-1 border rounded-lg ${
-                        isUnavailable
+                      className={`px-4 py-1 border rounded-lg ${isUnavailable
                           ? "border-gray-400 text-gray-400"
                           : "border-red-500 text-red-500"
-                      } whitespace-nowrap`}
+                        } whitespace-nowrap`}
                       disabled={isUnavailable}
                       onClick={() =>
                         handleApply(
