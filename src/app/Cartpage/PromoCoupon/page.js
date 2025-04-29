@@ -153,7 +153,7 @@ console.log(response,"response of applied coupon")
                       Valid on orders over ₹{coupon.minRentAmount}
                        {/* Usable{" "}
                       {remainingUsage} more{" "} */}
-                      {remainingUsage === 1 ? "time" : "times"}.
+                    
                     </p>
 
                     {/* Toggle Terms & Conditions */}
