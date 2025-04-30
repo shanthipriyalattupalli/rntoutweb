@@ -42,7 +42,7 @@ console.log(response.data,"subscription by id");
 setSubscription(response.data?.data)
 
     } catch (error) {
-      console.log(error, "error")
+      console.log(error, "error in subscription")
       if (error.response && error.response.status === 401) {
         Swal.fire({
           icon: "error",

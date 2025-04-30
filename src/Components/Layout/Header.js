@@ -445,7 +445,6 @@ function Header() {
                 <button className="close-button" onClick={() => setIsSubscription(false)}>
                   ✕
                 </button>
-
                 <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans} userPlans={userPlans} />
               </div>
             </div>
