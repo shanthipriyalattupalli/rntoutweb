@@ -253,7 +253,7 @@ const ProductList = () => {
 
   return (
     <main className="min-h-screen  w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5">
-      {/* <ScrollToTop/> */}
+     
       <div className="px-8 sm:px-8 md:px-2 xl:px-14 lg:px-16 2xl:px-16">
         <Breadcrumb categoryName={breadcrumbCategoryName} />
       </div>
