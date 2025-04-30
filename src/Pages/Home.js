@@ -7,7 +7,7 @@ import Banner from "../Components/Home/Banner";
 import CategoryList from "../Components/Home/CategoryList";
 import ProductGrid from "../Components/Home/ProductGrid";
 import Products from "../Components/Home/Products";
-import CuratedCollections from "../Components/Home/CuratedCollections";
+import CuedCollections from "../Components/Home/CuratedCollections";
 import ITInfrastructure from "../Components/Home/ITInfrastructure";
 import Furniture from "../Components/Home/Furniture";
 import PromotionalAd from "../Components/Home/Promotionalad";

@@ -66,7 +66,8 @@ const ProductList = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [categoryId, subcategoryId, active, minPrice, maxPrice, distance,page, pageSize, moreData, loading]);
+  }, [categoryId, subcategoryId, active, minPrice, maxPrice, distance,page, pageSize, moreData, loading,rating]);
+  // }, [categoryId, subcategoryId, active, minPrice, maxPrice, distance,page, pageSize, moreData, loading]);
 
 
 
@@ -262,7 +263,8 @@ const ProductList = () => {
         <div className="flex flex-col sm:flex-row">
 
 
-          <Sidebar categories={categories} subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} rating={handleRating} />
+          <Sidebar categories={categories} subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} onRatingChange={handleRating} />
+          {/* <Sidebar categories={categories} subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} rating={handleRating} /> */}
 
           <div className="w-full flex flex-col gap-3 py-4 h-[auto] border border-slate-200  bg-white rounded-r-lg overflow-hidden">
 
