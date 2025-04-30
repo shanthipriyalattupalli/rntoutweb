@@ -52,9 +52,10 @@ const ProductList = () => {
           distance: distance,
           minPrice: minPrice,
           maxPrice: maxPrice,
-          rating: rating,
+          rating,
           page: page,
-          limit: pageSize
+          limit: pageSize,
+          
         },
       });
       setProducts(response?.data.data);
@@ -66,7 +67,7 @@ const ProductList = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [categoryId, subcategoryId, active, minPrice, maxPrice, distance,page, pageSize, moreData, loading,rating]);
+  }, [categoryId, subcategoryId, active, minPrice, maxPrice, distance,page, pageSize, moreData, loading, rating]);
   // }, [categoryId, subcategoryId, active, minPrice, maxPrice, distance,page, pageSize, moreData, loading]);
 
 
