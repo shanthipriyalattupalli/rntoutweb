@@ -142,17 +142,28 @@ function Header() {
     try {
       const response = await axios.get(`${BASE_URL}/subscription-plans/user-plans`, {
         headers: { Authorization: `Bearer ${token}` },
-
       });
+
       console.log(response, "user plans");
-      setUserPlans(response.data.data[0]);
-      Cookies.set("planId", response.data.data[0]?.planId, { expires: 7, secure: true, sameSite: "Strict" });
+
+      const activePlan = response.data.data.find(plan => plan.isActive === true);
+
+      if (activePlan) {
+        setUserPlans(activePlan);
+        Cookies.set("planId", activePlan.planId, {
+          expires: 7,
+          secure: true,
+          sameSite: "Strict",
+        });
+      } else {
+        console.warn("No active subscription plan found.");
+      }
+
     } catch (error) {
-      console.log(error, "error")
-
-
+      console.log(error, "error");
     }
-  }
+  };
+
 
   useEffect(() => {
     fetchUserSubscriptionPlans()

@@ -505,6 +505,8 @@ const CartPage = () => {
 
   console.log(cartdetails, "cartdetails")
 
+  const TotalWithDeliveryCharges=cartdetails?.grandTotal + delivery?.totalDeliveryCharges
+
   return (
     <div className='cart-page'>
       <ToastContainer />
@@ -684,18 +686,18 @@ const CartPage = () => {
 
             </div>
             {couponcode ? (
-                <button
-                  className="remove-coupon-btn"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent sidebar from opening
-                    setCouponCode("");
-                    setDiscountedPrice(null);
-                  }}
-                >
-                  ✖
-                </button>
-              ): <MdOutlineKeyboardArrowRight  onClick={handleCouponToggle}/>}
-           
+              <button
+                className="remove-coupon-btn"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent sidebar from opening
+                  setCouponCode("");
+                  setDiscountedPrice(null);
+                }}
+              >
+                ✖
+              </button>
+            ) : <MdOutlineKeyboardArrowRight onClick={handleCouponToggle} />}
+
 
           </div>
         </div>
@@ -704,7 +706,7 @@ const CartPage = () => {
           <PromoCoupon
             isOpen={isCoupon}
             onClose={handleCouponToggle}
-            totalPrice={delivery?.totalDeliveryCharges ? cartdetails?.grandTotal + delivery?.totalDeliveryCharges : cartdetails?.grandTotal}
+            totalPrice={delivery?.totalDeliveryCharges ? TotalWithDeliveryCharges : cartdetails?.grandTotal}
             onDiscountedPrice={handleDiscountedPrice}
           />
         )}
@@ -757,7 +759,7 @@ const CartPage = () => {
             <div className="flex gap-50">
               <div className='address-content'>
                 <img src={payment} />
-                <div>Payable Amount  : <span className="text-red-500 font-[500]">{delivery?.totalDeliveryCharges ? cartdetails?.grandTotal + delivery?.totalDeliveryCharges : cartdetails?.grandTotal}</span> </div>
+                <div>Payable Amount  : <span className="text-red-500 font-[500]">{delivery?.totalDeliveryCharges ? TotalWithDeliveryCharges : cartdetails?.grandTotal}</span> </div>
               </div>
               <div className="md:ml-4">
                 {" "}
