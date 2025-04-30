@@ -151,6 +151,9 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
   const handleRating = (e) => {
     const newRating = e.target.value;
     
+    console.log(newRating,"nnnnnnnnn");
+    
+
     setRating(newRating);
     onRatingChange(newRating);
     // rating(newRating);
