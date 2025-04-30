@@ -206,29 +206,32 @@ export default function Orders() {
               <p class="download-invoice">
                 Total Amount: <span>₹ {orderItem.totalAmount}</span>
               </p>
-              {Array.isArray(orderItem.subOrders) && orderItem.subOrders.length > 0 && (
+              {/* {Array.isArray(orderItem.subOrders) && orderItem.subOrders.length > 0 && (
                 <div className="suborders-status">
-                  <p className={`download-invoice progress d-flex gap-5 ${trackingStatuses[index]}`}>
+                  <p className={`flex gap-2 download-invoice progress d-flex gap-5 ${trackingStatuses[index]}`}>
                     <span>
                       <FaTruck />
                     </span>{" "}
+                    <p className="text-[14px] font-[600]">Delivery status :</p>
                     {trackingStatuses[index]}
                   </p>
                 </div>
-              )}
+              )} */}
 
 
-              {orderItem.paymentStatus === "pending" ? <p className={`download-invoice progress ${orderItem.paymentStatus}`}>
+              {orderItem.paymentStatus === "pending" ? <p className={`flex gap-2 download-invoice progress ${orderItem.paymentStatus}`}>
                 <span>
                   <MdPayments />
                 </span>{" "}
+                <p className="text-[14px] font-[600]">  Payment status :</p>
                 {orderItem.paymentStatus}
               </p>
                 :
-                <p class={`download-invoice progress ${orderItem.paymentStatus}`}>
+                <p class={`flex gap-2 download-invoice progress ${orderItem.paymentStatus}`}>
                   <span>
                     <MdPayments />
                   </span>{" "}
+                  <p className="text-[14px] font-[600]">  Payment status :</p>
                   {orderItem.paymentStatus}
                 </p>}
             </div>
