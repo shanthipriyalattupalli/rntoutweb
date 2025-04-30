@@ -116,9 +116,9 @@ export const metadata = {
 
 const Home = async () => {
   const cookieStore = cookies();
-  const latitude = cookieStore.get('latitude');
-  const longitude = cookieStore.get('longitude');
-  const radius = cookieStore.get('selectedDistance')
+  const latitude =await cookieStore.get('latitude');
+  const longitude =await cookieStore.get('longitude');
+  const radius =await cookieStore.get('selectedDistance')
 
 
   const banners = await fetchBanners();

@@ -66,7 +66,8 @@ const ProductList = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [categoryId, subcategoryId, active, minPrice, maxPrice, distance,page, pageSize, moreData, loading]);
+  }, [categoryId, subcategoryId, active, minPrice, maxPrice, distance,page, pageSize, moreData, loading,rating]);
+  // }, [categoryId, subcategoryId, active, minPrice, maxPrice, distance,page, pageSize, moreData, loading]);
 
 
 
@@ -252,7 +253,7 @@ const ProductList = () => {
 
   return (
     <main className="min-h-screen  w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5">
-      {/* <ScrollToTop/> */}
+     
       <div className="px-8 sm:px-8 md:px-2 xl:px-14 lg:px-16 2xl:px-16">
         <Breadcrumb categoryName={breadcrumbCategoryName} />
       </div>
@@ -262,7 +263,8 @@ const ProductList = () => {
         <div className="flex flex-col sm:flex-row">
 
 
-          <Sidebar categories={categories} subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} rating={handleRating} />
+          <Sidebar categories={categories} subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} onRatingChange={handleRating} />
+          {/* <Sidebar categories={categories} subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} rating={handleRating} /> */}
 
           <div className="w-full flex flex-col gap-3 py-4 h-[auto] border border-slate-200  bg-white rounded-r-lg overflow-hidden">
 

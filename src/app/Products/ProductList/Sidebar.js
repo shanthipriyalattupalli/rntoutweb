@@ -13,7 +13,7 @@ import Image from "next/image";
 const downArrow = "/Assets/down_line.png";
 import Cookies from "js-cookie";
 
-const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPriceChange, distance, rating }) => {
+const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPriceChange, distance, onRatingChange }) => {
   const defaultdistance=Cookies.get("selectedDistance")
   const [activeIndex, setActiveIndex] = useState(null);
   const [priceRange, setPriceRange] = useState(defaultdistance); // Current slider value
@@ -150,8 +150,10 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
 
   const handleRating = (e) => {
     const newRating = e.target.value;
+    
     setRating(newRating);
-    rating(newRating);
+    onRatingChange(newRating);
+    // rating(newRating);
   };
 
   const handleClearFilters = () => {
@@ -161,7 +163,8 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
     setRating(5);
     onPriceChange(0,2000);
     distance(25);
-    rating(5)
+    onRatingChange(5)
+    // rating(5)
   };
 
 
