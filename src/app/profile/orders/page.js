@@ -322,14 +322,14 @@ export default function Orders() {
                 <div className="suborders-status">
 
 
-                  <p className={`flex gap-2 download-invoice progress  ${trackingStatuses[index]}`}>
+                  <div className={`flex gap-2 download-invoice progress  ${trackingStatuses[index]}`}>
                     <span>
                       <FaTruck />
                     </span>{" "}
                     <p className="text-[14px] font-[600]">Delivery status :</p>
 
                     {trackingStatuses[index]}
-                  </p>
+                  </div>
                 </div>
               )}
 
@@ -346,7 +346,7 @@ export default function Orders() {
                   </p>
 
                   :
-                  <p class={`flex gap-2 download-invoice progress ${order.paymentStatus}`}>
+                  <div class={`flex gap-2 download-invoice progress ${order.paymentStatus}`}>
 
                     <span>
                       <MdPayments />
@@ -354,7 +354,7 @@ export default function Orders() {
                     <p className="text-[14px] font-[600]">  Payment status :</p>
 
                     {order.paymentStatus}
-                  </p>}
+                  </div>}
               </div>
             </div>
           </div>
@@ -363,7 +363,7 @@ export default function Orders() {
           <h1 className="text-lg font-semibold">Empty Orders</h1>
           <span className="px-6 py-4 text-center">
             You haven’t placed any item in your cart. To add items, click
-            <a href="/" className="text-md font-semibold text-blue-600">  Browse Products</a>.
+            <a href="/" className="text-md font-semibold text-blue-600"> Browse Products</a>
           </span>
         </div>
 

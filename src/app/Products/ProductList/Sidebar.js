@@ -166,7 +166,7 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
     setRating(5);
     onPriceChange(0,2000);
     distance(25);
-    onRatingChange(5)
+    onRatingChange(null)
     // rating(5)
   };
 

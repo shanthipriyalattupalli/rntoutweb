@@ -505,7 +505,7 @@ const CartPage = () => {
 
   console.log(cartdetails, "cartdetails")
 
-  const TotalWithDeliveryCharges=cartdetails?.grandTotal + delivery?.totalDeliveryCharges
+  const TotalWithDeliveryCharges = cartdetails?.grandTotal + delivery?.totalDeliveryCharges
 
   return (
     <div className='cart-page'>
@@ -576,9 +576,6 @@ const CartPage = () => {
                       {item.variant_id.stockQuantity > 0 ? "In stock" : "Out of Stock"}
                     </p>
                   </div>
-
-
-
                 </div>
 
                 <div className="quantity-controls  flex justify-between">
@@ -633,9 +630,6 @@ const CartPage = () => {
 
           </>
         }
-
-
-
 
       </div>
 
@@ -738,29 +732,32 @@ const CartPage = () => {
                 <span>Gst({cartdetails?.taxes?.cgst?.rate + cartdetails?.taxes?.sgst?.rate}%)</span>
                 <span className="font-medium">+ ₹{cartdetails?.taxes?.totalTax}</span>
               </div>}
-              {delivery?.totalDeliveryCharges && <div className="flex justify-between">
+              {<div className="flex justify-between">
                 <span>Delivery charges</span>
-                <span className="font-medium">+ ₹{delivery?.totalDeliveryCharges}</span>
+                <span className="font-medium">{delivery?.totalDeliveryCharges === 0 ? "Free" : `+ ₹${delivery?.totalDeliveryCharges}`}</span>
               </div>}
               {disAmount != 0 && couponcode && <div className="flex justify-between">
                 <span> Promo coupon</span>
                 <span className="font-medium">- ₹{disAmount}</span>
               </div>}
 
-              <div className="flex justify-between border-t pt-3 font-bold text-lg">
+       { couponcode ?  <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
-                <span className="text-black">₹ {delivery?.totalDeliveryCharges ? cartdetails?.grandTotal + delivery?.totalDeliveryCharges : cartdetails?.grandTotal}</span>
-              </div>
+                <span className="text-black">₹ {delivery?.totalDeliveryCharges ? TotalWithDeliveryCharges-disAmount : cartdetails?.grandTotal-disAmount}</span>
+              </div> :    <div className="flex justify-between border-t pt-3 font-bold text-lg">
+                <span>Rent Grand Total</span>
+                <span className="text-black">₹ {delivery?.totalDeliveryCharges ? TotalWithDeliveryCharges : cartdetails?.grandTotal}</span>
+              </div>}
             </div>
           )}
         </div>
         <div className='summary-address'>
           <div className='summary-item address'>
             <div className="flex gap-50">
-              <div className='address-content'>
+              {/* <div className='address-content'>
                 <img src={payment} />
                 <div>Payable Amount  : <span className="text-red-500 font-[500]">{delivery?.totalDeliveryCharges ? TotalWithDeliveryCharges : cartdetails?.grandTotal}</span> </div>
-              </div>
+              </div> */}
               <div className="md:ml-4">
                 {" "}
                 {/* <span className='amount'>₹{totalPrice}</span> */}

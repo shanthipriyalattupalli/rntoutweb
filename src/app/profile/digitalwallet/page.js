@@ -8,17 +8,7 @@ import Withdraw from "@/Components/Withdraw/Withdraw";
 const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL
 
 
-const transactions = [
-  { id: 1, name: "John Doe", number: "#123456789", duration: "2 days", amount: 1000, type: "credit", date: "16 Sep 2023", time: "11:21 AM" },
-  { id: 2, name: "Emma Watson", number: "#987654321", duration: "4 days", amount: 2400, type: "credit", date: "16 Sep 2023", time: "11:21 AM" },
-  { id: 3, name: "Michael Smith", number: "#456789123", duration: "1 day", amount: 2345, type: "credit", date: "16 Sep 2023", time: "11:21 AM" },
-  { id: 4, name: "Olivia Brown", number: "#321654987", duration: "5 days", amount: 2455, type: "credit", date: "16 Sep 2023", time: "11:21 AM" },
-  { id: 5, name: "William Johnson", number: "#159357486", duration: "4 days", amount: 5545, type: "credit", date: "16 Sep 2023", time: "11:21 AM" },
-  { id: 6, name: "Sophia Wilson", number: "#753951486", duration: "1 day", amount: 999, type: "credit", date: "16 Sep 2023", time: "11:21 AM" },
-  { id: 7, name: "James Anderson", number: "#852741963", duration: "10 days", amount: 10000, type: "credit", date: "16 Sep 2023", time: "11:21 AM" },
-  { id: 8, name: "Isabella Martinez", number: "#456123789", duration: "2 days", amount: 4200, type: "credit", date: "16 Sep 2023", time: "11:21 AM" },
-  { id: 9, name: "Alexander Taylor", number: "#369852147", duration: "7 days", amount: 7000, type: "credit", date: "16 Sep 2023", time: "11:21 AM" },
-];
+
 
 
 const fetchWalletTransaction=async(userId)=>{
@@ -36,16 +26,11 @@ const fetchWalletTransaction=async(userId)=>{
   }
 }
 
-
-
-
-
-
 const WithdrawalRequest = async() => {
   const cookieStore=cookies();
-  let userId = cookieStore.get(`userId`)?.value;
+  const userId = cookieStore.get(`userId`)?.value;
 
-  let  transactionsWallet=await fetchWalletTransaction(userId);
+  const  transactionsWallet=await fetchWalletTransaction(userId);
   console.log(transactionsWallet,"transactionsWallet")
   return (
     <div className="mx-auto p-4 bg-white">
@@ -59,9 +44,8 @@ const WithdrawalRequest = async() => {
 <Withdraw amount={transactionsWallet?.walletBalance} fetchWalletTransaction={fetchWalletTransaction()}/>
         </div>
       </div>
-
       <div className="mt-4 space-y-4">
-        {[...transactionsWallet?.walletTransactions]?.reverse().map((transaction) => {
+        {[...transactionsWallet?.walletTransactions ?? []]?.slice().reverse().map((transaction) => {
             const duration = formatDistanceToNow(new Date(transaction.createdAt), { addSuffix: true });
             return(
             <div key={transaction._id} className="flex items-center justify-between border border-[#E1E6EF] p-4 rounded-lg shadow-sm">

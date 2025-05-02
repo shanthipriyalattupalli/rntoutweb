@@ -168,7 +168,9 @@ setSubscription(response.data?.data)
           Cancel Subscription
         </button>
    
-</div> : plans.map((plan, index) => (
+</div> :
+<div className='flex gap-5'>
+{ plans.map((plan, index) => (
       <div className="flex flex-col gap-2 p-8" key={plan._id}>
 
         <div className="flex justify-center items-center mb-4">
@@ -214,6 +216,10 @@ setSubscription(response.data?.data)
         )}
       </div>
     ))}
+    
+    </div>
+    }
+   
     </>
 
   )
