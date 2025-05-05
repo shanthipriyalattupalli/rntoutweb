@@ -170,7 +170,7 @@ const Home = async () => {
       <Services />
       {/* <Achievements /> */}
       <Blogs blogs={blogs} />
-      <Testimonials />
+      {/* <Testimonials /> */}
       {/* <HomeComponent /> */}
 
     </div>

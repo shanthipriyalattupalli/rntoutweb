@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 const left = '/Assets/leftarrow.svg';
 
 const Banner = ({ banners, isLoading }) => {
+  const token=Cookies.get("userToken")
   const router = useRouter();
   const swiperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -29,6 +30,15 @@ const Banner = ({ banners, isLoading }) => {
   const activeBanners = banners.filter(banner => banner.status === "active");
   
     const handleAddOnRent = async () => {
+      if (!token) {
+        await Swal.fire({
+          title: "Login Required",
+          text: "You need to be logged in to add a property on rent.",
+          icon: "info",
+        });
+        return;
+      }
+    
       if (isKyc === "true") {
         router.push("/add-on-rent");
       } else {

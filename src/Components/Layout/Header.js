@@ -330,6 +330,18 @@ function Header() {
 
 
   const handleAddOnRent = async () => {
+    if (!token) {
+      await Swal.fire({
+        title: "Login Required",
+        text: "You need to be logged in to add a property on rent.",
+        icon: "info",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Login Now",
+      });
+      router.push("/login"); 
+      return;
+    }
+  
     if (isKyc === "true") {
       router.push("/add-on-rent");
     } else {
