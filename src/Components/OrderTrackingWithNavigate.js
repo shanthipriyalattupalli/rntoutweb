@@ -241,17 +241,17 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
 
               </div>
               <div className="flex justify-between items-center mb-2">
-                <div className="text-gray-600">Gst</div>
-                <div className="text-gray-800 font-medium">₹ {orders?.taxDetails?.totalTax}/-</div>
+                <div className="text-gray-600">Gst({orders?.gstDetails?.gstPercentage}%)</div>
+                <div className="text-gray-800 font-medium">+  ₹{orders?.taxDetails?.totalTax}/-</div>
               </div>
               <div className="flex justify-between items-center mb-2">
                 <div className="text-gray-600">Delivery charges</div>
-                <div className="text-gray-800 font-medium">₹ {orders?.deliveryCharge}/-</div>
+                <div className="text-gray-800 font-medium">+ ₹{orders?.deliveryCharge}/-</div>
               </div>
-              {/* <div className="flex justify-between items-center mb-2">
-              <div className="text-gray-600">Discounts</div>
-              <div className="text-gray-800 font-medium">--</div> 
-              </div> */}
+              <div className="flex justify-between items-center mb-2">
+              <div className="text-gray-600">Discount</div>
+              <div className="text-gray-800 font-medium">-  ₹{orders?.couponDiscount}/-</div> 
+              </div>
             </div>
 
             <div className="flex justify-between  pt-3  font-semibold text-base">

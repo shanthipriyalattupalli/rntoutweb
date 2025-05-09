@@ -700,7 +700,7 @@ const CartPage = () => {
           <PromoCoupon
             isOpen={isCoupon}
             onClose={handleCouponToggle}
-            totalPrice={delivery?.totalDeliveryCharges ? TotalWithDeliveryCharges : cartdetails?.grandTotal}
+            totalPrice={cartdetails?.totalCartValue}
             onDiscountedPrice={handleDiscountedPrice}
           />
         )}
