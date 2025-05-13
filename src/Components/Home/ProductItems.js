@@ -422,7 +422,7 @@ const ProductItem = ({ product }) => {
       ? isHovered
         ? "text-white"
         : ""
-      : "text-gray-400"
+      : "text-gray-400 cursor-not-allowed "
   }`}>
     Add to cart
   </span>

@@ -171,7 +171,7 @@ const Signup = ({ setIsRegisterOpen }) => {
             <p className="login-p1 m-0">
               Name <span className="text-red-500">*</span>
             </p>
-            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+          
             <input
               type="text"
               placeholder="Enter First Name"
@@ -180,13 +180,14 @@ const Signup = ({ setIsRegisterOpen }) => {
               value={profile.user.name}
               onChange={handleChange}
             />
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
           </div>
 
           <div className="flex text-left flex-col gap-2">
             <p className="login-p1 m-0">
               Email Address <span className="text-red-500">*</span>
             </p>
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            
             <input
               type="email"
               placeholder="Enter Email Address"
@@ -195,6 +196,7 @@ const Signup = ({ setIsRegisterOpen }) => {
               value={profile.user.email}
               onChange={handleChange}
             />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
 
           <div className="flex text-left flex-col gap-2">

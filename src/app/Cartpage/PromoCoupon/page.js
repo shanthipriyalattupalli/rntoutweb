@@ -76,10 +76,19 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
 
           console.log(response, "response of applied coupon")
           onDiscountedPrice(response.data.data.finalAmount, couponcode, response.data.data.coupon.discountValue, response.data.data.discountAmount);
-          // onClose()
-          toast.success(
-            response.data.message || "Coupon applied successfully!"
-          );
+
+          Swal.fire({
+            icon: "success",
+            title: "Coupon Applied Successfully!",
+            text: response.data.message || "Coupon has been applied to your order.",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            didClose: () => {
+              onClose();
+            }
+          });
+
         } catch (error) {
           console.log(error, "error while applying coupon");
           if (error.response && error.response.status === 401) {
@@ -177,9 +186,9 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
                     )}
 
                     <button
-                      className={`px-4 py-1 border rounded-lg ${isUnavailable
-                          ? "border-gray-400 text-gray-400"
-                          : "border-red-500 text-red-500"
+                      className={`px-4 py-1 border rounded-lg ${(isUnavailable || coupon.isActive === false)
+                        ? "border-gray-400 text-gray-400"
+                        : "border-red-500 text-red-500"
                         } whitespace-nowrap`}
                       disabled={isUnavailable}
                       onClick={() =>

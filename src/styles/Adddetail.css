@@ -168,14 +168,28 @@
     /* margin-left: 20px; */
 }
 
-.form-section2 select {
+/* .form-section2 select {
     width: 100%;
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 10px;
 
-}
+} */
+.form-section2 select {
+    width: 100%;
+    padding: 10px;
+    padding-right: 30px; 
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+  }
+  
 
 .form-section3 {
     width: 100%;

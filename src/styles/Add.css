@@ -53,15 +53,25 @@
     color: #fff;
 }
 
-.category-icon {
+/* .category-icon {
     padding: 20px;
     border-radius: 50%;
     font-size: 2rem;
     margin-bottom: 0.5rem;
-
-
-}
-
+    border: solid red 1px;
+} */
+.category-icon {
+    width: 80px;        
+    height: 80px;     
+    padding: 20px;     
+    border-radius: 50%;  
+    font-size: 2rem;    
+    margin-bottom: 0.5rem;
+    display: flex;       
+    align-items: center;
+    justify-content: center;
+  }
+  
 .check-icon {
     position: absolute;
     top: 10px;

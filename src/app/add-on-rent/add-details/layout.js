@@ -11,7 +11,7 @@ import ScrollToTop from '@/Components/ScrollToTop';
 
 const Layout = ({ children }) => (
     <>
-    {/* <ScrollToTop/> */}
+    <ScrollToTop/>
      <div className="container-para">
                 <h1>    Rent Out Your Items & Earn Easily! 🚀</h1>
                 <p>List your items for rent and start earning today.</p>

@@ -94,7 +94,7 @@ const Newsletter = () => {
         </div>
 
         {/* Links Section */}
-        <div className="md:w-1/2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div className="md:w-1/2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
           <div>
             <h4 className="text-lg font-medium text-white mb-4">Products</h4>
             <ul className="text-gray-400 text-sm space-y-2">
@@ -143,7 +143,7 @@ const Newsletter = () => {
           <a href="https://www.facebook.com/"><img src={facebook} alt="Facebook icon" className="w-6 h-6" /></a>
           <a href="https://x.com/?lang=en-in"><img src={twitter} alt="Twitter icon" className="w-6 h-6" /></a>
           <a href="https://www.instagram.com/"><img src={instagram} alt="Instagram icon" className="w-6 h-6" /></a>
-          <a href="https://www.youtube.com/"><img src={youtube} alt="YouTube icon" className="w-6 h-6" /></a>
+          <a href="https://www.linkedin.com/"><img src={youtube} alt="Linkedin icon" className="w-6 h-6" /></a>
         </div>
       </div>
     </div>

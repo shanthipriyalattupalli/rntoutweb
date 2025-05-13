@@ -290,7 +290,7 @@ const ProductPage = async ({ params }) => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="font-sm text-md text-gray-700 leading-relaxed text-justify">
+                    <td className="font-sm text-md text-gray-700 leading-relaxed  text-left p-2">
                       {product.description}
                     </td>
                   </tr>

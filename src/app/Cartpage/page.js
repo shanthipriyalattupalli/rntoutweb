@@ -180,13 +180,21 @@ const CartPage = () => {
 
 
   const handleCouponToggle = () => {
+    if (!token) {
+      toast.error("Please login to add coupon.");
+      return;
+    }
     setIsCoupon(!isCoupon)
   }
 
   const handleAddressToggle = () => {
+    if (!token) {
+      toast.error("Please login to add address.");
+      return;
+    }
     setIsAddressSidebarOpen(!isAddressSidebarOpen);
-
   };
+  
 
   const increaseQuantity = async (variantId) => {
     const newQuantity = + 1;
@@ -671,7 +679,7 @@ const CartPage = () => {
         />
 
 
-        <div className="summary-item address" >
+        <div className="summary-item address" onClick={handleCouponToggle} >
           <div className="flex justify-between align-center text-center items-center">
             <div className="flex flex-row items-center gap-4">
               <img src={coupon} alt="Coupon Icon" />
@@ -741,10 +749,10 @@ const CartPage = () => {
                 <span className="font-medium">- ₹{disAmount}</span>
               </div>}
 
-       { couponcode ?  <div className="flex justify-between border-t pt-3 font-bold text-lg">
+              {couponcode ? <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
-                <span className="text-black">₹ {delivery?.totalDeliveryCharges ? TotalWithDeliveryCharges-disAmount : cartdetails?.grandTotal-disAmount}</span>
-              </div> :    <div className="flex justify-between border-t pt-3 font-bold text-lg">
+                <span className="text-black">₹ {delivery?.totalDeliveryCharges ? TotalWithDeliveryCharges - disAmount : cartdetails?.grandTotal - disAmount}</span>
+              </div> : <div className="flex justify-between border-t pt-3 font-bold text-lg">
                 <span>Rent Grand Total</span>
                 <span className="text-black">₹ {delivery?.totalDeliveryCharges ? TotalWithDeliveryCharges : cartdetails?.grandTotal}</span>
               </div>}
