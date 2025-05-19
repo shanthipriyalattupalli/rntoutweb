@@ -88,12 +88,12 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
   const startdate = new Date(rentalAvailability?.startDate);
   const endDate = new Date(rentalAvailability?.endDate);
   const isDateExpired = endDate && endDate < new Date();
-
+  const currentDate = new Date();
 
   // Calculate the difference in months
-  const monthsDifference =
-    (endDate.getFullYear() - startdate.getFullYear()) * 12 +
-    (endDate.getMonth() - startdate.getMonth());
+ let monthsDifference =
+    (endDate.getFullYear() - currentDate.getFullYear()) * 12 +
+    (endDate.getMonth() - currentDate.getMonth());
 
 
   const Details = [
@@ -174,7 +174,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
     annual: "Year",
   };
 
-  const currentDate = new Date();
+
   const startDate = new Date(rentalAvailability?.startDate);
 
   const isOneWeekBefore =
@@ -388,10 +388,10 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                 height={300}
               />
               <span className={`text-sm ${stockQuantity > 0 && !isDateExpired
-                  ? isHovered
-                    ? "text-white"
-                    : ""
-                  : "text-gray-400"
+                ? isHovered
+                  ? "text-white"
+                  : ""
+                : "text-gray-400"
                 }`}>
                 Add to cart
               </span>
@@ -425,7 +425,9 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
               {/* Additional rows like "6 Months" */}
               <div className="mt-2">
                 <div className="text-blue-500 font-[500] text-center text-[16px]">
-                  {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}
+                  {monthsDifference > 0
+                    ? `${monthsDifference} ${monthsDifference === 1 ? "Month" : "Months"}`
+                    : "Not"}
                   <span className="text-center text-gray-600 text-[16px] font-[500]"> Available
                   </span>
                 </div>

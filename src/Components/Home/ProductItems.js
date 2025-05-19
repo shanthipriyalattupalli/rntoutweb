@@ -90,10 +90,14 @@ const ProductItem = ({ product }) => {
   const endDate = new Date(rentalAvailability?.endDate);
   const isDateExpired = endDate && endDate < new Date();
 
-  // Calculate the difference in months
-  const monthsDifference =
-    (endDate.getFullYear() - startdate.getFullYear()) * 12 +
-    (endDate.getMonth() - startdate.getMonth());
+  const currentDate = new Date();
+
+
+  let monthsDifference =
+    (endDate.getFullYear() - currentDate.getFullYear()) * 12 +
+    (endDate.getMonth() - currentDate.getMonth());
+
+
 
 
   const rentalStartDate = new Date(rentalAvailability?.startDate);
@@ -188,7 +192,6 @@ const ProductItem = ({ product }) => {
     annual: "Year",
   };
 
-  const currentDate = new Date();
   const startDate = new Date(rentalAvailability?.startDate);
 
   const isOneWeekBefore =
@@ -261,7 +264,7 @@ const ProductItem = ({ product }) => {
               </>
             ) : (
               <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
-{ images[0] &&    <Image
+                {images[0] && <Image
                   src={images[0]}
                   alt={title}
                   className="w-full h-[220px] object-cover rounded-t-[12px]"
@@ -402,31 +405,30 @@ const ProductItem = ({ product }) => {
 
 
 
-<button
-  className={`${stockQuantity > 0 && !isDateExpired
-    ? "cart-btn border border-[rgba(255,45,85,0.6)] hover:bg-[rgba(255,45,85,1)] text-[rgba(255,45,85,1)] hover:text-white font-bold px-4 py-1  rounded-[8px] mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-    : "cart-btn border border-[rgba(255,45,85,0.6)] text-white font-bold px-4 py-1 rounded-[8px] mt-4 text-center w-full  flex items-center justify-center space-x-2 group"
-    } ${isHovered && stockQuantity > 0 && !isDateExpired ? "bg-[rgba(255,45,85,1)] hover:text-white cart-hover-shadow" : ""}`}
-  onClick={() => stockQuantity > 0 && !isDateExpired && handleAddCart()}
-  disabled={stockQuantity <= 0 || isDateExpired}
->
-  <Image
-    src={isHovered && stockQuantity > 0 && !isDateExpired ? cartIconHov : cartIcon}
-    alt="Cart icon"
-    className="w-4 h-4"
-    width={500}
-    height={300}
-  />
-  <span className={`text-sm ${
-    stockQuantity > 0 && !isDateExpired
-      ? isHovered
-        ? "text-white"
-        : ""
-      : "text-gray-400 cursor-not-allowed "
-  }`}>
-    Add to cart
-  </span>
-</button>
+            <button
+              className={`${stockQuantity > 0 && !isDateExpired
+                ? "cart-btn border border-[rgba(255,45,85,0.6)] hover:bg-[rgba(255,45,85,1)] text-[rgba(255,45,85,1)] hover:text-white font-bold px-4 py-1  rounded-[8px] mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+                : "cart-btn border border-[rgba(255,45,85,0.6)] text-white font-bold px-4 py-1 rounded-[8px] mt-4 text-center w-full  flex items-center justify-center space-x-2 group"
+                } ${isHovered && stockQuantity > 0 && !isDateExpired ? "bg-[rgba(255,45,85,1)] hover:text-white cart-hover-shadow" : ""}`}
+              onClick={() => stockQuantity > 0 && !isDateExpired && handleAddCart()}
+              disabled={stockQuantity <= 0 || isDateExpired}
+            >
+              <Image
+                src={isHovered && stockQuantity > 0 && !isDateExpired ? cartIconHov : cartIcon}
+                alt="Cart icon"
+                className="w-4 h-4"
+                width={500}
+                height={300}
+              />
+              <span className={`text-sm ${stockQuantity > 0 && !isDateExpired
+                  ? isHovered
+                    ? "text-white"
+                    : ""
+                  : "text-gray-400 cursor-not-allowed "
+                }`}>
+                Add to cart
+              </span>
+            </button>
 
 
 
@@ -463,7 +465,9 @@ const ProductItem = ({ product }) => {
               {/* Additional rows like "6 Months" */}
               <div className="mt-2">
                 <div className="text-blue-500 font-[500] text-center text-[16px]">
-                  {monthsDifference} {monthsDifference === 1 ? "Month" : "Months"}
+                  {monthsDifference > 0
+                    ? `${monthsDifference} ${monthsDifference === 1 ? "Month" : "Months"}`
+                    : "Not"}
                   <span className="text-center text-gray-600 text-[16px] font-[500]"> Available
                   </span>
                 </div>
