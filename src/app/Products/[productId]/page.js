@@ -102,6 +102,7 @@ const ProductPage = async ({ params }) => {
 
 
   const midIndex = Math.ceil(itemDetailsArray.length / 2);
+  
 
   const productDetails = itemDetailsArray?.slice(0, midIndex);
   const otherDetails = itemDetailsArray?.slice(midIndex);

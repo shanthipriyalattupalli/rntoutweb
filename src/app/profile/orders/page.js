@@ -258,7 +258,7 @@ export default function Orders() {
             <div className="order-item-container">
               {Array.isArray(order.subOrders) && order.subOrders.map((item) => (
 
-                <div class="order-product" key={item._id} onClick={() => router.push(`/Products/${item.variantId._id}?id=${item.variantId._id}`)}>
+                <div className="order-product" key={item._id} onClick={() => router.push(`/Products/${item.variantId._id}?id=${item.variantId._id}`)}>
                   <div>
                     <img
                       src={item.variantId?.images?.[0]}
