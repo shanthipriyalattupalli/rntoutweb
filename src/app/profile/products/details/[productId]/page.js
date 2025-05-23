@@ -910,8 +910,8 @@ console.log(formData,"formData")
         <h2 className='ba-in'>
           Product Details{" "}
                   </h2>
-        {productDetails?.map((section) => (
-          <div className='product-details-card'>
+        {productDetails?.map((section,index) => (
+          <div className='product-details-card' key={index}>
             Title
             {section.details?.map((detail) => (
               <div key={detail._id} className='detail-row'>

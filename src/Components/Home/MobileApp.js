@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 const mobileapp = "/Assets/mobileapp.svg";
 const playstore="/Assets/playstore.png"
 const appstore="/Assets/appstore.jpg"
@@ -55,7 +56,7 @@ const MobileApp = () => {
           <p className="text-gray-600 mb-4">Choose your platform to download:</p>
           <div className="flex justify-evenly gap-4">
 
-              <img src={playstore} className="w-[200px] h-[80px]" />
+             <Link href="https://play.google.com/store/apps/details?id=com.rntOut&pcampaignid=web_share"><img src={playstore} className="w-[200px] h-[80px]" /></Link> 
       
               <img src={appstore} className="w-[200px] h-[80px] "/>
 

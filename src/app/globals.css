@@ -14,16 +14,16 @@
     --foreground: #171717;
   }
 }
-img {
-  border: none;
-  outline: none;
-}
+  img {
+    border: none;
+    outline: none;
+  }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 html, body {
   overflow-x: hidden;
   width: 100%;
