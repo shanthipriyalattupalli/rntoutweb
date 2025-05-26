@@ -9,6 +9,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
+import moment from 'moment';
+
 
 const edit = "/Assets/editicon.svg";
 
@@ -179,7 +181,7 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
                     {isTermsVisible && (
                       <ul className="font-normal text-xs mt-2">
                         <li>Minimum order value: ₹{coupon.minRentAmount}</li>
-                        <li>Valid until: {coupon.endDate}</li>
+                        <li>Valid until: {moment(coupon.endDate).format('DD/MM/YY')}</li>  
                         <li>Cashback credited to CRED Balance</li>
                         <li>Rewards powered by CRED</li>
                       </ul>

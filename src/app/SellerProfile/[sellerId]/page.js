@@ -273,7 +273,7 @@ const SellerCarouselProfile = () => {
         )}
       </div>
       <div className="store-image-container ">
-        {sellerDetails.businessInfo?.profileImage ? <Image src={sellerDetails.businessInfo.profileImage} width={60} height={80} className="h-[60px] rounded-full" /> : <Image src={storeimage} width={20} height={20} />}
+        {sellerDetails.businessInfo?.profileImage ? <Image src={sellerDetails.businessInfo.profileImage} alt="images" width={60} height={80} className="h-[60px] rounded-full" /> : <Image src={storeimage} width={20} height={20} />}
       </div>
 
       <div className='seller-profile-container'>

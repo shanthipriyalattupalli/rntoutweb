@@ -169,7 +169,7 @@ const Subscription = ({ plans, setIsSubscription, userPlans }) => {
           </button> */}
 
         </div> :
-        <div className='flex gap-5'>
+   <>
           {plans.map((plan, index) => (
             <div className="flex flex-col gap-2 p-8" key={plan._id}>
 
@@ -216,8 +216,9 @@ const Subscription = ({ plans, setIsSubscription, userPlans }) => {
               )}
             </div>
           ))}
+          </>
 
-        </div>
+    
       }
 
     </>

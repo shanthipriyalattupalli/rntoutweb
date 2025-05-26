@@ -41,14 +41,14 @@ const KYCVerification = () => {
         toast.success("GST Verified Successfully!");
       } else {
         setGstDetails(null);
-        setErrorMessage("Invalid GST Number. Please try again.");
-        toast.error("Invalid GST Number!");
+        setErrorMessage(response.data.message);
+        // toast.error("Invalid GST Number!");
       }
     } catch (error) {
       console.error(error, "error in gst");
       setGstDetails(null);
       setErrorMessage("Something went wrong. Please try again.");
-      toast.error("Please Enter Proper GST Number!");
+      toast.error(error?.response?.data?.error?.data?.message);
     }
   };
 

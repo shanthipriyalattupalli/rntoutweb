@@ -78,18 +78,18 @@ const [selectedDuration, setSelectedDuration] = useState(product?.rentalPrice?.[
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 bg-white">
                 {rentalPrice.map((price) => (
                   <button
-                    key={price._id}
+                    key={price?._id}
                     className={`flex flex-col items-center justify-center px-3 py-2 sm:px-2 sm:py-2 rounded-lg border text-center w-full sm:w-auto 
-                      ${selectedDuration.toLowerCase() === price.period.toLowerCase()
+                      ${selectedDuration?.toLowerCase() === price?.period?.toLowerCase()
                         ? "border-[#F48003] bg-[#FFF5EB]"
                         : "border-gray-200"}
                       `}
                     onClick={() => handleselectedDuration(price.period)}
                   >
                     <div className="text-[10px] sm:text-xs md:text-sm">
-                    {periodMapping[price.period] || price.period.charAt(0).toUpperCase() + price.period?.slice(1)}
+                    {periodMapping[price?.period] || price?.period?.charAt(0)?.toUpperCase() + price?.period?.slice(1)}
                     </div>
-                    <div className="font-bold text-sm sm:text-base md:text-lg">₹{price.price}</div>
+                    <div className="font-bold text-sm sm:text-base md:text-lg">₹{price?.price}</div>
                   </button>
                 ))}
               </div>
