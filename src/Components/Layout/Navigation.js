@@ -78,7 +78,7 @@ const Navigation = () => {
   }, []);
 
   return (
-    <nav className="px-3 sm:px-20 bg-white border-b border-slate-200 relative">
+    <nav className="px-3 pt-[70px] sm:px-20 bg-white border-b border-slate-200 relative">
       <div className="relative" style={{display:"flex",alignItems:"center",gap:"12px"}}>
 
       <p style={{color:"#9d9797"}} className="cursor-pointer"   onClick={() => {

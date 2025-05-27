@@ -366,7 +366,7 @@ function Header() {
 
   return (
     <>
-      <header className="flex items-center justify-between px-6 md:px-10 lg:px-20 py-3 gap-4 bg-white border border-b-1 ">
+      <header className="flex fixed top-0 left-0 w-full z-50 bg-white w-full items-center justify-between px-6 md:px-10 lg:px-20 py-3 gap-4 bg-white border border-b-1 z-50">
         {/* Left Section - Logo */}
         <div className="flex items-center cursor-pointer">
           <Link href="/" style={{ all: "unset" }}>
@@ -539,7 +539,7 @@ function Header() {
 
         </div>
       </header>
-      <div className="sm:flex md:flex lg:hidden  border border-b-1 w-full flex md:flex gap-3 px-2 py-4 md:px-16 sm:px-12" >
+      <div className="sm:flex md:flex lg:hidden sm:fixed top-0 left-0 w-full sm:pt-[60px  ] border border-b-1 w-full flex md:flex gap-3 px-2 py-4 md:px-16 sm:px-12" >
         <div className="items-center  w-full relative cursor-pointer sm:block md:block lg:hidden">
           <SearchInput
             value={searchValue}
