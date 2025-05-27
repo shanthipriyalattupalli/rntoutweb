@@ -26,14 +26,14 @@ export default function RootLayout({ children }) {
       <body
         className={` antialiased`}
       >
-{/* <ScrollToTop/> */}
-<GlobalLoading/>
+        {/* <ScrollToTop/> */}
+        <GlobalLoading />
         <GoogleMapsProvider>
-        <Header />
-        <Navigation />
-        {children}
-        <MobileApp/>
-        <Newsletter />
+          <Header />
+          <Navigation />
+          {children}
+          <MobileApp />
+          <Newsletter />
         </GoogleMapsProvider>
       </body>
     </html>

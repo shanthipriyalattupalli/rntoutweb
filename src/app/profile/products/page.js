@@ -112,6 +112,7 @@ export default function Dashboard({ products }) {
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     window.addEventListener('scroll', handleScroll);
     return () =>
       window.removeEventListener('scroll', handleScroll);

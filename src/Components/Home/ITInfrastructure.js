@@ -48,6 +48,7 @@ const ITInfrastructure = ({ products,title,categoryId,isLoading }) => {
 
 
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     const handleResize = () => {
       if (window.innerWidth >= 1535) {
         setNumProducts(5); // 2xl screens

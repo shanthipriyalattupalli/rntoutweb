@@ -39,6 +39,7 @@ const CartIcon = ({ userId }) => {
   }, [userId]);
 
    useEffect(() => {
+    if (typeof window === 'undefined') return; 
       fetchCartDetails(); // Initial fetch when component mounts
   
       const handleCartUpdate = () => {

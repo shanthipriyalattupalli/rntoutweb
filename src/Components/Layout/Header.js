@@ -47,6 +47,7 @@ function Header() {
   const isKyc = Cookies.get("isKyc");
 
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     const handleProfilePicUpdate = (event) => {
       const updatedPic = event.detail.profilePic;
       if (updatedPic) {

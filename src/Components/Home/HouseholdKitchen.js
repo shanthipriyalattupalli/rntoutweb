@@ -43,6 +43,7 @@ const HouseholdKitchen = ({ products, categoryId }) => {
   }, [currentSlide, isAutoplay, products.length]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     const handleResize = () => {
       if (window.innerWidth >= 1535) {
         setNumProducts(5); // 2xl screens

@@ -114,6 +114,7 @@ const ProductList = () => {
   };
   
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     window.addEventListener('scroll', handleScroll);
     return () =>
         window.removeEventListener('scroll', handleScroll);
@@ -235,6 +236,7 @@ const ProductList = () => {
   }
 
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     const productContainer = document.getElementById("product-container");
 
     if (productContainer) {

@@ -18,6 +18,7 @@ const Blog = ({ blogs }) => {
   const [itemsPerPage, setItemsPerPage] = useState(4);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     const updateItemsPerPage = () => {
       if (window.innerWidth <= 425) {
         setItemsPerPage(1);

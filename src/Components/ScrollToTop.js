@@ -12,6 +12,7 @@ const ScrollToTop = () => {
   }, [pathname]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     const toggleVisibility = () => {
       setIsVisible(window.scrollY > 300);
     };

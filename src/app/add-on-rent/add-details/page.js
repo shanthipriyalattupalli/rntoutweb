@@ -60,6 +60,7 @@ const MainContent = () => {
 
 
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     const handleStorageChange = () => {
       setFormData((prevFormData) => ({
         ...prevFormData,

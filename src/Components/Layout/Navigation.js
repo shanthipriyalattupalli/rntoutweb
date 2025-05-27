@@ -64,6 +64,7 @@ const Navigation = () => {
 
 
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     const categoryContainer = document.getElementById("category-container");
     if (categoryContainer) {
       const handleWheelScroll = (event) => {

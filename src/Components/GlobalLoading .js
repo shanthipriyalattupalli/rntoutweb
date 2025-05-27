@@ -8,6 +8,7 @@ const MinimalLoading = () => {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     const handleStart = () => setLoading(true);
     const handleComplete = () => setLoading(false);
 

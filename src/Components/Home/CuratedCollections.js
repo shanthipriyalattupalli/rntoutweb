@@ -32,6 +32,7 @@ const CuratedCollections = () => {
 
   // Responsive Slide Count
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     const updateSlidesToShow = () => {
       if (window.innerWidth < 640) {
         setSlidesToShow(1); // Small devices: Show 1 slide

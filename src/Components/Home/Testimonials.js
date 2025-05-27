@@ -32,6 +32,7 @@ const Testimonials = () => {
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return; 
     const updateItemsPerSlide = () => {
       if (window.innerWidth <= 425) {
         setItemsPerSlide(1);
