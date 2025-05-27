@@ -1,14 +1,11 @@
-
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging";
 import axios from "axios";
 import Cookies from "js-cookie";
-
 
 const isBrowser = typeof window !== "undefined";
 const token = Cookies.get("userToken") || null;
 const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyD6c9EO44Za_692sMUNCw4nyWsZT-w4K3U",
@@ -20,17 +17,38 @@ const firebaseConfig = {
   measurementId: "G-7B7BMMHMN7"
 };
 
-
 const app = initializeApp(firebaseConfig);
 
+let messaging = null;
 
-const messaging = isBrowser ? getMessaging(app) : null;
+if (isBrowser) {
+  // Only attempt to initialize messaging if supported
+  isSupported().then((supported) => {
+    if (supported) {
+      messaging = getMessaging(app);
 
+      // Foreground message listener
+      onMessage(messaging, (payload) => {
+        console.log("Foreground Message Received:", payload);
+
+        if (Notification.permission === "granted") {
+          new Notification(payload.notification.title, {
+            body: payload.notification.body,
+            icon: payload.notification.image || "/rntout.png"
+          });
+        } else {
+          console.warn("Notifications are not allowed by the user.");
+        }
+      });
+    } else {
+      console.warn("Firebase Messaging is not supported in this browser.");
+    }
+  });
+}
 
 const saveFcmToken = async (fcmToken) => {
   if (!token) return;
   try {
-
     const response = await axios.post(
       `${BASE_URL}/users/save-fcm-token`,
       { fcmToken },
@@ -46,26 +64,31 @@ const saveFcmToken = async (fcmToken) => {
   }
 };
 
-
 export async function requestPermission() {
-  if (!isBrowser || !messaging) return;
+  if (!isBrowser) return;
 
   try {
-    const permission = await Notification.requestPermission();
-    if (permission === "granted") {
+    const supported = await isSupported();
+    if (!supported) {
+      console.warn("Firebase Messaging is not supported in this browser.");
+      return;
+    }
 
+    const messagingInstance = getMessaging(app);
+    const permission = await Notification.requestPermission();
+
+    if (permission === "granted") {
       const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
 
-      const fcmtoken = await getToken(messaging, {
+      const fcmtoken = await getToken(messagingInstance, {
         vapidKey: "BJoiDFvVi8iMCZdlYBXfomD8McGhsFuxCRUG3mzhN47CWGYl_U2x34d17p8HRkqpwXse7DvtWmD-DdRtXdowwlw",
         serviceWorkerRegistration: registration,
       });
 
       console.log("Firebase Token:", fcmtoken);
       if (fcmtoken) {
-
         localStorage.setItem("fcmToken", fcmtoken);
-        saveFcmToken(fcmtoken)
+        saveFcmToken(fcmtoken);
       }
       return fcmtoken;
     } else {
@@ -75,21 +98,5 @@ export async function requestPermission() {
     console.error("Error getting permission:", error);
   }
 }
-
-if (messaging) {
-  onMessage(messaging, (payload) => {
-    console.log("Foreground Message Received:", payload);
-
-    if (Notification.permission === "granted") {
-      new Notification(payload.notification.title, {
-        body: payload.notification.body,
-        icon: payload.notification.image || "/rntout.png"
-      });
-    } else {
-      console.warn("Notifications are not allowed by the user.");
-    }
-  });
-}
-
 
 export { app, messaging };

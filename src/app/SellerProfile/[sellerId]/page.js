@@ -246,7 +246,7 @@ const SellerCarouselProfile = () => {
     <>
       {/* <ScrollToTop/> */}
       <div className="seller-carousel-container">
-        {bannerImages.length > 0 && (
+        {bannerImages?.length > 0 && (
           <>
             <div className="seller-carousel-slide">
               <img
@@ -273,7 +273,7 @@ const SellerCarouselProfile = () => {
         )}
       </div>
       <div className="store-image-container ">
-        {sellerDetails.businessInfo?.profileImage ? <Image src={sellerDetails.businessInfo.profileImage} alt="images" width={60} height={80} className="h-[60px] rounded-full" /> : <Image src={storeimage} width={20} height={20} />}
+        {sellerDetails.businessInfo?.profileImage ? <Image src={sellerDetails.businessInfo.profileImage} alt="images" width={60} height={80} className="h-[60px] rounded-full" /> : <Image src={storeimage} alt="images" width={20} height={20} />}
       </div>
 
       <div className='seller-profile-container'>
@@ -338,7 +338,7 @@ const SellerCarouselProfile = () => {
             Products
           </button>
 
-          <button
+          {/* <button
             className={`seller-tab ${activeTab === "about" ? "active" : ""}`}
             onClick={() => setActiveTab("about")}
           >
@@ -349,7 +349,7 @@ const SellerCarouselProfile = () => {
             onClick={() => setActiveTab("faq")}
           >
             FAQ
-          </button>
+          </button> */}
         </div>
 
         {/* Dynamic Tab Content */}

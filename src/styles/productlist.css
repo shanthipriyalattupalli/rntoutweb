@@ -1,3 +1,13 @@
 .filter-red {
     filter: invert(31%) sepia(91%) saturate(6048%) hue-rotate(0deg) brightness(96%) contrast(104%);
   }
+  /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.scroll-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE and Edge */
+}

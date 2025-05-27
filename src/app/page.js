@@ -134,7 +134,7 @@ const Home = async () => {
       <FirebaseComponent />
       <Banner banners={banners} />
       <CategoryList categories={categories} />
-      <Products categories={categories} />
+
       {/* <CuratedCollections /> */}
       {Object.entries(products).map(([categoryName, productsArray], index) => {
         const categoryId = productsArray[0]?.categoryId?._id;
@@ -146,15 +146,13 @@ const Home = async () => {
               products={productsArray}
               categoryId={categoryId}
             />
-
-            {index === 3 && (
-              <div className="my-4">
-                <PromotionalAd banner={activeBanners[0]} />
-              </div>
-            )}
           </div>
         );
       })}
+                    <div className="my-4">
+                <PromotionalAd banner={activeBanners[0]} />
+              </div>
+                    <Products categories={categories} />
 
       {/* <PromotionalAd banner={activeBanners[1]} /> */}
       {/* <ITInfrastructure products={products["IT Infrastructure"] || []} categoryId={categories[0]?._id} /> */}
