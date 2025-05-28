@@ -37,10 +37,14 @@ const HelpCenter = () => {
 
           <div className="help-content">
             <div className="support-content">
-            <span>Email:</span>
-              <span></span>rntouthyd@gmail.com
-            <span>Contact Us:</span>
-            <span>+91 8886500060</span>
+              <div>
+            <span>Email: </span>
+              <span> rntouthyd@gmail.com</span>
+              </div>
+              <div>
+            <span>Contact Us: </span>
+            <span> +91 8886500060</span>
+            </div>
             </div>
 
             </div>
