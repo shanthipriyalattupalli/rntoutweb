@@ -336,9 +336,8 @@ function Header() {
         text: "You need to be logged in to add a property on rent.",
         icon: "info",
         confirmButtonColor: "#3085d6",
-        confirmButtonText: "Login Now",
+        confirmButtonText: "OK",
       });
-      router.push("/login"); 
       return;
     }
   
@@ -474,7 +473,7 @@ function Header() {
           )}
 
           <CartIcon userId={userId} />
-          {name || token ? (
+          
             <button
               className="hidden sm:flex items-center gap-2 px-[16px] py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-[92px] border border-[rgba(7,7,7,0.1)] 
                 bg-gradient-to-r from-[#FEAC5E] via-[#C779D0] to-[#4BC0C8] 
@@ -483,8 +482,8 @@ function Header() {
             >
               <span className="text-lg">+</span> Rent
             </button>
-          ) : null}
-          {name || token ? (
+          
+       
             <button
               className="sm:hidden sm:flex items-center gap-2 px-[16px] py-[6px] sm:py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-[92px] border border-[rgba(7,7,7,0.1)] 
                 bg-gradient-to-r from-[#FEAC5E] via-[#C779D0] to-[#4BC0C8] 
@@ -493,7 +492,7 @@ function Header() {
             >
               <span className="text-lg">+</span>
             </button>
-          ) : null}
+  
 
           {/* Profile & Sign In/Sign Up */}
 

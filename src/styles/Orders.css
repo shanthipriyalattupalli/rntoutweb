@@ -63,12 +63,13 @@
     flex-direction: column;
     padding: 12px 20px;
     gap: 12px;
-    border-bottom: 1px solid #0707070D;
+    border-bottom: 10px solid #0707070D;
     
     /* border: 0px 0px 1px 0px; */
     
     background-color: #fff;
 }
+
 .Orders_page_section .order-item:last-child {
     /* margin-bottom: 0; */
 }
@@ -199,8 +200,12 @@
     color: #F48003; /* Set to any color representing in-progress status */
 
   }
-  .progress.canceled{
+  .progress.cancelled{
     color: #E02D3C;  /* Set to any color representing canceled status */
+  }
+  .progress.completed{
+     color: #08875D;
+
   }
   .profiel_header{
     display: flex;
@@ -224,6 +229,16 @@
   .back-product{
     display: flex;
     flex-direction: row;
+  }
+  .active{
+    background: white;
+    color: red;
+    border-radius: 12px;
+    padding: 6px 10px;
+    border: 1px solid #FFFFFF;
+    box-shadow:2px #E02D3C;
+    text-shadow: offset-x offset-y blur-radius color;
+
   }
 
   @media (min-width: 320px) and (max-width: 769px) {

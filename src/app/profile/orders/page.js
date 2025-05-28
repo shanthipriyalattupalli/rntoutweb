@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from "react";
 import Switch from "react-switch";
+import { Nav, NavItem, NavLink } from "reactstrap"
 
 // import "@/styles/Orders.css";
 import '../../../styles/Orders.css';
@@ -12,6 +13,7 @@ import CancelOrder from "../../../Components/Orders/CancelOrder";
 const emptycart = "/Assets/emptycart.svg";
 import OrderItem from "@/Components/OrderItem";
 import Cookies from "js-cookie";
+import { stringify } from "postcss";
 
 const orderHistoryImage = "/Assets/orderHistoryImage.png";
 
@@ -53,17 +55,19 @@ export default function Orders() {
 
   const statusClass = "Completed" ? "completed" : "in-progress";
   const [trackingStatuses, setTrackingStatuses] = useState([]);
-  const [selectedSubOrder, setSelectedSubOrder] = useState(null);
   const [isOn, setIsOn] = useState(false);
   const router = useRouter();
-  const [isCanceled, setIsCanceled] = useState(false);
-  const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [activeTab, setActiveTab] = useState('placed');
 
 
+  console.log(activeTab, "activetab")
 
   const fetchOrderHistory = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/orders/userOrders`, {
+        params: {
+          orderStatus: String(activeTab)
+        },
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -95,7 +99,7 @@ export default function Orders() {
       fetchOrderHistory();
     }
 
-  }, [token]);
+  }, [token, activeTab]);
 
 
 
@@ -106,6 +110,9 @@ export default function Orders() {
   }, [orders]);
 
 
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
 
 
 
@@ -133,7 +140,7 @@ export default function Orders() {
       <div className="item-header">
         <h2>Order History</h2>
 
-        <label className="edit-btn flex items-center gap-2">
+        {/* <label className="edit-btn flex items-center gap-2">
           <Switch
             checked={isOn}
             onChange={setIsOn}
@@ -144,7 +151,46 @@ export default function Orders() {
           // height={window.innerWidth < 640 ? 24 : 20}
           />
           Cancelled Orders
-        </label>
+        </label> */}
+
+        <Nav tabs className='flex gap-3  rounded-xl font-xs text-[12px] bg-[#0707070D] py-2 px-2'>
+          <NavItem>
+            <NavLink className={activeTab === 'placed' ? 'active' : ''} onClick={() => handleTabClick('placed')}>
+              Placed
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink className={activeTab === 'confirmed' ? 'active' : ''} onClick={() => handleTabClick('confirmed')}>
+              Confirmed
+            </NavLink>
+          </NavItem>
+          {/* <NavItem>
+                                <NavLink className={activeTab === 'processing' ? 'active' : ''} onClick={() => handleTabClick('processing')}>
+                                    Processing
+                                </NavLink>
+                            </NavItem> */}
+          <NavItem>
+            <NavLink className={activeTab === 'shipped' ? 'active' : ''} onClick={() => handleTabClick('shipped')}>
+              Shipped
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink className={activeTab === 'delivered' ? 'active' : ''} onClick={() => handleTabClick('delivered')}>
+              Delivered
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink className={activeTab === 'cancelled' ? 'active' : ''} onClick={() => handleTabClick('cancelled')}>
+              Cancelled
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink className={activeTab === 'returned' ? 'active' : ''} onClick={() => handleTabClick('returned')}>
+              Returned
+            </NavLink>
+          </NavItem>
+        </Nav>
+
 
 
       </div>
@@ -280,8 +326,8 @@ export default function Orders() {
               ))}
             </div>
 
-            <div class="order-actions">
-              <a class="track-order cursor-pointer" onClick={() => { router.push(`/profile/orders/${order._id}`) }}>
+            <div className="order-actions">
+              <a className="track-order cursor-pointer" onClick={() => { router.push(`/profile/orders/${order._id}`) }}>
                 Track & View Order
               </a>
               {/* <a href="#" class="cancel-order">
@@ -292,7 +338,7 @@ export default function Orders() {
                  Download Invoice
                 </a>
               } */}
-              {order.subOrders.every(subOrder => subOrder.orderStatus === "placed") && (
+              {/* {order.subOrders.every(subOrder => subOrder.orderStatus === "placed") && (
                 <a
                   className="inline-flex w-full sm:w-auto items-center gap-1.5 justify-start no-underline text-red-500 font-medium cursor-pointer text-left"
                   onClick={() => {
@@ -302,16 +348,16 @@ export default function Orders() {
                 >
                   Cancel Order
                 </a>
-              )}
+              )} */}
 
-              {isCanceled && (
+              {/* {isCanceled && (
                 <div className="modal-overlays" onClick={() => setIsCanceled(false)}>
                   <div className="modal-contents" onClick={(e) => e.stopPropagation()}>
 
                     <CancelOrder setIsCanceled={setIsCanceled} OrderId={selectedOrderId} order={order} />
                   </div>
                 </div>
-              )}
+              )} */}
 
             </div>
             <div class="order-actions-price-status">
