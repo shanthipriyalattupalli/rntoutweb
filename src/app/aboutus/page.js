@@ -1,7 +1,13 @@
-"use client"
+
 
 import React from 'react';
 import '../../styles/Aboutus.css';
+
+
+export const metadata = {
+  title: "About RNT Out: Your Trusted Source for Quality Rentals in Hyderabad",
+  description: "Explore the mission and values behind RNT Out. We’re committed to delivering quality rental products and exceptional customer service for all your adventures!",
+};
 
 export default function Aboutus() {
     return (

@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 const axios = require("axios");
-import Categories from "../Products/ProductList/categories";
-import Sidebar from "../Products/ProductList/Sidebar";
+import Categories from "../../Components/Products/ProductList/categories";
+import Sidebar from "../../Components/Products/ProductList/Sidebar";
 import Products from "@/Components/Home/Products";
 import CategoryProducts from "@/Components/Home/CategoryProducts";
 

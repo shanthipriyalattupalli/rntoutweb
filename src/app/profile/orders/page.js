@@ -287,7 +287,7 @@ export default function Orders() {
             <img src={emptycart} className="w-1/3 h-1/3" />
             <h1 className="text-lg font-semibold">Empty Orders</h1>
             <span className="px-6 py-4 text-center">
-              You haven’t placed any item in your cart. To add items, click
+              You haven’t placed any orders . To place orders, click
               <a href="/" className="text-md font-semibold text-blue-600">  Browse Products</a>.
             </span>
           </div> :
@@ -408,12 +408,10 @@ export default function Orders() {
           <img src={emptycart} className="w-1/3 h-1/3" />
           <h1 className="text-lg font-semibold">Empty Orders</h1>
           <span className="px-6 py-4 text-center">
-            You haven’t placed any item in your cart. To add items, click
+              You haven’t placed any orders . To place orders, click
             <a href="/" className="text-md font-semibold text-blue-600"> Browse Products</a>
           </span>
         </div>
-
-
       }
 
 

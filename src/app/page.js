@@ -84,6 +84,7 @@ const fetchProducts = async (latitude, longitude, radius) => {
         radius: radius?.value
       }
     });
+    console.log(response.data, "response of variants")
     return response.data.data;
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -105,8 +106,8 @@ const fetchBlogs = async () => {
 
 
 export const metadata = {
-  title: "rntout",
-  description: "Welcome to my awesome website!",
+  title: "RNT Out - Comprehensive Solutions for IT, Vehicles, Fashion, and More in Hyderabad",
+  description: "Welcome to RNT Out, your one-stop destination in Hyderabad for cutting-edge IT infrastructure, diverse vehicle options, and the latest in fashion. Explore our extensive range of products and services tailored to meet your needs.",
 };
 
 
@@ -116,14 +117,15 @@ export const metadata = {
 
 const Home = async () => {
   const cookieStore = cookies();
-  const latitude =await cookieStore.get('latitude');
-  const longitude =await cookieStore.get('longitude');
-  const radius =await cookieStore.get('selectedDistance')
+  const latitude = await cookieStore.get('latitude');
+  const longitude = await cookieStore.get('longitude');
+  const radius = await cookieStore.get('selectedDistance')
 
 
   const banners = await fetchBanners();
   const banner = await fetchBanner();
   const categories = await fetchCategories();
+  console.log(categories, "categories")
   const products = await fetchProducts(latitude, longitude, radius);
   console.log(products, "products")
   const blogs = await fetchBlogs();
@@ -136,7 +138,8 @@ const Home = async () => {
       <CategoryList categories={categories} />
 
       {/* <CuratedCollections /> */}
-      {Object.entries(products).map(([categoryName, productsArray], index) => {
+      {/* {Object.entries(products).map(([categoryName, productsArray], index) => {
+        console.log(productsArray,"productArray")
         const categoryId = productsArray[0]?.categoryId?._id;
 
         return (
@@ -148,11 +151,27 @@ const Home = async () => {
             />
           </div>
         );
+      })} */}
+      {categories.map((category) => {
+        const categoryName = category.categoryName;
+        const productsArray = products[categoryName] || []; // Get products by name
+        const categoryId = category._id;
+
+        return (
+          <div key={categoryId}>
+            <ITInfrastructure
+              title={categoryName}
+              products={productsArray}
+              categoryId={categoryId}
+            />
+          </div>
+        );
       })}
-                    <div className="my-4">
-                <PromotionalAd banner={activeBanners[0]} />
-              </div>
-                    <Products categories={categories} />
+
+      <div className="my-4">
+        <PromotionalAd banner={activeBanners[0]} />
+      </div>
+      <Products categories={categories} />
 
       {/* <PromotionalAd banner={activeBanners[1]} /> */}
       {/* <ITInfrastructure products={products["IT Infrastructure"] || []} categoryId={categories[0]?._id} /> */}

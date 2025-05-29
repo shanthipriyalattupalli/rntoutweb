@@ -24,6 +24,10 @@ const Blog = () => {
     fetchBlogs();
   }, []);
 
+  
+
+
+
 
   return (
     <div className='mt-8'>

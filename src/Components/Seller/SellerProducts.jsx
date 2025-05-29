@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Categories from "../../app/Products/ProductList/categories";
+import Categories from "../Products/ProductList/categories";
 import CategoryProducts from "@/Components/Seller/CategoryProducts";
 
 const ProductListPage = ({ products }) => {
