@@ -35,28 +35,28 @@ const Newsletter = () => {
     try {
       const response = await axios.post(`${BASE_URL}/users/subscribe`, { email });
       console.log("Subscription successful:", response.data);
-     Swal.fire({
-      title:"Done",
-      text:response.data.message,
-      confirmButtonColor:"red"
-     })
+      Swal.fire({
+        title: "Done",
+        text: response.data.message,
+        confirmButtonColor: "red"
+      })
     } catch (error) {
       console.error("Subscription failed:", error);
       Swal.fire({
-        title:"Done",
-        text:error.response.data.message,
-        confirmButtonColor:"red"
-       })
-    
+        title: "Done",
+        text: error.response.data.message,
+        confirmButtonColor: "red"
+      })
+
     }
   };
 
   return (
     <div className="bg-black pt-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32">
-      <div className="container mx-auto md:flex md:justify-between">
+      <div className="container mx-auto md:flex md:justify-between py-5">
         {/* Newsletter Subscription Section */}
         <div className="md:w-80 mb-8 md:mb-0">
-          <h3 className="text-xl font-bold text-white mb-4">Stay in the loop with our newsletter!</h3>
+          {/* <h3 className="text-xl font-bold text-white mb-4">Stay in the loop with our newsletter!</h3>
           <div className="relative">
             <input
               type="email"
@@ -90,23 +90,58 @@ const Newsletter = () => {
                 </a>
               </div>
             </span>
+          </div> */}
+
+          <div className="flex justify-center p-8">
+            <img src={rentoutlogo} alt="RentOut Logo" className="w-40 h-auto" />
           </div>
+                       {/* <div className="relative"> */}
+            {/* <input
+              type="email"
+              placeholder="Enter Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+            <button
+              type="button"
+              onClick={handleSubscribe}
+              className="absolute top-1/2 right-3 transform -translate-y-1/2 text-red-500"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </button>
+          </div>
+          <p className="text-gray-400 text-sm mt-4">
+            Subscribe to our newsletter for exclusive updates and offers. Stay connected!
+          </p> */}
         </div>
 
         {/* Links Section */}
         <div className="md:w-1/2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
           <div>
             <h4 className="text-lg font-medium text-white mb-4">Products</h4>
-            <ul className="text-gray-400 text-sm space-y-2">
-              {categories.map((category) => (
-                <li key={category._id}>
-                  <a href={`/Product-list/${category._id}`} className="text-gray-400 hover:text-gray-600 text-sm">
-                    {category.categoryName}
-                  </a>
-                </li>
+            <div className="flex gap-[10px]">
+              {[...Array(Math.ceil(categories.length / 8))].map((_, colIndex) => (
+                <div key={colIndex} className="flex flex-col space-y-2">
+                  {categories
+                    .filter((_, idx) => idx % Math.ceil(categories.length / 8) === colIndex)
+                    .map((category) => (
+                      <a
+                        key={category._id}
+                        href={`/Product-list/${category._id}`}
+                        className="text-gray-400 hover:text-gray-600 text-sm"
+                      >
+                        {category.categoryName}
+                      </a>
+                    ))}
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
+
+
           <div>
             <h4 className="text-lg font-medium text-white mb-4">Information</h4>
             <ul className="text-gray-400 text-sm space-y-2 cursor-pointer">
@@ -127,9 +162,7 @@ const Newsletter = () => {
       </div>
 
       {/* Logo Section */}
-      <div className="flex justify-center p-8">
-        <img src={rentoutlogo} alt="RentOut Logo" className="w-40 h-auto" />
-      </div>
+
 
       {/* Footer Links */}
       <div className="border-t-2  border-[rgba(255, 255, 255, 0.1)] py-4 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">

@@ -54,8 +54,9 @@ const Navigation = () => {
   };
 
   const handleSubcategoryClick = (categoryId, subcategoryId) => {
-    router.push(`/Product-list/${categoryId}`);
+    router.push(`/Product-list/${categoryId}/?subcategoryId=${subcategoryId}`);
     localStorage.setItem(`subcategoryId_${categoryId}`, subcategoryId);
+    window.reload();
   };
 
   useEffect(() => {
