@@ -57,6 +57,7 @@ const KYCVerification = () => {
             toast.success("KYC Verified Successfully!");
         } catch (error) {
             toast.error(error.response?.data?.message || "Verification failed");
+            fetchAadharKyc();
         } finally {
             setIsVerifying(false);
         }
@@ -70,6 +71,8 @@ const KYCVerification = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
+
+            console.log(response.data,"response of aadhar")
 
             setIsPreview(response.data.data.aadhaarPhoto);
             setIsKycSuccess(response.data.data.status);

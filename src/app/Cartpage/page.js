@@ -732,17 +732,18 @@ const CartPage = () => {
           {/* Cost Breakdown (Hidden by Default) */}
           {isOpen && (
             <div className="mt-4 space-y-2 text-gray-700">
-              {cartdetails?.totalCartValue && <div className="flex justify-between">
+              {cartdetails?.totalCartValue != 0 && 
+              <div className="flex justify-between">
                 <span>Total</span>
                 <span className="font-medium">₹ {cartdetails?.totalCartValue}</span>
               </div>}
-              {cartdetails?.taxes?.totalTax && <div className="flex justify-between">
+              {cartdetails?.taxes?.totalTax !=0 && <div className="flex justify-between">
                 <span>Gst({cartdetails?.taxes?.cgst?.rate + cartdetails?.taxes?.sgst?.rate}%)</span>
                 <span className="font-medium">+ ₹{cartdetails?.taxes?.totalTax}</span>
               </div>}
               {<div className="flex justify-between">
                 <span>Delivery charges</span>
-                <span className="font-medium">{delivery?.totalDeliveryCharges === 0 ? "Free" : `+ ₹${delivery?.totalDeliveryCharges}`}</span>
+                <span className="font-medium">{delivery?.totalDeliveryCharges === 0  ? "Free" : `+ ₹${delivery?.totalDeliveryCharges != undefined ? delivery?.totalDeliveryCharges :0 }`}</span>
               </div>}
               {disAmount != 0 && couponcode && <div className="flex justify-between">
                 <span> Promo coupon</span>

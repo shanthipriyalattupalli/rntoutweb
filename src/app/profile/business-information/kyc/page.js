@@ -13,7 +13,7 @@ const KYCVerification = () => {
   const [formData, setFormData] = useState({
     gstin: "",
   });
-
+console.log(formData,"gst number")
   const [gstDetails, setGstDetails] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -34,7 +34,7 @@ const KYCVerification = () => {
         }
       );
 
-
+console.log(response,"gst post")
       if (response.data && response.data.success) {
         setGstDetails(response.data.data);
         setErrorMessage("");
