@@ -56,7 +56,6 @@ const Navigation = () => {
   const handleSubcategoryClick = (categoryId, subcategoryId) => {
     router.push(`/Product-list/${categoryId}`);
     localStorage.setItem(`subcategoryId_${categoryId}`, subcategoryId);
-      window.location.reload();
   };
 
   useEffect(() => {
