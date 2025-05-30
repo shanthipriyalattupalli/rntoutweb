@@ -17,7 +17,6 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState([])
   const [subCategories, setSubcategories] = useState([]);
-  const [subCategoryID, setSubcatgeoryID] = useState(null)
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
   const [distance, setDistance] = useState();
@@ -29,13 +28,14 @@ const ProductList = () => {
   const [moreData, setMoreData] = useState(true);
   const params = useParams();
   const categoryId = params.categoryId; // Extract categoryId directly from params
+  const [subCategoryID, setSubcatgeoryID] = useState((typeof window !== 'undefined') ? localStorage.getItem(`subcategoryId_${categoryId}`) : null)
   const subcategoryId = (typeof window !== 'undefined') ? localStorage.getItem(`subcategoryId_${categoryId}`) : null;
-  const latitude=Cookies.get("latitude");
-  const longitude=Cookies.get("longitude");
+  const latitude = Cookies.get("latitude");
+  const longitude = Cookies.get("longitude");
   const distances = (typeof window !== 'undefined') ? localStorage.getItem("selectedDistance") : null
 
   const fetchProducts = async (page) => {
-    if (!categoryId || !subcategoryId || !active) {
+    if (!categoryId || !subCategoryID || !active) {
       return;
     }
 
@@ -55,7 +55,7 @@ const ProductList = () => {
           rating,
           page: page,
           limit: pageSize,
-          
+
         },
       });
       setProducts(response?.data.data);
@@ -67,7 +67,7 @@ const ProductList = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [categoryId, subcategoryId, active, minPrice, maxPrice, distance,page, pageSize, moreData, loading, rating]);
+  }, [categoryId,subCategoryID, subcategoryId, active, minPrice, maxPrice, distance, page, pageSize, moreData, loading, rating]);
   // }, [categoryId, subcategoryId, active, minPrice, maxPrice, distance,page, pageSize, moreData, loading]);
 
 
@@ -102,21 +102,20 @@ const ProductList = () => {
     }
   }, [page, pageSize, moreData, loading]);
 
-
   const handleScroll = () => {
     if (
-        window.innerHeight +
-        document.documentElement.scrollTop ===
-        document.documentElement.offsetHeight
+      window.innerHeight +
+      document.documentElement.scrollTop ===
+      document.documentElement.offsetHeight
     ) {
-        setPage(prevPage => prevPage + 1);
+      setPage(prevPage => prevPage + 1);
     }
   };
-  
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () =>
-        window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const fetchCategories = async () => {
@@ -133,8 +132,6 @@ const ProductList = () => {
       console.error("Error fetching categories:", error);
     }
   };
-
-
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -171,13 +168,17 @@ const ProductList = () => {
   }, [categoryId]);
 
   const fetchProductBysubCategoryId = async () => {
-    if (!categoryId || !subCategoryID) return; // Ensure both IDs are available
-
+    if (!categoryId || !subcategoryId) return; // Ensure both IDs are available
     try {
       const response = await axios.get(
-        `${BASE_URL}/products/categoryProducts/?categoryId=${categoryId}&subCategoryId=${subCategoryID}`
+        `${BASE_URL}/products/categoryProducts/?categoryId=${categoryId}&subCategoryId=${subcategoryId}`
       );
       setProduct(response.data);
+
+      // Set the first product as active
+      if (response.data.length > 0) {
+        setActive(response.data[0]._id);
+      }
 
     } catch (error) {
       console.error("Error fetching products by subcategoryId:", error);
@@ -186,7 +187,7 @@ const ProductList = () => {
 
   useEffect(() => {
     fetchProductBysubCategoryId();
-  }, [categoryId, subCategoryID]);
+  }, [categoryId, subCategoryID, subcategoryId]);
 
   const handleProductClick = (productId) => {
     setActive(productId === active ? null : productId);
@@ -251,10 +252,9 @@ const ProductList = () => {
     }
   }, []);
 
-
   return (
     <main className="min-h-screen  w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5">
-     
+
       <div className="px-8 sm:px-8 md:px-2 xl:px-14 lg:px-16 2xl:px-16">
         <Breadcrumb categoryName={breadcrumbCategoryName} />
       </div>
@@ -303,7 +303,7 @@ const ProductList = () => {
                   }}><span>{">>"}</span> </p>
 
               </div>}
-            <CategoryProducts products={products}  loading={loading} moreData={moreData}/>
+            <CategoryProducts products={products} loading={loading} moreData={moreData} />
           </div>
         </div>
       </div>
