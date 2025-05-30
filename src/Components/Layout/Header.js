@@ -539,7 +539,7 @@ function Header() {
 
         </div>
       </header>
-      <div className="sm:flex md:flex lg:hidden sm:fixed top-0 left-0 w-full sm:pt-[60px  ] border border-b-1 w-full flex md:flex gap-3 px-2 py-4 md:px-16 sm:px-12" >
+      <div className="sm:flex md:flex lg:hidden mt-[70px] sm:mt-[70px] md:mt[70px] top-0 left-0 w-full sm:pt-[60px  ] border border-b-1 w-full flex md:flex gap-3 px-2 py-4 md:px-16 sm:px-12" >
         <div className="items-center  w-full relative cursor-pointer sm:block md:block lg:hidden">
           <SearchInput
             value={searchValue}

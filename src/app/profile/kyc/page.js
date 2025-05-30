@@ -17,13 +17,13 @@ const KYCVerification = () => {
     const [isVerifying, setIsVerifying] = useState(false);
     const [isKycSuccess, setIsKycSuccess] = useState();
     const token = Cookies.get("userToken");
-    const fileInputRef = useRef(null); 
+    const fileInputRef = useRef(null);
 
     // Function to handle file upload
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setIsPreview(URL.createObjectURL(file)); 
+            setIsPreview(URL.createObjectURL(file));
             setAadharImage(file);
         }
     };
@@ -72,21 +72,21 @@ const KYCVerification = () => {
                 }
             });
 
-            console.log(response.data,"response of aadhar")
+            console.log(response, "response of aadhar")
 
             setIsPreview(response.data.data.aadhaarPhoto);
             setIsKycSuccess(response.data.data.status);
-            if(response.data.data.status){
-  Cookies.set("kycstatus", response.data.data.status, { expires: 7, secure: true, sameSite: "Strict" });
-                
+            if (response.data.data.status) {
+                Cookies.set("kycstatus", response.data.data.status, { expires: 7, secure: true, sameSite: "Strict" });
+
             }
         } catch (error) {
             console.log(error, "error");
             if (error.response && error.response.status === 401) {
                 Swal.fire({
-                  icon: "error",
-                  title: "Login Required",
-                  text: "Please login to proceed with payment.",
+                    icon: "error",
+                    title: "Login Required",
+                    text: "Please login to proceed with payment.",
                 });
             }
         }
@@ -98,10 +98,10 @@ const KYCVerification = () => {
 
     return (
         <>
-                        <ToastContainer />
+            <ToastContainer />
 
             <div className='item-header'>
-            <div className='flex flex-row gap-1'>KYC Verification</div>
+                <div className='flex flex-row gap-1'>KYC Verification</div>
             </div>
 
             <div className="bg-white rounded-lg p-6">
@@ -112,7 +112,7 @@ const KYCVerification = () => {
                         <h3 className="text-sm font-semibold text-gray-700 mb-2">
                             Aadhar Card
                         </h3>
-                        <span className="text-red font-semibold mb-2">{isKycSuccess === "VERIFIED" ? "":"Note: user can have only 3 chances to upload"}</span>
+                        <span className="text-red font-semibold mb-2">{isKycSuccess === "VERIFIED" ? "" : "Note: user can have only 3 chances to upload"}</span>
                         <label className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center cursor-pointer relative">
                             {Preview ? (
                                 <>
@@ -153,7 +153,32 @@ const KYCVerification = () => {
                         {/* <p className="text-xs text-gray-500 mt-1">
                             Image size should be less than 2MB
                         </p> */}
+
                     </div>
+                                                            {isKycSuccess === "VERIFIED" && (
+                    <div className="mt-4 p-6 border border-gray-200 shadow-lg rounded-lg bg-white max-w-md mx-auto">
+                        <div className="grid grid-cols-2 gap-y-4 text-sm font-medium text-gray-700">
+                            <div className="text-right pr-4">Document ID:</div>
+                            <div className="text-left">433432891244</div>
+
+                            <div className="text-right pr-4">Name:</div>
+                            <div className="text-left">Saliganti Vijayalaxmi</div>
+
+                            <div className="text-right pr-4">Guardian Name:</div>
+                            <div className="text-left">Somaiah</div>
+
+                            <div className="text-right pr-4">Gender:</div>
+                            <div className="text-left">FEMALE</div>
+
+                            <div className="text-right pr-4">Date Of Birth:</div>
+                            <div className="text-left">1999-08-05</div>
+
+                            <div className="text-right pr-4">Address:</div>
+                            <div className="text-left">W/O: Somaiah, 1-37, Kuthubshapuram, GaridepallY Mandalam, Kuthubshapuram, Nalgonda, Telangana 508201</div>
+                        </div>
+                    </div>
+
+                )}
                 </div>
 
                 {/* Verification Status */}
@@ -165,12 +190,36 @@ const KYCVerification = () => {
                 )}
 
                 {isKycSuccess === "VERIFIED" && (
-                    <div className="mt-4 flex justify-center">
+                    <div className="mt-14 flex justify-center">
                         <span className="flex items-center gap-1 text-green-600 font-medium bg-green-100 px-3 py-1 rounded-md">
                             <FaCheckCircle /> Verified
                         </span>
                     </div>
                 )}
+                {/* {isKycSuccess === "VERIFIED" && (
+                    <div className="mt-4 p-6 border border-gray-200 shadow-lg rounded-lg bg-white max-w-md mx-auto">
+                        <div className="grid grid-cols-2 gap-y-4 text-sm font-medium text-gray-700">
+                            <div className="text-right pr-4">Document ID:</div>
+                            <div className="text-left">433432891244</div>
+
+                            <div className="text-right pr-4">Name:</div>
+                            <div className="text-left">John Doe</div>
+
+                            <div className="text-right pr-4">Guardian Name:</div>
+                            <div className="text-left">Jane Doe</div>
+
+                            <div className="text-right pr-4">Gender:</div>
+                            <div className="text-left">Male</div>
+
+                            <div className="text-right pr-4">Date Of Birth:</div>
+                            <div className="text-left">1990-01-01</div>
+
+                            <div className="text-right pr-4">Address:</div>
+                            <div className="text-left">1234 Main Street, City, Country</div>
+                        </div>
+                    </div>
+
+                )} */}
 
                 {isKycSuccess === "PENDING" && (
                     <div className="mt-4 flex justify-center">
