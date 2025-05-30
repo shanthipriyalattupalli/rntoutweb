@@ -47,7 +47,7 @@ function Header() {
   const isKyc = Cookies.get("isKyc");
 
   useEffect(() => {
-    if (typeof window === 'undefined') return; 
+    if (typeof window === 'undefined') return;
     const handleProfilePicUpdate = (event) => {
       const updatedPic = event.detail.profilePic;
       if (updatedPic) {
@@ -341,7 +341,7 @@ function Header() {
       });
       return;
     }
-  
+
     if (isKyc === "true") {
       router.push("/add-on-rent");
     } else {
@@ -474,26 +474,26 @@ function Header() {
           )}
 
           <CartIcon userId={userId} />
-          
-            <button
-              className="hidden sm:flex items-center gap-2 px-[16px] py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-[92px] border border-[rgba(7,7,7,0.1)] 
-                bg-gradient-to-r from-[#FEAC5E] via-[#C779D0] to-[#4BC0C8] 
+
+          <button
+            className="w-full hidden sm:flex items-center gap-2 px-[16px] py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-fit border border-[rgba(7,7,7,0.1)] 
+                bg-[rgb(255,45,85)]
                 shadow-[inset_0px_3px_3px_0px_rgba(255,255,255,0.35),inset_0px_-2px_4px_0px_rgba(0,0,0,0.25)] "
-              onClick={() => handleAddOnRent()}
-            >
-              <span className="text-lg">+</span> Rent
-            </button>
-          
-       
-            <button
-              className="sm:hidden sm:flex items-center gap-2 px-[16px] py-[6px] sm:py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-[92px] border border-[rgba(7,7,7,0.1)] 
+            onClick={() => handleAddOnRent()}
+          >
+            <span className="text-lg">+</span> Join as Partner
+          </button>
+
+
+          <button
+            className="sm:hidden sm:flex items-center gap-2 px-[16px] py-[6px] sm:py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-[92px] border border-[rgba(7,7,7,0.1)] 
                 bg-gradient-to-r from-[#FEAC5E] via-[#C779D0] to-[#4BC0C8] 
                 shadow-[inset_0px_3px_3px_0px_rgba(255,255,255,0.35),inset_0px_-2px_4px_0px_rgba(0,0,0,0.25)]"
-              onClick={() => handleAddOnRent()}
-            >
-              <span className="text-lg">+</span>
-            </button>
-  
+            onClick={() => handleAddOnRent()}
+          >
+            <span className="text-lg">+</span>
+          </button>
+
 
           {/* Profile & Sign In/Sign Up */}
 

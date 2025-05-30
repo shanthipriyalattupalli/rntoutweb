@@ -102,9 +102,6 @@ const fetchBlogs = async () => {
   }
 };
 
-
-
-
 export const metadata = {
   title: "RNT Out - Comprehensive Solutions for IT, Vehicles, Fashion, and More in Hyderabad",
   description: "Welcome to RNT Out, your one-stop destination in Hyderabad for cutting-edge IT infrastructure, diverse vehicle options, and the latest in fashion. Explore our extensive range of products and services tailored to meet your needs.",
