@@ -10,7 +10,7 @@ const CategorySection = ({ categories, isLoading,categoryIds }) => {
     const storedCategoryId =
       typeof window !== "undefined" ? localStorage.getItem("categoryId") : null;
     const defaultCategoryId =
-      storedCategoryId || (categories[0] && categories[0]._id);
+      storedCategoryId || (categories[0] && categories[0].categoryId);
 
     if (defaultCategoryId) {
       setSelectedCategory(defaultCategoryId);
@@ -51,28 +51,28 @@ const CategorySection = ({ categories, isLoading,categoryIds }) => {
           ))
         : categories?.map((category) => (
             <button
-              key={category._id}
-              onClick={() => handleCategoryClick(category._id)}
+              key={category?.categoryId}
+              onClick={() => handleCategoryClick(category?.categoryId)}
               className={`w-auto flex items-center py-1 text-sm px-1 rounded-[10px] transition duration-300 flex-shrink-0 ${
-                selectedCategory === category._id
+                selectedCategory === category?.categoryId
                   ? "bg-[#F0F5FF] border border-[#2F6FED] text-blue-700"
                   : "bg-white text-gray-800 border border-slate-300 hover:bg-blue-100"
               }`}
               style={{
                 boxShadow:
-                  selectedCategory === category._id
+                  selectedCategory === category?.categoryId
                     ? "0px 1px 1px rgba(0, 0, 255, 0.1)"
                     : "none",
               }}
             >
               <Image
-                src={category.image || "/default-icon.png"}
-                alt={`${category.categoryName} icon`}
+                src={category?.image || "/default-icon.png"}
+                alt={`${category?.categoryName} icon`}
                 className="h-5 w-5 mr-2"
                 width={16}
                 height={16}
               />
-              {category.categoryName}
+              {category?.categoryName}
             </button>
           ))}
     </div>

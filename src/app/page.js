@@ -72,6 +72,17 @@ const fetchCategories = async () => {
     return [];
   }
 };
+const fetchTrendingCategories = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/variants/trending`);
+    console.log(response.data.data, "response of trending")
+    return response?.data?.data;
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
+  }
+};
+
 
 
 const fetchProducts = async (latitude, longitude, radius) => {
@@ -122,6 +133,7 @@ const Home = async () => {
   const banners = await fetchBanners();
   const banner = await fetchBanner();
   const categories = await fetchCategories();
+  const TrendingCategories = await fetchTrendingCategories();
   console.log(categories, "categories")
   const products = await fetchProducts(latitude, longitude, radius);
   console.log(products, "products")
@@ -168,7 +180,7 @@ const Home = async () => {
       <div className="my-4">
         <PromotionalAd banner={activeBanners[0]} />
       </div>
-      <Products categories={categories} />
+      <Products categories={TrendingCategories} />
 
       {/* <PromotionalAd banner={activeBanners[1]} /> */}
       {/* <ITInfrastructure products={products["IT Infrastructure"] || []} categoryId={categories[0]?._id} /> */}

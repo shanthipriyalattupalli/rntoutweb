@@ -31,6 +31,7 @@ const customStyles = `
   .cart-price {    color: #FF2D55;  }`;
 
 const ProductItem = ({ product }) => {
+  console.log(product,"product in top trending")
   const swiperRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const [selectedRentalPeriod, setSelectedRentalPeriod] = useState("daily");
@@ -98,6 +99,27 @@ const ProductItem = ({ product }) => {
     (endDate.getMonth() - currentDate.getMonth());
 
 
+  let displayAvailability = "Not Available";
+
+  if (endDate > currentDate) {
+    const isSameMonth =
+      currentDate.getFullYear() === endDate.getFullYear() &&
+      currentDate.getMonth() === endDate.getMonth();
+
+    if (isSameMonth) {
+      const daysDifference = Math.ceil(
+        (endDate - currentDate) / (1000 * 60 * 60 * 24)
+      );
+      displayAvailability = `${daysDifference} ${daysDifference === 1 ? "Day" : "Days"
+        } Available`;
+    } else {
+      const monthsDifference =
+        (endDate.getFullYear() - currentDate.getFullYear()) * 12 +
+        (endDate.getMonth() - currentDate.getMonth());
+      displayAvailability = `${monthsDifference} ${monthsDifference === 1 ? "Month" : "Months"
+        } Available`;
+    }
+  }
 
 
   const rentalStartDate = new Date(rentalAvailability?.startDate);
@@ -421,10 +443,10 @@ const ProductItem = ({ product }) => {
                 height={300}
               />
               <span className={`text-sm ${stockQuantity > 0 && !isDateExpired
-                  ? isHovered
-                    ? "text-white"
-                    : ""
-                  : "text-gray-400 cursor-not-allowed "
+                ? isHovered
+                  ? "text-white"
+                  : ""
+                : "text-gray-400 cursor-not-allowed "
                 }`}>
                 Add to cart
               </span>
@@ -465,13 +487,8 @@ const ProductItem = ({ product }) => {
               {/* Additional rows like "6 Months" */}
               <div className="mt-2">
                 <div className="text-blue-500 font-[500] text-center text-[16px]">
-                  {monthsDifference > 0
-                    ? `${monthsDifference} ${monthsDifference === 1 ? "Month" : "Months"}`
-                    : "Not"}
-                  <span className="text-center text-gray-600 text-[16px] font-[500]"> Available
-                  </span>
+                  {displayAvailability}
                 </div>
-
               </div>
             </div>
           </div>

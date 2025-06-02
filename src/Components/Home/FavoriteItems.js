@@ -96,6 +96,28 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
     (endDate.getMonth() - currentDate.getMonth());
 
 
+      let displayAvailability = "Not Available";
+
+  if (endDate > currentDate) {
+    const isSameMonth =
+      currentDate.getFullYear() === endDate.getFullYear() &&
+      currentDate.getMonth() === endDate.getMonth();
+
+    if (isSameMonth) {
+      const daysDifference = Math.ceil(
+        (endDate - currentDate) / (1000 * 60 * 60 * 24)
+      );
+      displayAvailability = `${daysDifference} ${daysDifference === 1 ? "Day" : "Days"
+        } Available`;
+    } else {
+      const monthsDifference =
+        (endDate.getFullYear() - currentDate.getFullYear()) * 12 +
+        (endDate.getMonth() - currentDate.getMonth());
+      displayAvailability = `${monthsDifference} ${monthsDifference === 1 ? "Month" : "Months"
+        } Available`;
+    }
+  }
+
   const Details = [
     { label: "Day", price: rentalPrice.daily },
     { label: "Week", price: rentalPrice.weekly },
@@ -425,13 +447,8 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
               {/* Additional rows like "6 Months" */}
               <div className="mt-2">
                 <div className="text-blue-500 font-[500] text-center text-[16px]">
-                  {monthsDifference > 0
-                    ? `${monthsDifference} ${monthsDifference === 1 ? "Month" : "Months"}`
-                    : "Not"}
-                  <span className="text-center text-gray-600 text-[16px] font-[500]"> Available
-                  </span>
+                  {displayAvailability}
                 </div>
-
               </div>
             </div>
           </div>

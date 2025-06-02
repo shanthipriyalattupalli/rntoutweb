@@ -17,11 +17,13 @@ const ProductItems = dynamic(() => import("../Home/ProductItems"), {
 
 const Products = ({ categories }) => {
   const category = categories
+  console.log("Categories: ", categories);
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
   const [categoryProducts, setCategoryProducts] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [categoryId, setCategoryId] = useState(null);
+  console.log("categoryId in trending", categoryId);
 
   const latitude = Cookies.get("latitude");
   const longitude = Cookies.get("longitude");
@@ -31,22 +33,10 @@ const Products = ({ categories }) => {
 
   const fetchProductsByCategory = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/variants/filter`, {
-        params: {
-          categoryId: categoryId,
-          search: "",
-          latitude: latitude,
-          longitude: longitude,
-          distance: distance,
+      const response = await axios.get(`${BASE_URL}/variants/trending/${categoryId}`);
 
-        },
-      });
-
-
-      setCategoryProducts(prevState => ({
-        ...prevState,
-        [categoryId]: response.data.data,
-      }));
+console.log("Products in fetch products", response?.data);
+      setCategoryProducts(response?.data?.data);
     } catch (error) {
       console.error(`Error fetching products for category ${categoryId}:`, error);
     } finally {
@@ -55,8 +45,8 @@ const Products = ({ categories }) => {
   };
 
   useEffect(() => {
-    fetchProductsByCategory()
-  }, [categoryId, latitude, longitude, distance])
+    fetchProductsByCategory();
+  }, [categoryId])
 
 
   const handleCategoryClick = (categoryId) => {
@@ -70,7 +60,7 @@ const Products = ({ categories }) => {
     const storedCategoryId =
       typeof window !== "undefined" ? localStorage.getItem("categoryId") : null;
     const defaultCategoryId =
-      storedCategoryId || (category.length > 0 ? category[0]._id : null);
+      storedCategoryId || (category?.length > 0 ? category[0]?.categoryId : null);
 
     if (defaultCategoryId) {
       setCategoryId(defaultCategoryId);
@@ -80,18 +70,20 @@ const Products = ({ categories }) => {
     }
   }, [category]);
 
-  let products = categoryProducts[categoryId] || []
+
+  console.log(categoryProducts,"categoriesproducts in trending");
+
+  // let products = categoryProducts[categoryId] || []
 
   return (
     <>
       <ProductGrid categories={category} isLoading={isLoading} categoryIds={handleCategoryClick} />
-      {products.length > 0 ? <div className='2xl:px-[80px] px-8 sm:px-8 md:px-10 lg:px-24 xl:px-20'>
+      {categoryProducts.length > 0 ? <div className='2xl:px-[80px] px-8 sm:px-8 md:px-10 lg:px-24 xl:px-20'>
         <ToastContainer />
 
         {/* Product Grid */}
         <div className='grid grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-2 sm:gap-4 md:gap-6 2xl:gap-10 gap-3   mt-3'>
-
-          {products.map((product) => (
+          {categoryProducts.map((product) => (
             <Suspense key={product._id} fallback={<ProductCard />}>
               <ProductItems key={product._id} product={product} />
             </Suspense>
