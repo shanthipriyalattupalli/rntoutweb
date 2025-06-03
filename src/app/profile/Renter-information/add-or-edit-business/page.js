@@ -29,7 +29,7 @@ export default function BusinessInformation2() {
   const userName = Cookies.get("userName");
   const userEmail = Cookies.get("userEmail");
   const token = Cookies.get("userToken");
-  const Mobile=Cookies.get("userMobile");
+  const Mobile = Cookies.get("userMobile");
   const [previewImages, setPreviewImages] = useState([]);
   const toggleEdit = () => {
     // setIsBuisness(true)
@@ -37,10 +37,17 @@ export default function BusinessInformation2() {
     setIsEditable(true)
   };
 
-
-  const handleIconClick = () => {
-    fileInputRef.current.click();
+  const handleIconClick = (e) => {
+    // const handleIconClick = (e) => {
+    e.stopPropagation(); // Stop bubbling up to parent
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+    // };
+    // fileInputRef.current.click();
   };
+
+
   const fileInputRef = useRef();
 
   const initialFormData = {
@@ -71,13 +78,15 @@ export default function BusinessInformation2() {
       country: "",
       full: ""
     },
+    replaceImageIndices: 0,
+    removedImageIndices: [],
     profileImage: "",
     bannerImages: [],// Array to hold image URLs
     walletBalance: 0,
   }
   const [formData, setFormData] = useState(initialFormData);
 
-  console.log(formData,"formdata of renter")
+  console.log(formData, "formdata of renter")
 
 
   const handleInputChange = (e) => {
@@ -124,53 +133,70 @@ export default function BusinessInformation2() {
     }
   }, [formData.bannerImages]);
 
+
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files);
-    const previews = [];
-
-    Array.from(files).forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        previews.push(reader.result);
-        if (previews.length === files.length) {
-          setPreviewImages(previews);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
     if (!files.length) {
       toast.error("No files selected");
       return;
     }
-    setFormData((prev) => ({ ...prev, bannerImages: [] }));
+
+    const previews = [];
+    const newFiles = [...files];
+
+    const replacementIndexes = [];
+
+    files.forEach((file, i) => {
+      const targetIndex = previewImages.length + i;
+      replacementIndexes.push(targetIndex);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        previews.push({ index: targetIndex, src: reader.result });
+
+        if (previews.length === files.length) {
+
+          const sortedPreviews = [...previewImages];
+
+          previews.forEach(({ index, src }) => {
+            sortedPreviews[index] = src;
+          });
+
+          setPreviewImages(sortedPreviews);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+
     setFormData((prev) => ({
       ...prev,
-      bannerImages: [...prev.bannerImages, ...files],
+      bannerImages: [...(prev.bannerImages || []), ...files],
+      replaceImageIndices: [...(prev.replaceImageIndices || []), ...replacementIndexes],
     }));
 
-    setErrorMessage((prev) => ({
-      ...prev,
-      bannerImages: [],
-    }));
-
+    toast.success("Files added successfully!");
   };
 
+
+  console.log(previewImages, "previewimages of renter")
 
   const handleRemoveImage = (indexToRemove) => {
-    // Remove the preview image
-    const updatedPreviews = previewImages.filter((_, index) => index !== indexToRemove);
+    console.log(indexToRemove, "indextoremove")
+    setPreviewImages((prev) => prev.filter((_, index) => index !== indexToRemove));
 
-    // Remove the file from formData.bannerImages
-    const updatedFiles = formData.bannerImages.filter((_, index) => index !== indexToRemove);
 
-    // Update state
-    setPreviewImages(updatedPreviews);
     setFormData((prev) => ({
       ...prev,
-      bannerImages: updatedFiles,
+      removedImageIndices: [...(prev.removedImageIndices || []), indexToRemove],
     }));
+
+    toast.info("Image removed!");
   };
 
+
+  console.log(formData.removedImageIndices, "removedimageindices of renter");
+  console.log(previewImages, "previewimages length of renter");
 
 
   const handleBusinessInformation = async () => {
@@ -257,6 +283,20 @@ export default function BusinessInformation2() {
         console.log("No Banner Images Found");
       }
 
+
+
+      if (formDataToSend.removedImageIndices?.length > 0) {
+        formDataToSend.removedImageIndices.forEach(index => {
+          formDataToSend.append('removedImageIndices', index);
+        });
+      }
+
+   if (formDataToSend.replaceImageIndices?.length > 0) {
+    formDataToSend.replaceImageIndices.forEach(index => {
+      formDataToSend.append('replaceImageIndices', index);
+    });
+  }
+
       // formData.walletTransactions.forEach((transaction, index) => {
       //   if (transaction.orderId) {
       //     formDataToSend.append(`walletTransactions[${index}][orderId]`, transaction.orderId);
@@ -270,6 +310,8 @@ export default function BusinessInformation2() {
       // });
 
       formDataToSend.append("walletBalance", formData.walletBalance);
+
+      console.log("Business Information Form Data:", formDataToSend);
 
       const response = await axios.post(`${BASE_URL}/business-info/add-or-update`, formDataToSend, {
         headers: {
@@ -290,8 +332,8 @@ export default function BusinessInformation2() {
         });
       }
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        toast.error(error.response.data.message);
+      if (error.response && error?.response?.data && error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
       }
       console.error("Error submitting business information:", error);
     }
