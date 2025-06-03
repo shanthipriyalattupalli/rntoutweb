@@ -285,17 +285,18 @@ export default function BusinessInformation2() {
 
 
 
-      if (formDataToSend.removedImageIndices?.length > 0) {
-        formDataToSend.removedImageIndices.forEach(index => {
+      if (formData?.removedImageIndices?.length > 0) {
+        formData.removedImageIndices.forEach(index => {
           formDataToSend.append('removedImageIndices', index);
         });
       }
 
-   if (formDataToSend.replaceImageIndices?.length > 0) {
-    formDataToSend.replaceImageIndices.forEach(index => {
-      formDataToSend.append('replaceImageIndices', index);
-    });
-  }
+      if (formData?.replaceImageIndices?.length > 0) {
+        formData.replaceImageIndices.forEach(index => {
+          formDataToSend.append('replaceImageIndices', index);
+        });
+      }
+
 
       // formData.walletTransactions.forEach((transaction, index) => {
       //   if (transaction.orderId) {
