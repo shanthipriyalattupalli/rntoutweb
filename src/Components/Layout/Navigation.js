@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { CgScrollH } from "react-icons/cg";
 import axios from "axios";
+import { FaAngleDown } from "react-icons/fa";
 
 const Navigation = () => {
   const [categories, setCategories] = useState([]);
@@ -64,7 +65,7 @@ const Navigation = () => {
 
 
   useEffect(() => {
-    if (typeof window === 'undefined') return; 
+    if (typeof window === 'undefined') return;
     const categoryContainer = document.getElementById("category-container");
     if (categoryContainer) {
       const handleWheelScroll = (event) => {
@@ -80,17 +81,17 @@ const Navigation = () => {
 
   return (
     <nav className="px-3 lg:pt-[70px]  sm:px-20 bg-white border-b border-slate-200 relative">
-      <div className="relative" style={{display:"flex",alignItems:"center",gap:"12px"}}>
+      <div className="relative" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
 
-      <p style={{color:"#9d9797"}} className="cursor-pointer"   onClick={() => {
-    const categoryContainer = document.getElementById("category-container");
-    if (categoryContainer) {
-      categoryContainer.scrollBy({ left: -200, behavior: "smooth" }); 
-    }
-  }}><span>{"<<"}</span> </p>
+        <p style={{ color: "#9d9797" }} className="cursor-pointer" onClick={() => {
+          const categoryContainer = document.getElementById("category-container");
+          if (categoryContainer) {
+            categoryContainer.scrollBy({ left: -200, behavior: "smooth" });
+          }
+        }}><span>{"<<"}</span> </p>
         <div
           id="category-container"
-          className="flex items-center h-12 gap-6 sm:gap-10 2xl:gap-16 overflow-x-auto overflow-visible whitespace-nowrap scrollbar-hide relative"
+          className="flex items-center h-12 gap-6 sm:gap-6 2xl:gap-16 overflow-x-auto overflow-visible whitespace-nowrap scrollbar-hide relative"
         >
           {categories?.map((category) => (
             <div
@@ -100,22 +101,23 @@ const Navigation = () => {
               onMouseLeave={handleMouseLeave}
               ref={(el) => (categoryRefs.current[category._id] = el)}
             >
-              <button className="flex items-center space-x-1 sm:space-x-2 text-gray-700 hover:text-gray-900 py-2 px-2 sm:px-4">
+              <button className="flex items-center rounded-lg space-x-1 sm:space-x-2 text-black-700  hover:text-white py-2 px-2 sm:px-4 bg-[#e5e4e47a] hover:bg-[#FF2D55] hover:border hover:border-[#FF2D55]">
                 <img src={category.image} alt={category.categoryName} className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span className="font-poppins text-xs sm:text-sm font-normal leading-5 text-center">
+                <span className="font-poppins text-xs sm:text-sm font-medium leading-5 text-center">
                   {category.categoryName}
                 </span>
-                <img src={"/Assets/down_line.svg"} alt="Dropdown" className="w-4 h-4 sm:w-5 sm:h-5" />
+           <FaAngleDown className="w-8 h-4"/>
+                {/* <img src={"/Assets/down_line.svg"} alt="Dropdown" className="w-4 h-4 sm:w-5 sm:h-5" /> */}
               </button>
             </div>
           ))}
         </div>
-        <p style={{color:"#9d9797"}} className="cursor-pointer"   onClick={() => {
-    const categoryContainer = document.getElementById("category-container");
-    if (categoryContainer) {
-      categoryContainer.scrollBy({ left: 200, behavior: "smooth" }); // Scroll right by 200px smoothly
-    }
-  }}><span>{">>"}</span> </p>
+        <p style={{ color: "#9d9797" }} className="cursor-pointer" onClick={() => {
+          const categoryContainer = document.getElementById("category-container");
+          if (categoryContainer) {
+            categoryContainer.scrollBy({ left: 200, behavior: "smooth" }); // Scroll right by 200px smoothly
+          }
+        }}><span>{">>"}</span> </p>
 
 
         {activeCategory && subcategories.length > 0 && (

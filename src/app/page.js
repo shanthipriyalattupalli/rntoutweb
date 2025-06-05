@@ -139,6 +139,7 @@ const Home = async () => {
   console.log(products, "products")
   const blogs = await fetchBlogs();
   const activeBanners = banner.filter(banner => banner.status === "active");
+  console.log(activeBanners,"acive banners")
   return (
     <div>
 

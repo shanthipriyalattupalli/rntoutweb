@@ -53,8 +53,9 @@ const KYCVerification = () => {
                 },
             });
             setIsKycSuccess(response.data.success);
-            fetchAadharKyc()
+            fetchAadharKyc();
             toast.success("KYC Verified Successfully!");
+            window.location.reload();
         } catch (error) {
             toast.error(error.response?.data?.message || "Verification failed");
             fetchAadharKyc();
@@ -72,12 +73,14 @@ const KYCVerification = () => {
                 }
             });
 
-            console.log(response, "response of aadhar")
+            console.log(response.data.data.status, "response of aadhar status")
+            console.log(response.data, "response of aadhar")
+
 
             setIsPreview(response.data.data.aadhaarPhoto);
             setIsKycSuccess(response.data.data.status);
-            if (response.data.data.status) {
-                Cookies.set("kycstatus", response.data.data.status, { expires: 7, secure: true, sameSite: "Strict" });
+            if (response?.data?.data?.status) {
+                Cookies.set("kycstatus", response?.data?.data?.status, { expires: 7, secure: true, sameSite: "Strict" });
 
             }
         } catch (error) {

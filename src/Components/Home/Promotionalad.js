@@ -4,6 +4,8 @@ import React, { memo } from 'react';
 import Image from 'next/image';
 
 const Promoad = '../Assets/redchair.png';
+const banners = '../Assets/banners.png';
+
 
 // Lazy loaded image component
 const LazyImage = ({ src, alt }) => {
@@ -33,16 +35,22 @@ const FurnishAd = ({banner}) => {
 
 
   {/* Image Section with Gradient */}
-  <div className="w-full ">
+
     {/* Gradient Overlay */}
-    <div className=""></div>
+    <div className="flex px-20 gap-20 justify-between">
     
     <img
       src={banner?.image}
       alt="Promotional Banner"
-      className="w-full h-[300px]"
+      className="w-[650px] h-[300px] rounded-lg hover:scale-105 transition-transform duration-500 ease-in-out"
+    />  
+    <img
+      src={banners}
+      alt="Promotional Banner"
+      className="w-[650px] h-[300px] rounded-lg hover:scale-105 transition-transform duration-500 ease-in-out"
     />
-  </div>
+    </div>
+
 </div>
 
 

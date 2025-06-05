@@ -44,7 +44,9 @@ function Header() {
   const router = useRouter();
   const pathname = usePathname();
 
+  const kycstatus = Cookies.get("kycstatus");
   const isKyc = Cookies.get("isKyc");
+
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -341,8 +343,8 @@ function Header() {
       });
       return;
     }
-
-    if (isKyc === "true") {
+console.log(isKyc, "isKyc")
+    if (kycstatus === "VERIFIED" || isKyc === "true") {
       router.push("/add-on-rent");
     } else {
       // Show confirmation alert before redirecting
@@ -375,11 +377,11 @@ function Header() {
         </div>
 
         {/* Center Section - Search Input */}
-        <div className="hidden lg:flex items-center relative w-full max-w-xs  ml-4 cursor-pointer">
+        <div className="hidden lg:flex items-center relative ml-4 cursor-pointer">
           <SearchInput
             value={searchValue}
             onChange={(e) => handleSearchInputChange(e.target.value)}
-            className="w-[250px] md:w-[200px] "
+            className="w-[200px] md:w-[200px] "
           />
           {showSuggestions && (
             <ul className="absolute left-0 w-full bg-white border rounded shadow top-[40px] z-40">
@@ -476,9 +478,7 @@ function Header() {
           <CartIcon userId={userId} />
 
           <button
-            className="w-full hidden sm:flex items-center gap-2 px-[16px] py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-fit border border-[rgba(7,7,7,0.1)] 
-                bg-[rgb(255,45,85)]
-                shadow-[inset_0px_3px_3px_0px_rgba(255,255,255,0.35),inset_0px_-2px_4px_0px_rgba(0,0,0,0.25)] "
+            className="w-full hidden sm:flex items-center gap-2 px-[16px] py-[10px] rounded-[12px] text-[rgb(255,45,85)] w-auto h-[40px] lg:w-fit border border-[rgb(255,45,85)] font-medium"
             onClick={() => handleAddOnRent()}
           >
             <span className="text-lg">+</span> Join as Partner
@@ -486,9 +486,7 @@ function Header() {
 
 
           <button
-            className="sm:hidden sm:flex items-center gap-2 px-[16px] py-[6px] sm:py-[10px] rounded-[12px] text-white w-auto h-[40px] lg:w-[92px] border border-[rgba(7,7,7,0.1)] 
-                bg-gradient-to-r from-[#FEAC5E] via-[#C779D0] to-[#4BC0C8] 
-                shadow-[inset_0px_3px_3px_0px_rgba(255,255,255,0.35),inset_0px_-2px_4px_0px_rgba(0,0,0,0.25)]"
+            className="sm:hidden sm:flex items-center gap-2 px-[16px] py-[6px] sm:py-[10px] rounded-[12px] text-[rgb(255,45,85)] w-auto h-[40px] lg:w-[92px] border border-[rgb(255,45,85)] "
             onClick={() => handleAddOnRent()}
           >
             <span className="text-lg">+</span>

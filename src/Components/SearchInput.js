@@ -9,7 +9,7 @@ function SearchInput({ placeholder = "Search", value, onChange, className }) {
         placeholder={placeholder}
         value={value} // Bind the input value
         onChange={onChange} // Handle input changes
-        className="pl-10 pr-4 py-2 xl:w-[330px] w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="pl-10 pr-4 py-2 xl:w-[230px] 2xl:w-[350px] w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
         <svg
