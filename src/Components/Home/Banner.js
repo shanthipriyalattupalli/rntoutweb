@@ -101,7 +101,7 @@ const Banner = ({ banners, isLoading }) => {
                           className="w-full h-[250px] sm:h-[536px] md:h-[536px] rounded-[40px]"
                         />
                         <div className="absolute inset-0 bg-black opacity-0"></div>
-                        <div className="absolute top-16 sm:top-24 md:top-28 left-4 sm:left-10 text-slate-600 text-sm sm:text-base md:text-lg">
+                        <div className="absolute top-16 sm:top-24 md:top-28 left-[80%] sm:left-[60%] text-slate-600 text-sm sm:text-base md:text-lg">
                           {/* <h1 className="text-xl sm:text-3xl md:text-5xl font-bold"></h1>
           <p className="text-sm sm:text-xl"></p>
           <p className="mt-4 sm:mt-6 text-xs sm:text-lg">
