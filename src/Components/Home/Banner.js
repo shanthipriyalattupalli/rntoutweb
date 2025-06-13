@@ -9,16 +9,18 @@ import { useRouter } from "next/navigation";
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
+const logo = "/Assets/Rntout_Logo.png";
+
 
 
 const left = '/Assets/leftarrow.svg';
 
 const Banner = ({ banners, isLoading }) => {
-  const token=Cookies.get("userToken")
+  const token = Cookies.get("userToken")
   const router = useRouter();
   const swiperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-    const isKyc = Cookies.get("isKyc");
+  const isKyc = Cookies.get("isKyc");
 
   // Shimmer Placeholder
   const Shimmer = () => (
@@ -28,37 +30,37 @@ const Banner = ({ banners, isLoading }) => {
   );
   // const [activeIndex, setActiveIndex] = useState(0);
   const activeBanners = banners.filter(banner => banner.status === "active");
-  
-    const handleAddOnRent = async () => {
-      if (!token) {
-        await Swal.fire({
-          title: "Login Required",
-          text: "You need to be logged in to add a property on rent.",
-          icon: "info",
-        });
-        return;
+
+  const handleAddOnRent = async () => {
+    if (!token) {
+      await Swal.fire({
+        title: "Login Required",
+        text: "You need to be logged in to add a property on rent.",
+        icon: "info",
+      });
+      return;
+    }
+
+    if (isKyc === "true") {
+      router.push("/add-on-rent");
+    } else {
+      // Show confirmation alert before redirecting
+      const result = await Swal.fire({
+        title: "KYC Required",
+        text: "KYC should be verified before adding on rent. Do you want to verify now?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, Verify Now",
+        cancelButtonText: "Cancel",
+      });
+
+      if (result.isConfirmed) {
+        router.push("/profile/kyc");
       }
-    
-      if (isKyc === "true") {
-        router.push("/add-on-rent");
-      } else {
-        // Show confirmation alert before redirecting
-        const result = await Swal.fire({
-          title: "KYC Required",
-          text: "KYC should be verified before adding on rent. Do you want to verify now?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#d33",
-          cancelButtonColor: "#3085d6",
-          confirmButtonText: "Yes, Verify Now",
-          cancelButtonText: "Cancel",
-        });
-  
-        if (result.isConfirmed) {
-          router.push("/profile/kyc");
-        }
-      }
-    };
+    }
+  };
   return (
     <div className="w-full">
       {isLoading
@@ -101,21 +103,32 @@ const Banner = ({ banners, isLoading }) => {
                           className="w-full h-[250px] sm:h-[536px] md:h-[536px] rounded-[40px]"
                         />
                         <div className="absolute inset-0 bg-black opacity-0"></div>
-                        <div className="absolute top-16 sm:top-24 md:top-28 left-[80%] sm:left-[60%] text-slate-600 text-sm sm:text-base md:text-lg">
+                        <div className="absolute top-16 sm:top-24 md:top-28 left-[80%] sm:left-[80%] text-slate-600 text-sm sm:text-base md:text-lg">
                           {/* <h1 className="text-xl sm:text-3xl md:text-5xl font-bold"></h1>
           <p className="text-sm sm:text-xl"></p>
           <p className="mt-4 sm:mt-6 text-xs sm:text-lg">
        
           </p> */}
-                          <button
+                          {/* <button
                             className="mt-[14rem] px-6 py-3 bg-[rgb(255,45,85)] text-white font-bold rounded-[16px] shadow-xl
              transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl"
-             onClick={() => handleAddOnRent()}
+                            onClick={() => handleAddOnRent()}
                           >
                             Rent Now!
-                          </button>
+                          </button> */}
+
+
+
 
                         </div>
+                        {/* <div className="absolute top-4 sm:top-14 md:top-28 left-[80%] sm:left-[80%] text-slate-600 text-sm sm:text-base md:text-lg">
+
+                          <img
+
+                            src={logo}
+                            alt='logo'
+                          />
+                        </div> */}
                       </div>
                     </SwiperSlide>
                   ))}
