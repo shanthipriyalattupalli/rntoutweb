@@ -15,7 +15,7 @@ const LazyImage = ({ src, alt }) => {
 const FurnishAd = ({banner}) => {
 
   return (
-<div className="mt-8 mb-8 flex flex-col md:flex-row items-center relative">
+<>
   {/* Text Section */}
   {/* <div className="absolute sm:relative w-full md:w-1/2 px-8 md:px-16 lg:px-24 z-10 top-0 left-0">
   <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-red-500">
@@ -37,21 +37,20 @@ const FurnishAd = ({banner}) => {
   {/* Image Section with Gradient */}
 
     {/* Gradient Overlay */}
-    <div className="flex px-20 gap-20 justify-between">
-    
-    <img
-      src={banner?.image}
-      alt="Promotional Banner"
-      className="w-[650px] h-[300px] rounded-lg hover:scale-105 transition-transform duration-500 ease-in-out"
-    />  
-    <img
-      src={banners}
-      alt="Promotional Banner"
-      className="w-[650px] h-[300px] rounded-lg hover:scale-105 transition-transform duration-500 ease-in-out"
-    />
-    </div>
-
+<div className="flex flex-wrap justify-center gap-8 px-4 md:px-20">
+  <img
+    src={banner?.image}
+    alt="Promotional Banner"
+    className="w-full max-w-[650px] aspect-[13/6] rounded-lg hover:scale-105 transition-transform duration-500 ease-in-out"
+  />
+  <img
+    src={banners}
+    alt="Promotional Banner"
+    className="w-full max-w-[650px] aspect-[13/6] rounded-lg hover:scale-105 transition-transform duration-500 ease-in-out"
+  />
 </div>
+
+</>
 
 
   );
