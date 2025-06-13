@@ -38,7 +38,17 @@ const FurnishAd = ({banner}) => {
 
     {/* Gradient Overlay */}
 <div className="flex flex-wrap justify-center gap-8 px-4 md:px-20">
-  <img
+  {
+    banner?.images?.map((banners,index)=>(
+        <img
+    src={banners}
+    alt="Promotional Banner"
+    className="w-full max-w-[650px] aspect-[13/6] rounded-lg hover:scale-105 transition-transform duration-500 ease-in-out"
+  />
+    ))
+  }
+  
+  {/* <img
     src={banner?.image}
     alt="Promotional Banner"
     className="w-full max-w-[650px] aspect-[13/6] rounded-lg hover:scale-105 transition-transform duration-500 ease-in-out"
@@ -47,7 +57,7 @@ const FurnishAd = ({banner}) => {
     src={banners}
     alt="Promotional Banner"
     className="w-full max-w-[650px] aspect-[13/6] rounded-lg hover:scale-105 transition-transform duration-500 ease-in-out"
-  />
+  /> */}
 </div>
 
 </>
