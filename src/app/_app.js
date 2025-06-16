@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import '@/styles/globals.css';
 import  { AppProps } from "next/app";
 import ScrollToTop from '../Components/ScrollToTop';
-import UseFcmToken from '../Components/PushNotificationClient';
+// import UseFcmToken from '../Components/PushNotificationClient';
 
 
 function MyApp({ Component, pageProps }) {
@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       {/* <WebNotificationController /> */}
-      <UseFcmToken/>
+      {/* <UseFcmToken/> */}
       <Component {...pageProps} />
     </>
   );

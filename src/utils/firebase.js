@@ -8,13 +8,13 @@ const token = Cookies.get("userToken") || null;
 const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD6c9EO44Za_692sMUNCw4nyWsZT-w4K3U",
-  authDomain: "rntout-28514.firebaseapp.com",
-  projectId: "rntout-28514",
-  storageBucket: "rntout-28514.firebasestorage.app",
-  messagingSenderId: "637936986952",
-  appId: "1:637936986952:web:5c41006ff48abad233217d",
-  measurementId: "G-7B7BMMHMN7"
+  apiKey: "AIzaSyCm7t5P-kgW-712ZPtQSR4q2VmJ2pHd_jY",
+  authDomain: "rntout-20f3b.firebaseapp.com",
+  projectId: "rntout-20f3b",
+  storageBucket: "rntout-20f3b.firebasestorage.app",
+  messagingSenderId: "662193399841",
+  appId: "1:662193399841:web:2ae35542be5ec1c996db60",
+  measurementId: "G-K41QVFNVFH"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -81,7 +81,7 @@ export async function requestPermission() {
       const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
 
       const fcmtoken = await getToken(messagingInstance, {
-        vapidKey: "BJoiDFvVi8iMCZdlYBXfomD8McGhsFuxCRUG3mzhN47CWGYl_U2x34d17p8HRkqpwXse7DvtWmD-DdRtXdowwlw",
+        vapidKey: "BDDtxM6T5G3c9UDw4zIjbs5EnAljWscsLo28mdeilVYXYgdVjm8Xnq4Lu_br624g_ve93eoFUMNjvb2f1AFKcY4",
         serviceWorkerRegistration: registration,
       });
 
