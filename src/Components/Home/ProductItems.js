@@ -67,6 +67,7 @@ const ProductItem = ({ product }) => {
     rentalPrice,
     averageRating,
     _id,
+    variantId
   } = product;
   // const productId = _id;
   const [productID, setProductId] = useState(_id)
@@ -465,7 +466,7 @@ const ProductItem = ({ product }) => {
               <div className='grid grid-cols-2 text-center'>
                 {rentalPrice?.map((detail, index) => (
                   <div
-                    key={detail._id}
+                    key={detail._id ||detail.variantId}
                     className={`p-1 cursor-pointer flex flex-col gap-[4px] ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""} 
     border ${index < 2 ? "border-t-0" : "border-t"}`}
                     onClick={() => setSelectedRentalPeriod(detail.period)}

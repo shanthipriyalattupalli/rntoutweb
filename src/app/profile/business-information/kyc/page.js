@@ -40,7 +40,7 @@ const KYCVerification = () => {
         }
       );
 
-
+console.log(response?.data?.data, "response in gst");
       if (response.data && response.data.success) {
         setGstDetails(response?.data?.data);
         setRemainingAttempts(maxAttempts-response?.data?.data[0]?.failedAttempts || maxAttempts);
@@ -137,25 +137,40 @@ const KYCVerification = () => {
 
 
         {/* Success Message */}
-        {gstDetails?.map((gst, index) => (
-          gst.status === "VERIFIED" && (
-            <div className="mt-4 p-4 bg-green-100 rounded-md" key={gst._id}>
-              <h3 className="text-lg font-semibold text-green-700">GST Details</h3>
-              <p className="text-gray-700"><strong>DocumentId:</strong> {gst?.gstinData?.gstin_data?.document_id}</p>
-              <p className="text-gray-700"><strong>Document Type:</strong> {gst?.gstinData?.gstin_data?.document_type}</p>
-              <p className="text-gray-700"><strong>Legal Name:</strong> {gst?.gstinData?.gstin_data?.legal_name}</p>
-              <p className="text-gray-700"><strong>Pan:</strong> {gst?.gstinData?.gstin_data?.pan}</p>
-              <p className="text-gray-700"><strong>Address:</strong> {gst?.gstinData?.gstin_data.principal_address?.address}</p>
-            </div>)
-        ))}
+{gstDetails?.map((gst, index) => (
+  gst.status === "VERIFIED" && (
+    <div
+      className="mt-4 p-6 border border-gray-200 shadow-lg rounded-lg bg-white max-w-md mx-auto"
+      key={gst._id}
+    >
+      <div className="grid grid-cols-2 gap-y-4 text-sm font-medium text-gray-700">
+        <div className="text-right pr-4">Document ID:</div>
+        <div className="text-left">{gst?.gstinData?.gstin_data?.document_id}</div>
+
+        <div className="text-right pr-4">Document Type:</div>
+        <div className="text-left">{gst?.gstinData?.gstin_data?.document_type}</div>
+
+        <div className="text-right pr-4">Legal Name:</div>
+        <div className="text-left">{gst?.gstinData?.gstin_data?.legal_name}</div>
+
+        <div className="text-right pr-4">PAN:</div>
+        <div className="text-left">{gst?.gstinData?.gstin_data?.pan}</div>
+
+        <div className="text-right pr-4">Address:</div>
+        <div className="text-left">{gst?.gstinData?.gstin_data?.principal_address?.address}</div>
+      </div>
+    </div>
+  )
+))}
+
 
         {/* Error Message */}
         <p className="text-red-500 text-sm mt-2 hidden">
           Invalid GST Number. Please try again.
         </p>
-        <span className="w-full flex mt-4 justify-center">
+ {gstDetails?.[0]?.status !== "VERIFIED" &&       <span className="w-full flex mt-4 justify-center">
           Note: User can upload only 3 times. You have {remainingAttempts && remainingAttempts} attempt{remainingAttempts !== 1 ? 's' : ''} left.
-        </span>
+        </span>}
 
 
 

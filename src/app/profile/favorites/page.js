@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,Suspense } from "react";
 // import "@/styles/Favorites.css";
 import '../../../styles/Favorites.css';
 import axios from "axios";
@@ -7,6 +7,7 @@ import Image from "next/image"; // Import Image component
 import ProductItem from "@/Components/Home/ProductItems";
 import FavoriteItem from "@/Components/Home/FavoriteItems";
 import { ToastContainer, toast } from "react-toastify";
+import ProductCard from "../../../Components/Shimmer/ProductCard";
 const pro1 = "/Assets/laptop-1.jpg";
 const pro2 = "/Assets/laptop-2.jpg";
 const pro3 = "/Assets/laptop-3.jpg";
@@ -54,10 +55,13 @@ export default function Profile({ }) {
         </div>
 
       </h2>
-      {products.length > 0 ? <div className='products-container'>
-        {products?.map((product, index) => (
-          <FavoriteItem key={product._id} product={product} fetchFavorites={fetchFavorites} />
-        ))}
+      {products.length > 0 ?
+       <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-8'>
+                  {products.map((product,index) => (
+                    <Suspense fallback={<div><ProductCard /></div>}>
+                      <FavoriteItem key={index} product={product} fetchFavorites={fetchFavorites}/>
+                    </Suspense>
+                  ))}
       </div> :
       <div className="flex flex-col justify-center items-center h-3/4">
   <img src="/Assets/nofavourites.svg"className="text-6xl animate-blink"/>

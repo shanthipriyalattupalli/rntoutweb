@@ -20,6 +20,7 @@ const storeimage = "/Assets/store_2_fill.svg";
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaBuilding, FaCreditCard } from "react-icons/fa";
 import Link from 'next/link';
 import Cookies from 'js-cookie';
+import { FaWallet } from 'react-icons/fa6';
 export default function BusinessInformation2() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const [businessId, setBusinessId] = useState();
@@ -76,6 +77,8 @@ export default function BusinessInformation2() {
     walletBalance: 0,
   }
   const [formData, setFormData] = useState(initialFormData);
+
+  console.log("formData", formData)
 
 
   const handleInputChange = (e) => {
@@ -281,6 +284,7 @@ export default function BusinessInformation2() {
       })
       setBusinessId(response.data.data._id)
       setFormData(response.data.data)
+      console.log("response of business", response.data.data)
       // if(response.data.data._id){
 
       //   setBusinessInfo(true)
@@ -316,7 +320,7 @@ export default function BusinessInformation2() {
                 <div className="mb-2 p-6 bg-white">
                   <h3 className="text-md font-semibold text-yellow-600">OWNER INFO </h3>
                   <div className="p-4 rounded-md">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-4 gap-4">
                       <div className="flex flex-col">
                         <div className="flex gap-2"><FaUser className="text-gray-500" /> <strong>Owner Name</strong></div>
                         <div className="text-sm font-normal text-left">{userName}</div>
@@ -334,9 +338,18 @@ export default function BusinessInformation2() {
                       <div className="flex flex-col">
                         <div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong></div>
                         <div className="text-sm">{Mobile}</div>
-                      </div>
+                      </div>  
+                      <div className="flex flex-col text-center">
+                        <div className="flex gap-2"><FaWallet className="text-gray-500" /> <strong>Platform Fee:</strong></div>
+                                 <div className="text-center jsutify-center bg-red-100 rounded-full p-3 font-semibold text-red-600">
+                        {formData?.platformFee}%
+                        </div>
+                        </div>
+           
                     </div>
+                    
                   </div>
+                  
                 </div>
 
                 {/* Bank Details */}

@@ -110,7 +110,7 @@ export default function Dashboard({ products }) {
   };
 
   useEffect(() => {
-    if (typeof window === 'undefined') return; 
+    if (typeof window === 'undefined') return;
     window.addEventListener('scroll', handleScroll);
     return () =>
       window.removeEventListener('scroll', handleScroll);
@@ -238,9 +238,11 @@ export default function Dashboard({ products }) {
               <>
                 <div className='items-grid infiniteScroll'>
                   {userProducts.map((item) => (
-                    <div className='item-card' key={item._id} >
+                    <div className='item-card' key={item._id}>
                       <div className="action-menu2">
-                        {item.isApproved ? (
+                        {item.status === "rejected" ? (
+                          <span className="px-2 py-1 bg-red-500 font-xl text-md text-white rounded-full">Rejected</span>
+                        ) : item.isApproved ? (
                           <span className="px-2 py-1 bg-green-700 font-xl text-sm text-white rounded-full">Approved</span>
                         ) : (
                           <span className="px-2 py-1 bg-orange-400 font-xl text-md text-white rounded-full">In Review</span>
@@ -297,14 +299,14 @@ export default function Dashboard({ products }) {
                             {/* <p>Rating & Reviews: {item.rating} ★ ({item.reviews} Reviews)</p> */}
                           </div>
                           <div className='flex items-center'>
-                          
+
                             <Image
                               src={AvailabilityIcon}
                               alt='Availability icon'
                               className='w-4 h-4 text-gray-500 mr-1'
                               width={16}
                               height={16}
-                            />  
+                            />
                             <span className="text-[12px] font-[500]">Availability:</span>
                             <span className="text-gray-500 text-xs truncate w-full">
                               {new Date(item?.rentalAvailability?.startDate).toLocaleDateString('en-US', {

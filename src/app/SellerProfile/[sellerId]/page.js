@@ -245,7 +245,7 @@ const SellerCarouselProfile = () => {
   return (
     <>
       {/* <ScrollToTop/> */}
-      <div className="seller-carousel-container">
+      <div className={`${bannerImages?.length > 0 ?"seller-carousel-container" : "seller-carousel-container-no-banner"}`}>
         {bannerImages?.length > 0 && (
           <>
             <div className="seller-carousel-slide">
@@ -272,11 +272,11 @@ const SellerCarouselProfile = () => {
           </>
         )}
       </div>
-      <div className="store-image-container ">
+      <div className={`${bannerImages?.length > 0 ?"store-image-container" : "store-image-container-no-banner"}`}>
         {sellerDetails.businessInfo?.profileImage ? <Image src={sellerDetails.businessInfo.profileImage} alt="images" width={60} height={80} className="h-[60px] rounded-full" /> : <Image src={storeimage} alt="images" width={20} height={20} />}
       </div>
 
-      <div className='seller-profile-container'>
+      <div className={`${bannerImages?.length > 0 ?"seller-profile-container" : "seller-profile-container-no-banner"}`}>
         {/* Header Section */}
         <div className='seller-profile-header'>
           <div className='seller-company-info'>

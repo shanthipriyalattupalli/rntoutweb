@@ -208,9 +208,11 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
       <ToastContainer />
       <style>{customStyles}</style>
 
-      <div className="w-full max-w-[350px] xl:max-w-[330px] sm:max-w-[260px] 2xl:max-w-[330px] xl:h-[436px] bg-white  rounded-[12px] border border-slate-200"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}>
+<div
+  className="w-full sm:w-[300px] xl:w-[310px] 2xl:w-[310px] h-[340px] sm:h-[436px] bg-white rounded-[12px] border border-slate-200 transition-all duration-300"
+  onMouseEnter={() => setIsHovered(true)}
+  onMouseLeave={() => setIsHovered(false)}
+>
         <div className="relative rounded-t-[13px]">
           <div className="border-b-2 border-bottom-color: rgb(209 213 219 / var(--tw-border-opacity, 1))">
             {isHovered ? (
@@ -256,7 +258,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                         <Image
                           src={img}
                           alt={`${title} - ${index + 1}`}
-                          className="w-full max-width-[308px] h-[220px] object-cover rounded-t-[12px]"
+                          className="w-full max-width-[308px] h-[130px] sm:h-[220px] object-cover rounded-t-[12px]"
                           width={308}
                           height={220}
                         />
@@ -271,7 +273,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                 <Image
                   src={images[0]}
                   alt={title}
-                  className="w-full h-[220px] max-width-[308px] object-cover  rounded-t-[12px]"
+                  className="w-full h-[130px] sm:h-[220px] max-width-[308px] object-cover  rounded-t-[12px]"
                   width={308}
                   height={220}
                 />
@@ -304,7 +306,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
             </div>
 
             {/* View All Details Button */}
-            <div className="absolute top-[200px]  z-10 flex items-center justify-center w-full">
+            <div className="absolute top-[110px] sm:top-[200px]  z-10 flex items-center justify-center w-full">
               {isView ? (
                 <span
                   className="bg-white text-black w-54 font-sm text-center rounded-full border-2  px-2 py-1 cursor-pointer"
@@ -326,17 +328,17 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
 
 
         {isView ? (
-          <div className='p-4'>
-            <h2 className="product-title text-gray-800 truncate w-full overflow-hidden whitespace-nowrap">
+          <div className='p-1 sm:p-4 mt-4 sm:mt-0'>
+            <h2 className="product-title text-[#070707] font-[500] truncate w-full overflow-hidden whitespace-nowrap">
               {title}
             </h2>
 
 
             {/* Product Price */}
-            <p className='cart-price text-bold text-lg mt-2'>
+            <p className='cart-price text-bold text-lg mt-1 sm:mt-2'>
               <span className='text-[#FF2D55] font-[600] text-[14px]'>
                 ₹{rentalPrice[0]?.price && `${rentalPrice[0].price}`}
-                <span className='text-[#070707A6] font-[400] text-[12]'>
+                <span className='text-[#070707A6] font-[400] text-[12px]'>
                   /day
                 </span>
               </span>
@@ -352,7 +354,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                 height={16}
               />
               <span className="text-gray-500 text-xs">
-                <span className="hidden sm:inline">Free Delivery for: </span>5 km
+                <span className="hidden sm:inline">Free Delivery for: </span><span className="font-[500] text-[12px]">5 km</span>
               </span>
 
             </div>
@@ -371,8 +373,8 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
                   <span className="hidden sm:inline">Availability:</span> {formattedDate}-{formattedendDate}
                 </span>
               ) : rentalAvailability && formattedDate ? (
-                <span className="text-gray-500 text-xs hidden sm:inline">
-                  Availability: {formattedDate}
+                <span className="text-gray-500 text-[12px] hidden sm:inline">
+                  Availability:<span className="font-[500px] text-[12px]"> {formattedDate}</span>
                 </span>) : null}
             </div>
             {/* <Image
@@ -424,21 +426,24 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
           </div>
         ) : (
           <div>
-            <div className='w-full'>
+       <div className='w-full'>
               <div className='grid grid-cols-2 text-center'>
                 {rentalPrice?.map((detail, index) => (
                   <div
                     key={detail._id}
-                    className={` p-1 cursor-pointer ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""}
-                       border ${index < 2 ? "border-t-0" : "border-t"}`}
+                    className={`p-1 cursor-pointer flex flex-col gap-[4px] ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""} 
+    border ${index < 2 ? "border-t-0" : "border-t"}`}
                     onClick={() => setSelectedRentalPeriod(detail.period)}
                   >
-                    <span className={`block font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"}`}>
+                    <span
+                      className={`block font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"
+                        }`}
+                    >
                       {periodMapping[detail.period] || detail.period.charAt(0).toUpperCase() + detail.period?.slice(1)}
                     </span>
                     <span className={`block text-lg font-[500] text-[16px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-black"}`}>
                       ₹
-                      {detail.price ? detail.price.toLocaleString() : "Not Available"}
+                      {detail.price && detail.price.toLocaleString()}
                     </span>
                   </div>
                 ))}
