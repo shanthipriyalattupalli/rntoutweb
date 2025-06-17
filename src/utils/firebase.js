@@ -29,7 +29,7 @@ if (isBrowser) {
 
       // Foreground message listener
       onMessage(messaging, (payload) => {
-        console.log("Foreground Message Received:", payload);
+
 
         if (Notification.permission === "granted") {
           new Notification(payload.notification.title, {
@@ -58,7 +58,7 @@ const saveFcmToken = async (fcmToken) => {
         },
       }
     );
-    console.log("FCM Token saved successfully", response);
+
   } catch (error) {
     console.error("Error saving FCM token:", error);
   }
@@ -85,7 +85,6 @@ export async function requestPermission() {
         serviceWorkerRegistration: registration,
       });
 
-      console.log("Firebase Token:", fcmtoken);
       if (fcmtoken) {
         localStorage.setItem("fcmToken", fcmtoken);
         saveFcmToken(fcmtoken);

@@ -22,7 +22,7 @@ const FaqPage = () => {
     const fetchFaqQuestions = async () => {
         try {
             const response = await fetchFaq()
-            console.log();
+     
             setCategories(response?.data);
         } catch (error) {
             console.error("Error fetching FAQ categories:", error.response?.data || error.message);

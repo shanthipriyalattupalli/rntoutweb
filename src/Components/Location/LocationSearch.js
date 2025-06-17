@@ -39,7 +39,7 @@ const LocationSearch = () => {
   const autocompleteRef = useRef(null);
   const autocompleteInstance = useRef(null);
   const [radius, setRadius] = useState(() => Cookies.get("radius") || "10");
-
+const [shouldRender, setShouldRender] = useState(true);
   const getLocationFromCoordinates = async (lat, lon) => {
     try {
       const response = await axios.get(
@@ -86,37 +86,39 @@ const LocationSearch = () => {
       setLoading(false);
     }
   };
+const fetchUserLocation = () => {
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        setUserLocation({ latitude, longitude });
+        await getLocationFromCoordinates(latitude, longitude);
+        Cookies.set("latitude", latitude, { expires: 7, sameSite: "Strict" });
+        Cookies.set("longitude", longitude, { expires: 7, sameSite: "Strict" });
+        setMessage({
+          type: "success",
+          text: "Your location has been captured successfully. You can also update it manually.",
+        });
+      },
+      (error) => {
+        setShouldRender(false);
+        setMessage({
+          type: "error",
+          text: "Unable to retrieve your location.",
+        });
+      }
+    );
+  } else {
+    setShouldRender(false);
+    setMessage({
+      type: "error",
+      text: "Geolocation is not supported by this browser.",
+    });
+  }
+};
 
-  const fetchUserLocation = () => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          setUserLocation({ latitude, longitude });
-          await getLocationFromCoordinates(latitude, longitude);
-          Cookies.set("latitude", latitude, { expires: 7, sameSite: "Strict" });
-          Cookies.set("longitude", longitude, {
-            expires: 7,
-            sameSite: "Strict",
-          });
-          setMessage({
-            type: "success",
-            text: "Your location has been captured successfully. You can also update it manually.",
-          });
-        },
-        () =>
-          setMessage({
-            type: "error",
-            text: "Unable to retrieve your location.",
-          })
-      );
-    } else {
-      setMessage({
-        type: "error",
-        text: "Geolocation is not supported by this browser.",
-      });
-    }
-  };
+// Return early if geolocation is denied
+
 
   useEffect(() => {
     const googleAny = window.google;
@@ -170,27 +172,67 @@ const LocationSearch = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const lat = Cookies.get("latitude");
-    const lon = Cookies.get("longitude");
+useEffect(() => {
+  const checkPermissionAndLoad = async () => {
+    try {
+      const permissionStatus = await navigator.permissions.query({ name: "geolocation" });
 
-    if (!lat || !lon) {
-      fetchUserLocation();
-    } else {
-      const latitude = parseFloat(lat);
-      const longitude = parseFloat(lon);
-      setUserLocation({ latitude, longitude });
-      getLocationFromCoordinates(latitude, longitude);
-      setMessage({
-        type: "success",
-        text: "Your saved location has been loaded successfully.",
-      });
-      setLoading(false);
+      if (permissionStatus.state === "denied") {
+        // ✅ Cleanup cookies and localStorage
+        Cookies.remove("latitude");
+        Cookies.remove("longitude");
+        localStorage.removeItem("latitude");
+        localStorage.removeItem("longitude");
+
+        setShouldRender(false);
+        return;
+      }
+
+      const lat = Cookies.get("latitude");
+      const lon = Cookies.get("longitude");
+
+      if (!lat || !lon) {
+        fetchUserLocation();
+      } else {
+        const latitude = parseFloat(lat);
+        const longitude = parseFloat(lon);
+        setUserLocation({ latitude, longitude });
+        getLocationFromCoordinates(latitude, longitude);
+        setMessage({
+          type: "success",
+          text: "Your saved location has been loaded successfully.",
+        });
+        setLoading(false);
+      }
+
+      // Watch for permission changes in real-time
+      permissionStatus.onchange = () => {
+        if (permissionStatus.state === "denied") {
+          Cookies.remove("latitude");
+          Cookies.remove("longitude");
+          localStorage.removeItem("latitude");
+          localStorage.removeItem("longitude");
+
+          setShouldRender(false);
+        }
+      };
+    } catch (error) {
+      console.warn("Permission query failed:", error);
+      fetchUserLocation(); // fallback
     }
-  }, []);
+  };
+
+  checkPermissionAndLoad();
+}, []);
+
+
+
+  if (!shouldRender) {
+  return null;
+}
 
   return (
-    <div className="location-container">
+<>
       <div style={{ display: "flex", gap: "14px", width: "100%" }}>
       <div className="flex items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 gap-2 ">
   <Image
@@ -243,7 +285,7 @@ const LocationSearch = () => {
           {message.text}
         </p>
       )} */}
-    </div>
+ </>
   );
 };
 

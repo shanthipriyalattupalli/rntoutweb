@@ -38,7 +38,7 @@ const fetchBanners = async () => {
       },
     });
 
-    console.log(response.data, "resposne of banners")
+
     return response.data.data;
   } catch (error) {
     console.error("Error fetching banners:", error);
@@ -75,7 +75,6 @@ const fetchCategories = async () => {
 const fetchTrendingCategories = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/variants/trending`);
-    console.log(response.data.data, "response of trending")
     return response?.data?.data;
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -95,7 +94,6 @@ const fetchProducts = async (latitude, longitude, radius) => {
         radius: radius?.value
       }
     });
-    console.log(response.data, "response of variants")
     return response.data.data;
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -134,12 +132,12 @@ const Home = async () => {
   const banner = await fetchBanner();
   const categories = await fetchCategories();
   const TrendingCategories = await fetchTrendingCategories();
-  console.log(categories, "categories")
+
   const products = await fetchProducts(latitude, longitude, radius);
-  console.log(products, "products")
+
   const blogs = await fetchBlogs();
   const activeBanners = banner.filter(banner => banner.status === "active");
-  console.log(activeBanners,"acive banners")
+
   return (
     <div>
 
@@ -168,7 +166,7 @@ const Home = async () => {
         const categoryId = category._id;
 
         return (
-          <div key={categoryId}>
+          <div key={categoryId} >
             <ITInfrastructure
               title={categoryName}
               products={productsArray}

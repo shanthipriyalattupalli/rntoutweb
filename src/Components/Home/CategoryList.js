@@ -105,7 +105,7 @@ const CategoryList = ({ products = [], categories, isLoading }) => {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
         },
       },
     ],
@@ -113,88 +113,75 @@ const CategoryList = ({ products = [], categories, isLoading }) => {
 
   return (
     <div className="bg-white py-4 flex flex-col">
-      <div className="h-auto px-8 md:px-10 lg:px-24 xl:px-20">
+      <div className="h-auto px-2 md:px-10 lg:px-24 xl:px-20">
         <h1 className="text-xl sm:text-2xl font-bold pb-4 text-center sm:text-left">
          Explore
         </h1>
+{isLoading ? (
+  <Categories shimmerArray={shimmerArray} />
+) : (
+  <>
+    {/* Grid for small devices */}
+    <div className="grid grid-cols-4 gap-4 mt-4 sm:hidden">
+      {categories?.map((category, index) => (
+        <div key={category._id} className="flex flex-col gap-2 items-center">
+        <div
+          key={category._id}
+          className="text-xs font-semibold pt-3 border border-[rgba(7,7,7,0.05)]  flex flex-col items-center transition duration-300 cursor-pointer w-full h-[50px]"
+          onClick={() => handleCategoryClick(category._id)}
+          style={{
+            backgroundColor: bgColors[index % bgColors.length],
+            borderRadius: "5px",
+          }}
+        >
+          <Image
+            src={category.image}
+            alt={category.categoryName}
+            width={48}
+            height={48}
+            className="w-8 h-8"
+          />
 
-        {isLoading ? (
-          // Shimmer Effect
-          // <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 mt-4">
-          //   {shimmerArray.map((_, index) => (
-          //     <div
-          //       key={index}
-          //       className="w-full h-[100px] bg-gray-200 animate-pulse rounded-lg flex flex-col items-center"
-          //     >
-          //       <div className="w-12 h-12 bg-gray-300 rounded-full mt-3"></div>
-          //       <div className="w-24 h-4 bg-gray-300 mt-2 rounded"></div>
-          //     </div>
-          //   ))}
-          // </div>
-          <Categories shimmerArray={shimmerArray} />
-        ) : categories?.length > 8 ? (
-          <Slider {...settings} className="relative">
-            {categories.map((category, index) => (
-              <div key={category._id} className="px-2">
-                <div
-                  className="text-sm font-semibold pt-3 rounded-lg flex flex-col items-center transition duration-300 cursor-pointer"
-                  onClick={() => handleCategoryClick(category._id)}
-                  style={{
-                    backgroundColor: bgColors[index % bgColors.length],
-                    borderRadius: "20px",
-                    width: "150px",
-                    height: "100px",
-                    margin: "0 auto",
-                  }}
-                >
-                  <Image
-                    src={category.image}
-                    alt={category.categoryName}
-                    width={48}
-                    height={48}
-                    className="w-12 h-12"
-                  />
-                  <div className="relative group">
-                    <span className="text-center pt-2 w-[120px] truncate block">
-                      {category.categoryName}
-                    </span>
-                    {/* <div className="absolute left-1/2 -translate-x-1/2 top-[10px] mb-2 hidden group-hover:block bg-gray-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
-                      {category.categoryName}
-                    </div> */}
-                  </div>
-
-
-                </div>
-              </div>
-            ))}
-          </Slider>
-
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 mt-4">
-            {categories?.map((category, index) => (
-              <div
-                key={category._id}
-                className="text-xs font-semibold pt-3 border border-[rgba(7,7,7,0.05)] rounded-lg flex flex-col items-center transition duration-300 cursor-pointer w-full h-[100px]"
-                onClick={() => handleCategoryClick(category._id)}
-                style={{
-                  backgroundColor: bgColors[index % bgColors.length],
-                  borderRadius: "20px",
-                }}
-              >
-                <Image
-                  src={category.image}
-                  alt={category.categoryName}
-                  width={48}
-                  height={48}
-                  className="w-12 h-12"
-                />
-                <span className="text-center pt-2 truncate w-auto">
-                  {category.categoryName}
-                </span>
-              </div>
-            ))}
+        </div>
+                  <span className="text-center truncate w-16  text-[12px]">
+            {category.categoryName}
+          </span>
           </div>
-        )}
+      ))}
+    </div>
+
+    {/* Slider for sm and above */}
+    <div className="hidden sm:block">
+      <Slider {...settings} className="relative">
+        {categories.map((category, index) => (
+          <div key={category._id} className="px-2">
+            <div
+              className="text-sm font-semibold pt-3 w-[40px] sm:w-[150px] rounded-lg flex flex-col items-center transition duration-300 cursor-pointer"
+              onClick={() => handleCategoryClick(category._id)}
+              style={{
+                backgroundColor: bgColors[index % bgColors.length],
+                borderRadius: "20px",
+                height: "100px",
+                margin: "0 auto",
+              }}
+            >
+              <Image
+                src={category.image}
+                alt={category.categoryName}
+                width={48}
+                height={48}
+                className="w-12 h-12"
+              />
+              <span className="text-center pt-2 w-[120px] truncate block">
+                {category.categoryName}
+              </span>
+            </div>
+          </div>
+        ))}
+      </Slider>
+    </div>
+  </>
+)}
       </div>
     </div>
   );

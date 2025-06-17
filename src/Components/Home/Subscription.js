@@ -17,7 +17,7 @@ const Benefits = [
 
 const Subscription = ({ plans, setIsSubscription, userPlans }) => {
 
-  console.log(plans, "plans")
+
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const userId = Cookies.get("userId");
   const token = Cookies.get("userToken");
@@ -38,7 +38,6 @@ const Subscription = ({ plans, setIsSubscription, userPlans }) => {
         headers: { Authorization: `Bearer ${token}` },
 
       });
-      console.log(response.data, "subscription by id");
       setSubscription(response.data?.data)
 
     } catch (error) {
@@ -117,7 +116,7 @@ const Subscription = ({ plans, setIsSubscription, userPlans }) => {
     }
   };
 
-  console.log(subscriptions, "subscription from file")
+
 
 
   return (

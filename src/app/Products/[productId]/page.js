@@ -44,7 +44,7 @@ const fetchProductById = async (productId, token, userId) => {
         timeout: 10000,
       }
     );
-    console.log(response.data, "response of product")
+
     const data = response.data;
     return response.data;
 
@@ -121,7 +121,7 @@ const ProductPage = async ({ params }) => {
   return (
     <>
       {/* <ScrollToTop /> */}
-      <div className=' mx-auto px-20'>
+      <div className=' mx-auto px-4 sm:px-20'>
 
         {/* Top Section */}
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8 py-6'>

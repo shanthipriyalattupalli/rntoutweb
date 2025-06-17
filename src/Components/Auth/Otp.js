@@ -31,6 +31,7 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
   const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
   const fcmToken = typeof window !== 'undefined' ? localStorage.getItem("FCMToken") : null;
 
+
   const profilepic = typeof window !== 'undefined' ? localStorage.getItem("profilePic") : null;
 
 
@@ -92,7 +93,7 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
         otp: String(otpCode),
         phoneNumber: mobileNumber,
       });
-console.log(response.data,"otp verify")
+
 
       if (response.data.message === "Invalid OTP") {
         toast.error("Invalid OTP. Please try again.");
@@ -162,6 +163,7 @@ console.log(response.data,"otp verify")
           },
         }
       );
+
     } catch (error) {
       console.error("Error saving FCM token:", error);
     }

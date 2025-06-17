@@ -68,22 +68,29 @@ const Banner = ({ banners, isLoading }) => {
         : (
           <>
             {activeBanners?.map((banner, index) => (
-              <div className="relative px-[36px] sm:px-[80px] py-[20px] md:py-10" key={index}>
-
-
+             <div className="relative px-0 sm:px-[80px] py-[20px] md:py-10" key={index}>
+                {/* Left Button */}
                 <button
-                  className={`absolute left-2 sm:left-[5rem] md:left-[5rem] lg:left-[5rem] top-1/2 transform -translate-y-1/2 z-10 
-      ${activeIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                  className={`absolute left-2 sm:left-[5rem] top-1/2 transform -translate-y-1/2 z-10 
+    hidden sm:block
+    ${activeIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                   onClick={() => swiperRef.current?.slidePrev()}
                   disabled={activeIndex === 0}
                 >
                   <img src={left} alt="Previous" className="rotate-360" />
                 </button>
-                <button className={`absolute right-2  sm:right-[5rem] md:right-[5rem] lg:right-[5rem] top-1/2 transform -translate-y-1/2 z-20 
-    ${activeIndex === (banner.images.length - 1) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-                  onClick={() => swiperRef.current?.slideNext()} disabled={activeIndex === (banner.images.length - 1)} >
-                  <img src={left} alt="Next" className="rotate-180 " />
+
+                {/* Right Button */}
+                <button
+                  className={`absolute right-2 sm:right-[5rem] top-1/2 transform -translate-y-1/2 z-20 
+    hidden sm:block
+    ${activeIndex === banner.images.length - 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                  onClick={() => swiperRef.current?.slideNext()}
+                  disabled={activeIndex === banner.images.length - 1}
+                >
+                  <img src={left} alt="Next" className="rotate-180" />
                 </button>
+
 
                 <Swiper
                   onSwiper={(swiper) => (swiperRef.current = swiper)}
@@ -92,7 +99,7 @@ const Banner = ({ banners, isLoading }) => {
                   pagination={{ clickable: true }}
                   modules={[Navigation, Pagination, Autoplay]}
                   autoplay={{ delay: 3000 }}
-                  className="rounded-[40px] md:rounded-[40px] border border-gray-200 h-[250px] sm:h-[536px] md:h-[536px]"
+                  className="rounded-[40px] sm:rounded-[0px] md:rounded-[40px] border border-gray-200 h-[134px] sm:h-[536px] md:h-[536px]"
                 >
                   {banner.images?.map((image, idx) => (
                     <SwiperSlide key={idx} className="h-full">
@@ -100,7 +107,7 @@ const Banner = ({ banners, isLoading }) => {
                         <img
                           src={image}
                           alt={`Slide ${idx + 1}`}
-                          className="w-full h-[250px] sm:h-[536px] md:h-[536px] rounded-[40px]"
+                          className="w-full h-[134px] sm:h-[536px] md:h-[536px] rounded-[0px] sm:rounded-[40px] "
                         />
                         <div className="absolute inset-0 bg-black opacity-0"></div>
                         <div className="absolute top-16 sm:top-24 md:top-28 left-[80%] sm:left-[80%] text-slate-600 text-sm sm:text-base md:text-lg">

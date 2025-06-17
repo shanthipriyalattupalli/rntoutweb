@@ -86,7 +86,6 @@ export default function BusinessInformation2() {
   }
   const [formData, setFormData] = useState(initialFormData);
 
-  console.log(formData, "formdata of renter")
 
 
   const handleInputChange = (e) => {
@@ -179,10 +178,9 @@ export default function BusinessInformation2() {
   };
 
 
-  console.log(previewImages, "previewimages of renter")
+
 
   const handleRemoveImage = (indexToRemove) => {
-    console.log(indexToRemove, "indextoremove")
     setPreviewImages((prev) => prev.filter((_, index) => index !== indexToRemove));
 
 
@@ -195,8 +193,6 @@ export default function BusinessInformation2() {
   };
 
 
-  console.log(formData.removedImageIndices, "removedimageindices of renter");
-  console.log(previewImages, "previewimages length of renter");
 
 
   const handleBusinessInformation = async () => {
@@ -271,7 +267,6 @@ export default function BusinessInformation2() {
               };
 
               formDataToSend.append("bannerImages", fileToSend);
-              console.log(`Banner Image ${index + 1} Added (Mobile):`, fileToSend);
             } else {
               console.log(`Skipping Banner Image ${index + 1}: Not a valid file`, bannerUri);
             }
@@ -312,7 +307,7 @@ export default function BusinessInformation2() {
 
       formDataToSend.append("walletBalance", formData.walletBalance);
 
-      console.log("Business Information Form Data:", formDataToSend);
+
 
       const response = await axios.post(`${BASE_URL}/business-info/add-or-update`, formDataToSend, {
         headers: {

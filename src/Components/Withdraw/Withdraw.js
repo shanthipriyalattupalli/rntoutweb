@@ -12,7 +12,7 @@ const Withdraw = ({fetchWalletTransaction}) => {
     const token = Cookies.get("userToken");
     const [isWithDrawlOpen, setIsWithdrawlOpen] = useState(false);
     const [amount, setAmount] = useState(0);
-    console.log(amount,"amount")
+
 
     const handleWithDrawRequest = async () => {
         const payload={
@@ -25,7 +25,6 @@ const Withdraw = ({fetchWalletTransaction}) => {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(response.data, "resposne of wallet")
             if(response.data.success === true){
                 
                 setIsWithdrawlOpen(false)

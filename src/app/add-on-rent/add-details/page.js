@@ -579,7 +579,6 @@ const MainContent = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response,"reesposne of update")
 
       if (response.data.success) {
         setFormData(initialFormData);

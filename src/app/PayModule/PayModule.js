@@ -41,7 +41,7 @@ const RenderRazorpay = ({ orderId,razorpayOrderId, keyId, currency, amount, hand
               Authorization: `Bearer ${token}`,
             }
           });
-          console.log(result.data,"payment status")
+
           if (result.data.transactionStatus === 'completed') {
             handlePayment('succeeded', {
               orderId,

@@ -10,16 +10,16 @@ const ser5 = "/Assets/Icons/ser-5.png";
 const ser6 = "/Assets/Icons/ser-6.png";
 
 const ServiceCard = memo(({ iconSrc, alt, title, description, bgColor }) => (
-  <div className='bg-white rounded-lg border border-slate-200 p-6'>
+  <div className='bg-white rounded-lg border border-slate-200 p-2 sm:p-6'>
     <div
       className={`flex items-center justify-center mb-4 p-3 rounded-full ${bgColor}`}
     >
       <img src={iconSrc} className='p-2 bg-blue-100 rounded-full' alt={alt} />
     </div>
-    <h3 className='text-sm font-medium text-gray-800 text-center mb-2'>
+    <h3 className='text-[12px] sm:text-[14px] font-medium text-gray-800 text-center mb-2'>
       {title}
     </h3>
-    <p className='text-gray-600 text-xs text-center'>{description}</p>
+    <p className='text-gray-600 text-[10px] sm:text-[12px] text-center'>{description}</p>
   </div>
 ));
 
@@ -34,7 +34,7 @@ const OurBestServices = () => {
   ];
 
   return (
-    <div className='w-full bg-white border border-y border-slate-200 mx-auto px-8 sm:px-24  py-10 mt-4 mb-4'>
+    <div className='w-full bg-white border border-y border-slate-200 mx-auto px-2 sm:px-24  py-10 mt-4 mb-4'>
       <h1 className='text-3xl font-bold text-gray-800 text-center mb-6'>
         Our Best Services
       </h1>
@@ -63,7 +63,7 @@ const OurBestServices = () => {
       </div>
 
       {/* Service Cards Section */}
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+      <div className='grid grid-cols-2 md:grid-cols-3 gap-6'>
         <ServiceCard
           iconSrc={ser1}
           alt='Finest-quality products icon'

@@ -78,7 +78,7 @@ const CategoryGrid = () => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log(response.data,"response of success")
+
 
     setRenterInfo(response.data.success)
   } catch (error) {

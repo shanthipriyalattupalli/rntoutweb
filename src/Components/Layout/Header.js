@@ -147,7 +147,6 @@ function Header() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log(response, "user plans");
 
       const activePlan = response.data.data.find(plan => plan.isActive === true);
 
@@ -308,7 +307,6 @@ function Header() {
 
   const handleDistanceChange = (e) => {
     const distance = e.target.value;
-    console.log(distance, "selected distance")
     setSelectedDistance(distance);
     localStorage.setItem("selectedDistance", distance);
     Cookies.set("selectedDistance", distance, { expires: 7, secure: true, sameSite: "Strict" });
@@ -343,7 +341,6 @@ function Header() {
       });
       return;
     }
-console.log(isKyc, "isKyc")
     if (kycstatus === "VERIFIED" || isKyc === "true") {
       router.push("/add-on-rent");
     } else {
@@ -410,7 +407,7 @@ console.log(isKyc, "isKyc")
         </div>
 
 
-        <div className="flex items-center gap-4 md:gap-4 cursor-pointer">
+        <div className="flex items-center gap-2 sm:gap-4 cursor-pointer">
 
           <div className="hidden lg:block">
             <LocationSearch />
@@ -486,7 +483,7 @@ console.log(isKyc, "isKyc")
 
 
           <button
-            className="sm:hidden sm:flex items-center gap-2 px-[16px] py-[6px] sm:py-[10px] rounded-[12px] text-[rgb(255,45,85)] w-auto h-[40px] lg:w-[92px] border border-[rgb(255,45,85)] "
+            className="sm:hidden sm:flex items-center text-center gap-2 px-[16px] py-[6px] sm:py-[10px] rounded-[12px] text-[rgb(255,45,85)] w-auto h-[38px] lg:w-[92px] border border-[rgb(255,45,85)] "
             onClick={() => handleAddOnRent()}
           >
             <span className="text-lg">+</span>
@@ -514,7 +511,7 @@ console.log(isKyc, "isKyc")
             </div>
           ) : (
             <button
-              className=" px-2 py-2  w-[147px] text-white text-[14px] font-[600] rounded-[10px] border border-[1px] bg-[rgba(255,45,85,1)] border border-[rgba(255,45,85,1)] shadow-[inset_0px_1px_0px_1px_var(--OverlaysWhiteAlpha10),inset_0px_6px_4px_-4px_var(--OverlaysWhiteAlpha8),inset_0px_-1px_0.5px_1px_var(--OverlaysBlackAlpha8)]"
+              className=" px-2 py-2  w-fit text-white text-[14px] font-[600] rounded-[10px] border border-[1px] bg-[rgba(255,45,85,1)] border border-[rgba(255,45,85,1)] shadow-[inset_0px_1px_0px_1px_var(--OverlaysWhiteAlpha10),inset_0px_6px_4px_-4px_var(--OverlaysWhiteAlpha8),inset_0px_-1px_0.5px_1px_var(--OverlaysBlackAlpha8)]"
               onClick={() => setIsLoginOpen(true)}
             >
               {/* Show 'Login' on mobile */}

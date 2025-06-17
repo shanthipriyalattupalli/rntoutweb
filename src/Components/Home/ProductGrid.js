@@ -27,7 +27,7 @@ const CategorySection = ({ categories, isLoading,categoryIds }) => {
   return (
     <div className="bg-white pt-8 justify-center">
 <div className="flex flex-col gap-2 px-[20px] sm:px-[80px] text-center">
-        <h1 className="text-3xl font-bold text-gray-800">
+        <h1 className="text-sm sm:text-3xl font-bold text-gray-800">
           Our Top Trending Products
         </h1>
         <p className="text-gray-600">

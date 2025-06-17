@@ -248,7 +248,6 @@ const MainContent = () => {
   
 
   const handleRemoveImage = (indexToRemove) => {
-    console.log(indexToRemove,"indextoremove")
     setPreviewImages((prev) => prev.filter((_, index) => index !== indexToRemove));
 
 
@@ -305,7 +304,7 @@ const MainContent = () => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
-console.log(formData,"formData")
+
 
     const [errors, setErrors] = useState({
       title: "",
@@ -332,7 +331,6 @@ console.log(formData,"formData")
         })
       )
 
-      console.log(response.data,"response of peroduct by id")
       // Map fetched itemDetails to productDetails format
       const fetchedItemDetails = response.data.itemDetails || {};
       const formattedDetails = Object.entries(fetchedItemDetails).map(
@@ -598,7 +596,6 @@ console.log(formData,"formData")
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response,"response in  update ")
 
 
 

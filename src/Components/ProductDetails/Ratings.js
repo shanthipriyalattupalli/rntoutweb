@@ -21,7 +21,7 @@ const Ratings = ({ userRatings }) => {
     currentPage * itemsPerPage
   );
 
-  console.log(currentRatings, "currentRatings")
+
 
   const getPaginationNumbers = () => {
     const pages = [];

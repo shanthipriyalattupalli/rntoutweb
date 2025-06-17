@@ -40,7 +40,6 @@ const CartPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAddressSidebarOpen, setIsAddressSidebarOpen] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
-  console.log(selectedAddress, "slectedaddress")
   const [isCoupon, setIsCoupon] = useState(false)
   const [quantities, setQuantities] = useState({});
   const [displayRazorpay, setDisplayRazorpay] = useState(false);
@@ -69,7 +68,6 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response, "response of delivery charges")
       setIsDelivery(response.data);
     } catch (error) {
       console.log(error, "error in fetching delivery charges")
@@ -270,9 +268,7 @@ const CartPage = () => {
   const fetchCartDetails = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
-      console.log(response.data, "cart items")
-
-      const cartData = response.data.cartItems || [];
+    const cartData = response.data.cartItems || [];
       setCartDeetails(response?.data)
       setCartItems(cartData);
       if (cartData.length === 0) {
@@ -350,7 +346,7 @@ const CartPage = () => {
     distance: item.distance
   }));
 
-  console.log(variantDeliveryCharges, "variantDeliveryCharges")
+
 
   const handleOrderCheckout = async () => {
 
@@ -371,7 +367,6 @@ const CartPage = () => {
         },
       });
       const { orderId, finalAmount } = response.data;
-      console.log(response.data, "final amount")
 
       // If orderId is present, proceed to initiate payment
       if (orderId) {
@@ -424,7 +419,6 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data, "paymnet initiate")
       // Axios response data is already parsed
       if (response.data.order && response.data.order.id) {
         setDisplayRazorpay(true);
@@ -511,7 +505,7 @@ const CartPage = () => {
   };
 
 
-  console.log(cartdetails, "cartdetails")
+
 
   const TotalWithDeliveryCharges = cartdetails?.grandTotal + delivery?.totalDeliveryCharges
 

@@ -28,7 +28,6 @@ export default function Dashboard({ products }) {
   const [productId, setProductId] = useState(null)
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [userProducts, setUserProducts] = useState([]);
-  console.log(userProducts, "userproducts")
   const [product, setProduct] = useState([]);
   const [rentalPrice, setRentalPrice] = useState([]);
   const [rentalAvailability, setRentalAvailability] = useState({});
@@ -52,7 +51,6 @@ export default function Dashboard({ products }) {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUserProducts(response.data)
-      console.log(response.data, "userproducts")
     } catch (error) {
       console.error("Error fetching products:", error);
     }

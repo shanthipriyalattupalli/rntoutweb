@@ -17,13 +17,12 @@ const ProductItems = dynamic(() => import("../Home/ProductItems"), {
 
 const Products = ({ categories }) => {
   const category = categories
-  console.log("Categories: ", categories);
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
   const [categoryProducts, setCategoryProducts] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [categoryId, setCategoryId] = useState(null);
-  console.log("categoryId in trending", categoryId);
+
 
   const latitude = Cookies.get("latitude");
   const longitude = Cookies.get("longitude");
@@ -35,7 +34,7 @@ const Products = ({ categories }) => {
     try {
       const response = await axios.get(`${BASE_URL}/variants/trending/${categoryId}`);
 
-console.log("Products in fetch products", response?.data);
+
       setCategoryProducts(response?.data?.data);
     } catch (error) {
       console.error(`Error fetching products for category ${categoryId}:`, error);
@@ -71,18 +70,17 @@ console.log("Products in fetch products", response?.data);
   }, [category]);
 
 
-  console.log(categoryProducts,"categoriesproducts in trending");
 
   // let products = categoryProducts[categoryId] || []
 
   return (
     <>
       <ProductGrid categories={category} isLoading={isLoading} categoryIds={handleCategoryClick} />
-      {categoryProducts.length > 0 ? <div className='2xl:px-[80px] px-8 sm:px-8 md:px-10 lg:px-24 xl:px-20'>
+      {categoryProducts.length > 0 ? <div className='2xl:px-[80px] px-2 sm:px-8 md:px-10 lg:px-24 xl:px-20'>
         <ToastContainer />
 
         {/* Product Grid */}
-        <div className='grid grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-2 sm:gap-4 md:gap-6 2xl:gap-10 gap-3   mt-3'>
+        <div className='grid grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-2 sm:gap-4 md:gap-6 2xl:gap-10 gap-3   mt-3'>
           {categoryProducts.map((product) => (
             <Suspense key={product._id} fallback={<ProductCard />}>
               <ProductItems key={product._id} product={product} />
@@ -92,7 +90,7 @@ console.log("Products in fetch products", response?.data);
         </div>
 
         {/* View All Button Section */}
-        <div className='container mx-auto py-12 sm:py-14 md:py-16'>
+        <div className='container mx-auto py-4 sm:py-12 sm:py-14 md:py-16'>
           <div className='flex justify-center'>
             <Link href={`/Product-list/${categoryId}`}>
               <button

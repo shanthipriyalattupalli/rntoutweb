@@ -74,7 +74,6 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data, "orders by id")
       setOrders(response.data)
       setSubOrders(response.data.subOrders)
 

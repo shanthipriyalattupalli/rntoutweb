@@ -24,10 +24,9 @@ const FAQSection = async({params,searchParams }) => {
 
 const {faqId}=await params;
 const categoryName = searchParams.name;
-console.log(categoryName,"categoryName")
 
 const faqQuestions=await fetchFaqQandA(faqId)
-console.log(faqQuestions,"faqQuestions")
+
 
 
 

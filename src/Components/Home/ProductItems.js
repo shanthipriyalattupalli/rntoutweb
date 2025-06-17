@@ -31,7 +31,7 @@ const customStyles = `
   .cart-price {    color: #FF2D55;  }`;
 
 const ProductItem = ({ product }) => {
-  console.log(product,"product in top trending")
+
   const swiperRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const [selectedRentalPeriod, setSelectedRentalPeriod] = useState("daily");
@@ -225,7 +225,7 @@ const ProductItem = ({ product }) => {
       {/* <ToastContainer /> */}
       <style>{customStyles}</style>
 
-      <div className="2xl:w-full xl:w-full h-[436px] rounded-[12px] bg-white  border border-slate-200"
+      <div className="2xl:w-full xl:w-full h-[340px] sm:h-[436px] rounded-[12px] bg-white  border border-slate-200"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
         <div className="relative">
@@ -274,7 +274,7 @@ const ProductItem = ({ product }) => {
                           <Image
                             src={img}
                             alt={`${title} - ${index + 1}`}
-                            className="w-full h-[220px] object-cover rounded-t-[12px]"
+                            className="w-full h-[130px] sm:h-[220px] object-cover rounded-t-[12px]"
                             width={308}
                             height={220}
                           />
@@ -289,7 +289,7 @@ const ProductItem = ({ product }) => {
                 {images[0] && <Image
                   src={images[0]}
                   alt={title}
-                  className="w-full h-[220px] object-cover rounded-t-[12px]"
+                  className="w-full h-[130px] sm:h-[220px] object-cover rounded-t-[12px]"
                   width={308}
                   height={220}
                 />}
@@ -334,10 +334,10 @@ const ProductItem = ({ product }) => {
             </div>
 
             {/* View All Details Button */}
-            <div className="absolute top-[200px]  z-10 flex items-center justify-center w-full">
+            <div className="absolute top-[110px] sm:top-[200px]  z-10 flex items-center justify-center w-full">
               {isView ? (
                 <span
-                  className="bg-white text-black w-54 font-sm text-center rounded-full border-2  px-2 py-1 cursor-pointer"
+                  className="bg-white text-black w-54 truncate font-sm text-center rounded-full border-2  px-2 py-1 cursor-pointer"
                   onClick={handleclick}
                 >
                   View all packages
@@ -356,14 +356,14 @@ const ProductItem = ({ product }) => {
 
 
         {isView ? (
-          <div className='p-4'>
+          <div className="p-1 sm:p-4 mt-4 sm:mt-0">
             <h2 className="product-title text-[#070707] font-[500] truncate w-full overflow-hidden whitespace-nowrap">
               {title || title.charAt(0).toUpperCase() + title?.slice(1)}
             </h2>
 
 
             {/* Product Price */}
-            <p className='cart-price text-bold text-lg mt-2'>
+            <p className='cart-price text-bold text-lg mt-1 sm:mt-2'>
               <span className='text-[#FF2D55] font-[600] text-[14px]'>
                 ₹{rentalPrice[0]?.price && `${rentalPrice[0].price}`}
                 <span className='text-[#070707A6] font-[400] text-[12px]'>

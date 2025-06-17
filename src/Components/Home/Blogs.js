@@ -21,8 +21,11 @@ const Blog = ({ blogs }) => {
     if (typeof window === 'undefined') return; 
     const updateItemsPerPage = () => {
       if (window.innerWidth <= 425) {
-        setItemsPerPage(1);
-      } else if (window.innerWidth > 425 && window.innerWidth <= 1024) {
+        setItemsPerPage(2);
+      } else if (window.innerWidth > 425 && window.innerWidth <= 768) {
+        setItemsPerPage(2);
+
+      }else if (window.innerWidth > 425 && window.innerWidth <= 1024) {
         setItemsPerPage(3);
       } else {
         setItemsPerPage(4);
@@ -35,15 +38,15 @@ const Blog = ({ blogs }) => {
   }, []);
 
   return (
-    <div className="mt-8">
+    <div className="mt-0 sm:mt-8">
       <div className="mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5">
-        <div className="flex justify-between items-center mt-20 mb-4">
-          <h1 className="text-[23px] sm:text-[32px] font-[700] text-gray-800 xl:px-16">
+        <div className="flex justify-between items-center mt-20 mb-4 gap-2">
+          <h1 className="text-[16px] sm:text-[32px] font-[700] text-gray-800 xl:px-16">
             Our Exclusive Blogs
           </h1>
           <a
             href="/Blogs"
-            className="text-blue-500 hover:text-blue-700 text-sm font-medium xl:pl-16"
+            className="text-blue-500 hover:text-blue-700 text-[12px] sm:text-[14px] font-medium xl:pl-16"
           >
             View all blogs{" "}
             <svg
@@ -61,7 +64,7 @@ const Blog = ({ blogs }) => {
             </svg>
           </a>
         </div>
-        <p className="text-gray-600 text-left mb-8 px-4 sm:px-16">
+        <p className="text-gray-600 text-left mb-8 ">
           "Smart Renting, Happy Living!"
         </p>
 
@@ -87,7 +90,7 @@ const Blog = ({ blogs }) => {
                     />
                     <div className="p-4">
                       <div className="h-[82px]">
-                        <h3 className="h-[40px] text-[14px] font-medium text-gray-800 mb-2">
+                        <h3 className="h-[40px] truncate text-[14px] font-medium text-gray-800 mb-2">
                           {blog.title}
                         </h3>
                         <p className="h-[36px] text-gray-600 text-[12px] mb-4 line-clamp-2">
@@ -110,11 +113,11 @@ const Blog = ({ blogs }) => {
           </div>
         ) : (
           // Simple Flex Row for Less than 3 blogs
-          <div className="flex flex-col sm:flex-row gap-10 sm:px-12">
+         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:px-12">
             {blogs.map((blog, index) => (
               <div
                 key={index}
-                className="sm:w-[300px] w-[345px] bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden cursor-pointer"
+                className="w-auto bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden cursor-pointer"
                 onClick={() => router.push(`/Blogs/${blog._id}`)}
               >
                 <img
@@ -124,10 +127,10 @@ const Blog = ({ blogs }) => {
                 />
                 <div className="p-4">
                   <div className="h-[82px]">
-                    <h3 className="h-[40px] text-[14px] font-medium text-gray-800 mb-2">
+                    <h3 className="h-[40px] truncate text-[14px] font-medium text-gray-800 mb-0 sm:mb-2">
                       {blog.title}
                     </h3>
-                    <p className="h-[36px] text-gray-600 text-[12px] mb-4 line-clamp-2">
+                    <p className="h-[36px] text-gray-600 text-[12px] mb-0 sm:mb-4 line-clamp-2">
                       {blog.description}
                     </p>
                   </div>

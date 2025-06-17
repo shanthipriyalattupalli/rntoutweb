@@ -34,7 +34,6 @@ const Newsletter = () => {
   const handleSubscribe = async () => {
     try {
       const response = await axios.post(`${BASE_URL}/users/subscribe`, { email });
-      console.log("Subscription successful:", response.data);
       Swal.fire({
         title: "Done",
         text: response.data.message,

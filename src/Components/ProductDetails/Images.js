@@ -10,7 +10,7 @@ const favorited = "/Assets/Heart.svg";
 export const Images = ({ product, productId,variant}) => {
   const images = product.images;
   const isFavorites=variant.isFavorite
-console.log(isFavorites,"is favorite")
+
 
   const token = Cookies.get("userToken");
 
@@ -108,7 +108,7 @@ console.log(isFavorites,"is favorite")
 
   return (
 <div className="space-y-4">
-  <div className="w-full h-[500px] rounded-lg shadow-lg overflow-hidden bg-gray-100 relative">
+  <div className="w-full h-[200px] sm:h-[500px] rounded-lg shadow-lg overflow-hidden bg-gray-100 relative">
     {/* Favorite icon */}
     {isFavorite ? (
       <span
@@ -133,7 +133,7 @@ console.log(isFavorites,"is favorite")
     <img
       src={images[selectedImage]}
       alt="Product"
-      className={`w-full h-full object-cover transition-opacity duration-300 ${
+      className={`w-full h-full object-fill  transition-opacity duration-300 ${
         isLoading ? "opacity-0" : "opacity-100"
       }`}
       onLoad={() => setIsLoading(false)}

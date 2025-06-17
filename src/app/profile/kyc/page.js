@@ -74,8 +74,7 @@ const KYCVerification = () => {
                 }
             });
 
-            console.log(response.data.data.status, "response of aadhar status")
-            console.log(response.data, "response of aadhar")
+
 
 setAadharDetails(response?.data?.data?.verificationResponse?.data?.ocr_data);
             setIsPreview(response.data.data.aadhaarPhoto);

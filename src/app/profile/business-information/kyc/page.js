@@ -16,7 +16,7 @@ const KYCVerification = () => {
   const [formData, setFormData] = useState({
     gstin: "",
   });
-  console.log(formData, "gst number")
+
   const [gstDetails, setGstDetails] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -40,10 +40,9 @@ const KYCVerification = () => {
         }
       );
 
-      console.log(response, "get gst");
+
       if (response.data && response.data.success) {
         setGstDetails(response?.data?.data);
-        console.log(response?.data?.data[0]?.failedAttempts)
         setRemainingAttempts(maxAttempts-response?.data?.data[0]?.failedAttempts || maxAttempts);
       } else {
         setGstDetails(null);
@@ -75,7 +74,7 @@ const KYCVerification = () => {
       toast.success("GST Verification in Progress...");
       fecthGst();
 
-      console.log(response, "gst post")
+
       if (response.data && response.data.success) {
         // setGstDetails(response.data.data);
         setErrorMessage("");
@@ -103,7 +102,6 @@ const KYCVerification = () => {
 
 
 
-console.log(remainingAttempts, "remaining attempts");
   return (
     <>
       <ToastContainer />

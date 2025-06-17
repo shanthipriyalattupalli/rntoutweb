@@ -60,7 +60,7 @@ export default function Orders() {
   const [activeTab, setActiveTab] = useState('placed');
 
 
-  console.log(activeTab, "activetab")
+
 
   const fetchOrderHistory = async () => {
     try {
@@ -130,7 +130,7 @@ export default function Orders() {
     });
   };
 
-  console.log(orderItems, "orderitems")
+
 
   return (
 

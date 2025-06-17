@@ -31,7 +31,7 @@ const WithdrawalRequest = async() => {
   const userId = cookieStore.get(`userId`)?.value;
 
   const  transactionsWallet=await fetchWalletTransaction(userId);
-  console.log(transactionsWallet,"transactionsWallet")
+
   return (
     <div className="mx-auto p-4 bg-white">
       {/* Header */}
