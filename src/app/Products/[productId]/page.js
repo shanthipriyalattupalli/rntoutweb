@@ -3,15 +3,11 @@ import React from "react";
 import axios from "axios";
 import Link from "next/link";
 import { Images } from "@/Components/ProductDetails/Images";
-import ServerSideImageTabs from '../../../Components/ProductDetails/Images'
 import AddToCart from "../../../Components/ProductDetails/AddToCart";
 import Ratings from "@/Components/ProductDetails/Ratings";
-import ProductItem from "@/Components/Home/ProductItems";
 import RelatedItems from "@/Components/ProductDetails/RelatedItems";
 const truck = "/Assets/truck.svg"
 const estimation = "/Assets/estimation.svg"
-const stars = "/Assets/stars.svg";
-const left = '/Assets/leftarrow.svg';
 const startfill = '/Assets/star_fill.svg'
 const starHallFill = '/Assets/star_half_fill.svg'
 const starline = '/Assets/star_line.svg'
@@ -20,17 +16,9 @@ const relocation = '/Assets/relocation.svg';
 const maintenance = '/Assets/maintenance.svg';
 const upgrading = '/Assets/upgrading.svg';
 const sample = '/Assets/Sample.png';
-const favorite = "/Assets/favorite.svg"
-const favorited = '/Assets/favoritedicon.svg';
 const stock = '/Assets/stock.svg';
 const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 import { cookies } from "next/headers";
-import { FaGrinTongueWink } from "react-icons/fa";
-import ScrollToTop from "@/Components/ScrollToTop";
-
-
-
-
 const fetchProductById = async (productId, token, userId) => {
 
   try {
@@ -64,11 +52,7 @@ const fetchProductRatings = async (productId) => {
   }
 };
 
-
-
-
-
-const ProductPage = async ({ params }) => {
+export default async function ProductPage ({ params }) {
   const cookieStore = cookies();
   let token = cookieStore.get(`userToken`)?.value;
   let userId = cookieStore.get(`userId`)?.value;
@@ -341,5 +325,57 @@ const ProductPage = async ({ params }) => {
   )
 
 }
+export async function generateMetadata({ params }) {
+  const cookieStore = await cookies();
+  const token =  cookieStore.get("userToken")?.value;
+  const userId =  cookieStore.get("userId")?.value;
 
-export default ProductPage
+  const { productId } = await  params;
+
+  try {
+    const productData = await fetchProductById(productId, token, userId);
+    const product = productData?.variant;
+
+    if (!product) {
+      return {
+        title: "Product Not Found ",
+        description: "The requested product does not exist.",
+      };
+    }
+
+    const name = product?.metaTitle || product?.title;
+    const image = product?.images?.[0]?.url || "https://rntout.com/default-cover.jpg"; // Use full URL
+    const description =
+      product?.metaDescription ||
+      product?.description ||
+      `Explore ${name}'s product details and reviews.`;
+
+    return {
+      title: `${name} | RntOut`,
+      description,
+      openGraph: {
+        title: `${name} | RntOut`,
+        description,
+        url: `https://rntout.com/Products/${productId}`,
+        images: [
+          {
+            url: image,
+            alt: `${name} Cover Image`,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${name} | RntOut`,
+        description,
+        images: [image],
+      },
+    };
+  } catch (error) {
+    return {
+      title: "Error | RntOut",
+      description: "An error occurred while generating product metadata.",
+    };
+  }
+}
+
