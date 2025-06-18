@@ -68,7 +68,7 @@ const Banner = ({ banners, isLoading }) => {
         : (
           <>
             {activeBanners?.map((banner, index) => (
-             <div className="relative px-0 sm:px-[80px] py-[20px] md:py-10" key={index}>
+              <div className="relative px-0 sm:px-[80px] py-[20px] md:py-10" key={index}>
                 {/* Left Button */}
                 <button
                   className={`absolute left-2 sm:left-[5rem] top-1/2 transform -translate-y-1/2 z-10 
@@ -98,9 +98,14 @@ const Banner = ({ banners, isLoading }) => {
                   navigation={false}
                   pagination={{ clickable: true }}
                   modules={[Navigation, Pagination, Autoplay]}
-                  autoplay={{ delay: 3000 }}
+                  loop={true} // Enables infinite loop
+                  autoplay={{
+                    delay: 3000, // No delay between transitions
+                    disableOnInteraction: false
+                  }}
                   className="rounded-[40px] sm:rounded-[0px] md:rounded-[40px] border border-gray-200 h-[134px] sm:h-[536px] md:h-[536px]"
                 >
+
                   {banner.images?.map((image, idx) => (
                     <SwiperSlide key={idx} className="h-full">
                       <div className="relative h-full">
@@ -123,10 +128,6 @@ const Banner = ({ banners, isLoading }) => {
                           >
                             Rent Now!
                           </button> */}
-
-
-
-
                         </div>
                         {/* <div className="absolute top-4 sm:top-14 md:top-28 left-[80%] sm:left-[80%] text-slate-600 text-sm sm:text-base md:text-lg">
 

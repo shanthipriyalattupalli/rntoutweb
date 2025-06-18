@@ -64,7 +64,7 @@ const Blog = ({ blogs }) => {
             </svg>
           </a>
         </div>
-        <p className="text-gray-600 text-left mb-8 ">
+        <p className="text-gray-600 text-left mb-8 px-0 sm:px-14 ">
           "Smart Renting, Happy Living!"
         </p>
 
