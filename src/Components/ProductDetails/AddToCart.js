@@ -44,6 +44,7 @@ const [selectedDuration, setSelectedDuration] = useState(product?.rentalPrice?.[
       });
 
       toast.success(response.data.message);
+      
       window.dispatchEvent(new CustomEvent("cartUpdated",));
 
     } catch (error) {
@@ -61,6 +62,12 @@ const [selectedDuration, setSelectedDuration] = useState(product?.rentalPrice?.[
       handleAddToCart(product._id);
     } else {
       toast.error("You must be logged in to add items to cart.");
+      Swal.fire({
+        title: 'Login Required',
+        text: 'Please log in to add items to your cart.',
+        icon: 'warning',
+        confirmButtonText: 'oK' 
+      });
     }
   };
   const periodMapping = {

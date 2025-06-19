@@ -54,9 +54,20 @@ const KYCVerification = ({ setIsKyc }) => {
             });
             setIsKycSuccess(response.data.success);
             fetchAadharKyc()
-            toast.success("KYC Verified Successfully!");
+            // toast.success("KYC Verified Successfully!");
+            Swal.fire({
+                icon: "success",
+                title: "KYC Verified Successfully!",
+                text: "Your KYC verification is successful.",
+            });
         } catch (error) {
-            toast.error(error.response?.data?.message || "Verification failed");
+            // toast.error(error.response?.data?.message || "Verification failed");
+            Swal.fire({
+                icon: "error",
+                title: "Verification Failed",
+                text: error.response?.data?.message || "Something went wrong. Please try again.",
+            });
+
         } finally {
             setIsVerifying(false);
         }

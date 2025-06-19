@@ -15,6 +15,8 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import KYCVerification from "@/Components/Kyc/Kyc";
 const verified = '/Assets/verified.svg';
 import Cookies from "js-cookie";
+import { Delete, DeleteIcon } from "lucide-react";
+import { MdOutlineDelete } from "react-icons/md";
 
 
 
@@ -33,16 +35,19 @@ export default function ProfileSettings() {
     },
     dateOfBirth: "",
     gender: "Male",
-    profilePic: ""
+    profilePic: "",
+    removeProfilePic:""
   });
+
+  console.log(profile, "profile in profile settings");  
 
   const [errors, setErrors] = useState({ name: "", dateOfBirth: "" });
 
   const [selectedFile, setSelectedFile] = useState(null);
-  
+
 
   const token = Cookies.get("userToken");
-const Mobile=Cookies.get("userMobile")
+  const Mobile = Cookies.get("userMobile")
 
 
   // useEffect(() => {
@@ -103,8 +108,8 @@ const Mobile=Cookies.get("userMobile")
     const { name, value } = e.target;
 
     const keys = name.split(".");
-    if  (name === 'user. name')
-      setErrors({name:""})
+    if (name === 'user. name')
+      setErrors({ name: "" })
     setProfile((prev) => {
       let updatedProfile = { ...prev };
       let temp = updatedProfile;
@@ -191,8 +196,14 @@ const Mobile=Cookies.get("userMobile")
     } else {
       formDatas.append("profilePic", "");
     }
+    if (profile.removeProfilePic) {
+      formDatas.append("removeProfilePic", profile.removeProfilePic);
+    } else {
+      formDatas.append("removeProfilePic", false);
+    }
 
     try {
+      console.log("Form Data:", formDatas);
       const response = await axios.post(`${BASE_URL}/profile/add-or-update-user-profile`, formDatas, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -236,6 +247,10 @@ const Mobile=Cookies.get("userMobile")
       ...prevProfile,
       profilePic: null, // Set profilePic to null
     }));
+    setProfile((prevProfile)=>({
+      ...prevProfile,
+      removeProfilePic: true, 
+    }))
 
     // Dispatch event for profile pic update
     window.dispatchEvent(
@@ -310,6 +325,15 @@ const Mobile=Cookies.get("userMobile")
                 Edit Image
               </button>
             )}
+            {isEditable && (
+              <button
+                className="px-4 py-2 rounded-md text-sm font-md bg-red-500 text-white font-semibold mt-2"
+                onClick={handleProfileDelete}
+              >
+          Delete Image
+              </button>
+            )}
+
             {/* <img src={deleteicon} alt="delete" className="cursor-pointer" onClick={()=>handleProfileDelete()} disabled={!isEditable}/> */}
 
             {/* Hidden File Input */}

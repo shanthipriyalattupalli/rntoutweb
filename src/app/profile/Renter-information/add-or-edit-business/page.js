@@ -97,9 +97,24 @@ export default function BusinessInformation2() {
       if (!nameRegex.test(value)) return;
     }
 
+  if (name === 'ifsc' && !/^[a-zA-Z0-9]*$/.test(value)) {
+    return; // Reject the input if it’s not alphanumeric
+  }
 
+    if (name === "contactPhone") {
+      const onlyNumbers = value.replace(/\D/g, ""); // Allow only digits
 
-    if (name === "contactPhone" && value.length > 10) return;
+      if (onlyNumbers.length > 10) return;
+
+      // Validate: starts with 6-9
+      if (onlyNumbers.length > 0 && !/^[6-9]/.test(onlyNumbers)) return;
+
+      setFormData((prevState) => ({
+        ...prevState,
+        contactPhone: onlyNumbers,
+      }));
+      return;
+    }
 
 
 
@@ -451,11 +466,12 @@ export default function BusinessInformation2() {
 
                 </label>
                 <input id="accountNumber"
-                  type="text"
+                  type="tel"
                   placeholder="Enter code"
                   name='accountNumber'
                   value={formData?.accountNumber}
                   onChange={handleInputChange}
+                  
                 />
                 {errorMessage.accountNumber && <p className="text-red-500 text-sm">{errorMessage.accountNumber}</p>}
 
@@ -471,6 +487,8 @@ export default function BusinessInformation2() {
                   name='ifsc'
                   value={formData?.ifsc}
                   onChange={handleInputChange}
+                   pattern="[a-zA-Z0-9]*"
+                  
                 />
                 {errorMessage.ifsc && <p className="text-red-500 text-sm">{errorMessage.ifsc}</p>}
 
@@ -680,13 +698,19 @@ export default function BusinessInformation2() {
 
                 </label>
                 <input id="mobile-number"
-                  type="number"
+                  type="tel"
                   placeholder="Enter mobile number"
                   className={`${errorMessage ? "border-red-500" : ""}`}
                   name='contactPhone'
+                  pattern="[0-9]{10}"
+                  maxLength="10"
+                  required
                   value={formData?.contactPhone}
                   onChange={handleInputChange}
                 />
+                              {formData.contactPhone && formData.contactPhone.length > 0 && formData.contactPhone.length < 10 && (
+                <p className="text-red-500 text-sm mt-1">Enter a valid 10-digit number starting with 6-9</p>
+              )}
                 {errorMessage.contactPhone && <p className="text-red-500 text-sm">{errorMessage.contactPhone}</p>}
 
               </div>

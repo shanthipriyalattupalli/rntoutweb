@@ -197,7 +197,12 @@ const MainContent = () => {
     const files = Array.from(event.target.files);
     const previews = [];
     if (!files.length) {
-      toast.error("No files selected");
+      // toast.error("No files selected");
+      Swal.fire({
+        icon: "error",
+        title: "No files selected",
+        text: "Please select files to upload.",
+      });
       return;
     }
     Array.from(files).forEach((file) => {
@@ -512,11 +517,24 @@ const MainContent = () => {
       setErrors(newErrors);
       if (missingFields.length === Object.keys(newErrors).length) {
         // Show only one toast if everything is empty
-        toast.error("Please fill all required fields.", { autoClose: 3000 });
+        // toast.error("Please fill all required fields.", { autoClose: 3000 });
+        Swal.fire({
+          icon: "error",
+          title: "Missing Fields",
+          text: "Please fill all required fields.",
+          confirmButtonText: "OK",
+
+        });
       } else {
         // Show specific missing field errors
         missingFields.forEach((field) => {
-          toast.error(`${field} is required.`, { autoClose: 3000 });
+          // toast.error(`${field} is required.`, { autoClose: 3000 });
+          Swal.fire({
+            icon: "error",
+            title: "Missing Field",
+            text: `${field} is required.`,
+            confirmButtonText: "OK",
+          });
         });
       }
       return;

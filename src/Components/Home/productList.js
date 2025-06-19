@@ -94,7 +94,13 @@ const productList = ({ product }) => {
     if (userId) {
       handleAddToCart(_id);
     } else {
-      toast.error("You must be logged in to add items to cart.");
+      // toast.error("You must be logged in to add items to cart.");
+      Swal.fire({
+        title: 'Login Required',
+        text: 'Please log in to add items to your cart.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      });
     }
   };
 

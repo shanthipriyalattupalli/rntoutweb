@@ -294,6 +294,7 @@ const MainContent = () => {
     seoTags: [],
     isForSale: true,
     // salePrice: 0,
+     totalStock:0,
     stockQuantity: 0,
     location: {
       type: "Point",
@@ -574,6 +575,8 @@ const MainContent = () => {
       formDataToSend.append('isForSale', formData.isForSale);
       // formDataToSend.append('salePrice', formData.salePrice);
       formDataToSend.append('stockQuantity', formData.stockQuantity);
+      formDataToSend.append('totalStock', formData.stockQuantity);
+
       formDataToSend.append('pickupAddress', formData.pickupAddress);
       const coordinates = formData.location.coordinates;
       const validCoordinates = Array.isArray(coordinates) &&

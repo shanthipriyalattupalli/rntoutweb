@@ -7,6 +7,7 @@ import '../../../styles/Adddetail.css';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from '@/Components/ScrollToTop';
+import Swal from 'sweetalert2';
 
 
 const Layout = ({ children }) => (
@@ -29,13 +30,20 @@ const Layout = ({ children }) => (
 
 export default Layout;
 const handlePublish = () => {
-    toast.success("Product Published!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-    });
+    // toast.success("Product Published!", {
+    //     position: "top-right",
+    //     autoClose: 3000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    // });
+    Swal.fire({
+        title: 'Product Published Successfully!',
+        text: 'Your product is now under review.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+
+    })
 };
