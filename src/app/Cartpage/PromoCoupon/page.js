@@ -20,6 +20,8 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selected, setSelected] = useState(null);
   const [coupons, setCoupons] = useState([]);
+
+  console.log(coupons, "coupons");
   const [editingAddressId, setEditingAddressId] = useState(null);
 
   const token =
@@ -160,13 +162,12 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
                     </p>
                     <p className="font-normal text-xs">
                       Valid on orders over ₹{coupon.minRentAmount}
-                      {/* Usable{" "}
-                      {remainingUsage} more{" "} */}
-
                     </p>
+                    <p className="font-normal text-xs">Valid until: {moment(coupon.endDate).format('DD/MM/YY')}</p>
+
 
                     {/* Toggle Terms & Conditions */}
-                    <button
+                    {/* <button
                       className="text-blue-500 text-xs"
                       style={{ textAlign: "left" }}
                       onClick={() => toggleTermsAndConditions(coupon._id)}
@@ -174,13 +175,13 @@ const PromoCoupon = ({ isOpen, onClose, totalPrice, onDiscountedPrice }) => {
                       {isTermsVisible
                         ? "- Hide Terms & Conditions"
                         : "+ View Terms & Conditions"}
-                    </button>
+                    </button> */}
 
                     {/* Show Terms & Conditions if selected */}
                     {isTermsVisible && (
                       <ul className="font-normal text-xs mt-2">
                         <li>Minimum order value: ₹{coupon.minRentAmount}</li>
-                        <li>Valid until: {moment(coupon.endDate).format('DD/MM/YY')}</li>  
+                        <li>Valid until: {moment(coupon.endDate).format('DD/MM/YY')}</li>
                         <li>Cashback credited to CRED Balance</li>
                         <li>Rewards powered by CRED</li>
                       </ul>
