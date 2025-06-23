@@ -120,46 +120,51 @@ const Subscription = ({ plans, setIsSubscription, userPlans }) => {
 
 
   return (
-    <>
-      {isSubscription === "true" ?
-        <div className="flex flex-col gap-[24px] p-6 sm:p-[20px]" key={subscriptions?._id}>
+    <div className=' py-10 sm:px-[80px] px-4'>
+      <h2 className='text-2xl font-bold'>Subscription Plans</h2>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-10'>
 
-          <div className="flex justify-center items-center mb-4">
-            <div className="bg-orange-100 p-3 rounded-full">
-              <img src='/Assets/subscription2.svg' alt='subscription' className='' />
-            </div>
-          </div>
-          <h2 className="text-xl text-center font-bold">RntOut Subscription</h2>
-          <div className='flex-flex-col gap-[4px]'>
-            <span className='text-left'>Next invoice issue date</span>
-            <div className='flex justify-between'>
-              <span>{new Date(userPlans?.endDate).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}</span>
-              <div className="text-center ">
-                <span className="text-red-500 font-bold text-xl">₹{subscriptions?.price} </span>
-                <span className="text-gray-500 font-sm text-md"> /{subscriptions?.name}</span>
+        {isSubscription === "true" ?
+          <div className="flex flex-col gap-[24px] p-6 sm:p-[20px] border border-slate-200 rounded-xl" key={subscriptions?._id}>
+
+            <div className="flex justify-center items-center mb-4">
+              <div className="bg-orange-100 p-3 rounded-full">
+                <img src='/Assets/subscription2.svg' alt='subscription' className='' />
               </div>
             </div>
-          </div>
+            <h2 className="text-xl text-center font-bold">RntOut Subscription</h2>
+            <div className='flex-flex-col gap-[4px]'>
+              <span className='text-left'>Next invoice issue date</span>
+              <div className='flex justify-between'>
+                <span>
+                  {new Date(userPlans?.endDate).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+                </span>
+                <div className="text-center">
+                  <span className="text-red-500 font-bold text-xl">₹{subscriptions?.price} </span>
+                  <span className="text-gray-500 font-sm text-md"> /{subscriptions?.name}</span>
+                </div>
+              </div>
+            </div>
 
-          <div>
-            <p className="text-gray-600 font-semibold">BENEFITS:</p>
-            <ul className="mt-2 space-y-2">
-              {subscriptions?.benefits?.map((benefit, index) => (
-                <li key={index} className="flex items-center gap-2 text-gray-700">
-                  <FaRegCheckCircle className="text-green-700" />
-                  {benefit}
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div>
+              <p className="text-gray-600 font-semibold">BENEFITS:</p>
+              <ul className="mt-2 space-y-2">
+                {subscriptions?.benefits?.map((benefit, index) => (
+                  <li key={index} className="flex items-center gap-2 text-gray-700">
+                    <FaRegCheckCircle className="text-green-700" />
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
 
 
-          {/* <button
+            {/* <button
             className="flex gap-2 text-center justify-center text-[12px] font-[500] py-2 rounded-lg "
             style={{ color: "rgba(255, 45, 85, 1)" }}
           >
@@ -167,60 +172,61 @@ const Subscription = ({ plans, setIsSubscription, userPlans }) => {
             Cancel Subscription
           </button> */}
 
-        </div> :
-   <>
-          {plans.map((plan, index) => (
-            <div className="flex flex-col gap-2 p-8" key={plan._id}>
+          </div> :
+          <>
+            {plans.map((plan, index) => (
+              <div className="flex flex-col gap-2 p-8" key={plan._id}>
 
-              <div className="flex justify-center items-center mb-4">
-                <div className="bg-orange-100 p-3 rounded-full">
-                  <img src='/Assets/subscription2.svg' alt='subscription' className='' />
+                <div className="flex justify-center items-center mb-4">
+                  <div className="bg-orange-100 p-3 rounded-full">
+                    <img src='/Assets/subscription2.svg' alt='subscription' className='' />
+                  </div>
                 </div>
+                <h2 className="text-xl text-center font-bold">RntOut Subscription</h2>
+                <span className='text-center'>{plan.description}</span>
+                <div className="mt-4">
+                  <p className="text-gray-600 font-semibold">BENEFITS:</p>
+                  <ul className="mt-2 space-y-2">
+                    {plan.benefits
+                      .map((benefit, index) => (
+                        <li key={index} className="flex items-center gap-2 text-gray-700">
+                          <FaRegCheckCircle className="text-green-700" />
+                          {benefit}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+                <div className="text-center ">
+                  <span className="text-red-500 font-bold text-xl">₹{plan.price} </span>
+                  <span className="text-gray-500 font-sm text-md"> /{plan.name}</span>
+                </div>
+                <button
+                  className="w-full mt-4  text-white text-lg font-semibold py-2 rounded-lg transition"
+                  style={{ backgroundColor: "rgba(255, 45, 85, 1)" }}
+                  onClick={() => createPayment(plan._id)}
+                >
+                  Buy Now
+                </button>
+                {displayRazorpay && (
+                  <Razorpay
+                    orderId={orderId}
+                    planId={selectedPlanId}
+                    setIsSubscription={setIsSubscription}
+                    amount={plan.price}
+                    currency={"INR"}
+                    keyId={apiKey}
+                    handlePayment={handlePayment}
+                    name={userName} />
+                )}
               </div>
-              <h2 className="text-xl text-center font-bold">RntOut Subscription</h2>
-              <span className='text-center'>{plan.description}</span>
-              <div className="mt-4">
-                <p className="text-gray-600 font-semibold">BENEFITS:</p>
-                <ul className="mt-2 space-y-2">
-                  {plan.benefits
-                    .map((benefit, index) => (
-                      <li key={index} className="flex items-center gap-2 text-gray-700">
-                        <FaRegCheckCircle className="text-green-700" />
-                        {benefit}
-                      </li>
-                    ))}
-                </ul>
-              </div>
-              <div className="text-center ">
-                <span className="text-red-500 font-bold text-xl">₹{plan.price} </span>
-                <span className="text-gray-500 font-sm text-md"> /{plan.name}</span>
-              </div>
-              <button
-                className="w-full mt-4  text-white text-lg font-semibold py-2 rounded-lg transition"
-                style={{ backgroundColor: "rgba(255, 45, 85, 1)" }}
-                onClick={() => createPayment(plan._id)}
-              >
-                Buy Now
-              </button>
-              {displayRazorpay && (
-                <Razorpay
-                  orderId={orderId}
-                  planId={selectedPlanId}
-                  setIsSubscription={setIsSubscription}
-                  amount={plan.price}
-                  currency={"INR"}
-                  keyId={apiKey}
-                  handlePayment={handlePayment}
-                  name={userName} />
-              )}
-            </div>
-          ))}
+            ))}
           </>
 
-    
-      }
 
-    </>
+        }
+
+      </div>
+    </div>
 
   )
 }

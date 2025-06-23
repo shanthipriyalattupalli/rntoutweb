@@ -253,7 +253,7 @@ const ProductList = () => {
   }, []);
 
   return (
-    <main className="min-h-screen  w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5">
+    <main className="min-h-screen  w-full px-2 sm:px-6 md:px-8 lg:px-12 xl:px-5">
 
       <div className="px-8 sm:px-8 md:px-2 xl:px-14 lg:px-16 2xl:px-16">
         <Breadcrumb categoryName={breadcrumbCategoryName} />
@@ -267,7 +267,7 @@ const ProductList = () => {
           <Sidebar categories={categories} subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} onRatingChange={handleRating} />
           {/* <Sidebar categories={categories} subCategories={subCategories} subcategoryId={subcategoryId} subcategoryID={handleSubcategoryId} onPriceChange={handlePriceChange} distance={handleDistance} rating={handleRating} /> */}
 
-          <div className="w-full flex flex-col gap-3 py-4 h-[auto] border border-slate-200  bg-white rounded-r-lg overflow-hidden">
+          <div className="w-full flex flex-col gap-3 py-4 h-[auto] border border-slate-200 bg-white rounded-r-lg overflow-hidden">
 
             {product?.length > 0 &&
               <div className="flex items-center gap-2 px-8 border-b-2 pb-4" >
@@ -279,12 +279,12 @@ const ProductList = () => {
                       categoryContainer.scrollBy({ left: -250, behavior: "smooth" }); // Scroll right by 200px smoothly
                     }
                   }}><span>{"<<"}</span> </p>
-                <div id="product-container" className="w-[956px] h-[32px] overflow-x-auto border overflow-visible whitespace-nowrap rounded-lg scrollbar-hide">
-                  <div id="product-container" className="flex w-max justify-center">
+                <div id="product-container" className="w-full h-[32px] overflow-x-auto border overflow-visible whitespace-nowrap rounded-lg scrollbar-hide">
+                  <div id="product-container" className="flex w-full justify-between">
                     {product?.map((productItem) => (
                       <div
                         key={productItem._id}
-                        className={`h-[29px] sm:w-[316px] w-[250px] justify-center text-center rounded-lg px-[8px] py-[4px] cursor-pointer ${active === productItem._id ? 'bg-[#2F6FED] text-white' : ''
+                        className={`h-[29px] sm:w-full w-full  justify-center text-center rounded-lg px-[24px] py-[4px] cursor-pointer ${active === productItem._id ? 'bg-[#2F6FED] text-white' : ''
                           }`}
                         onClick={() => handleProductClick(productItem._id)}
                       >

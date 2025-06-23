@@ -173,7 +173,7 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
 
   return (
     <div className="w-full sm:w-80">
-      <div className='border rounded-tl-lg flex flex-col gap-[8px]'>
+      <div className="border flex flex-col gap-[8px] rounded-none md:rounded-tl-lg">
         <div className='p-[16px]'>
           <div
             className='flex items-center justify-between cursor-pointer'
@@ -215,7 +215,7 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
         </div>
       </div>
       <div className='space-y-6'>
-        <div className='pt-3 border rounded-bl-lg'>
+        <div className='pt-3 border rounedd-none sm:rounded-bl-lg'>
           <div className=''>
             <div
               className='flex items-center justify-between cursor-pointer'

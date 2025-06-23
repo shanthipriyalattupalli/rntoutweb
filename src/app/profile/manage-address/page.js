@@ -76,6 +76,16 @@ export default function ManageAddresses() {
   const [formData, setFormData] = useState(initialFormData);
 
   const handleAddressToggle = () => {
+        if (!token) {
+          Swal.fire({
+            icon: "error",
+            title: "Login Required",
+            text: "Please log in to add address.",
+            confirmButtonColor: "#d33",
+    
+          })
+          return;
+        }
     setIsAddressOpen(!isAddressOpen);
     fetchAddress();
 

@@ -2,15 +2,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../../styles/Notifications.css";
-import { FaEllipsisV, FaBell } from "react-icons/fa";
+import { FaEllipsisV, FaBell, FaEdit, FaTrash } from "react-icons/fa";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 const Notifications = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+  const token = Cookies.get("userToken");
   const [notifications, setNotifications] = useState([]);
   const [selectedNotificationId, setSelectedNotificationId] = useState(null);
   const userId = Cookies.get("userId");
 
+  const [isRead, setIsRead] = useState(false);
   // Fetch notifications from API
   const fetchNotifications = async () => {
     try {
@@ -38,10 +41,36 @@ const Notifications = () => {
     }
   };
 
+
+  const handleMarkAsRead = async (id) => {
+    console.log("Marking notification as read:", token);
+    try {
+      const response = await axios.patch(`${BASE_URL}/notifications/read/${id}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Notification marked as read:", response.data);
+      if (response.data.success === true) {
+        setIsRead(true);
+        setSelectedNotificationId(null);
+        fetchNotifications();
+
+      }
+
+
+
+    } catch (error) {
+      console.error("Error deleting notification:", error);
+    }
+  };
+
+
   // Toggle delete menu
   const toggleOptions = (id) => {
     setSelectedNotificationId(selectedNotificationId === id ? null : id);
   };
+  console.log("Notifications:", notifications);
 
   return (
     <>
@@ -51,7 +80,7 @@ const Notifications = () => {
           notifications.map((notification, index) => (
             <div
               key={notification._id}
-              className={`notification-item ${index % 2 === 0 ? "highlight" : ""}`}
+              className={`notification-item ${notification?.isRead ? "" : "highlight"}`}
             >
               <div className="notification-icon">
                 <img src={notification.icon} alt="" />
@@ -64,9 +93,17 @@ const Notifications = () => {
                 <span className="time">{new Date(notification.sentAt).toLocaleString()}</span>
                 <FaEllipsisV className="options-icon" onClick={() => toggleOptions(notification._id)} />
                 {selectedNotificationId === notification._id && (
+
                   <div className="delete-option">
-                    <button onClick={() => handleDelete(notification._id)}>Delete</button>
+                    <button onClick={() => {
+                      if (!notification.isread) {
+                        handleMarkAsRead(notification._id);
+                      }
+                    }} className="option-content"><FaEdit />{notification.isRead ? "Read" : "Mark as Read"}</button>
+
+                    <button onClick={() => handleDelete(notification._id)} className="option-content"><FaTrash />Delete</button>
                   </div>
+
                 )}
               </div>
             </div>

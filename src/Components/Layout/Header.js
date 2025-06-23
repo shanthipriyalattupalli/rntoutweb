@@ -334,7 +334,7 @@ function Header() {
     if (!token) {
       await Swal.fire({
         title: "Login Required",
-        text: "You need to be logged in to add a property on rent.",
+        text: "Please log in to proceed.",
         icon: "info",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "OK",
@@ -433,27 +433,29 @@ function Header() {
           {(name || token) && (
             <>
               {/* Visible only on small devices */}
-              <div className="sm:hidden border border-orange-400 rounded-[10px] p-2">
+             <Link href="/subscriptions"><div className="sm:hidden border border-orange-400 rounded-[10px] p-2">
                 <Image
                   src="/Assets/subscription.svg"
                   width={20}
                   height={20}
                   alt="subscription"
-                  onClick={() => setIsSubscription(true)}
+                  // onClick={() => setIsSubscription(true)}
                   className="flex w-[100px] h-[20px]"
                 />
               </div>
+              </Link> 
 
-              <div className="hidden sm:flex shadow-sm border border-[rgba(244,128,3,0.45)] rounded-[10px] p-2">
+              <Link href="/subscriptions"> <div className="hidden sm:flex shadow-sm border border-[rgba(244,128,3,0.45)] rounded-[10px] p-2">
                 <Image
                   src="/Assets/subscription.svg"
                   width={20}
                   height={20}
                   alt="subscription"
-                  onClick={() => setIsSubscription(true)}
+                  // onClick={() => setIsSubscription(true)}
                   className="flex"
                 />
               </div>
+              </Link>
             </>
           )}
 
@@ -461,7 +463,8 @@ function Header() {
 
 
 
-          {isSubscription && (
+
+          {/* {isSubscription && (
             <div className="modal-overlay" onClick={() => setIsSubscription(false)}>
               <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="close-button" onClick={() => setIsSubscription(false)}>
@@ -470,7 +473,7 @@ function Header() {
                 <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans} userPlans={userPlans} />
               </div>
             </div>
-          )}
+          )} */}
 
           <CartIcon userId={userId} />
 
@@ -535,11 +538,29 @@ function Header() {
         </div>
       </header>
       <div className="sm:flex md:flex lg:hidden mt-[70px] sm:mt-[70px] md:mt[70px] top-0 left-0 w-full sm:pt-[60px  ] border border-b-1 w-full flex md:flex gap-3 px-2 py-4 md:px-16 sm:px-12" >
-        <div className="items-center  w-full relative cursor-pointer sm:block md:block lg:hidden">
+  
+
+        <LocationSearch />
+
+        <div className="sm:flex md:flex lg:hidden  w-1/2 h-10 flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
+          <Image src={nearby} alt="location" width={16} height={16} />
+          <select className="bg-transparent text-xs cursor-pointer mr-2" value={selectedDistance} onChange={handleDistanceChange}>
+            <option className="cursor-pointer" value="20">20 km</option>
+            <option className="cursor-pointer" value="30">30 km</option>
+            <option value="40">40 km</option>
+            <option value="50">50 km</option>
+            <option value="60">60 km</option>
+            <option value="100">100 + km</option>
+          </select>
+        </div>
+      </div>
+
+
+            <div className=" p-3 items-center  w-full relative cursor-pointer sm:block md:block lg:hidden border border-b-1">
           <SearchInput
             value={searchValue}
             onChange={(e) => handleSearchInputChange(e.target.value)}
-            className="w-[120px] md:w-[400px]"
+            className="w-full"
           />
           {showSuggestions && (
             <ul className="absolute left-0 w-full bg-white border rounded shadow top-[40px] z-40">
@@ -566,21 +587,7 @@ function Header() {
             </ul>
           )}
         </div>
-
-        <LocationSearch />
-
-        <div className="sm:flex md:flex lg:hidden  w-1/2 h-10 flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
-          <Image src={nearby} alt="location" width={16} height={16} />
-          <select className="bg-transparent text-xs cursor-pointer mr-2" value={selectedDistance} onChange={handleDistanceChange}>
-            <option className="cursor-pointer" value="20">20 km</option>
-            <option className="cursor-pointer" value="30">30 km</option>
-            <option value="40">40 km</option>
-            <option value="50">50 km</option>
-            <option value="60">60 km</option>
-            <option value="100">100 + km</option>
-          </select>
-        </div>
-      </div>
+        
     </>
 
   );

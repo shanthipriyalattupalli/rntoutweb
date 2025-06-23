@@ -1,70 +1,42 @@
-"use client"
+"use client";
+import { useState } from "react";
 
-import React, { memo } from 'react';
-import Image from 'next/image';
+const defaultImages = ["/Assets/Hero 6.png", "/Assets/Hero 23.png"];
 
-const Promoad = '../Assets/redchair.png';
-const banners = '../Assets/banners.png';
+const BannerSection = ({ banner }) => {
+  const [loadedImages, setLoadedImages] = useState([]);
 
+  const handleImageLoad = (index) => {
+    setLoadedImages((prev) => [...prev, index]);
+  };
 
-// Lazy loaded image component
-const LazyImage = ({ src, alt }) => {
-  return <img src={src} alt={alt} className="w-full h-[400px] object-cover" loading="lazy" />;
-};
-
-const FurnishAd = ({banner}) => {
+  const imagesToRender = banner?.images?.length > 0 ? banner.images : defaultImages;
 
   return (
-<>
-  {/* Text Section */}
-  {/* <div className="absolute sm:relative w-full md:w-1/2 px-8 md:px-16 lg:px-24 z-10 top-0 left-0">
-  <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-red-500">
-    Be free when you furnish.
-  </h1>
-  <p className="text-sm md:text-base lg:text-lg mb-4 text-gray-700 ">
-    We know you know what you want. <br />
-    So get it how you want it, only with us.
-  </p>
-  <p className="text-red-500 font-bold text-base md:text-lg lg:text-xl mb-4">
-    RENT IT or BUY IT.
-  </p>
-  <p className="text-sm md:text-base lg:text-lg text-gray-700">
-    Because being home is being free.
-  </p>
-</div> */}
+    <div className="flex flex-wrap justify-center gap-8 px-4 md:px-20">
+      {imagesToRender.map((src, index) => (
+        <div
+          key={index}
+          className="w-full max-w-[650px] aspect-[13/6] relative rounded-lg overflow-hidden"
+        >
+          {/* Shimmer placeholder */}
+          {!loadedImages.includes(index) && (
+            <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>
+          )}
 
-
-  {/* Image Section with Gradient */}
-
-    {/* Gradient Overlay */}
-<div className="flex flex-wrap justify-center gap-8 px-4 md:px-20">
-  {
-    banner?.images?.map((banners,index)=>(
-        <img
-    src={banners}
-    alt="Promotional Banner"
-    className="w-full max-w-[650px] aspect-[13/6] rounded-lg hover:scale-105 transition-transform duration-500 ease-in-out"
-  />
-    ))
-  }
-  
-  {/* <img
-    src={banner?.image}
-    alt="Promotional Banner"
-    className="w-full max-w-[650px] aspect-[13/6] rounded-lg hover:scale-105 transition-transform duration-500 ease-in-out"
-  />
-  <img
-    src={banners}
-    alt="Promotional Banner"
-    className="w-full max-w-[650px] aspect-[13/6] rounded-lg hover:scale-105 transition-transform duration-500 ease-in-out"
-  /> */}
-</div>
-
-</>
-
-
+          {/* Actual image */}
+          <img
+            src={src}
+            alt={`Promotional Banner ${index + 1}`}
+            className={`w-full h-full object-cover rounded-lg transition-transform duration-500 ease-in-out hover:scale-105 ${
+              loadedImages.includes(index) ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => handleImageLoad(index)}
+          />
+        </div>
+      ))}
+    </div>
   );
 };
 
-// Memoizing the component for performance optimization
-export default memo(FurnishAd);
+export default BannerSection;

@@ -73,7 +73,7 @@ const ITInfrastructure = ({ products,title,categoryId,isLoading }) => {
 
   return (
   products.length >0 &&  
-<div className="mt-10 sm:mt-0 px-2 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+<div className="mt-4 sm:mt-10 px-2 sm:px-6 md:px-8 lg:px-12 xl:px-16">
   <div className="mx-auto  md:p-6">
     {/* Heading Section */}
     <div className="flex flex-col sm:flex-row justify-between items-center mb-4">

@@ -357,7 +357,7 @@ const ProductItem = ({ product }) => {
 
 
         {isView ? (
-          <div className="p-1 sm:p-4 mt-4 sm:mt-0">
+          <div className="p-2 sm:p-4 mt-4 sm:mt-0">
             <h2 className="product-title text-[#070707] font-[500] truncate w-full overflow-hidden whitespace-nowrap">
               {title || title.charAt(0).toUpperCase() + title?.slice(1)}
             </h2>
@@ -477,7 +477,7 @@ const ProductItem = ({ product }) => {
                     >
                       {periodMapping[detail.period] || detail.period.charAt(0).toUpperCase() + detail.period?.slice(1)}
                     </span>
-                    <span className={`block text-lg font-[500] text-[16px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-black"}`}>
+                    <span className={`block text-lg font-[500] text-[12px] sm:text-[16px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-black"}`}>
                       ₹
                       {detail.price && detail.price.toLocaleString()}
                     </span>

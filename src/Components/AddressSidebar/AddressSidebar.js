@@ -68,6 +68,20 @@ const AddressSidebar = ({ isOpen, onClose, setEditingAddressId, editingAddressId
       ...prevState,
       [name]: value,
     }));
+       if (name === "mobile") {
+      const onlyNumbers = value.replace(/\D/g, ""); // Allow only digits
+
+      if (onlyNumbers.length > 10) return;
+
+      // Validate: starts with 6-9
+      if (onlyNumbers.length > 0 && !/^[6-9]/.test(onlyNumbers)) return;
+
+      setFormData((prevState) => ({
+        ...prevState,
+        mobile: onlyNumbers,
+      }));
+      return;
+    }
   };
 
   const handleSaveAddress = async () => {
@@ -81,7 +95,7 @@ const AddressSidebar = ({ isOpen, onClose, setEditingAddressId, editingAddressId
       country: "Country is required.",
       zip: "ZIP code is required.",
     };
-  
+
     // Validate fields (except landmark)
     for (const field in requiredFields) {
       if (!formData[field] || (field === "mobile" && formData[field].length !== 10)) {
@@ -90,12 +104,18 @@ const AddressSidebar = ({ isOpen, onClose, setEditingAddressId, editingAddressId
         return;
       }
     }
-  
+
     if (!token) {
-      toast.error("Please login to add address.");
+      Swal.fire({
+        icon: "error",
+        title: "Login Required",
+        text: "Please log in to add address.",
+        confirmButtonColor: "#d33",
+
+      })
       return;
     }
-  
+
     setErrorMessage("");
 
     try {
@@ -328,8 +348,11 @@ const AddressSidebar = ({ isOpen, onClose, setEditingAddressId, editingAddressId
             maxLength="10"
             required
           />
+          {formData.mobile && formData.mobile.length > 0 && formData.mobile.length < 10 && (
+            <p className="text-red-500 text-sm mt-1">Enter a valid 10-digit number starting with 6-9</p>
+          )}
 
-          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          {/* {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>} */}
           <label className="pt-4">Flat/ House no/ Floor / Building<span className="text-red-500">*</span></label>
 
           <input

@@ -452,9 +452,7 @@ const AddressSidebar = ({ isOpen, onClose, onAddressSelect, addressId, onAddress
               {formData.mobile && formData.mobile.length > 0 && formData.mobile.length < 10 && (
                 <p className="text-red-500 text-sm mt-1">Enter a valid 10-digit number starting with 6-9</p>
               )}
-
-
-          
+                       
               <label className="pt-4">Flat/ House no/ Floor / Building<span className="text-red-500">*</span></label>
 
               <input

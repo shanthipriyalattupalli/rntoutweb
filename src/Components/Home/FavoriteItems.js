@@ -328,7 +328,7 @@ const FavoriteItem = ({ product, fetchFavorites }) => {
 
 
         {isView ? (
-          <div className='p-1 sm:p-4 mt-4 sm:mt-0'>
+          <div className='p-2 sm:p-4 mt-4 sm:mt-0'>
             <h2 className="product-title text-[#070707] font-[500] truncate w-full overflow-hidden whitespace-nowrap">
               {title}
             </h2>

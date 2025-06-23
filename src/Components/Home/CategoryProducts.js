@@ -31,7 +31,7 @@ const CategoryProducts = ({ products,loading,moreData }) => {
       <ToastContainer />
       {products?.length > 0 ? (
         <>
-        <div className="px-0 sm:px-6 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 2xl:pl-10 mt-3">
+        <div className="px-0 sm:px-6 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 2xl:pl-10 mt-3">
           {products.map((product,index) => (
             <Suspense fallback={<div><ProductCard /></div>}>
               <ProductItems key={index} product={product} />

@@ -707,19 +707,21 @@ const CartPage = () => {
           />
         )}
 
-        <div className="mx-auto bg-white shadow-lg rounded-xl p-5 border mb-4">
+        {token && (    
+           <div className="mx-auto bg-white shadow-lg rounded-xl p-5 border mb-4">
           {/* Header with Dropdown Toggle */}
-          <div
-            className="flex items-center justify-between cursor-pointer"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <div className="flex items-center space-x-2">
-              <img src={rcb} />
-              <h2 className="font-poppins text-sm font-medium leading-5 text-left">Rent Cost Breakup</h2>
-            </div>
-            {isOpen ? (
-              <IoIosArrowUp className="text-gray-500" />
-            ) : (
+     
+            <div
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <div className="flex items-center space-x-2">
+                <img src={rcb} />
+                <h2 className="font-poppins text-sm font-medium leading-5 text-left">Rent Cost Breakup</h2>
+              </div>
+              {isOpen ? (
+                <IoIosArrowUp className="text-gray-500" />
+              ) : (
               <IoIosArrowDown className="text-gray-500" />
             )}
           </div>
@@ -753,7 +755,7 @@ const CartPage = () => {
               </div>}
             </div>
           )}
-        </div>
+        </div>)}
         <div className='summary-address'>
           <div className='summary-item address'>
             <div className="flex gap-50">
