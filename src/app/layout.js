@@ -30,8 +30,10 @@ export default function RootLayout({ children }) {
         <GlobalLoading />
         <GoogleMapsProvider>
           <Header />
-          <Navigation />
+          <div className="relative lg:pt-[80px] ">
+          {/* <Navigation />   */}
           {children}
+          </div>
           <MobileApp />
           <Newsletter />
         </GoogleMapsProvider>

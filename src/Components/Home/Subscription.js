@@ -17,7 +17,7 @@ const Benefits = [
 
 const Subscription = ({ plans, setIsSubscription, userPlans }) => {
 
-
+console.log(plans,"plans in subscription component")
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const userId = Cookies.get("userId");
   const token = Cookies.get("userToken");
@@ -29,6 +29,7 @@ const Subscription = ({ plans, setIsSubscription, userPlans }) => {
   const [subscriptionPlanId, setSubscriptionPlanId] = useState(null);
   const [selectedPlanId, setSelectedPlanId] = useState(null);
   const [subscriptions, setSubscription] = useState(null);
+  const [redirectedurl, setRedirectUrl] = useState(null);
   const planId = Cookies.get("planId")
   const apiKey = "rzp_test_a4GiGqcTxFZlKT";
 
@@ -61,7 +62,8 @@ const Subscription = ({ plans, setIsSubscription, userPlans }) => {
 
   const handleSubscriptionCheckout = async (planId) => {
     const payload = {
-      planId: planId
+      planId: planId,
+
     }
     try {
       const response = await axios.post(`${BASE_URL}/user-subscription/create-order`, payload, {
@@ -125,6 +127,7 @@ const Subscription = ({ plans, setIsSubscription, userPlans }) => {
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-10'>
 
         {isSubscription === "true" ?
+        <>
           <div className="flex flex-col gap-[24px] p-6 sm:p-[20px] border border-slate-200 rounded-xl" key={subscriptions?._id}>
 
             <div className="flex justify-center items-center mb-4">
@@ -160,6 +163,7 @@ const Subscription = ({ plans, setIsSubscription, userPlans }) => {
                   </li>
                 ))}
               </ul>
+                  
             </div>
 
 
@@ -172,10 +176,13 @@ const Subscription = ({ plans, setIsSubscription, userPlans }) => {
             Cancel Subscription
           </button> */}
 
-          </div> :
+          </div>
+            {redirectedurl}
+          </>
+           :
           <>
             {plans.map((plan, index) => (
-              <div className="flex flex-col gap-2 p-8" key={plan._id}>
+              <div className="flex flex-col gap-2 p-8 border border-slate-200 rounded-xl" key={plan._id}>
 
                 <div className="flex justify-center items-center mb-4">
                   <div className="bg-orange-100 p-3 rounded-full">
@@ -216,10 +223,13 @@ const Subscription = ({ plans, setIsSubscription, userPlans }) => {
                     currency={"INR"}
                     keyId={apiKey}
                     handlePayment={handlePayment}
-                    name={userName} />
+                    name={userName}
+                    setRedirectUrl={setRedirectUrl}
+                  />
                 )}
               </div>
             ))}
+      
           </>
 
 

@@ -4,6 +4,9 @@ import Subscription from '@/Components/Home/Subscription'
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { FaRegCheckCircle } from "react-icons/fa";
 
 
 
@@ -20,7 +23,8 @@ const page = () => {
         const fetchSubscriptionPlans = async () => {
           try {
             const response = await axios.get(`${BASE_URL}/subscription-plans/plans`);
-            setSubscriptionPlans(response.data.data)
+            setSubscriptionPlans(response.data.data);
+            console.log(response.data.data, "subscription plans");
           } catch (error) {
             console.log(error, "error")
       

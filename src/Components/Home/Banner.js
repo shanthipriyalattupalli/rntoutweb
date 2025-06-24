@@ -68,7 +68,7 @@ const Banner = ({ banners, isLoading }) => {
         : (
           <>
             {activeBanners?.map((banner, index) => (
-              <div className="relative px-0 sm:px-[80px] py-[20px] md:py-10" key={index}>
+              <div className="relative px-2 sm:px-[80px] py-[20px] md:py-10" key={index}>
                 {/* Left Button */}
                 <button
                   className={`absolute left-2 sm:left-[5rem] top-1/2 transform -translate-y-1/2 z-10 
@@ -103,7 +103,7 @@ const Banner = ({ banners, isLoading }) => {
                     delay: 3000, // No delay between transitions
                     disableOnInteraction: false
                   }}
-                  className="rounded-[0px] sm:rounded-[40px]  md:rounded-[40px] border border-gray-200 h-[250px] sm:h-[536px] md:h-[536px]"
+                  className="rounded-[10px] sm:rounded-[40px]  md:rounded-[40px] border border-gray-200 h-[250px] sm:h-[536px] md:h-[536px]"
                 >
 
                   {banner.images?.map((image, idx) => (

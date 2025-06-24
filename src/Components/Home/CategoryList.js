@@ -114,7 +114,7 @@ const CategoryList = ({ products = [], categories, isLoading }) => {
   return (
     <div className="bg-white py-4 flex flex-col">
       <div className="h-auto px-2 md:px-10 lg:px-24 xl:px-20">
-        <h1 className="text-xl sm:text-2xl font-bold pb-4 text-center sm:text-left">
+        <h1 className="text-xl sm:text-2xl font-bold pb-4  text-left">
          Explore
         </h1>
 {isLoading ? (

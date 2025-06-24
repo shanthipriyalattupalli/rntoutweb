@@ -142,24 +142,11 @@ const Home = async () => {
     <div>
 
       <FirebaseComponent />
-      <Banner banners={banners} />
-      <CategoryList categories={categories} />
+<div className="flex sm:flex-col flex-col-reverse">
+  <Banner banners={banners} />
+  <CategoryList categories={categories} />
+</div>
 
-      {/* <CuratedCollections /> */}
-      {/* {Object.entries(products).map(([categoryName, productsArray], index) => {
-        console.log(productsArray,"productArray")
-        const categoryId = productsArray[0]?.categoryId?._id;
-
-        return (
-          <div key={categoryName}>
-            <ITInfrastructure
-              title={categoryName}
-              products={productsArray}
-              categoryId={categoryId}
-            />
-          </div>
-        );
-      })} */}
       {categories.map((category) => {
         const categoryName = category.categoryName;
         const productsArray = products[categoryName] || []; // Get products by name
@@ -181,17 +168,6 @@ const Home = async () => {
       </div>
       <Products categories={TrendingCategories} />
 
-      {/* <PromotionalAd banner={activeBanners[1]} /> */}
-      {/* <ITInfrastructure products={products["IT Infrastructure"] || []} categoryId={categories[0]?._id} /> */}
-      {/* <Furniture products={products["Furniture"] || []} categoryId={categories[1]?._id} />
-      <MedicalEquipment products={products["Medical Equipment"] || []} categoryId={categories[2]?._id} />
-      <VacationEquipment products={products["Vacation Equipment"] || []} categoryId={categories[3]?._id} />
-      <PromotionalAd banner={activeBanners[0]} />
-      {/* <PromotionalAd banner={activeBanners[1]} /> */}
-      {/* <Vehicles products={products["Vehicles"] || []} categoryId={categories[4]?._id} />
-      <PartyMaterial products={products["Party Material"] || []} categoryId={categories[5]?._id} />
-      <SportsGym products={products["Sport & Gym"] || []} categoryId={categories[6]?._id} />
-      <HouseholdKitchen products={products["Household & Kitchen"] || []} categoryId={categories[7]?._id} />  */}
       <Services />
       {/* <Achievements /> */}
       <Blogs blogs={blogs} />

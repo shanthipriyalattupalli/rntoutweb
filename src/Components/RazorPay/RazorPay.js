@@ -17,7 +17,7 @@ const loadScript = (src) => new Promise((resolve) => {
   };
   document.body.appendChild(script);
 });
-const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, handlePayment, name }) => {
+const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, handlePayment, name,setRedirectUrl }) => {
   const paymentId = useRef(null);
   const paymentMethod = useRef(null);
 
@@ -37,14 +37,19 @@ const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, 
             razorpay_order_id: orderId,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
-            planId
+            planId,
+            // source: "app"
           }, {
             headers: {
               Authorization: `Bearer ${token}`,
             }
           });
-
-          setIsSubscription(false)
+          console.log(result, "result in razorpay payment verification");
+          // setRedirectUrl(result?.data?.redirectUrl);
+          if (result.data.redirectUrl) {
+            window.location.href = result.data.redirectUrl;
+          }
+          setIsSubscription(false);
           Swal.fire({
             icon: "success",
             title: "Payment Completed!",
@@ -64,7 +69,7 @@ const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, 
             Cookies.set("hasSubscription",result.data.success , { expires: 7, secure: true, sameSite: "Strict" });
             Cookies.set("SubscriptionId",result.data.subscription.planId , { expires: 7, secure: true, sameSite: "Strict" });
 
-          window.location.reload();
+          // window.location.reload();
                         
 
         
