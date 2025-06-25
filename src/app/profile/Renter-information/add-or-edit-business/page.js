@@ -199,10 +199,14 @@ export default function BusinessInformation2() {
     setPreviewImages((prev) => prev.filter((_, index) => index !== indexToRemove));
 
 
+
     setFormData((prev) => ({
       ...prev,
       removedImageIndices: [...(prev.removedImageIndices || []), indexToRemove],
+      bannerImages: prev.bannerImages.filter((_, index) => index !== indexToRemove),
+
     }));
+
 
     toast.info("Image removed!");
   };
@@ -323,7 +327,7 @@ export default function BusinessInformation2() {
       formDataToSend.append("walletBalance", formData.walletBalance);
 
 
-
+console.log("Form Data to Send:", formDataToSend);
       const response = await axios.post(`${BASE_URL}/business-info/add-or-update`, formDataToSend, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -343,15 +347,24 @@ export default function BusinessInformation2() {
         });
       }
     } catch (error) {
-      if (error.response && error?.response?.data && error?.response?.data?.message) {
-        // toast.error(error?.response?.data?.message);
+      if(error?.response?.status === 413) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'File size too large. Please upload smaller files.',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        });
+        return;
+      }else{
+
         Swal.fire({
           icon: 'error',
           title: 'Error!',
           text: error?.response?.data?.message || 'Failed to submit business information',
           confirmButtonColor: '#d33',
           confirmButtonText: 'OK'
-        })
+        });
       }
       
       console.error("Error submitting business information:", error);
