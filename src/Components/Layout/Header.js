@@ -174,6 +174,17 @@ function Header() {
 
 
 
+    const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0); // true if scrolled down
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
 
   // const checkLocationPermission = async () => {
   //   if ("permissions" in navigator) {
@@ -365,7 +376,11 @@ function Header() {
 
   return (
     <>
-      <header className="flex fixed top-0 left-0 w-full z-50 bg-white shadow-sm w-full items-center justify-between px-6 md:px-10 lg:px-20 py-3 gap-4 bg-white border border-b-1 z-50">
+    <header
+      className={`flex fixed top-0 left-0 w-full z-50 bg-white items-center justify-between px-6 md:px-10 lg:px-20 py-3 gap-4 transition-all duration-300 ${
+        isScrolled ? 'shadow-sm border-b' : ''
+      }`}
+    >
         {/* Left Section - Logo */}
         <div className="flex items-center cursor-pointer">
           <Link href="/" style={{ all: "unset" }}>

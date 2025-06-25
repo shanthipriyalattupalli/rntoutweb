@@ -226,7 +226,7 @@ const ProductItem = ({ product }) => {
       {/* <ToastContainer /> */}
       <style>{customStyles}</style>
 
-      <div className="2xl:w-full xl:w-full h-[340px] sm:h-[436px] rounded-[12px] bg-white  border border-slate-200"
+      <div className={`2xl:w-full xl:w-full h-[340px] sm:h-[436px] rounded-[12px] bg-white  border border-slate-200 ${isHovered ? "shadow-lg" : "shadow-none"}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
         <div className="relative">

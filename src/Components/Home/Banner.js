@@ -68,7 +68,7 @@ const Banner = ({ banners, isLoading }) => {
         : (
           <>
             {activeBanners?.map((banner, index) => (
-              <div className="relative px-2 sm:px-[80px] py-[20px] md:py-10" key={index}>
+              <div className="relative px-2 sm:px-[80px] " key={index}>
                 {/* Left Button */}
                 <button
                   className={`absolute left-2 sm:left-[5rem] top-1/2 transform -translate-y-1/2 z-10 

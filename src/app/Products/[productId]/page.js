@@ -63,6 +63,7 @@ export default async function ProductPage ({ params }) {
   const userRatings = await fetchProductRatings(productId)
 
   const product = variant.variant;
+  console.log(product, "product");
   const relatedItems = variant.relatedItems;
 
   const images = product?.images || [];

@@ -344,8 +344,16 @@ export default function BusinessInformation2() {
       }
     } catch (error) {
       if (error.response && error?.response?.data && error?.response?.data?.message) {
-        toast.error(error?.response?.data?.message);
+        // toast.error(error?.response?.data?.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: error?.response?.data?.message || 'Failed to submit business information',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        })
       }
+      
       console.error("Error submitting business information:", error);
     }
   };
