@@ -41,6 +41,8 @@ function Header() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showSuggestions, setShowSuggestions] = useState(false);
+    const [isRenterInfo,setRenterInfo]=useState()
+  
   const router = useRouter();
   const pathname = usePathname();
 
@@ -138,6 +140,35 @@ function Header() {
     }
   }, [token]);
 
+
+
+  
+   const fetchBusinessProfile=async()=>{
+    try {
+      const response=await axios.get(`${BASE_URL}/users/business/check`,{
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+  
+  
+      setRenterInfo(response.data.success)
+      if (response.data.success) {
+        Cookies.set("isRenterInfo", true, {
+          expires: 7,
+          secure: true,
+          sameSite: "Strict",
+        });
+      }
+    } catch (error) {
+  
+console.error(error)
+      
+    }
+   }
+  
+   useEffect(()=>{
+    fetchBusinessProfile()
+   },[])
 
 
 
@@ -353,7 +384,7 @@ function Header() {
       return;
     }
     if (kycstatus === "VERIFIED" || isKyc === "true") {
-      router.push("/add-on-rent");
+      router.push("/profile/Renter-information");
     } else {
       // Show confirmation alert before redirecting
       const result = await Swal.fire({
@@ -389,11 +420,11 @@ function Header() {
         </div>
 
         {/* Center Section - Search Input */}
-        <div className="hidden lg:flex items-center relative ml-4 cursor-pointer">
+        <div className="w-1/4 hidden lg:flex items-center relative ml-4 cursor-pointer">
           <SearchInput
             value={searchValue}
             onChange={(e) => handleSearchInputChange(e.target.value)}
-            className="w-[200px] md:w-[200px] "
+            className="w-full"
           />
           {showSuggestions && (
             <ul className="absolute left-0 w-full bg-white border rounded shadow top-[40px] z-40">
@@ -491,21 +522,21 @@ function Header() {
           )} */}
 
           <CartIcon userId={userId} />
-
+{isRenterInfo !== true && token &&
           <button
             className="w-full hidden sm:flex items-center gap-2 px-[16px] py-[10px] rounded-[12px] text-[rgb(255,45,85)] w-auto h-[40px] lg:w-fit border border-[rgb(255,45,85)] font-medium"
             onClick={() => handleAddOnRent()}
           >
             <span className="text-lg">+</span> Join as Partner
-          </button>
+          </button>}
 
-
+{isRenterInfo === true && token&&
           <button
             className="sm:hidden sm:flex items-center text-center gap-2 px-[16px] py-[6px] sm:py-[10px] rounded-[12px] text-[rgb(255,45,85)] w-auto h-[38px] lg:w-[92px] border border-[rgb(255,45,85)] "
             onClick={() => handleAddOnRent()}
           >
             <span className="text-lg">+</span>
-          </button>
+          </button>}
 
 
           {/* Profile & Sign In/Sign Up */}

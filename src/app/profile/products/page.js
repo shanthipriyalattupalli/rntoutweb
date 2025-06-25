@@ -3,6 +3,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 import ProductCard from "@/Components/Shimmer/ProductCard";
 import Image from "next/image";
+import Swal from "sweetalert2";
 
 // import "@/styles/ProductInformation.css";
 import '../../../styles/ProductInformation.css';
@@ -41,8 +42,10 @@ export default function Dashboard({ products }) {
   const pageSize = 10;
   const [moreData, setMoreData] = useState(true);
 
-  const kyc = Cookies.get("kycstatus");
 
+
+ const kycstatus = Cookies.get("kycstatus");
+  const isKyc = Cookies.get("isKyc");
 
   const fetchUserProducts = async () => {
     try {
@@ -189,12 +192,50 @@ export default function Dashboard({ products }) {
   }
 
 
+    const handleAddOnRent = async () => {
+      if (!token) {
+        await Swal.fire({
+          title: "Login Required",
+          text: "Please log in to proceed.",
+          icon: "info",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+      if (kycstatus === "VERIFIED" || isKyc === "true") {
+        router.push("/add-on-rent");
+      } else {
+        // Show confirmation alert before redirecting
+        const result = await Swal.fire({
+          title: "KYC Required",
+          text: "KYC should be verified before adding on rent. Do you want to verify now?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, Verify Now",
+          cancelButtonText: "Cancel",
+        });
+  
+        if (result.isConfirmed) {
+          router.push("/profile/kyc");
+        }
+      }
+    };
+
 
   return (
     <div className='prod-container-page'>
       <div className='item-header'>
         <h2>Products</h2>
         {/* <div className='filters'>Filters</div> */}
+                  <button
+            className="w-full hidden sm:flex items-center gap-2 px-[16px] py-[5px] rounded-[6px] bg-[rgb(255,45,85)]  text-white w-auto h-[30px] lg:w-fit border border-[rgb(255,45,85)] font-medium"
+            onClick={() => handleAddOnRent()}
+          >
+            <span className="text-lg">+</span> Add Product
+          </button>
       </div>
       <div className='dashboard'>
         <div className='dashboard-top'>

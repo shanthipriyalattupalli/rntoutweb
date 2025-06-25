@@ -28,7 +28,7 @@ import { FileDigitIcon } from 'lucide-react';
 import Swal from 'sweetalert2';
 
 const KycStatus=Cookies.get("kycstatus");
-
+const isKyc = Cookies.get("isKyc");
 
 const buttonsData = [
   { id: 1, title: "Profile", icon: <FaUser />, route: "/profile" },
@@ -83,10 +83,10 @@ const buttonsData = [
 
 
 const filteredButtons = buttonsData.filter((eachBar) => {
-  if (KycStatus === "VERIFIED") {
+  if (KycStatus === "VERIFIED" || isKyc === true) {
     return true;
   } else {
-    return ![4,6, 8, 9].includes(eachBar.id); 
+    return ![4,5,6, 8].includes(eachBar.id); 
   }
 });
 
@@ -150,7 +150,7 @@ function Sidebar() {
           <span>{<PiCirclesFourFill />}</span>
           <p className='title'>MENUS</p>
         </div>
-        {buttonsData?.map((eachBar) => (
+        {filteredButtons?.map((eachBar) => (
           <button
             key={eachBar.id}
             className={`bar ${pathname === eachBar.route ? "active" : ""}`} // Add "active" class if the route matches
