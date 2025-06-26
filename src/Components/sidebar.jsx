@@ -83,7 +83,7 @@ const buttonsData = [
 
 
 const filteredButtons = buttonsData.filter((eachBar) => {
-  if (KycStatus === "VERIFIED" || isKyc === true) {
+  if (isKyc === "true") {
     return true;
   } else {
     return ![4,5,6, 8].includes(eachBar.id); 

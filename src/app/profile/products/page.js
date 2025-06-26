@@ -230,12 +230,7 @@ export default function Dashboard({ products }) {
       <div className='item-header'>
         <h2>Products</h2>
         {/* <div className='filters'>Filters</div> */}
-                  <button
-            className="w-full hidden sm:flex items-center gap-2 px-[16px] py-[5px] rounded-[6px] bg-[rgb(255,45,85)]  text-white w-auto h-[30px] lg:w-fit border border-[rgb(255,45,85)] font-medium"
-            onClick={() => handleAddOnRent()}
-          >
-            <span className="text-lg">+</span> Add Product
-          </button>
+
       </div>
       <div className='dashboard'>
         <div className='dashboard-top'>
@@ -261,7 +256,6 @@ export default function Dashboard({ products }) {
                 </div>}
 
               </div>
-
             </div>
           </div>
           <div className="flex flex-col gap-4 items-center justify-center">
@@ -270,6 +264,14 @@ export default function Dashboard({ products }) {
           </div>
 
         </div>
+        <div className="flex justify-end mb-6">
+                          <button
+            className="w-full hidden sm:flex items-center gap-2 px-[16px] py-[5px] rounded-[6px] bg-[rgb(255,45,85)]  text-white w-auto h-[30px] lg:w-fit border border-[rgb(255,45,85)] font-medium"
+            onClick={() => handleAddOnRent()}
+          >
+            <span className="text-lg">+</span> Add Product
+          </button>
+          </div>
 
         {
           loading ?
