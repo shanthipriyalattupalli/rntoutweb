@@ -32,9 +32,25 @@ const customStyles = `
 
 const ProductItem = ({ product }) => {
 
+    const {
+    availability,
+    dateRange,
+    images,
+    name,
+    price,
+    stock,
+    title,
+    rentalAvailability,
+    stockQuantity,
+    rentalPrice,
+    averageRating,
+    _id,
+    variantId
+  } = product;
+
   const swiperRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [selectedRentalPeriod, setSelectedRentalPeriod] = useState("daily");
+  const [selectedRentalPeriod, setSelectedRentalPeriod] = useState(rentalPrice[0]?.period);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   // const { imgSrc, name, price, dateRange, availability, stock } = product;
@@ -54,23 +70,10 @@ const ProductItem = ({ product }) => {
 
 
   const [isView, setIsview] = useState(true);
-  const {
-    availability,
-    dateRange,
-    images,
-    name,
-    price,
-    stock,
-    title,
-    rentalAvailability,
-    stockQuantity,
-    rentalPrice,
-    averageRating,
-    _id,
-    variantId
-  } = product;
+
   // const productId = _id;
-  const [productID, setProductId] = useState(_id)
+  const [productID, setProductId] = useState(_id);
+  console.log(rentalPrice,"rental price")
 
 
   const formattedDate = new Date(

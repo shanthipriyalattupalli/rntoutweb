@@ -17,7 +17,7 @@ const loadScript = (src) => new Promise((resolve) => {
   };
   document.body.appendChild(script);
 });
-const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, handlePayment, name,setRedirectUrl }) => {
+const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, handlePayment, name,setRedirectUrl,urlToken }) => {
   const paymentId = useRef(null);
   const paymentMethod = useRef(null);
 
@@ -33,15 +33,17 @@ const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, 
 
         try {
           const token = localStorage.getItem('userToken');
+  const authToken = urlToken ? urlToken : token;
+
           const result = await axios.post(`${BASE_URL}/user-subscription/verify-payment`, {
             razorpay_order_id: orderId,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
             planId,
-            // source: "app"
+           ...(urlToken && { source: "app" }) 
           }, {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${authToken}`,
             }
           });
           console.log(result, "result in razorpay payment verification");

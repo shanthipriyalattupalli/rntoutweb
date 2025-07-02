@@ -143,7 +143,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                       </a>
                     )}
                   {(item.orderStatus === "delivered") && <span className="hidden sm:flex" style={{ color: "rgba(7, 7, 7, 0.1)" }}> |</span>}
-                  {(item.orderStatus === "delivered") &&
+                  {/* {(item.orderStatus === "delivered") &&
                     Array.isArray(subOrderHistories[item._id]) &&
                     subOrderHistories[item._id].length === 0 && (
                       <span className="return-order" onClick={() => {
@@ -151,7 +151,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                       }}>
                         Return Product?
                       </span>
-                    )}
+                    )} */}
                   {isReturned && (
                     <div className="modal-overlays" onClick={() => setIsReturned(false)}>
                       <div className="modal-contents" onClick={(e) => e.stopPropagation()}>

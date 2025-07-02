@@ -7,19 +7,23 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { FaRegCheckCircle } from "react-icons/fa";
+import { useSearchParams } from 'next/navigation';
 
 
 
 
 const page = () => {
+  const searchparams=useSearchParams()
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
       const [isSubscription, setIsSubscription] = useState(false);
         const [subscriptionPlans, setSubscriptionPlans] = useState([]);
           const [userPlans, setUserPlans] = useState([]);
-        
+          const token = Cookies.get("userToken");
         const userId = Cookies.get("userId");
-        const token = Cookies.get("userToken") || null;
-
+  const urlToken = searchparams.get("token");
+  console.log(urlToken,"urltoken");
+    const effectiveToken = urlToken || token;
+    console.log(effectiveToken,"efficetoken")
         const fetchSubscriptionPlans = async () => {
           try {
             const response = await axios.get(`${BASE_URL}/subscription-plans/plans`);
@@ -68,6 +72,15 @@ const page = () => {
     fetchUserSubscriptionPlans()
 
   }, [])
+
+
+  useEffect(() => {
+    const userId = searchparams.get('userId');
+    const token = searchparams.get('token');
+    console.log('userId:', userId);
+    console.log('token:', token);
+  }, [searchparams]);
+
     
     return (
         <>
@@ -75,7 +88,7 @@ const page = () => {
         
 
                       
-                        <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans} userPlans={userPlans} />
+                        <Subscription setIsSubscription={setIsSubscription} plans={subscriptionPlans} userPlans={userPlans} urlToken={urlToken}/>
            
               
         </>

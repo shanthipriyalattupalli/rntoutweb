@@ -486,7 +486,7 @@ console.error(error)
                   height={20}
                   alt="subscription"
                   // onClick={() => setIsSubscription(true)}
-                  className="flex w-[100px] h-[20px]"
+                  className="flex w-[170px] sm:w-[100px] h-[20px] "
                 />
               </div>
               </Link> 

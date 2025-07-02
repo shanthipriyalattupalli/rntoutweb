@@ -45,9 +45,8 @@ const OurBestServices = () => {
       {/* Responsive Links Section */}
       <div className='flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 mb-8'>
         {links?.map((link) => (
-          <a
+          <div
             key={link.id}
-            href={link.href}
             onClick={() => setSelected(link.id)}
             className={`px-4 w-full py-2 rounded-lg font-medium transition-colors duration-200 ease-in-out w-48 text-center
                 ${
@@ -58,7 +57,7 @@ const OurBestServices = () => {
                 hover:bg-red-500 hover:text-white`}
           >
             {link.label}
-          </a>
+          </div>
         ))}
       </div>
 

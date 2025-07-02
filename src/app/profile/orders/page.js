@@ -137,7 +137,7 @@ export default function Orders() {
 
 
     <div className="profile-settings Orders_page_section">
-      <div className="item-header">
+      <div className="item-header-order">
         <h2>Order History</h2>
 
         {/* <label className="edit-btn flex items-center gap-2">

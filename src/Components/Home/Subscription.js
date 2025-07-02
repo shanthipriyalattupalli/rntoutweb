@@ -15,7 +15,7 @@ const Benefits = [
   "🎧 24/7 VIP Customer Support "
 ]
 
-const Subscription = ({ plans, setIsSubscription, userPlans }) => {
+const Subscription = ({ plans, setIsSubscription, userPlans,urlToken }) => {
 
 console.log(plans,"plans in subscription component")
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -44,11 +44,11 @@ console.log(plans,"plans in subscription component")
     } catch (error) {
       console.log(error, "error in subscription")
       if (error.response && error.response.status === 401) {
-        Swal.fire({
-          icon: "error",
-          title: "Login Required",
-          text: "Please login to proceed with payment.",
-        });
+        // Swal.fire({
+        //   icon: "error",
+        //   title: "Login Required",
+        //   text: "Please login to proceed with payment.",
+        // });
       }
 
     }
@@ -65,10 +65,12 @@ console.log(plans,"plans in subscription component")
       planId: planId,
 
     }
+    
+  const authToken = urlToken ? urlToken : token;
     try {
       const response = await axios.post(`${BASE_URL}/user-subscription/create-order`, payload, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authToken}`,
         }
       });
 
@@ -225,6 +227,7 @@ console.log(plans,"plans in subscription component")
                     handlePayment={handlePayment}
                     name={userName}
                     setRedirectUrl={setRedirectUrl}
+                    urlToken={urlToken}
                   />
                 )}
               </div>
