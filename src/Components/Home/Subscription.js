@@ -17,7 +17,7 @@ const Benefits = [
 
 const Subscription = ({ plans, setIsSubscription, userPlans,urlToken }) => {
 
-console.log(plans,"plans in subscription component")
+console.log(urlToken,"plans in subscription component")
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const userId = Cookies.get("userId");
   const token = Cookies.get("userToken");
@@ -32,7 +32,7 @@ console.log(plans,"plans in subscription component")
   const [redirectedurl, setRedirectUrl] = useState(null);
   const planId = Cookies.get("planId")
   const apiKey = "rzp_test_a4GiGqcTxFZlKT";
-
+  const authToken = urlToken ? urlToken : token;
   const fetchUserSubscriptionPlans = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/subscription-plans/plan/${planId}`, {
@@ -67,13 +67,14 @@ console.log(plans,"plans in subscription component")
     }
     
   const authToken = urlToken ? urlToken : token;
+  console.log(authToken,"authtoken")
     try {
       const response = await axios.post(`${BASE_URL}/user-subscription/create-order`, payload, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         }
       });
-
+console.log(response,"respons eof orfder")
       if (response.data.order.id) {
         setOrderId(response.data.order.id);
         setSelectedPlanId(planId);
@@ -95,7 +96,7 @@ console.log(plans,"plans in subscription component")
 
   const createPayment = async (planId) => {
     setSubscriptionPlanId(planId)
-    if (!userId) {
+    if (!authToken) {
       Swal.fire({
         icon: "error",
         title: "Login Required",
