@@ -53,11 +53,10 @@ if (result.data.redirectUrl) {
     icon: "success",
     title: "Payment Completed!",
     html: `
-      <p>Your payment was successful.</p>
-      <a href="${result.data.redirectUrl}" style="padding: 10px 18px; background-color: #007bff; color: white; border-radius: 4px; display: inline-block; margin-top: 10px;">
-        Open App
-      </a>
+      <p>Your payment was successful.Please back to your app for further proceeding....</p>
+
     `,
+    
     showConfirmButton: false,
     allowOutsideClick: false,
   });
