@@ -17,7 +17,7 @@ const loadScript = (src) => new Promise((resolve) => {
   };
   document.body.appendChild(script);
 });
-const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, handlePayment, name,urlToken }) => {
+const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, handlePayment, name,urlToken,setDisplayRazorpay }) => {
   const paymentId = useRef(null);
   const paymentMethod = useRef(null);
 
@@ -49,28 +49,31 @@ const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, 
           console.log(result, "result in razorpay payment verification");
      
 if (result.data.redirectUrl) {
-  const redirectUrl = result.data.redirectUrl;
-
-  if (redirectUrl.startsWith('rntout://')) {
-    window.location.href = redirectUrl;
-    setTimeout(() => {
-      window.location.href = 'https://rntout.com'; 
+  Swal.fire({
+    icon: "success",
+    title: "Payment Completed!",
+    html: `
+      <p>Your payment was successful.</p>
+      <a href="${result.data.redirectUrl}" style="padding: 10px 18px; background-color: #007bff; color: white; border-radius: 4px; display: inline-block; margin-top: 10px;">
+        Open App
+      </a>
+    `,
+    showConfirmButton: false,
+    allowOutsideClick: false,
+  });
+      setTimeout(() => {
+     setDisplayRazorpay(false)
     }, 2000);
-  } else {
-    window.location.href = redirectUrl;
-  }
-}
-
-
-          setIsSubscription(false);
+}else{ 
           Swal.fire({
             icon: "success",
             title: "Payment Completed!",
             text: "Payment is Successfull.",
             confirmButtonColor: "#d33", 
           });  
-
-
+          
+        }
+setIsSubscription(false);
           if (result.data.success  === true) {
             handlePayment('succeeded', {
               razorpay_order_id: orderId,

@@ -229,6 +229,7 @@ console.log(response,"respons eof orfder")
                     name={userName}
                     setRedirectUrl={setRedirectUrl}
                     urlToken={urlToken}
+                    setDisplayRazorpay={setDisplayRazorpay}
                   />
                 )}
               </div>
