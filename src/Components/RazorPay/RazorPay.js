@@ -17,7 +17,7 @@ const loadScript = (src) => new Promise((resolve) => {
   };
   document.body.appendChild(script);
 });
-const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, handlePayment, name,setRedirectUrl,urlToken }) => {
+const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, handlePayment, name,urlToken }) => {
   const paymentId = useRef(null);
   const paymentMethod = useRef(null);
 
@@ -47,10 +47,21 @@ const Razorpay = ({ orderId, planId, keyId, currency,setIsSubscription, amount, 
             }
           });
           console.log(result, "result in razorpay payment verification");
-          // setRedirectUrl(result?.data?.redirectUrl);
-          if (result.data.redirectUrl) {
-            window.location.href = result.data.redirectUrl;
-          }
+     
+if (result.data.redirectUrl) {
+  const redirectUrl = result.data.redirectUrl;
+
+  if (redirectUrl.startsWith('rntout://')) {
+    window.location.href = redirectUrl;
+    setTimeout(() => {
+      window.location.href = 'https://rntout.com'; 
+    }, 2000);
+  } else {
+    window.location.href = redirectUrl;
+  }
+}
+
+
           setIsSubscription(false);
           Swal.fire({
             icon: "success",

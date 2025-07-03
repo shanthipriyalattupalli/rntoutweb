@@ -376,7 +376,7 @@ const MainContent = () => {
     const mappedDetails = productDetails.reduce((acc, section) => {
       section.details?.forEach((detail) => {
         if (detail.key && detail.value) {
-          acc[detail.key] = detail.value; // Grouping key-value pairs into a single object
+          acc[detail.key] = detail.value; 
         }
       });
       return acc;
