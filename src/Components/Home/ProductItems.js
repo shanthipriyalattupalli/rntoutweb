@@ -229,7 +229,7 @@ const ProductItem = ({ product }) => {
       {/* <ToastContainer /> */}
       <style>{customStyles}</style>
 
-      <div className={`2xl:w-full xl:w-full h-[340px] sm:h-[436px] rounded-[12px] bg-white  border border-slate-200 ${isHovered ? "shadow-lg" : "shadow-none"}`}
+      <div className={`2xl:w-full xl:w-full h-[340px] sm:h-[370px] rounded-[12px] bg-white  border border-slate-200 ${isHovered ? "shadow-lg" : "shadow-none"}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
         <div className="relative">
@@ -278,7 +278,7 @@ const ProductItem = ({ product }) => {
                           <Image
                             src={img}
                             alt={`${title} - ${index + 1}`}
-                            className="w-full h-[130px] sm:h-[220px] object-cover rounded-t-[12px]"
+                            className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
                             width={308}
                             height={220}
                           />
@@ -293,7 +293,7 @@ const ProductItem = ({ product }) => {
                 {images[0] && <Image
                   src={images[0]}
                   alt={title}
-                  className="w-full h-[130px] sm:h-[220px] object-cover rounded-t-[12px]"
+                  className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
                   width={308}
                   height={220}
                 />}
@@ -338,7 +338,7 @@ const ProductItem = ({ product }) => {
             </div>
 
             {/* View All Details Button */}
-            <div className="absolute top-[110px] sm:top-[200px]  z-10 flex items-center justify-center w-full">
+            <div className="absolute top-[110px] sm:top-[135px]  z-10 flex items-center justify-center w-full">
               {isView ? (
                 <span
                   className="bg-white text-black w-54 truncate font-sm text-center rounded-full border-2  px-2 py-1 cursor-pointer"

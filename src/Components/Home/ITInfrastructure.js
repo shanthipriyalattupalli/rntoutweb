@@ -53,7 +53,7 @@ const ITInfrastructure = ({ products,title,categoryId,isLoading }) => {
       if (window.innerWidth >= 1535) {
         setNumProducts(5); // 2xl screens
       } else if (window.innerWidth >= 1280) {
-        setNumProducts(4); // xl screens
+        setNumProducts(5); // xl screens
       } else if (window.innerWidth >= 1024) {
         setNumProducts(4); // lg screens
       } else if (window.innerWidth >= 768) {
@@ -61,7 +61,7 @@ const ITInfrastructure = ({ products,title,categoryId,isLoading }) => {
       } else if (window.innerWidth >= 640) {
         setNumProducts(2); // sm screens
       } else {
-        setNumProducts(2); // default (small screens)
+        setNumProducts(2); 
       }
     };
 
@@ -106,7 +106,7 @@ const ITInfrastructure = ({ products,title,categoryId,isLoading }) => {
     </div>
 
     {/* Product Grid */}
-<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-[10px] sm:gap-4 md:gap-6 2xl:gap-10 mt-6">
+<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-[10px] sm:gap-4 md:gap-[50px] 2xl:gap-10 mt-6">
       {products?.slice(0, numProducts)?.map((product) => (
         <Suspense key={product._id} fallback={<ProductCard/>}>
           <ProductItems product={product} />
