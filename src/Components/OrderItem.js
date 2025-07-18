@@ -23,12 +23,13 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
   const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
   const [expandedSubOrderIds, setExpandedSubOrderIds] = useState([]);  // Changed to an array
   const [subOrderHistories, setSubOrderHistories] = useState({});
+  console.log(subOrderHistories,"suborderhosterioes")
   const [isReturned, setIsReturned] = useState(false);
 
   if (!orderData || !orderData.subOrders || orderData.subOrders.length === 0) {
     return <p>No orders found</p>;
   }
-
+  console.log(orderData, "orderdaata")
 
   const handleShowTracking = (item) => {
 
@@ -58,17 +59,23 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
         },
       });
 
-
+      console.log(response?.data, "response of reviews in review");
 
       const reviews = Array.isArray(response.data.reviews) ? response.data.reviews : [];
+      const deliveryReview = Array.isArray(response?.data?.deliveryReview) ? response?.data?.deliveryReview: [];
+
       setSubOrderHistories((prev) => ({
         ...prev,
-        [subOrderId]: reviews,
+        [subOrderId]: {
+          reviews,
+          deliveryReview,
+        },
       }));
     } catch (error) {
       console.error(`Error fetching suborder history for ${subOrderId}:`, error);
     }
   };
+
 
 
   const fetchDownloadInvioce = async (subOrderId) => {
@@ -108,7 +115,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
   };
 
 
-
+console.log(subOrderHistories[orderData?.subOrders[0]._id]?.deliveryReview,"suborders histories")
 
 
   return (
@@ -132,9 +139,10 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                     <span className="ml-2"> {item.quantity} item(s)</span>
                   </p>
                   <span className="hidden sm:flex" style={{ color: "rgba(7, 7, 7, 0.1)" }}>|</span>
-                  {(item.orderStatus === "delivered") &&
-                    Array.isArray(subOrderHistories[item._id]) &&
-                    subOrderHistories[item._id].length === 0 && (
+                  {item.orderStatus === "delivered" &&
+                    subOrderHistories[item._id] &&
+                    Array.isArray(subOrderHistories[item._id].reviews) &&
+                    subOrderHistories[item._id].reviews.length === 0 && (
                       <a href={`/profile/orders/orderreview/${item._id}`} className="review_cta">
                         <span>
                           <CiStar />
@@ -142,6 +150,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                         Write Product Review
                       </a>
                     )}
+
                   {(item.orderStatus === "delivered") && <span className="hidden sm:flex" style={{ color: "rgba(7, 7, 7, 0.1)" }}> |</span>}
                   {/* {(item.orderStatus === "delivered") &&
                     Array.isArray(subOrderHistories[item._id]) &&
@@ -152,6 +161,20 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                         Return Product?
                       </span>
                     )} */}
+
+                  {item.orderStatus === "delivered" &&
+                    subOrderHistories[item._id] &&
+                    Array.isArray(subOrderHistories[item._id].deliveryReview) &&
+                    subOrderHistories[item._id].deliveryReview.length === 0 && (
+                      <a href={`/profile/orders/deliveryreview/${item._id}`} className="review_cta">
+                        <span>
+                          <CiStar />
+                        </span>
+                        Write Delivery Review
+                      </a>
+                    )}
+
+
                   {isReturned && (
                     <div className="modal-overlays" onClick={() => setIsReturned(false)}>
                       <div className="modal-contents" onClick={(e) => e.stopPropagation()}>
@@ -175,43 +198,85 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
                   </button>
                 </div>
 
-                {subOrderHistories[item._id] && Array.isArray(subOrderHistories[item._id]) && (
-                  <div className="suborder-history">
-                    {/* Check if reviews exist */}
-                    {subOrderHistories[item._id].length > 0 && (
-                      subOrderHistories[item._id].map((review, index) => (
-                        <div className="flex flex-row space-x-2" key={index}>
-                          <div className="flex flex-col space-x-2">
-                            {review.rating && (
-                              <p
-                                className={`flex items-center px-2 rounded-full text-white ${review.rating >= 1 && review.rating <= 2
-                                  ? "bg-red-500"
-                                  : review.rating > 2 && review.rating <= 3.5
-                                    ? "bg-orange-500"
-                                    : "bg-green-700"
-                                  }`}
-                              >
-                                <img src={stars} alt="Rating stars" className="w-4 h-3" />
-                                <span className="ml-1">{review.rating}</span>
-                              </p>
-                            )}
+{subOrderHistories[item._id] && Array.isArray(subOrderHistories[item._id].reviews) && (
+  <div className="suborder-history">
+    {/* Check if reviews exist */}
+    <div className="flex flex-col gap-5">
+    {subOrderHistories[item._id].reviews.length > 0 &&
+    <>
+    <span className="flex text-[14px] font-[600] justify-center">
+      Product Review
+    </span>
+     { subOrderHistories[item._id].reviews.map((review, index) => (
+        <div className="flex flex-row space-x-2" key={index}>
+          <div className="flex flex-col space-x-2">
+            {review.rating && (
+              <p
+                className={`flex items-center px-2 rounded-full text-white ${
+                  review.rating >= 1 && review.rating <= 2
+                    ? "bg-red-500"
+                    : review.rating > 2 && review.rating <= 3.5
+                    ? "bg-orange-500"
+                    : "bg-green-700"
+                }`}
+              >
+                <img src={stars} alt="Rating stars" className="w-4 h-3" />
+                <span className="ml-1">{review.rating}</span>
+              </p>
+            )}
+          </div>
+          <div className="flex flex-col">
+            {review.title && <p className="text-[14px] font-[500]">{review.title}</p>}
+            <p>{review.comment}</p>
+          </div>
+          <a href={`/profile/orders/orderreview/${item._id}?variantId=${review.variantId}`} className="w-4 h-4">
+            <Edit2Icon className="w-4 h-4" />
+          </a>
+        </div>
+      ))}
+      </>
+      }
 
-                          </div>
-                          <div className="flex flex-col">
+      </div>
+      
+          <div>
+    {subOrderHistories[item._id]?.deliveryReview?.length > 0 &&
+    <>
+    <span className="flex text-[14px] font-[600] justify-center">Delivery review</span>
+      {subOrderHistories[item._id]?.deliveryReview?.map((review, index) => (
+        <div className="flex flex-row space-x-2" key={index}>
+          <div className="flex flex-col space-x-2">
+            {review.rating && (
+              <p
+                className={`flex items-center px-2 rounded-full text-white ${
+                  review.rating >= 1 && review.rating <= 2
+                    ? "bg-red-500"
+                    : review.rating > 2 && review.rating <= 3.5
+                    ? "bg-orange-500"
+                    : "bg-green-700"
+                }`}
+              >
+                <img src={stars} alt="Rating stars" className="w-4 h-3" />
+                <span className="ml-1">{review.rating}</span>
+              </p>
+            )}
+          </div>
+          <div className="flex flex-col">
+            {review.title && <p className="text-[14px] font-[500]">{review.title}</p>}
+            <p>{review.comment}</p>
+          </div>
+          <a href={`/profile/orders/deliveryreview/${item?._id}?variantId=${review?.variantId?._id}`} className="w-4 h-4">
+            <Edit2Icon className="w-4 h-4" />
+          </a>
+        </div>
+      ))}
+      </>
+      }
 
-                            {review.title && <p className="text-[14px] font-[500]">{review.title}</p>
+      </div>
+  </div>
+)}
 
-                            }
-                            <p>{review.comment}</p>
-                          </div>
-                          <a href={`/profile/orders/orderreview/${item._id}?variantId=${review.variantId}`} className="w-4 h-4"><Edit2Icon className="w-4 h-4" /></a>
-
-                          {/* <p>{new Date(review.createdAt).toLocaleDateString()}</p> */}
-                        </div>
-                      ))
-                    )}
-                  </div>
-                )}
 
 
                 {item.review && item.review.feedback && (
@@ -230,7 +295,7 @@ const OrderItem = ({ hideHeader, orderData, onShowTracking, selectedSubOrder, st
               </div>
             </div>
             <div className="flex gap-2 h-[20px]">
-              <Image src={download} alt="" width={20} height={5}  />
+              <Image src={download} alt="" width={20} height={5} />
               <a href="#" className="font-semibold text-[#0b827c] " onClick={() => fetchDownloadInvioce(item._id)} >
                 Download Invoice
               </a>

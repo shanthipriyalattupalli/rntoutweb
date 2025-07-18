@@ -13,11 +13,11 @@ const BannerSection = ({ banner }) => {
   const imagesToRender = banner?.images?.length > 0 ? banner.images : defaultImages;
 
   return (
-    <div className="flex flex-wrap justify-center gap-8 px-4 md:px-20">
+   <div className="flex flex-col md:flex-row justify-center gap-8 px-4 md:px-20"> 
       {imagesToRender.map((src, index) => (
         <div
           key={index}
-          className="w-full max-w-[650px] aspect-[13/6] relative rounded-lg overflow-hidden"
+          className="sm:w-1/2 w-full  aspect-[13/6] relative rounded-lg overflow-hidden"
         >
           {/* Shimmer placeholder */}
           {!loadedImages.includes(index) && (

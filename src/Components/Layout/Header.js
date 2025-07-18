@@ -41,7 +41,9 @@ function Header() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showSuggestions, setShowSuggestions] = useState(false);
-    const [isRenterInfo,setRenterInfo]=useState()
+    const [isRenterInfo,setRenterInfo]=useState();
+    const [isToggleOn, setIsToggleOn] = useState(false);
+console.log(isToggleOn,"istoggleon")
   
   const router = useRouter();
   const pathname = usePathname();
@@ -405,6 +407,27 @@ console.error(error)
   };
 
 
+  const fetchSubscriptionToggle = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/settings`);
+        console.log(response, "response of toggle");
+
+        const settings = response.data?.settings || [];
+        if (settings.includes("subscription")) {
+            setIsToggleOn(true);
+        } else {
+            setIsToggleOn(false);
+        }
+    } catch (error) {
+        console.log("Error in toggle", error);
+    }
+};
+
+useEffect(() => {
+    fetchSubscriptionToggle();
+}, []);
+
+
   return (
     <>
     <header
@@ -412,14 +435,14 @@ console.error(error)
         isScrolled ? 'shadow-sm border-b' : ''
       }`}
     >
-        {/* Left Section - Logo */}
+    
         <div className="flex items-center cursor-pointer">
           <Link href="/" style={{ all: "unset" }}>
             <img src={logo} alt="RNT Out Logo" className="h-8 sm:h-10 border-none border-0" />
           </Link>
         </div>
 
-        {/* Center Section - Search Input */}
+     
         <div className="w-1/4 hidden lg:flex items-center relative ml-4 cursor-pointer">
           <SearchInput
             value={searchValue}
@@ -466,17 +489,17 @@ console.error(error)
             <div className="hidden lg:flex  items-center bg-white border border-gray-300 rounded-[12px] px-3 py-2 hover:bg-gray-100 cursor-pointer">
               <Image src={nearby} alt="location" width={18} height={18} />
               <select className="bg-transparent text-sm cursor-pointer md:mr-3" value={selectedDistance} onChange={handleDistanceChange}>
-                <option className="cursor-pointer" value="20">20 km</option>
-                <option className="cursor-pointer" value="30">30 km</option>
+                <option className="cursor-pointer" value="5">5 km</option>
+                <option className="cursor-pointer" value="10">10 km</option>
+                <option value="20">20 km</option>
+                <option value="30">30 km</option>
                 <option value="40">40 km</option>
-                <option value="50">50 km</option>
-                <option value="60">60 km</option>
-                <option value="100">100 + km</option>
+                <option value="50">50 + km</option>
               </select>
             </div>}
 
 
-          {(name || token) && (
+          {(name || token) && (isToggleOn ===true) && (
             <>
               {/* Visible only on small devices */}
              <Link href="/subscriptions"><div className="sm:hidden border border-orange-400 rounded-[10px] p-2">
@@ -591,12 +614,12 @@ console.error(error)
         <div className="sm:flex md:flex lg:hidden  w-1/2 h-10 flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
           <Image src={nearby} alt="location" width={16} height={16} />
           <select className="bg-transparent text-xs cursor-pointer mr-2" value={selectedDistance} onChange={handleDistanceChange}>
-            <option className="cursor-pointer" value="20">20 km</option>
-            <option className="cursor-pointer" value="30">30 km</option>
+            <option className="cursor-pointer" value="5">5 km</option>
+            <option className="cursor-pointer" value="10">10 km</option>
+            <option value="20">20 km</option>
+            <option value="30">30 km</option>
             <option value="40">40 km</option>
-            <option value="50">50 km</option>
-            <option value="60">60 km</option>
-            <option value="100">100 + km</option>
+            <option value="5000">50 + km</option>
           </select>
         </div>
       </div>

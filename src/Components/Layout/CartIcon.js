@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { BsCart3 } from "react-icons/bs";
 
 const CartIcon = ({ userId }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
@@ -58,16 +59,19 @@ const CartIcon = ({ userId }) => {
     <div className="relative cursor-pointer">
       {cartItems > 0 ? (
         <Link href="/Cartpage">
-          <Image src="/Assets/cartitems.svg" width={30} height={30} alt="cart" className="min-w-[34px] min-h-[34px]" />
-          <span className="absolute -top-2 -right-2 bg-red-500 rounded-full w-5 h-5 text-xs font-semibold text-white flex items-center justify-center">
+          <div className='flex '>
+          <BsCart3  className="min-w-[34px] min-h-[34px]" /> <span className='text-center align-center mt-3 text-[12px] font-[600]'>Cart</span>
+          </div>
+          <span className="absolute -top-2 right-7 bg-red-500 rounded-full w-5 h-5 text-xs font-semibold text-white flex items-center justify-center">
             {cartItems}
           </span>
         </Link>
       ) : (
         <Link href="/Cartpage">
-          <button className="h-[37px] bg-white border border-blue-300 rounded-[10px] p-2 hover:bg-gray-100">
-            <Image src="/Assets/Button.svg" width={20} height={20} alt="cart" className="min-w-[20px] min-h-[20px]" />
-          </button>
+          <div className="flex">
+            <BsCart3 className="min-w-[34px] min-h-[34px]" />
+            <span className='text-center align-center mt-3 text-[12px] font-[600]'>Cart</span>
+          </div>
         </Link>
       )}
     </div>

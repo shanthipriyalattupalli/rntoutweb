@@ -107,6 +107,7 @@ const RenderRazorpay = ({ orderId,razorpayOrderId, keyId, currency, amount, hand
       alert('Failed to load payment gateway. Please try again later.');
       return;
     }
+    
     const rzp1 = new (window  ).Razorpay(options);
     rzp1.on('payment.submit', (response ) => { paymentMethod.current = response.method });
     rzp1.on('payment.failed', (response) => { paymentId.current = response.error.metadata.payment_id });

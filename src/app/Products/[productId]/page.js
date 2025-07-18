@@ -19,6 +19,7 @@ const sample = '/Assets/Sample.png';
 const stock = '/Assets/stock.svg';
 const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 import { cookies } from "next/headers";
+import { IoMdArrowRoundBack } from "react-icons/io";
 const fetchProductById = async (productId, token, userId) => {
 
   try {
@@ -107,7 +108,24 @@ export default async function ProductPage ({ params }) {
     <>
       {/* <ScrollToTop /> */}
       <div className=' mx-auto px-4 sm:px-20'>
+        {/* <div className="flex align-center gap-4">
+<IoMdArrowRoundBack className="text-[22px]" />
+      <nav className="text-sm text-gray-500">
+                <Link href="/" className="hover:underline">Home</Link>
+                <span className="mx-2">/</span>
 
+                {product?.categoryId?.categoryName ? (
+                  <>
+                    <Link href={`/Product-list/${product.categoryId._id}`} className="hover:underline">
+                      {product.categoryId.categoryName}
+                    </Link>
+                    <span className="mx-2">/</span>
+                  </>
+                ) : null}
+
+                <span className="text-gray-700 font-medium">{product?.title || "Unknown Product"}</span>
+              </nav>
+              </div> */}
         {/* Top Section */}
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8 py-6'>
           {/* Product Images */}

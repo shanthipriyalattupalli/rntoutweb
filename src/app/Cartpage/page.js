@@ -68,6 +68,7 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response?.data,"response of delivery charges")
       setIsDelivery(response.data);
     } catch (error) {
       console.log(error, "error in fetching delivery charges")
@@ -159,6 +160,7 @@ const CartPage = () => {
 
       await handleAddToCart(variantId, quantities[variantId], selectedRental.period);
       fetchCartDetails();
+       fetchDeliveryCharges();
     } catch (error) {
       console.error("Error updating rental period:", error);
       toast.error("Failed to update rental period.");
@@ -237,6 +239,7 @@ const CartPage = () => {
       }));
       // toast.success("Quantity updated successfully.");
       fetchCartDetails();
+       fetchDeliveryCharges();
     } catch (error) {
       console.error("Error decreasing quantity:", error);
 

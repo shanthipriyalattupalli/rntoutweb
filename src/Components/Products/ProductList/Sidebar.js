@@ -140,7 +140,12 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
   };
   
 
-
+useEffect(()=>{
+  if (defaultdistance) {
+    setPriceRange(defaultdistance);
+    distance(defaultdistance);
+  }
+},[defaultdistance]);
 
   const handlePriceRange = (e) => {
     const distances = e.target.value;
@@ -162,10 +167,10 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
   const handleClearFilters = () => {
     setMinPrice(0);
     setMaxPrice(2000);
-    setPriceRange(25);
+    setPriceRange(50);
     setRating(5);
     onPriceChange(0,2000);
-    distance(25);
+    distance(50);
     onRatingChange(null)
     // rating(5)
   };
@@ -334,14 +339,14 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
                           type="range"
                           id="price"
                           min="0"
-                          max="25"
+                          max="50"
                           step="1"
                           value={priceRange}
                           onChange={(e) => handlePriceRange(e)}
                           // onChange={(e) => setPriceRange(e.target.value)} 
                           className="w-[200px] h-2 bg-red-500 rounded-lg cursor-pointer accent-red-500"
                           style={{
-                            background: `linear-gradient(to right, #ef4444 0%, #ef4444 ${(priceRange / 25) * 100}%, #fecaca ${(priceRange / 25) * 100}%, #fecaca 100%)`,
+                            background: `linear-gradient(to right, #ef4444 0%, #ef4444 ${(priceRange / 50) * 100}%, #fecaca ${(priceRange / 50) * 100}%, #fecaca 100%)`,
                             WebkitAppearance: "none",
                             MozAppearance: "none",
                           }}
@@ -354,15 +359,7 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
                           </div>
                           <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
                             <span className="ml-2 text-gray-200 ">|</span>
-                            <span >5km</span>
-                          </div>
-                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
-                            <span className="ml-2 text-gray-200 ">|</span>
-                            <span>10km</span>
-                          </div>
-                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
-                            <span className="ml-2 text-gray-200 ">|</span>
-                            <span>15km</span>
+                            <span >10km</span>
                           </div>
                           <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
                             <span className="ml-2 text-gray-200 ">|</span>
@@ -370,7 +367,15 @@ const Sidebar = ({categories, subCategories, subcategoryId, subcategoryID, onPri
                           </div>
                           <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
                             <span className="ml-2 text-gray-200 ">|</span>
-                            <span>25+km</span>
+                            <span>30km</span>
+                          </div>
+                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
+                            <span className="ml-2 text-gray-200 ">|</span>
+                            <span>40km</span>
+                          </div>
+                          <div className="flex flex-col text-xs font-normal leading-[18px] text-left">
+                            <span className="ml-2 text-gray-200 ">|</span>
+                            <span>50+km</span>
                           </div>
                         </div >
                         {/* <div className="price0">

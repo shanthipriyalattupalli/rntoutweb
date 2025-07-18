@@ -47,19 +47,23 @@ const OrderReview = () => {
 
   const [hover, setHover] = useState(0);
   const [orderData, setOrderData] = useState({});
+  console.log(orderData, "orderdata in revie")
   const router = useRouter();
   const params = useParams();
   const productId = params.productId;
+  console.log(productId, "productId in review")
   const searchParams = useSearchParams();
 
-  const variantId = searchParams.get("variantId")
+  const variantId = searchParams.get("variantId");
+
+
 
 
 
   const fetchProductById = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/orders/suborder/${productId}`);
-      console.log(response?.data, "response of productreview")
+      console.log(response?.data, "response of product")
       const data = response.data.variantId;
       setOrderData(response.data)
 
@@ -76,11 +80,10 @@ const OrderReview = () => {
 
   const fetchReviewById = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/reviews/variant/${variantId}`);
+      const response = await axios.get(`${BASE_URL}/delivery-reviews/variant/${variantId}`, );
 
-
-      setFormData(response.data.data[0])
-
+      console.log(response?.data, "response of delivery")
+      setFormData(response.data.data[0]);
     } catch (error) {
       console.error("Error fetching product:", error);
     }
@@ -138,7 +141,6 @@ const OrderReview = () => {
     try {
       const payload = {
         variantId: variantId,
-        userId,
         subOrderId: productId,
         rating,
         comment: comment,
@@ -158,9 +160,9 @@ const OrderReview = () => {
 
       // If variantId exists and you're editing an existing review
       if (variantId && reviewId) {
-        response = await axios.put(`${BASE_URL}/reviews/${reviewId}`, payload, config);
+        response = await axios.put(`${BASE_URL}/delivery-reviews/${reviewId}`, payload, config);
       } else {
-        response = await axios.post(`${BASE_URL}/reviews`, payload, config);
+        response = await axios.post(`${BASE_URL}/delivery-reviews`, payload, config);
       }
 
 
@@ -203,7 +205,7 @@ const OrderReview = () => {
         </div>
         <div
 
-          onClick={() => handleSubmit(orderData.order?.variantId?._id, orderData?.reviews[0]?._id)}
+          onClick={() => handleSubmit(orderData.order?.variantId?._id, orderData?.deliveryReview[0]?._id)}
         >
           Submit
         </div>
@@ -269,7 +271,7 @@ const OrderReview = () => {
                     onMouseLeave={() => setHover(0)}
                     onClick={() => handleRating(star)}
                   >
-                    {star <= (hover || formData.rating) ? (
+                    {star <= (hover || formData?.rating) ? (
                       <AiFillStar className="text-yellow-500 text-2xl" />
                     ) : (
                       <AiOutlineStar className="text-gray-400 text-2xl" />
@@ -278,7 +280,7 @@ const OrderReview = () => {
                 ))}
               </div>
               <p className="text-sm text-gray-500 ml-auto">
-                {formData.rating === 0 ? "Not Given Rating" : `You rated ${formData.rating} stars`}
+                {formData?.rating === 0 ? "Not Given Rating" : `You rated ${formData?.rating} stars`}
               </p>
             </div>
           </div>
@@ -290,7 +292,6 @@ const OrderReview = () => {
               <div className='form-group'>
                 <label htmlFor='headline'>Headline</label>
                 <input
-
                   type='text'
                   id='tilte'
                   placeholder="What's most important to know?"
@@ -299,7 +300,7 @@ const OrderReview = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="review">Review</label>
+                <label htmlFor="review">Review delivery person</label>
                 <textarea
                   id="review"
                   rows="4"

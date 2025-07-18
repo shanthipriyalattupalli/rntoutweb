@@ -1,87 +1,82 @@
-"use client"
 
-import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+
+import React from "react";
 import axios from "axios";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import BackArrow from "@/Components/ArrowBack/BackArrow";
 
 const blog = "/Assets/blog1.svg";
-const blogs ="/Assets/blogs-image.svg"
-const BlogPage = () => {
-    const router = useRouter();
-  const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
-
-    const params = useParams();
-    const blogId = params.blogId
-  const token = Cookies.get("userToken");
-  const [blogs, setBlogs] = useState([]);
-  const [blog,setBlog] = useState()
-    const fetchBlogs = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/blogs/related/${blogId}`,{
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setBlogs(response.data?.data)
-        
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    useEffect(() => {
-      fetchBlogs();
-    }, []);
+const blogs = "/Assets/blogs-image.svg"
+const token = Cookies.get("userToken");
+const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+const fetchBlogs = async ({ blogId }) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/blogs/related/${blogId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response?.data)
+    return response?.data
 
 
-    const fetchBlog = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/blogs/${blogId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setBlog(response.data);
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchBlog();
-    }, [blogId]);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+  }
+};
+const fetchBlog = async ({ blogId }) => {
+  console.log(blogId, "blogid inside")
+  try {
+    const response = await axios.get(`${BASE_URL}/blogs/${blogId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response?.data, "resoijofyuehfsdbcnx m")
+    return response?.data
 
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+  }
+};
+
+
+
+export default async function BlogPage({ params }) {
+  const { blogId } = await params;
+  console.log(blogId, "blogid");
+  const blogs = await fetchBlogs({ blogId });
+  const blog = await fetchBlog({ blogId });
 
   return (
     <div className=" min-h-screen p-6 flex justify-center w-full">
       <div className=" w-full bg-white shadow-lg p-6 rounded-lg flex flex-col md:flex-row gap-6">
-        <div  onClick={() => router.back()}>
-                <div className="mt-2 cursor-pointer">
+        <div  >
+          {/* <div className="mt-2 cursor-pointer">
                   <IoMdArrowRoundBack />
-                </div>
-              </div>
+                </div> */}
+          <BackArrow />
+        </div>
         {/* Main Blog Section */}
         <div className="md:w-2/3">
           <h1 className="text-2xl font-bold">
             {blog?.title}
           </h1>
-          {blog?.images?.map((image,index)=>(
-          <img
-          key={index}
-          src={image} // Replace with actual image URL
-          alt="Furniture"
-          className="rounded-lg my-4"
-        />
+          {blog?.images?.map((image, index) => (
+            <img
+              key={index}
+              src={image} // Replace with actual image URL
+              alt="Furniture"
+              className="rounded-lg my-4"
+            />
           ))}
 
           <p className="text-gray-700 leading-relaxed text-justify">
-{blog?.description}
+            {blog?.description}
           </p>
-         
+
           {/* <p className="text-gray-700 leading-relaxed mt-4">
           We’ll also discuss the benefits rental provides, like easy upgrades, storage solutions, and experimenting with new styles. Together, we’ll determine when renting furniture makes more sense than buying so you can make informed furniture decisions. Whether you’re accommodating guests, revamping your home office, or prepping for a special event, renting furniture may be the right call for furniture that’s only temporarily needed or likely to need replacement after heavy use.
           </p> */}
@@ -90,9 +85,9 @@ const BlogPage = () => {
         <div className="md:w-1/3   rounded-lg">
           <h2 className="text-xl font-semibold">Related Blogs</h2>
           <div className="mt-4 space-y-4">
-            {blogs.map((singleblog, index) => (
+            {blogs?.data?.map((singleblog, index) => (
               <Link
-              href={`/Blogs/${singleblog?._id}`}
+                href={`/Blogs/${singleblog?._id}`}
                 key={index}
                 className="flex gap-4 items-center  p-3 rounded-lg"
               >
@@ -103,10 +98,10 @@ const BlogPage = () => {
                 />
                 <div>
                   <h3 className="text-sm font-semibold">
-                  {singleblog?.title}
+                    {singleblog?.title}
                   </h3>
                   <p className="text-xs text-gray-600 line-clamp-3">
-                  {singleblog?.description}
+                    {singleblog?.description}
                   </p>
                 </div>
               </Link>
@@ -117,4 +112,3 @@ const BlogPage = () => {
     </div>
   );
 };
-export default BlogPage;

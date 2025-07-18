@@ -85,6 +85,7 @@ const fetchTrendingCategories = async () => {
 
 
 const fetchProducts = async (latitude, longitude, radius) => {
+  console.log(latitude,longitude,radius,"")
 
   try {
     const response = await axios.get(`${BASE_URL}/variants/variants-by-category`, {
@@ -123,9 +124,7 @@ export const metadata = {
 
 const Home = async () => {
   const cookieStore = cookies();
-  const latitude = await cookieStore.get('latitude');
-  const longitude = await cookieStore.get('longitude');
-  const radius = await cookieStore.get('selectedDistance')
+
 
 
   const banners = await fetchBanners();
@@ -133,7 +132,7 @@ const Home = async () => {
   const categories = await fetchCategories();
   const TrendingCategories = await fetchTrendingCategories();
 
-  const products = await fetchProducts(latitude, longitude, radius);
+
 
   const blogs = await fetchBlogs();
   const activeBanners = banner.filter(banner => banner.status === "active");
@@ -149,14 +148,13 @@ const Home = async () => {
 
       {categories.map((category) => {
         const categoryName = category.categoryName;
-        const productsArray = products[categoryName] || []; // Get products by name
         const categoryId = category._id;
 
         return (
           <div key={categoryId} >
             <ITInfrastructure
               title={categoryName}
-              products={productsArray}
+              categoryName={categoryName}
               categoryId={categoryId}
             />
           </div>

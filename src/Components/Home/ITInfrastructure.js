@@ -3,6 +3,8 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import Link from "next/link";
 import ProductCard from "../Shimmer/ProductCard";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const pro1 = "/Assets/laptop-1.jpg";
 const pro2 = "/Assets/laptop-2.jpg";
@@ -13,7 +15,45 @@ const pro5 = "/Assets/laptop-5.jpg";
 // Lazy loading ProductItem component
 const ProductItems = lazy(() => import("../Home/ProductItems"));
 
-const ITInfrastructure = ({ products,title,categoryId,isLoading }) => {
+const ITInfrastructure = ({ categoryName,title,categoryId,isLoading }) => {
+const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
+
+  console.log(categoryName,"categoryName")
+const latitude=Cookies.get('latitude');
+const longitude=Cookies.get('longitude');
+const radius=Cookies.get('selectedDistance');
+console.log(longitude,latitude,radius,"latittuse")
+
+  const [products,setProducts]=useState([])
+const fetchProducts = async () => {
+  console.log(latitude, longitude, radius, "");
+
+  try {
+    const response = await axios.get(`${BASE_URL}/variants/variants-by-category`, {
+      params: {
+        latitude,
+        longitude,
+        radius,
+      },
+    });
+
+    console.log(response, "product array of fetch");
+
+    const productsArray = response?.data?.data[categoryName];
+    console.log(productsArray, "productarray");
+
+    setProducts(productsArray);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return [];
+  }
+};
+
+useEffect(() => {
+  fetchProducts();
+}, [latitude, longitude, radius]);
+
+
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
@@ -21,7 +61,7 @@ const ITInfrastructure = ({ products,title,categoryId,isLoading }) => {
 
 
   const nextSlide = () => {
-    if (products.length > 0 && currentSlide < products.length - 1) {
+    if (products?.length > 0 && currentSlide < products?.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
       setCurrentSlide(0);
@@ -29,21 +69,21 @@ const ITInfrastructure = ({ products,title,categoryId,isLoading }) => {
   };
 
   const prevSlide = () => {
-    if (products.length > 0 && currentSlide > 0) {
+    if (products?.length > 0 && currentSlide > 0) {
       setCurrentSlide(currentSlide - 1);
     } else {
-      setCurrentSlide(products.length - 1);
+      setCurrentSlide(products?.length - 1);
     }
   };
 
   useEffect(() => {
-    if (isAutoplay && products.length > 0) {
+    if (isAutoplay && products?.length > 0) {
       const autoplayTimer = setInterval(() => {
         nextSlide();
       }, 3000); // Change slide every 3 seconds
       return () => clearInterval(autoplayTimer);
     }
-  }, [currentSlide, isAutoplay, products.length]);
+  }, [currentSlide, isAutoplay, products?.length]);
 
 
 
@@ -59,7 +99,7 @@ const ITInfrastructure = ({ products,title,categoryId,isLoading }) => {
       } else if (window.innerWidth >= 768) {
         setNumProducts(3); // md screens
       } else if (window.innerWidth >= 640) {
-        setNumProducts(2); // sm screens
+        setNumProducts(3); // sm screens
       } else {
         setNumProducts(2); 
       }
@@ -72,7 +112,7 @@ const ITInfrastructure = ({ products,title,categoryId,isLoading }) => {
   }, []);
 
   return (
-  products.length >0 &&  
+  products?.length >0 &&  
 <div className="mt-4 sm:mt-10 px-2 sm:px-6 md:px-8 lg:px-12 xl:px-16">
   <div className="mx-auto  md:p-6">
     {/* Heading Section */}
@@ -106,7 +146,7 @@ const ITInfrastructure = ({ products,title,categoryId,isLoading }) => {
     </div>
 
     {/* Product Grid */}
-<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-[10px] sm:gap-4 md:gap-[50px] 2xl:gap-10 mt-6">
+<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5 gap-[10px] sm:gap-4 md:gap-[30px] 2xl:gap-10 mt-6">
       {products?.slice(0, numProducts)?.map((product) => (
         <Suspense key={product._id} fallback={<ProductCard/>}>
           <ProductItems product={product} />

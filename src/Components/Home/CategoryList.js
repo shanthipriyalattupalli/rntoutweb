@@ -99,7 +99,7 @@ const CategoryList = ({ products = [], categories, isLoading }) => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 4,
         },
       },
       {

@@ -80,14 +80,13 @@ const Products = ({ categories }) => {
         <ToastContainer />
 
         {/* Product Grid */}
-        <div className='grid grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5 2xl:gap-2 sm:gap-4 md:gap-6 2xl:gap-10 gap-3   mt-3'>
+        <div className='grid grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 2xl:gap-2 sm:gap-4 md:gap-[20px] 2xl:gap-[30px] gap-3   mt-3'>
           {categoryProducts.map((product) => (
             console.log(product,"productstop"),
             <Suspense key={product._id} fallback={<ProductCard />}>
               <ProductItems key={product._id} product={product} />
             </Suspense>
           ))}
-
         </div>
 
         {/* View All Button Section */}

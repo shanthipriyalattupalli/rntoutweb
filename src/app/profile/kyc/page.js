@@ -16,7 +16,7 @@ const KYCVerification = () => {
     const [Preview, setIsPreview] = useState(null);
     const [isVerifying, setIsVerifying] = useState(false);
     const [isKycSuccess, setIsKycSuccess] = useState();
-    const[aadhardetails, setAadharDetails] = useState(null);
+    const [aadhardetails, setAadharDetails] = useState(null);
     const token = Cookies.get("userToken");
     const fileInputRef = useRef(null);
 
@@ -76,7 +76,7 @@ const KYCVerification = () => {
 
 
 
-setAadharDetails(response?.data?.data?.verificationResponse?.data?.ocr_data);
+            setAadharDetails(response?.data?.data?.verificationResponse?.data?.ocr_data);
             setIsPreview(response.data.data.aadhaarPhoto);
             setIsKycSuccess(response.data.data.status);
             if (response?.data?.data?.status) {
@@ -158,30 +158,44 @@ setAadharDetails(response?.data?.data?.verificationResponse?.data?.ocr_data);
                         </p> */}
 
                     </div>
-                                                            {isKycSuccess === "VERIFIED" && (
-                    <div className="mt-4 p-6 border border-gray-200 shadow-lg rounded-lg bg-white max-w-md mx-auto">
-                        <div className="grid grid-cols-2 gap-y-4 text-sm font-medium text-gray-700">
-                            <div className="text-right pr-4">Document ID:</div>
-                            <div className="text-left">{aadhardetails?.document_id}</div>
+                    {isKycSuccess === "VERIFIED" && (
+                        <div className="mt-4 p-6 border border-gray-200 shadow-lg rounded-lg bg-white max-w-md mx-auto">
+                            <div className="grid grid-cols-2 gap-y-4 text-sm font-medium text-gray-700">
+                                {aadhardetails?.document_id &&
+                                    <> <div className="text-right pr-4">Document ID:</div>
+                                        <div className="text-left">{aadhardetails?.document_id}</div>
+                                    </>
+                                }
 
-                            <div className="text-right pr-4">Name:</div>
-                            <div className="text-left">{aadhardetails?.name}</div>
+                                {aadhardetails?.name &&
+                                    <><div className="text-right pr-4">Name:</div>
+                                        <div className="text-left">{aadhardetails?.name}</div>
+                                    </>}
 
-                            <div className="text-right pr-4">Guardian Name:</div>
-                            <div className="text-left">{aadhardetails?.guardian_name}</div>
+                                {aadhardetails?.guardian_name &&
+                                    <><div className="text-right pr-4">Guardian Name:</div>
+                                        <div className="text-left">{aadhardetails?.guardian_name}</div>
+                                    </>}
+                                {aadhardetails?.gender &&
+                                    <>
+                                        <div className="text-right pr-4">Gender:</div>
+                                        <div className="text-left">{aadhardetails?.gender}</div>
+                                    </>
+                                }
+                                {aadhardetails?.date_of_birth &&
+                                    <>  <div className="text-right pr-4">Date Of Birth:</div>
+                                        <div className="text-left">{aadhardetails?.date_of_birth}</div>
+                                    </>}
 
-                            <div className="text-right pr-4">Gender:</div>
-                            <div className="text-left">{aadhardetails?.gender}</div>
-
-                            <div className="text-right pr-4">Date Of Birth:</div>
-                            <div className="text-left">{aadhardetails?.date_of_birth}</div>
-
-                            <div className="text-right pr-4">Address:</div>
-                            <div className="text-left">{aadhardetails?.address}</div>
+                                {aadhardetails?.address &&
+                                    <> <div className="text-right pr-4">Address:</div>
+                                        <div className="text-left">{aadhardetails?.address}</div>
+                                    </>
+                                }
+                            </div>
                         </div>
-                    </div>
 
-                )}
+                    )}
                 </div>
 
                 {/* Verification Status */}

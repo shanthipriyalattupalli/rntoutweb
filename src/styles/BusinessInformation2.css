@@ -121,6 +121,7 @@
 }
 
 .businness-submit-button {
+
   justify-content: center;
   padding-bottom: 20px;
   text-align: center;
@@ -128,6 +129,8 @@
 }
 
 .bussiness-submit {
+  width:fit-content;
+  justify-content: center;
   align-items: center;
   background-color: rgba(255, 45, 85, 1);
   padding: 10px;

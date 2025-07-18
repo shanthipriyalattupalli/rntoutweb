@@ -26,10 +26,8 @@ const MainContent = () => {
   const router = useRouter();
   const [products, setProducts] = useState([]);
 
-
-  const [productName, setProductName] = useState("");
-  const [productQuality, setProductQuality] = useState("");
-  const [availableStock, setAvailableStock] = useState("");
+const [securitydeposit,setSecuritydeposit]=useState(null);
+console.log(securitydeposit,"securitydepositttt")
   const [selectedOption, setSelectedOption] = useState("");
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [productDetails, setProductDetails] = useState([
@@ -46,7 +44,7 @@ const MainContent = () => {
     rentalAvailability: "",
     stockQuantity: "",
     pickupAddress: "",
-    rentalPrice:""
+    rentalPrice: ""
   });
 
 
@@ -58,9 +56,18 @@ const MainContent = () => {
   const longitude = Cookies.get("longitude");
 
 
+   useEffect(() => {
+      const params = new URLSearchParams(window.location.search);
+      const security = params.get("securitydeposit");
+  
+      if (security) {
+        setSecuritydeposit(security);
+      }
+    }, []);
+
 
   useEffect(() => {
-    if (typeof window === 'undefined') return; 
+    if (typeof window === 'undefined') return;
     const handleStorageChange = () => {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -240,10 +247,10 @@ const MainContent = () => {
 
   const handleIconClick = (e) => {
     // const handleIconClick = (e) => {
-      e.stopPropagation(); // Stop bubbling up to parent
-      if (fileInputRef.current) {
-        fileInputRef.current.click();
-      }
+    e.stopPropagation(); // Stop bubbling up to parent
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
     // };
     // fileInputRef.current.click();
   };
@@ -295,6 +302,8 @@ const MainContent = () => {
     subCategoryId: subCategoryId,
     productId: selectedOption,
     available: true,
+    weight: 0,
+    securityDeposit: 0,
     rentalPrice: [
       { period: "daily", price: 0 },
       { period: "weekly", price: 0 },
@@ -310,7 +319,7 @@ const MainContent = () => {
     seoTags: [],
     isForSale: true,
     // salePrice: 0,
-    totalStock:0,
+    totalStock: 0,
     stockQuantity: 0,
     pickupAddress: "",
     location: {
@@ -376,7 +385,7 @@ const MainContent = () => {
     const mappedDetails = productDetails.reduce((acc, section) => {
       section.details?.forEach((detail) => {
         if (detail.key && detail.value) {
-          acc[detail.key] = detail.value; 
+          acc[detail.key] = detail.value;
         }
       });
       return acc;
@@ -468,7 +477,9 @@ const MainContent = () => {
       rentalAvailability: "",
       stockQuantity: "",
       pickupAddress: "",
-      rentalPrice:""
+      rentalPrice: "",
+      weight: 0,
+      securityDeposit:0
     });
 
     let newErrors = {};
@@ -499,18 +510,30 @@ const MainContent = () => {
       newErrors.stockQuantity = "This field is required";
       missingFields.push("Stock Quantity");
     }
-    if (!formData.pickupAddress ) {
+    if(!formData.weight || isNaN(formData.weight)){
+      newErrors.weight = "Weight is required";
+      missingFields.push("weight")
+    }
+    if (!formData.pickupAddress) {
       newErrors.pickupAddress = "This field is required";
       missingFields.push("Pickup Address");
     }
     const allPricesAreZero = formData.rentalPrice.every(
       (item) => !item.price || Number(item.price) === 0
     );
-    
+
     if (allPricesAreZero) {
       newErrors.rentalPrice = "At least one price must be greater than 0";
       missingFields.push("rentalPrice");
     }
+
+      if (securitydeposit === "true") {
+    if (!formData.securityDeposit || isNaN(formData.securityDeposit)) {
+      newErrors.securityDeposit = "Security deposit is required";
+      missingFields.push("Security Deposit");
+    }
+  }
+
 
     // Check if errors exist
     if (Object.keys(newErrors).length > 0) {
@@ -569,13 +592,12 @@ const MainContent = () => {
       formDataToSend.append("isForSale", formData.isForSale);
       // formDataToSend.append("salePrice", formData.salePrice);
       formDataToSend.append("stockQuantity", formData.stockQuantity);
+      formDataToSend.append("weight", formData.weight);
       formDataToSend.append("totalStock", formData.stockQuantity);
       formDataToSend.append("pickupAddress", formData.pickupAddress);
-
       const coordinates = formData.location.coordinates;
       const validCoordinates =
         Array.isArray(coordinates) && coordinates.length === 2 && !isNaN(coordinates[0]) && !isNaN(coordinates[1]);
-
       formDataToSend.append(
         "location",
         JSON.stringify({
@@ -590,6 +612,10 @@ const MainContent = () => {
           formDataToSend.append(`itemDetails[${key}]`, formData.itemDetails[key]);
         }
       }
+
+          if (securitydeposit === "true" || securitydeposit === true) {
+      formDataToSend.append("securityDeposit", formData.securityDeposit);
+    }
 
       const response = await axios.post(`${BASE_URL}/variants`, formDataToSend, {
         headers: {
@@ -658,7 +684,7 @@ const MainContent = () => {
   };
 
 
-
+console.log(formData,"format");
 
 
 
@@ -678,361 +704,372 @@ const MainContent = () => {
           </div>
         </div>
       )}
-   {products?.length > 0 && (
-  <div className='radio-button-group'>
-    {products.map((option) => (
-      <label key={option._id} className='radio-option'>
-        <input
-          type='radio'
-          name='productId'
-          value={option._id}
-          checked={selectedOption === option._id}
-          onChange={() => handleOptionChange(option._id)}
-        />
-        <span className='custom-radio'></span>
-        {option.productName}
-      </label>
-    ))}
-  </div>
-)}
+      {products?.length > 0 && (
+        <div className='radio-button-group'>
+          {products.map((option) => (
+            <label key={option._id} className='radio-option'>
+              <input
+                type='radio'
+                name='productId'
+                value={option._id}
+                checked={selectedOption === option._id}
+                onChange={() => handleOptionChange(option._id)}
+              />
+              <span className='custom-radio'></span>
+              {option.productName}
+            </label>
+          ))}
+        </div>
+      )}
 
 
       {errors.productId && <p className="text-red-500 text-sm">{errors.productId}</p>}
-        {products?.length > 0 ? (
-<>
-      <div className='product-form'>
-        <h2 className='ba-in mb-3'>BASICS INFO</h2>
-        <div className='basic-details '>
-          <div className='form-section1'>
-            <label>
-              Product Name{" "}
-              <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-            </label>
-            <input
-              type='text'
-              name='title'
-              value={formData.title}
-              onChange={handleInputChange}
-              placeholder='Enter name'
-            />
-            {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
-          </div>
-
-          <div className='form-section2'>
-            <label>
-              Product Quality{" "}
-              <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-            </label>
-            <select
-            // name='description'
-            // value={formData.description}
-            // onChange={handleInputChange}
-            >
-              <option value=''>Select product quality</option>
-              <option value='New'>New</option>
-              <option value='Used - Like New'>Used - Like New</option>
-              <option value='Used - Good'>Used - Good</option>
-              <option value='Used - Acceptable'>Used - Acceptable</option>
-            </select>
-          </div>
-
-          <div className='form-section3'>
-            <label>
-              Available Stock{" "}
-              <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-            </label>
-            <input
-              type='number'
-              name='stockQuantity'
-              value={formData.stockQuantity}
-              onChange={handleInputChange}
-              placeholder='Enter number'
-            />
-            {errors.stockQuantity && <p className="text-red-500 text-sm">{errors.stockQuantity}</p>}
-
-          </div>
-        </div>
-
-        <div className='form-section file-upload '>
-          <h2 className='ba-in'>
-            Product Image{" "}
-            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-          </h2>
-          <div className='file-upload-box cusror-pointer' tabIndex={0}  onClick={handleIconClick}>
-            <input
-              type='file'
-              ref={fileInputRef}
-              multiple
-              accept='.jpeg, .png, .jpg'
-              style={{ display: "none" }}
-              onChange={handleFileChange} // Add onChange handler
-            />
-            <div className='upload-icon' onClick={handleIconClick}>
-              <img src={upload} />
-            </div>
-            <p className="text-sm font-normal leading-5 text-center decoration-none">
-              Drag your file(s) or <span onClick={handleIconClick}>browse</span>
-            </p>
-            <p className='file-note'>Image format will be a JPEG, PNG, JPG</p>
-          </div>
-          <p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 1 image. 📸</p>
-          {errors.images && <p className="text-red-500 text-sm">{errors.images}</p>}
-          {/* Render Preview Images */}
-          <div className='image-preview-container'>
-            {previewImages.map((src, index) => (
-              <div key={index} className='image-preview-box relative'>
-                <img
-                  src={src}
-                  alt={`Preview ${index + 1}`}
-                  className='preview-image'
-                />
-                {/* Remove button with cross icon */}
-                <button
-                  onClick={() => handleRemoveImage(index)}
-                  className='absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-700'
-                >
-                  <X size={14} /> {/* Icon from lucide-react */}
-                </button>
-              </div>
-            ))}
-          </div>
-
-
-
-        </div>
-        <div className="flex flex-col">
-          <label className='ba-in'>
-            Product Availability{" "}
-            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-          </label>
-          <div className="date-picker-container flex flex-col md:flex-row justify-between gap-4">
-            {/* Start Date */}
-            <div className="w-full md:w-1/2 flex flex-col">
-              <label className="text-gray-700 font-medium">
-                Product Availability <span className="text-gray-400">(Start)</span>
-              </label>
-              <div className="relative flex items-center justify-between border border-gray-300 rounded-lg px-3 py-3 focus-within:border-blue-500">
-                <DatePicker
-                  selected={formData.rentalAvailability.startDate}
-                  name="startDate"
-                  value={formData.rentalAvailability.startDate}
-                  onChange={(date) => handleDateChange(date)}
-                  placeholderText="Select start date"
-                  className="w-full outline-none bg-transparent"
-                  dateFormat="MMMM d, yyyy"
-                  minDate={new Date()}
-                />
-                <FaRegCalendarAlt
-                  className="text-gray-500 cursor-pointer"
-                  onClick={(e) => {
-                    const container = e.currentTarget.parentElement;
-                    const input = container.querySelector("input");
-                    if (input) input.click();
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* End Date */}
-            <div className="w-full md:w-1/2 flex flex-col">
-              <label className="text-gray-700 font-medium">
-                Product Availability <span className="text-gray-400">(End)</span>
-              </label>
-              <div className="relative flex items-center justify-between border border-gray-300 rounded-lg px-3 py-3 focus-within:border-blue-500">
-                <DatePicker
-                  selected={formData.rentalAvailability.endDate}
-                  name="endDate"
-                  value={formData.rentalAvailability.endDate}
-                  onChange={(date) => handleEndDateChange(date)}
-                  placeholderText="Select end date"
-                  className="w-full outline-none bg-transparent"
-                  dateFormat="MMMM d, yyyy"
-                  minDate={new Date()}
-                />
-                <FaRegCalendarAlt
-                  className="text-gray-500 cursor-pointer"
-                  onClick={(e) => {
-                    const container = e.currentTarget.parentElement;
-                    const input = container.querySelector("input");
-                    if (input) input.click();
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-
-
-          <span> {errors.rentalAvailability && <p className="text-red-500 text-sm mt-10">{errors.rentalAvailability}</p>}</span>
-        </div>
-
-
-        <div className="mt-10 flex flex-col gap-3">
-          <label className="text-[14px] font-semibold">Select Pick up address
-            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-          </label>
-          <div className="google-content">
-            {/* <LoadScript googleMapsApiKey={MAP_API}> */}
-              <GoogleMap
-                mapContainerStyle={{
-                  height: "300px",
-                  width: "100%",
-                  borderRadius: "16px",
-                }}
-                center={mapCenter}
-                zoom={10}
-                onClick={handleMapClick}
-              >
-                {formData.location.coordinates && formData.location.coordinates.length === 2 && (
-                  <Marker
-                    position={{
-                      lat: parseFloat(formData.location.coordinates[1]), 
-                      lng: parseFloat(formData.location.coordinates[0]), 
-                    }}
-                  />
-                )}
-              </GoogleMap>
-            {/* </LoadScript> */}
-          </div>
-        </div>
-        <p name='pickupAddress'
-          value={formData.pickupAddress}
-          onChange={handleInputChange}>
-          <strong>Address:</strong> {formData.pickupAddress}
-
-          {/* <LocationSearch /> */}
-
-          {errors.pickupAddress && <p className="text-red-500 text-sm">{errors.pickupAddress}</p>}
-          {/* {errors.address && <p style={{ color: "red" }}>{errors.address}</p>} */}
-
-        </p>
-        <div className="mt-3 flex flex-col relative">
-          <label className="left-3 text-gray-500 text-sm bg-white">Description
-            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-
-          </label>
-          <textarea
-            placeholder="Enter product details"
-            className="border rounded-2xl h-40 p-3 pt-6 focus:border-red-500 focus:ring-blue-500 focus:outline-none"
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-
-          />
-          {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
-        </div>
-
-
-
-
-
-
-        <div className='form-section4'>
-          <h2 className='ba-in'>
-            PRICING INFO{" "}
-            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-          {errors.rentalPrice && <p className="text-red-500 text-sm">{errors.rentalPrice}</p>}
-
-          </h2>
-          <div className='pricing-section'>
-            {[
-              "perDay",
-              "perWeek",
-              "perMonth",
-              "perQuarter",
-              "perSixMonths",
-              "perYear",
-            ].map((timeframe) => (
-              <div key={timeframe} className='form-section5'>
+      {products?.length > 0 ? (
+        <>
+          <div className='product-form'>
+            <h2 className='ba-in mb-3'>BASICS INFO</h2>
+            <div className='basic-details '>
+              <div className='form-section1'>
                 <label>
-                  {timeframe.replace("per", "Per ").replace(/([A-Z])/g, " $1")}
+                  Product Name{" "}
+                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+                </label>
+                <input
+                  type='text'
+                  name='title'
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  placeholder='Enter name'
+                />
+                {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
+              </div>
+
+              <div className='form-section1'>
+                <label>
+                  Product Weight{" "}(in kgs)
+                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+                </label>
+                <input
+                  type='tel'
+                  name='weight'
+                  value={formData.weight}
+                  onChange={handleInputChange}
+                  placeholder='Enter name'
+                />
+                {errors.weight && <p className="text-red-500 text-sm">{errors.weight}</p>}
+              </div>
+
+              <div className='form-section3'>
+                <label>
+                  Available Stock{" "}
+                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
                 </label>
                 <input
                   type='number'
-                  name={timeframe}
-                  onChange={handlePriceChange}
-                  placeholder='₹ 0.00'
+                  name='stockQuantity'
+                  value={formData.stockQuantity}
+                  onChange={handleInputChange}
+                  placeholder='Enter number'
                 />
+                {errors.stockQuantity && <p className="text-red-500 text-sm">{errors.stockQuantity}</p>}
+
+              </div>
+            </div>
+
+            <div className='form-section file-upload '>
+              <h2 className='ba-in'>
+                Product Image{" "}
+                <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+              </h2>
+              <div className='file-upload-box cusror-pointer' tabIndex={0} onClick={handleIconClick}>
+                <input
+                  type='file'
+                  ref={fileInputRef}
+                  multiple
+                  accept='.jpeg, .png, .jpg'
+                  style={{ display: "none" }}
+                  onChange={handleFileChange} // Add onChange handler
+                />
+                <div className='upload-icon' onClick={handleIconClick}>
+                  <img src={upload} />
+                </div>
+                <p className="text-sm font-normal leading-5 text-center decoration-none">
+                  Drag your file(s) or <span onClick={handleIconClick}>browse</span>
+                </p>
+                <p className='file-note'>Image format will be a JPEG, PNG, JPG</p>
+              </div>
+              <p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 1 image. 📸</p>
+              {errors.images && <p className="text-red-500 text-sm">{errors.images}</p>}
+              {/* Render Preview Images */}
+              <div className='image-preview-container'>
+                {previewImages.map((src, index) => (
+                  <div key={index} className='image-preview-box relative'>
+                    <img
+                      src={src}
+                      alt={`Preview ${index + 1}`}
+                      className='preview-image'
+                    />
+                    {/* Remove button with cross icon */}
+                    <button
+                      onClick={() => handleRemoveImage(index)}
+                      className='absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-700'
+                    >
+                      <X size={14} /> {/* Icon from lucide-react */}
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+
+
+            </div>
+            <div className="flex flex-col">
+              <label className='ba-in'>
+                Product Availability{" "}
+                <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+              </label>
+              <div className="date-picker-container flex flex-col md:flex-row justify-between gap-4">
+                {/* Start Date */}
+                <div className="w-full md:w-1/2 flex flex-col">
+                  <label className="text-gray-700 font-medium">
+                    Product Availability <span className="text-gray-400">(Start)</span>
+                  </label>
+                  <div className="relative flex items-center justify-between border border-gray-300 rounded-lg px-3 py-3 focus-within:border-blue-500">
+                    <DatePicker
+                      selected={formData.rentalAvailability.startDate}
+                      name="startDate"
+                      value={formData.rentalAvailability.startDate}
+                      onChange={(date) => handleDateChange(date)}
+                      placeholderText="Select start date"
+                      className="w-full outline-none bg-transparent"
+                      dateFormat="MMMM d, yyyy"
+                      minDate={new Date()}
+                    />
+                    <FaRegCalendarAlt
+                      className="text-gray-500 cursor-pointer"
+                      onClick={(e) => {
+                        const container = e.currentTarget.parentElement;
+                        const input = container.querySelector("input");
+                        if (input) input.click();
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* End Date */}
+                <div className="w-full md:w-1/2 flex flex-col">
+                  <label className="text-gray-700 font-medium">
+                    Product Availability <span className="text-gray-400">(End)</span>
+                  </label>
+                  <div className="relative flex items-center justify-between border border-gray-300 rounded-lg px-3 py-3 focus-within:border-blue-500">
+                    <DatePicker
+                      selected={formData.rentalAvailability.endDate}
+                      name="endDate"
+                      value={formData.rentalAvailability.endDate}
+                      onChange={(date) => handleEndDateChange(date)}
+                      placeholderText="Select end date"
+                      className="w-full outline-none bg-transparent"
+                      dateFormat="MMMM d, yyyy"
+                      minDate={new Date()}
+                    />
+                    <FaRegCalendarAlt
+                      className="text-gray-500 cursor-pointer"
+                      onClick={(e) => {
+                        const container = e.currentTarget.parentElement;
+                        const input = container.querySelector("input");
+                        if (input) input.click();
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+
+
+              <span> {errors.rentalAvailability && <p className="text-red-500 text-sm mt-10">{errors.rentalAvailability}</p>}</span>
+            </div>
+
+
+            <div className="mt-10 flex flex-col gap-3">
+              <label className="text-[14px] font-semibold">Select Pick up address
+                <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+              </label>
+              <div className="google-content">
+                {/* <LoadScript googleMapsApiKey={MAP_API}> */}
+                <GoogleMap
+                  mapContainerStyle={{
+                    height: "300px",
+                    width: "100%",
+                    borderRadius: "16px",
+                  }}
+                  center={mapCenter}
+                  zoom={10}
+                  onClick={handleMapClick}
+                >
+                  {formData.location.coordinates && formData.location.coordinates.length === 2 && (
+                    <Marker
+                      position={{
+                        lat: parseFloat(formData.location.coordinates[1]),
+                        lng: parseFloat(formData.location.coordinates[0]),
+                      }}
+                    />
+                  )}
+                </GoogleMap>
+                {/* </LoadScript> */}
+              </div>
+            </div>
+            <p name='pickupAddress'
+              value={formData.pickupAddress}
+              onChange={handleInputChange}>
+              <strong>Address:</strong> {formData.pickupAddress}
+
+              {/* <LocationSearch /> */}
+
+              {errors.pickupAddress && <p className="text-red-500 text-sm">{errors.pickupAddress}</p>}
+              {/* {errors.address && <p style={{ color: "red" }}>{errors.address}</p>} */}
+
+            </p>
+            <div className="mt-3 flex flex-col relative">
+              <label className="left-3 text-gray-500 text-sm bg-white">Description
+                <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+              </label>
+              <textarea
+                placeholder="Enter product details"
+                className="border rounded-2xl h-40 p-3 pt-6 focus:border-red-500 focus:ring-blue-500 focus:outline-none"
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+
+              />
+              {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+            </div>
+
+
+
+
+
+
+            <div className='form-section4'>
+              <h2 className='ba-in'>
+                PRICING INFO{" "}
+                <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+                {errors.rentalPrice && <p className="text-red-500 text-sm">{errors.rentalPrice}</p>}
+
+              </h2>
+              <div className='pricing-section'>
+                {[
+                  "perDay",
+                  "perWeek",
+                  "perMonth",
+                  "perQuarter",
+                  "perSixMonths",
+                  "perYear",
+                ].map((timeframe) => (
+                  <div key={timeframe} className='form-section5'>
+                    <label>
+                      {timeframe.replace("per", "Per ").replace(/([A-Z])/g, " $1")}
+                    </label>
+                    <input
+                      type='number'
+                      name={timeframe}
+                      onChange={handlePriceChange}
+                      placeholder='₹ 0.00'
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+        {securitydeposit === "true" &&      <div className='form-section1'>
+                <label>
+                 Security Deposit
+                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+                </label>
+                <input
+                  type='tel'
+                  name='securityDeposit'
+                  value={formData.securityDeposit}
+                  onChange={handleInputChange}
+                  placeholder='Enter Security Amount'
+                />
+                {errors.securityDeposit && <p className="text-red-500 text-sm">{errors.securityDeposit}</p>}
+              </div>}
+
+
+          </div>
+          <div className='details-section'>
+            <h2 className='ba-in'>
+              Product Details{" "}
+              {/* <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span> */}
+            </h2>
+            {productDetails?.map((section, index) => (
+              <div className='product-details-card' key={index}>
+                Title
+                {section.details?.map((detail, index) => (
+                  <div key={index} className='detail-row'>
+                    <input
+                      type='text'
+                      placeholder='Enter title'
+                      value={detail.key}
+                      onChange={(e) =>
+                        handleChange(section.id, detail.id, "key", e.target.value)
+                      }
+                    />
+                    <input
+                      type='text'
+                      placeholder='Enter description'
+                      value={detail.value}
+                      onChange={(e) =>
+                        handleChange(section.id, detail.id, "value", e.target.value)
+                      }
+                    />
+                    <button
+                      onClick={() => handleDeleteDetail(section.id, detail.id)}
+                      className='delete-btn'
+                    >
+                      <FiTrash />
+                    </button>
+                  </div>
+                ))}
+                <div className='btn-add-del'>
+                  <button
+                    onClick={() => handleAddDetail(section.id)}
+                    className='add-row-btn1'
+                  >
+                    <FiPlus /> Add Row
+                  </button>
+                  <button
+                    onClick={() => handleDeleteSection(section.id)}
+                    className='delete-card-btn1'
+                  >
+                    <FiTrash /> Delete Card
+                  </button>
+                </div>
               </div>
             ))}
+
+
+            {/* <button onClick={handleAddSection} className='add-section-btn'>
+              <FiPlus /> Add New Product Description
+            </button> */}
           </div>
-        </div>
-      </div>
-      <div className='details-section'>
-        <h2 className='ba-in'>
-          Product Details{" "}
-          {/* <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span> */}
-        </h2>
-        {productDetails?.map((section,index) => (
-  <div className='product-details-card' key={index}>
-    Title
-    {section.details?.map((detail,index) => (
-      <div key={index} className='detail-row'>
-        <input
-          type='text'
-          placeholder='Enter title'
-          value={detail.key}
-          onChange={(e) =>
-            handleChange(section.id, detail.id, "key", e.target.value)
-          }
-        />
-        <input
-          type='text'
-          placeholder='Enter description'
-          value={detail.value}
-          onChange={(e) =>
-            handleChange(section.id, detail.id, "value", e.target.value)
-          }
-        />
-        <button
-          onClick={() => handleDeleteDetail(section.id, detail.id)}
-          className='delete-btn'
-        >
-          <FiTrash />
-        </button>
-      </div>
-    ))}
-    <div className='btn-add-del'>
-      <button
-        onClick={() => handleAddDetail(section.id)}
-        className='add-row-btn1'
-      >
-        <FiPlus /> Add Row
-      </button>
-      <button
-        onClick={() => handleDeleteSection(section.id)}
-        className='delete-card-btn1'
-      >
-        <FiTrash /> Delete Card
-      </button>
-    </div>
-  </div>
-))}
-
-
-        <button onClick={handleAddSection} className='add-section-btn'>
-          <FiPlus /> Add New Product Description
-        </button>
-      </div>
-      <button onClick={handlePublishProduct} className='publish-button'>
-        Publish Product
-      </button></> ):
-      <div className="flex flex-col gap-4 items-center justify-center w-[120%] max-w-[480px] mx-auto h-[500px] text-center">
-      <img
-           src={emptyproducts}
-           alt="No products available"
-           className="w-[80%] animate-float"
-         />
-       <div className="flex flex-col items-center text-center">
-  <span className="pt-10 font-medium text-xl">No Products Available to Add Variants</span>
-  <span className="font-poppins font-normal text-[12px] leading-[18px] tracking-normal text-[rgba(7,7,7,0.8)]">
-    There are no products in this category to add a variant. You can explore other categories and choose a different one if needed.
-  </span>
-</div>
-
-    
-
-       </div> }
+          <button onClick={handlePublishProduct} className='publish-button'>
+            Publish Product
+          </button></>) :
+        <div className="flex flex-col gap-4 items-center justify-center w-[120%] max-w-[480px] mx-auto h-[500px] text-center">
+          <img
+            src={emptyproducts}
+            alt="No products available"
+            className="w-[80%] animate-float"
+          />
+          <div className="flex flex-col items-center text-center">
+            <span className="pt-10 font-medium text-xl">No Products Available to Add Variants</span>
+            <span className="font-poppins font-normal text-[12px] leading-[18px] tracking-normal text-[rgba(7,7,7,0.8)]">
+              There are no products in this category to add a variant. You can explore other categories and choose a different one if needed.
+            </span>
+          </div>
+        </div>}
     </div>
   );
 };

@@ -30,6 +30,7 @@ export default function BusinessInformation2() {
   const userEmail = Cookies.get("userEmail");
   const token = Cookies.get("userToken");
   const Mobile = Cookies.get("userMobile");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [previewImages, setPreviewImages] = useState([]);
   const toggleEdit = () => {
     // setIsBuisness(true)
@@ -66,7 +67,7 @@ export default function BusinessInformation2() {
     contactEmail: "",
     contactPhone: "",
     storeDescription: "",
-    bankName: "priya",
+    bankName: "",
     accountNumber: "",
     ifsc: "",
     bankBranchAddress: {
@@ -97,9 +98,9 @@ export default function BusinessInformation2() {
       if (!nameRegex.test(value)) return;
     }
 
-  if (name === 'ifsc' && !/^[a-zA-Z0-9]*$/.test(value)) {
-    return; // Reject the input if it’s not alphanumeric
-  }
+    if (name === 'ifsc' && !/^[a-zA-Z0-9]*$/.test(value)) {
+      return; // Reject the input if it’s not alphanumeric
+    }
 
     if (name === "contactPhone") {
       const onlyNumbers = value.replace(/\D/g, ""); // Allow only digits
@@ -139,13 +140,30 @@ export default function BusinessInformation2() {
   };
 
 
-  useEffect(() => {
-    if (formData.bannerImages?.length) {
-      // Map existing images from API response
-      const existingImages = formData.bannerImages.map((img) => img.imageUrl);
-      setPreviewImages(existingImages);
-    }
-  }, [formData.bannerImages]);
+  // useEffect(() => {
+  //   if (formData.bannerImages?.length) {
+  //     // Map existing images from API response
+  //     const existingImages = formData.bannerImages.map((img) => img.imageUrl);
+  //     setPreviewImages(existingImages);
+  //   }
+  // }, [formData.bannerImages]);
+
+
+useEffect(() => {
+  if (formData.bannerImages?.length) {
+    const backendImages = formData.bannerImages
+      .filter((img) => img?.imageUrl)
+      .map((img) => img.imageUrl);
+
+    setPreviewImages((prev) => {
+      const isInitialLoad = prev.length === 0;
+      return isInitialLoad ? [...backendImages] : prev;
+    });
+  }
+}, [formData.bannerImages]);
+
+
+
 
 
   const handleFileUpload = (event) => {
@@ -193,28 +211,121 @@ export default function BusinessInformation2() {
   };
 
 
+const handleRemoveImage = (indexToRemove) => {
+  // Remove from preview
+  setPreviewImages((prev) => {
+    const updated = [...prev];
+    updated.splice(indexToRemove, 1);
+    return updated;
+  });
 
+  // Remove from formData and track removed indices (not URLs)
+  setFormData((prev) => {
+    const updatedBannerImages = [...(prev.bannerImages || [])];
+    const removedIndices = [...(prev.removedImageIndices || [])];
 
-  const handleRemoveImage = (indexToRemove) => {
-    setPreviewImages((prev) => prev.filter((_, index) => index !== indexToRemove));
+    // Add index to removed list only if it's an existing image (with imageUrl)
+    if (updatedBannerImages[indexToRemove]?.imageUrl) {
+      removedIndices.push(indexToRemove);
+    }
 
+    updatedBannerImages.splice(indexToRemove, 1);
 
-
-    setFormData((prev) => ({
+    return {
       ...prev,
-      removedImageIndices: [...(prev.removedImageIndices || []), indexToRemove],
-      bannerImages: prev.bannerImages.filter((_, index) => index !== indexToRemove),
+      bannerImages: updatedBannerImages,
+      removedImageIndices: removedIndices,
+    };
+  });
 
-    }));
+  toast.info("Image removed!");
+};
 
 
-    toast.info("Image removed!");
-  };
+
+console.log(previewImages, "Preview Images State");
+console.log(formData?.removedImageIndices, "Replace Image Indices State");
+
+
+// const handleFileUpload = async (event) => {
+//   const files = Array.from(event.target.files);
+//   if (!files.length) {
+//     toast.error("No files selected");
+//     return;
+//   }
+
+//   try {
+//     const previews = await Promise.all(
+//       files.map((file) =>
+//         new Promise((resolve, reject) => {
+//           const reader = new FileReader();
+//           reader.onload = () => {
+//             resolve({ file, src: reader.result });
+//           };
+//           reader.onerror = () => reject("Failed to read file");
+//           reader.readAsDataURL(file);
+//         })
+//       )
+//     );
+//         const existing = previews.map((img) => (
+//       img?.src
+//     ));
+//     console.log("Previews:", existing);
+//     // Update state
+//     setPreviewImages((prev) => [...prev, ...previews]);
+//     setFormData((prev) => ({
+//       ...prev,
+//       bannerImages: [...(prev.bannerImages || []), ...files],
+//     }));
+
+//     toast.success("Files added successfully!");
+//   } catch (error) {
+//     toast.error("Error reading files");
+//     console.error(error);
+//   }
+// };
+
+
+
+
+//   const handleRemoveImage = (indexToRemove) => {
+
+//   setPreviewImages((prev) => {
+//     const updatedPreview = prev.filter((_, index) => index !== indexToRemove);
+//     console.log("Updated Preview Images:", updatedPreview);
+//     return [...updatedPreview]; // ensure fresh array
+//   });
+
+//   // 2. Update form data safely
+//   setFormData((prev) => {
+//     const updatedBanners = prev.bannerImages.filter((_, index) => index !== indexToRemove);
+//     const updatedRemovedIndices = [...(prev.removedImageIndices || []), indexToRemove];
+    
+//     return {
+//       ...prev,
+//       bannerImages: updatedBanners,
+//       removedImageIndices: updatedRemovedIndices,
+//     };
+//   });
+
+//   toast.info("Image removed!");
+// };
+
 
 
 
 
   const handleBusinessInformation = async () => {
+      if (!agreedToTerms) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Terms and Conditions',
+          text: 'You must agree to the terms and conditions before proceeding.',
+          confirmButtonColor: '#FF2D55',
+          confirmButtonText: 'OK'
+        });
+    return;
+  }
 
     let errors = {};
 
@@ -239,6 +350,8 @@ export default function BusinessInformation2() {
       setErrorMessage(errors);
       return;
     }
+
+
     try {
       const formDataToSend = new FormData();
 
@@ -327,7 +440,7 @@ export default function BusinessInformation2() {
       formDataToSend.append("walletBalance", formData.walletBalance);
 
 
-console.log("Form Data to Send:", formDataToSend);
+      console.log("Form Data to Send:", formDataToSend);
       const response = await axios.post(`${BASE_URL}/business-info/add-or-update`, formDataToSend, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -347,7 +460,7 @@ console.log("Form Data to Send:", formDataToSend);
         });
       }
     } catch (error) {
-      if(error?.response?.status === 413) {
+      if (error?.response?.status === 413) {
         Swal.fire({
           icon: 'error',
           title: 'Error!',
@@ -356,7 +469,7 @@ console.log("Form Data to Send:", formDataToSend);
           confirmButtonText: 'OK'
         });
         return;
-      }else{
+      } else {
 
         Swal.fire({
           icon: 'error',
@@ -366,7 +479,7 @@ console.log("Form Data to Send:", formDataToSend);
           confirmButtonText: 'OK'
         });
       }
-      
+
       console.error("Error submitting business information:", error);
     }
   };
@@ -382,7 +495,8 @@ console.log("Form Data to Send:", formDataToSend);
         },
       })
       setBusinessId(response.data.data._id)
-      setFormData(response.data.data)
+      setFormData(response.data.data);
+      setAgreedToTerms(true);
       // if(response.data.data._id){
 
       //   setBusinessInfo(true)
@@ -398,7 +512,7 @@ console.log("Form Data to Send:", formDataToSend);
   }, [token])
 
 
-
+console.log(formData, "fomr data");
   return (
     <>
 
@@ -471,14 +585,14 @@ console.log("Form Data to Send:", formDataToSend);
                   <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
 
                 </label>
-                <select id="bank-select" name='bankName'
+                <input id="accountNumber"
+                  type="tel"
+                  placeholder="Enter Bank Name"
+                  name='bankName'
                   value={formData?.bankName}
                   onChange={handleInputChange}
-                >
-                  <option>Select bank</option>
-                  <option>State Bank of India</option>
-                  <option>ICICI Bank</option>
-                </select>
+
+                />
               </div>
               {errorMessage.bankName && <p className="text-red-500 text-sm">{errorMessage.bankName}</p>}
               <div className="input-item">
@@ -492,7 +606,7 @@ console.log("Form Data to Send:", formDataToSend);
                   name='accountNumber'
                   value={formData?.accountNumber}
                   onChange={handleInputChange}
-                  
+
                 />
                 {errorMessage.accountNumber && <p className="text-red-500 text-sm">{errorMessage.accountNumber}</p>}
 
@@ -508,8 +622,8 @@ console.log("Form Data to Send:", formDataToSend);
                   name='ifsc'
                   value={formData?.ifsc}
                   onChange={handleInputChange}
-                   pattern="[a-zA-Z0-9]*"
-                  
+                  pattern="[a-zA-Z0-9]*"
+
                 />
                 {errorMessage.ifsc && <p className="text-red-500 text-sm">{errorMessage.ifsc}</p>}
 
@@ -636,35 +750,38 @@ console.log("Form Data to Send:", formDataToSend);
                   className="ml-28"
                 />
 
-                {/* Preview uploaded files */}
-                <div className='image-preview-container' style={{ alignSelf: "flex-start" }}>
-                  {previewImages.map((src, index) => (
-                    <div key={index} className='image-preview-box' style={{ position: 'relative' }}>
-                      <img
-                        src={src}
-                        alt={`Preview ${index + 1}`}
-                        className='preview-image'
-                      />
-                      <button
-                        onClick={() => handleRemoveImage(index)}
-                        style={{
-                          position: 'absolute',
-                          top: '5px',
-                          right: '5px',
-                          border: '1px solid #ccc',
-                          borderRadius: '50%',
-                          cursor: 'pointer',
-                          padding: '2px 5px',
-                          fontSize: '12px',
-                        }}
-                        title="Remove"
-                        className='bg-red-600 text-white'
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
-                </div>
+ 
+         <div className="image-preview-container" style={{ alignSelf: "flex-start" }}>
+  {previewImages.map((item, index) => (
+    <div key={index} className="image-preview-box" style={{ position: 'relative' }}>
+      <img
+        src={item}
+        alt={`Preview ${index + 1}`}
+        className="preview-image"
+      />
+      <button
+        onClick={() => handleRemoveImage(index)}
+        style={{
+          position: 'absolute',
+          top: '5px',
+          right: '5px',
+          border: '1px solid #ccc',
+          borderRadius: '50%',
+          cursor: 'pointer',
+          padding: '2px 5px',
+          fontSize: '12px',
+        }}
+        title="Remove"
+        className="bg-red-600 text-white"
+      >
+        ✕
+      </button>
+    </div>
+  ))}
+</div>
+
+
+
 
 
               </div>
@@ -729,9 +846,9 @@ console.log("Form Data to Send:", formDataToSend);
                   value={formData?.contactPhone}
                   onChange={handleInputChange}
                 />
-                              {formData.contactPhone && formData.contactPhone.length > 0 && formData.contactPhone.length < 10 && (
-                <p className="text-red-500 text-sm mt-1">Enter a valid 10-digit number starting with 6-9</p>
-              )}
+                {formData.contactPhone && formData.contactPhone.length > 0 && formData.contactPhone.length < 10 && (
+                  <p className="text-red-500 text-sm mt-1">Enter a valid 10-digit number starting with 6-9</p>
+                )}
                 {errorMessage.contactPhone && <p className="text-red-500 text-sm">{errorMessage.contactPhone}</p>}
 
               </div>
@@ -794,113 +911,32 @@ console.log("Form Data to Send:", formDataToSend);
 
 
 
-          <div className="businness-submit-button">
-            <button className="bussiness-submit" onClick={handleBusinessInformation}>
-              Publish Renter
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-
-    </>
-  );
-}
-
-{/* <div>
-  <div className='busi-ness-page'>
-    <h2 className='item-header'>Renter Information</h2>
-    <div className='bi-main-div'>
-      <div className='bi-1-div'>
-        <img src='/Assets/business information.png' alt="business information" />
-      </div>
-      <div className='bi-text-section'>
-        <h2 className='title-text'>Hey, seems like you forgot to add your Renter Information!</h2>
-        <p className='description-text'>
-          If you want to add your Information and share the deets, just hit that <span>“Add Renter Info“</span> button.
-        </p>
-      </div>
-      <button className='add-business-button' onClick={toggleEdit} >+ Add Renter Info</button>
-    </div>
+      {/* Terms and Conditions Checkbox */}
+<div className="businness-submit-button">
+  <div style={{ display: "flex", alignItems: "center", marginBottom: "16px",paddingLeft: "10px" }}>
+    <input
+      type="checkbox"
+      id="agreeTerms"
+      checked={agreedToTerms}
+      onChange={() => setAgreedToTerms(!agreedToTerms)}
+    />
+    <label htmlFor="agreeTerms" style={{ marginLeft: "8px" }}>
+      I agree to the <a href="/terms-and-conditions" target="_blank" style={{ color: "blue", textDecoration: "underline" }}>Terms and Conditions</a>
+    </label>
   </div>
 
-</div>} */}
-// {businessId ?(
-//   <div>
-//     <div>
-//       <h2 className='item-header'>
-//         <div className='back-business' onClick={() => router.back()}>
-//           Renter Information
-//         </div>
-//         <a className="kyc-btn" onClick={() => router.push("/profile/business-information/kyc")} >Business KYC ?</a>
-//         <h3 className="cursor-pointer text-blue-400" onClick={toggleEdit}>Edit Details</h3>
-//       </h2>
-//       <div className="flex justify-center bg-[rgba(7,7,7,0.05)]">
-//         <div className="w-full max-w-6xl">
-//           {/* Owner Info */}
-//           <div className="mb-2 p-6 bg-white">
-//             <h3 className="text-md font-semibold text-yellow-600">OWNER INFO </h3>
-//             <div className="p-4 rounded-md">
-//               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4">
-//                 <p className="flex flex-col">
-//                   <div className="flex gap-2"><FaUser className="text-gray-500" /> <strong>Owner Name</strong></div>
-//                   <div className="text-sm font-normal text-left">{userName}</div>
-//                 </p>
-//                 <p className="flex flex-col">
-//                   <div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong>Email:</strong></div>
-//                   <div className="text-sm">{userEmail}</div>
-//                 </p>
-//                 <p className="flex flex-col">
-//                   <div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong></div>
-//                   <div className="text-sm">8374801954</div>
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
+  <button className="bussiness-submit" onClick={handleBusinessInformation}>
+    Publish Renter
+  </button>
+</div>
+</div>
 
-//           {/* Bank Details */}
-//           <div className="mb-2 p-6 bg-white">
-//             <h3 className="text-md font-semibold text-yellow-600">BANK DETAILS</h3>
-//             <div className="p-4 rounded-md">
-//               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4">
-//                 <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Bank Name:</strong></div><div className="text-sm">{formData?.bankName}</div></p>
-//                 <p className="flex flex-col"><div className="flex gap-2"><FaCreditCard className="text-gray-500" /> <strong>IFSC Code:</strong></div><div className="text-sm">{formData?.ifsc}</div></p>
-//                 <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Account Number:</strong></div><div className="text-sm">{formData?.accountNumber}</div></p>
-//               </div>
-//               {formData?.bankBranchAddress?.full && <strong className="flex mt-4">Address :</strong>}
-//              {formData?.bankBranchAddress?.full && <p className="flex items-center gap-2 mt-2 text-sm"><FaMapMarkerAlt className="text-gray-500" />{formData?.bankBranchAddress?.full}</p>}
-//             </div>
-//           </div>
+          </div>
 
-//           {/* Business Info */}
-//           <div className="mb-2 p-6 bg-white">
-//             <h3 className="text-md font-semibold text-yellow-600">BASIC INFO</h3>
-//             <div className="p-4 rounded-md">
-//               <div className="flex flex-col sm:flex-row md:flex-col lg:flex-col xl:flex-col gap-4">
-//                 <img src={formData?.profileImage} alt="Profile" className="w-16 h-16 rounded-full" />
-//                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4 w-full">
-//                   <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Business Name:</strong></div><div className="text-sm">{formData?.businessName}</div></p>
-//                   <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Store Name:</strong></div><div className="text-sm">Codefacts Furniss Shop</div></p>
-//                   <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Mobile:</strong></div><div className="text-sm">{formData?.contactPhone}</div></p>
-//                   <p className="flex flex-col"><div className="flex gap-2"><FaEnvelope className="text-gray-500" /> <strong>Email:</strong></div><div className="text-sm">{formData?.contactEmail}</div></p>
-//                 </div>
-//               </div>
-//               <p className="text-gray-700 text-sm mt-2">{formData?.storeDescription}</p>
-//             </div>
-//           </div>
+        
 
-//           {/* Advertisement Banner */}
-//           <div className="bg-white px-6">
-//             <h3 className="text-md justify-center pt-6 font-semibold text-yellow-600 ">ADVERTISEMENT BANNER</h3>
-//             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
-//               {formData.bannerImages.map((src, index) => (
-//                 <img key={index} src={src.imageUrl} alt={`Ad ${index + 1}`} className="rounded-md shadow-md w-full h-40 object-cover" />
-//               ))}
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   </div>)
-//   : isEditable ? (
+
+      </>
+      );
+}
+

@@ -37,7 +37,8 @@ const MainContent = () => {
       details: [{ key: "", value: "" }],
     },
   ]);
-
+  const [securitydeposit, setSecuritydeposit] = useState("false");
+console.log("securitydeposit", securitydeposit);
 
   const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
   const categoryId = (typeof window !== 'undefined') ? localStorage.getItem("selectedcategoryId") : null;
@@ -47,7 +48,7 @@ const MainContent = () => {
 
 
   useEffect(() => {
-    if (typeof window === 'undefined') return; 
+    if (typeof window === 'undefined') return;
     const handleStorageChange = () => {
       setFormData({
         ...formData,
@@ -208,44 +209,44 @@ const MainContent = () => {
       toast.error("No files selected");
       return;
     }
-  
+
     const previews = [];
-    const newFiles = [...files]; 
+    const newFiles = [...files];
 
     const replacementIndexes = [];
-  
+
     files.forEach((file, i) => {
-      const targetIndex = previewImages.length + i; 
+      const targetIndex = previewImages.length + i;
       replacementIndexes.push(targetIndex);
-  
+
       const reader = new FileReader();
       reader.onload = () => {
         previews.push({ index: targetIndex, src: reader.result });
-  
+
         if (previews.length === files.length) {
-   
+
           const sortedPreviews = [...previewImages];
-  
+
           previews.forEach(({ index, src }) => {
             sortedPreviews[index] = src;
           });
-  
+
           setPreviewImages(sortedPreviews);
         }
       };
       reader.readAsDataURL(file);
     });
-  
+
 
     setFormData((prev) => ({
       ...prev,
       images: [...(prev.images || []), ...files],
       replaceImageIndex: [...(prev.replaceImageIndex || []), ...replacementIndexes],
     }));
-  
+
     toast.success("Files added successfully!");
   };
-  
+
 
   const handleRemoveImage = (indexToRemove) => {
     setPreviewImages((prev) => prev.filter((_, index) => index !== indexToRemove));
@@ -259,7 +260,7 @@ const MainContent = () => {
     toast.info("Image removed!");
   };
 
-  
+
 
 
   const handleIconClick = () => {
@@ -272,13 +273,15 @@ const MainContent = () => {
     title: "",
     description: "",
     images: [],
-    replaceImageIndex:0 , 
-  removeImages: "[]", 
-  imageOrder: [],
+    replaceImageIndex: 0,
+    removeImages: "[]",
+    imageOrder: [],
     categoryId: "",
     subCategoryId: "",
     productId: "",
     available: true,
+    weight: 0,
+    securityDeposit: 0,
     rentalPrice: [
       { period: "daily", price: 0 },
       { period: "weekly", price: 0 },
@@ -294,7 +297,7 @@ const MainContent = () => {
     seoTags: [],
     isForSale: true,
     // salePrice: 0,
-     totalStock:0,
+    totalStock: 0,
     stockQuantity: 0,
     location: {
       type: "Point",
@@ -307,30 +310,35 @@ const MainContent = () => {
   const [formData, setFormData] = useState(initialFormData);
 
 
-    const [errors, setErrors] = useState({
-      title: "",
-      description: "",
-      images: "",
-      productId: "",
-      rentalAvailability: "",
-      stockQuantity: "",
-      pickupAddress: "",
-    });
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    images: "",
+    productId: "",
+    rentalAvailability: "",
+    stockQuantity: "",
+    pickupAddress: "",
+    rentalPrice: "",
+    weight: "",
+    // securityDeposit: 0
+  });
 
   const fetchProducts = async () => {
 
     try {
       const response = await axios.get(`${BASE_URL}/variants/${productId}`);
-
+      console.log(response.data, "response data");
       setFormData(response.data);
       setFormData(
         (prevData) => ({
           ...prevData,
           categoryId: response.data.categoryId?._id,
           subCategoryId: response.data.subCategoryId?._id,
-          productId: response.data.productId?._id
+          productId: response.data.productId?._id,
+
         })
-      )
+      );
+      setSecuritydeposit(response?.data?.categoryId?.SecurityDeposit)
 
       // Map fetched itemDetails to productDetails format
       const fetchedItemDetails = response.data.itemDetails || {};
@@ -389,7 +397,7 @@ const MainContent = () => {
       },
     }));
   };
-  
+
   const handleEndDateChange = (date) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -446,35 +454,35 @@ const MainContent = () => {
   };
 
 
-   const fetchAddress = async (lat, lng) => {
-      try {
-        const response = await axios.get(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${MAP_API}`
-        );
+  const fetchAddress = async (lat, lng) => {
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${MAP_API}`
+      );
 
-  
-        if (response.data.results[0]) {
-          setFormData((prev) => ({
-            ...prev,
-            pickupAddress: response.data.results[0].formatted_address,
-          }));
-        }
-      } catch (error) {
-        console.error("Error fetching address:", error);
+
+      if (response.data.results[0]) {
+        setFormData((prev) => ({
+          ...prev,
+          pickupAddress: response.data.results[0].formatted_address,
+        }));
       }
-    };
+    } catch (error) {
+      console.error("Error fetching address:", error);
+    }
+  };
 
-    const handleMapClick = async (event) => {
-      const lat = event.latLng.lat();
-      const lng = event.latLng.lng();
-  
-      setFormData((prev) => ({
-        ...prev,
-        location: { type: "Point", coordinates: [lng, lat] },
-      }));
-  
-      fetchAddress(lat, lng);
-    };
+  const handleMapClick = async (event) => {
+    const lat = event.latLng.lat();
+    const lng = event.latLng.lng();
+
+    setFormData((prev) => ({
+      ...prev,
+      location: { type: "Point", coordinates: [lng, lat] },
+    }));
+
+    fetchAddress(lat, lng);
+  };
 
 
 
@@ -487,54 +495,79 @@ const MainContent = () => {
       rentalAvailability: "",
       stockQuantity: "",
       pickupAddress: "",
+      rentalPrice: "",
+      weight: 0,
+      securityDeposit: 0
     });
     let newErrors = {};
     let missingFields = [];
-        // Validate Required Fields
-        if (!formData.title.trim()) {
-          newErrors.title = "This field is required";
-          missingFields.push("Title");
-        }
-        if (!formData.description.trim()) {
-          newErrors.description = "This field is required";
-          missingFields.push("Description");
-        }
-        if (!formData.images || formData.images.length === 0) {
-          newErrors.images = "This field is required";
-          missingFields.push("Images");
-        }
-        if (!formData.productId.trim()) {
-          newErrors.productId = "This field is required";
-          missingFields.push("Product ID");
-        }
-        if (!formData.rentalAvailability?.startDate || !formData.rentalAvailability?.endDate) {
-          newErrors.rentalAvailability = "Start date and end date are required";
-          missingFields.push("Rental Availability");
-        }
-        if (!formData.stockQuantity || isNaN(formData.stockQuantity)) {
-          newErrors.stockQuantity = "This field is required";
-          missingFields.push("Stock Quantity");
-        }
-        if (!formData.pickupAddress.trim()) {
-          newErrors.pickupAddress = "This field is required";
-          missingFields.push("Pickup Address");
-        }
-    
-        // Check if errors exist
-        if (Object.keys(newErrors).length > 0) {
-          setErrors(newErrors);
-    
-          if (missingFields.length === Object.keys(newErrors).length) {
-            // Show only one toast if everything is empty
-            toast.error("Please fill all required fields.", { autoClose: 3000 });
-          } else {
-            // Show specific missing field errors
-            missingFields.forEach((field) => {
-              toast.error(`${field} is required.`, { autoClose: 3000 });
-            });
-          }
-          return;
-        }
+    // Validate Required Fields
+    if (!formData.title.trim()) {
+      newErrors.title = "This field is required";
+      missingFields.push("Title");
+    }
+    if (!formData.description.trim()) {
+      newErrors.description = "This field is required";
+      missingFields.push("Description");
+    }
+    if (!formData.images || formData.images.length === 0) {
+      newErrors.images = "This field is required";
+      missingFields.push("Images");
+    }
+    if (!formData.productId.trim()) {
+      newErrors.productId = "This field is required";
+      missingFields.push("Product ID");
+    }
+    if (!formData.rentalAvailability?.startDate || !formData.rentalAvailability?.endDate) {
+      newErrors.rentalAvailability = "Start date and end date are required";
+      missingFields.push("Rental Availability");
+    }
+    if (!formData.stockQuantity || isNaN(formData.stockQuantity)) {
+      newErrors.stockQuantity = "This field is required";
+      missingFields.push("Stock Quantity");
+    }
+    if (!formData.weight || isNaN(formData.weight)) {
+      newErrors.weight = "Weight is required";
+      missingFields.push("weight")
+    }
+    if (!formData.pickupAddress.trim()) {
+      newErrors.pickupAddress = "This field is required";
+      missingFields.push("Pickup Address");
+    }
+
+
+    const allPricesAreZero = formData.rentalPrice.every(
+      (item) => !item.price || Number(item.price) === 0
+    );
+
+    if (allPricesAreZero) {
+      newErrors.rentalPrice = "At least one price must be greater than 0";
+      missingFields.push("rentalPrice");
+    }
+
+    if (securitydeposit === "true" || securitydeposit === true) {
+      if (!formData.securityDeposit || isNaN(formData.securityDeposit)) {
+        newErrors.securityDeposit = "Security deposit is required";
+        missingFields.push("Security Deposit");
+      }
+    }
+
+
+    // Check if errors exist
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+
+      if (missingFields.length === Object.keys(newErrors).length) {
+        // Show only one toast if everything is empty
+        toast.error("Please fill all required fields.", { autoClose: 3000 });
+      } else {
+        // Show specific missing field errors
+        missingFields.forEach((field) => {
+          toast.error(`${field} is required.`, { autoClose: 3000 });
+        });
+      }
+      return;
+    }
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('owner', userId);
@@ -550,11 +583,11 @@ const MainContent = () => {
       if (formData.replaceImageIndex !== undefined) {
         formDataToSend.append("replaceImageIndex", formData.replaceImageIndex);
       }
-      
+
       if (formData.removeImages && formData.removeImages.length > 0) {
         formDataToSend.append("removeImages", JSON.stringify(formData.removeImages));
       }
-      
+
       // if (formData.imageOrder && formData.imageOrder.length > 0) {
       //   formDataToSend.append("imageOrder", JSON.stringify(formData.imageOrder));
       // }
@@ -575,6 +608,7 @@ const MainContent = () => {
       formDataToSend.append('isForSale', formData.isForSale);
       // formDataToSend.append('salePrice', formData.salePrice);
       formDataToSend.append('stockQuantity', formData.stockQuantity);
+      formDataToSend.append("weight", formData.weight);
       formDataToSend.append('totalStock', formData.stockQuantity);
 
       formDataToSend.append('pickupAddress', formData.pickupAddress);
@@ -592,7 +626,9 @@ const MainContent = () => {
       );
       formDataToSend.append('pickupAvailable', formData.pickupAvailable);
       formDataToSend.append("itemDetails", JSON.stringify(formData.itemDetails));
-
+      if (securitydeposit === "true" || securitydeposit === true) {
+        formDataToSend.append("securityDeposit", formData.securityDeposit);
+      }
       const response = await axios.put(`${BASE_URL}/variants/${productId}`, formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -614,8 +650,8 @@ const MainContent = () => {
       if (error.response?.status === 401) {
         toast.error("Session expired. Please log in again.");
         setTimeout(() => {
-          window.location.href = "/login"; 
-        }, 2000); 
+          window.location.href = "/";
+        }, 2000);
       } else {
         console.error("Error while publishing product:", error);
         toast.error(`Error: ${error.response?.data?.message || error.message}`);
@@ -638,7 +674,7 @@ const MainContent = () => {
           <div className='back-product22 flex gap-2 h-6'>
             <IoMdArrowRoundBack className="mt-1 ml-3" />
             <p>
-          {formData.title}
+              {formData.title}
             </p>
             {/* <h1>Save Details</h1> */}
           </div>
@@ -650,7 +686,8 @@ const MainContent = () => {
           <div className='form-section1'>
             <label>
               Product Name{" "}
-                          </label>
+              <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+            </label>
             <input
               type='text'
               name='title'
@@ -662,27 +699,29 @@ const MainContent = () => {
 
           </div>
 
-          <div className='form-section2'>
+          <div className='form-section1'>
             <label>
-              Product Quality{" "}
-                          </label>
-            <select
-              name='description'
-              value={formData.description}
-              onChange={handleInputChange}
-            >
-              <option value=''>Select product quality</option>
-              <option value='New'>New</option>
-              <option value='Used - Like New'>Used - Like New</option>
-              <option value='Used - Good'>Used - Good</option>
-              <option value='Used - Acceptable'>Used - Acceptable</option>
-            </select>
+              Product Weight{" "}(in kgs)
+              <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+            </label>
+                       <input
+                  type='tel'
+                  name='weight'
+                  value={formData.weight}
+                  onChange={handleInputChange}
+                  placeholder='Enter weight'
+                />
+                {errors.weight && <p className="text-red-500 text-sm">{errors.weight}</p>}
+
           </div>
 
           <div className='form-section3'>
             <label>
               Available Stock{" "}
-                          </label>
+                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+            </label>
             <input
               type='number'
               name='stockQuantity'
@@ -698,7 +737,9 @@ const MainContent = () => {
         <div className='form-section file-upload'>
           <h2 className='ba-in'>
             Product Image{" "}
-                      </h2>
+                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+          </h2>
           <div className='file-upload-box' tabIndex={0} >
             <input
               type='file'
@@ -742,7 +783,9 @@ const MainContent = () => {
         <div className="flex flex-col">
           <label className='ba-in'>
             Product Availability{" "}
-                      </label>
+                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+          </label>
           <div className="date-picker-container flex flex-col md:flex-row justify-between gap-4">
             {/* Start Date */}
             <div className="w-full md:w-1/2 flex flex-col">
@@ -753,7 +796,7 @@ const MainContent = () => {
                 <DatePicker
                   selected={formData.rentalAvailability.startDate}
                   name="startDate"
-                  value={formattedStartDate} 
+                  value={formattedStartDate}
                   onChange={(date) => handleDateChange(date)}
                   placeholderText="Select start date"
                   className="w-full outline-none bg-transparent"
@@ -817,29 +860,32 @@ const MainContent = () => {
         </div> */}
 
         <div className="mt-4 mb-4 flex flex-col gap-3">
-          <label className="text-[14px] font-semibold">Select Pick up address</label>
+          <label className="text-[14px] font-semibold">Select Pick up address
+                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+          </label>
           <div className="google-content">
-          
-              <GoogleMap
-                mapContainerStyle={{
-                  height: "300px",
-                  width: "100%",
-                  borderRadius: "16px",
-                }}
-                center={mapCenter}
-                zoom={10}
-                onClick={handleMapClick}
-              >
-                {formData.location.coordinates && formData.location.coordinates.length === 2 && (
-                  <Marker
-                    position={{
-                      lat: formData.location.coordinates[1], // latitude
-                      lng: formData.location.coordinates[0], // longitude
-                    }}
-                  />
-                )}
-              </GoogleMap>
-      
+
+            <GoogleMap
+              mapContainerStyle={{
+                height: "300px",
+                width: "100%",
+                borderRadius: "16px",
+              }}
+              center={mapCenter}
+              zoom={10}
+              onClick={handleMapClick}
+            >
+              {formData.location.coordinates && formData.location.coordinates.length === 2 && (
+                <Marker
+                  position={{
+                    lat: formData.location.coordinates[1], // latitude
+                    lng: formData.location.coordinates[0], // longitude
+                  }}
+                />
+              )}
+            </GoogleMap>
+
           </div>
         </div>
         <p>
@@ -861,7 +907,10 @@ const MainContent = () => {
         <div className='form-section4'>
           <h2 className='ba-in'>
             PRICING INFO{" "}
-                      </h2>
+                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+                {errors.rentalPrice && <p className="text-red-500 text-sm">{errors.rentalPrice}</p>}
+
+          </h2>
           <div className='pricing-section'>
             {[
               "perDay",
@@ -905,13 +954,26 @@ const MainContent = () => {
             })}
           </div>
         </div>
-
+        {securitydeposit === "true" || securitydeposit ===true &&      <div className='form-section1'>
+                <label>
+                 Security Deposit
+                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+                </label>
+                <input
+                  type='tel'
+                  name='securityDeposit'
+                  value={formData.securityDeposit}
+                  onChange={handleInputChange}
+                  placeholder='Enter Security Amount'
+                />
+                {errors.securityDeposit && <p className="text-red-500 text-sm">{errors.securityDeposit}</p>}
+              </div>}
       </div>
       <div className='details-section'>
         <h2 className='ba-in'>
           Product Details{" "}
-                  </h2>
-        {productDetails?.map((section,index) => (
+        </h2>
+        {productDetails?.map((section, index) => (
           <div className='product-details-card' key={index}>
             Title
             {section.details?.map((detail) => (

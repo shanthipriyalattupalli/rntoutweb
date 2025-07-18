@@ -14,6 +14,7 @@ const MenuItems = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const categoryLabel = params.get("name");
+    console.log(categoryLabel,"categorylabel")
 
     if (categoryLabel) {
       setSelectedCategoryLabel(categoryLabel);
@@ -23,7 +24,7 @@ const MenuItems = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
   const [subcategories, setSubcategories] = useState([]);
-  const [activeItem, setActiveItem] = useState(null); // State to track the active subcategory
+  const [activeItem, setActiveItem] = useState(null); 
 
   const categoryId=(typeof window !== 'undefined') ? localStorage.getItem("selectedcategoryId") : null;
 

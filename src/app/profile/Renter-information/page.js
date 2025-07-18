@@ -357,9 +357,9 @@ export default function BusinessInformation2() {
                   <h3 className="text-md font-semibold text-yellow-600">BANK DETAILS</h3>
                   <div className="p-4 rounded-md">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4">
-                      <p className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Bank Name:</strong></div><div className="text-sm">{formData?.bankName}</div></p>
-                      <p className="flex flex-col"><div className="flex gap-2"><FaCreditCard className="text-gray-500" /> <strong>IFSC Code:</strong></div><div className="text-sm">{formData?.ifsc}</div></p>
-                      <p className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Account Number:</strong></div><div className="text-sm">{formData?.accountNumber}</div></p>
+                      <div className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Bank Name:</strong></div><div className="text-sm">{formData?.bankName}</div></div>
+                      <div className="flex flex-col"><div className="flex gap-2"><FaCreditCard className="text-gray-500" /> <strong>IFSC Code:</strong></div><div className="text-sm">{formData?.ifsc}</div></div>
+                      <div className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Account Number:</strong></div><div className="text-sm">{formData?.accountNumber}</div></div>
                     </div>
                     {formData?.bankBranchAddress?.full && <strong className="flex mt-4">Address :</strong>}
                    {formData?.bankBranchAddress?.full && <p className="flex items-center gap-2 mt-2 text-sm"><FaMapMarkerAlt className="text-gray-500" />{formData?.bankBranchAddress?.full}</p>}

@@ -36,18 +36,21 @@ const CategoryGrid = () => {
     return isSelected ? baseColor.replace("0D", "80") : baseColor; // 50% opacity when selected
   };
   
+  const [securitydeposit,setSecuritydeposit]=useState(null);
+
   
-  
-  
+  console.log(securitydeposit,"securitydeposit");
 
   // Function to get text color for a category
   const getTextColor = (isSelected) => {
     return isSelected ? "#FFFFFF" : "#000000";
   };
 
-  const handleCardClick = (id, label) => {
+  const handleCardClick = (id, label,security) => {
+    console.log(id,"idd")
     setSelectedCategory(id);
     setSelectedCategoryLabel(label);
+    setSecuritydeposit(security);
     setError(""); 
     localStorage.setItem("selectedcategoryId", id);
   };
@@ -60,6 +63,7 @@ const CategoryGrid = () => {
         const firstCategory = response.data.categories[0];
         setSelectedCategory(firstCategory._id);
         setSelectedCategoryLabel(firstCategory.categoryName);
+        setSecuritydeposit(firstCategory?.SecurityDeposit);
         localStorage.setItem("selectedcategoryId", firstCategory._id);
       }
     } catch (error) {
@@ -103,7 +107,7 @@ const CategoryGrid = () => {
   const handleNextClick =async () => {
     if (selectedCategoryLabel && selectedCategory && isRenterInfo === true) {
       const encodedLable = encodeURIComponent(selectedCategoryLabel);
-      router.push(`/add-on-rent/add-details?name=${encodedLable}`);
+      router.push(`/add-on-rent/add-details?name=${encodedLable}&securitydeposit=${securitydeposit}`);
     }
       else {
             // Show confirmation alert before redirecting
@@ -138,7 +142,7 @@ const CategoryGrid = () => {
         backgroundColor: getCategoryColor(index, selectedCategory === category._id),
         color: getTextColor(selectedCategory === category._id),
       }}
-      onClick={() => handleCardClick(category._id, category.categoryName)}
+      onClick={() => handleCardClick(category._id, category.categoryName,category?.SecurityDeposit)}
     >
       <img
         src={category.image}
