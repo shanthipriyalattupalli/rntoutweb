@@ -484,7 +484,7 @@ console.log("securitydeposit", securitydeposit);
     fetchAddress(lat, lng);
   };
 
-
+console.log("formData", formData);
 
   const handlePublishProduct = async () => {
     setErrors({
