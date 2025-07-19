@@ -370,6 +370,7 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response, "response of order checkout");
       const { orderId, finalAmount } = response.data;
 
       // If orderId is present, proceed to initiate payment
