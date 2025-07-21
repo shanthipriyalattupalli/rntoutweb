@@ -31,7 +31,7 @@ const CategoryProducts = ({ products }) => {
     <div className="container mx-auto">
       <ToastContainer />
       {products?.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-3">
           <Suspense fallback={<div><ProductCard/></div>}>
             {products.map((product) => (
               <ProductItems key={product._id} product={product} />

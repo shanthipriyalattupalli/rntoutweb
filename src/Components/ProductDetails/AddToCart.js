@@ -104,7 +104,10 @@ const [selectedDuration, setSelectedDuration] = useState(product?.rentalPrice?.[
             
             <div className='flex items-center space-x-4'>
 
-              
+      <div className='flex flex-col gap-5'>
+      <div className='text-sm font-semibold'>
+        Security Deposit :  {"₹ " + product.securityDeposit}
+      </div>        
 
   <div className={`flex items-center border ${isDateExpired ? 'border border-[rgba(255,45,85,0.6)] cursor-not-allowed' : 'border-red-500 bg-[#FF2D55]'} text-white font-[600] rounded-lg`}>
     <button
@@ -114,6 +117,7 @@ const [selectedDuration, setSelectedDuration] = useState(product?.rentalPrice?.[
     >
       {isDateExpired ? 'No availability' : 'Add to cart'}
     </button>
+  </div>
   </div>
 </div>
 

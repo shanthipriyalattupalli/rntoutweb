@@ -625,7 +625,7 @@ useEffect(() => {
       </div>
 
 
-            <div className=" p-3 items-center  w-full relative cursor-pointer sm:block md:block lg:hidden border border-b-1">
+            <div className=" p-3 items-center  w-full relative cursor-pointer sm:block md:block lg:hidden border border-b-1 mb-10">
           <SearchInput
             value={searchValue}
             onChange={(e) => handleSearchInputChange(e.target.value)}

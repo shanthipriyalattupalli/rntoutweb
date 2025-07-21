@@ -620,8 +620,8 @@ const CartPage = () => {
                   </div>
                   <div className="flex flex-col  gap-2">
 
-                    <p className="text-sm font-medium">Total: {item.lineTotal}</p>
-                 { item.securityDeposit && <p className="text-sm font-medium">Security Deposit: {item.securityDeposit}</p>}
+                    <p className="text-sm font-medium">Total: ₹ {item.lineTotal}</p>
+                 {  <p className="text-sm font-medium">Security Deposit: ₹ {item?.securityDeposit}</p>}
 
                   </div>
 

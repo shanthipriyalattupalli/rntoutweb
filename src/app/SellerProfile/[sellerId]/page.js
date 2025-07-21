@@ -28,18 +28,23 @@ const SellerCarouselProfile = () => {
   const [sellerDetails, setSellerDetails] = useState([]);
   const [products, setproducts] = useState([])
 
-  const fetchSellerById = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/business-info/sellerInfo?ownerId=${sellerId}`);
+const fetchSellerById = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/business-info/sellerInfo?ownerId=${sellerId}`);
 
-      const data = response.data.data;
+    const data = response.data.data;
 
-      setSellerDetails(data)
-      setproducts(data.variants)
-    } catch (error) {
-      console.error("Error fetching seller:", error);
-    }
-  };
+    setSellerDetails(data);
+
+    // Filter only approved products
+    const approvedProducts = data.variants?.filter(item => item.isApproved === true);
+    setproducts(approvedProducts);
+    
+  } catch (error) {
+    console.error("Error fetching seller:", error);
+  }
+};
+
   useEffect(() => {
     fetchSellerById();
   }, [sellerId]);
