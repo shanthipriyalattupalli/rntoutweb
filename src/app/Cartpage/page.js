@@ -320,6 +320,7 @@ const CartPage = () => {
 
       // ✅ Force re-fetch to ensure UI updates correctly
       fetchCartDetails();
+      fetchDeliveryCharges();
 
       toast.success(response.data.message || "Removed successfully");
     } catch (error) {
@@ -378,7 +379,7 @@ const CartPage = () => {
 
         setOrderId(orderId);
         await handleContinueClick(orderId, finalAmount);
-        router.push('/profile/orders')
+        // router.push('/profile/orders');
         window.dispatchEvent(new CustomEvent("cartUpdated", { detail: 0 }));
 
       }
@@ -390,7 +391,7 @@ const CartPage = () => {
       Swal.fire({
         icon: "warning",
         title: "Note",
-        text: `${errorMessage}\n\nPlease Click "OK" for KYC Verification.`,
+        text: `${errorMessage}\n\nPlease Click "OK" to proceed....`,
         showCancelButton: true,
         confirmButtonText: "OK",
         cancelButtonText: "Cancel",
@@ -425,6 +426,7 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response, "response of payment initiation");
       // Axios response data is already parsed
       if (response.data.order && response.data.order.id) {
         setDisplayRazorpay(true);

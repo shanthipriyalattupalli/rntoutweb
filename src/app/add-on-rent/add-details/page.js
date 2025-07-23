@@ -786,7 +786,7 @@ console.log(formData,"format");
                   type='file'
                   ref={fileInputRef}
                   multiple
-                  accept='.jpeg, .png, .jpg'
+                  accept='.jpeg, .png, .jpg .mp4'
                   style={{ display: "none" }}
                   onChange={handleFileChange} // Add onChange handler
                 />

@@ -219,100 +219,6 @@ console.error(error)
   }, []);
 
 
-  // const checkLocationPermission = async () => {
-  //   if ("permissions" in navigator) {
-  //     try {
-  //       const permissionStatus = await navigator.permissions.query({ name: "geolocation" });
-
-  //       if (permissionStatus.state === "denied" || permissionStatus.state === "prompt") {
-  //         // If location access is blocked or reset, remove stored values
-  //         Cookies.remove("latitude", { path: "/" });
-  //         Cookies.remove("longitude", { path: "/" });
-  //         localStorage.removeItem("latitude");
-  //         localStorage.removeItem("longitude");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error checking location permission:", error);
-  //     }
-  //   }
-  // };
-
-  // const getLocationFromCoordinates = async (lat, lon) => {
-  //   try {
-  //     const response = await axios.get(
-  //       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${MAP_API}`
-  //     );
-
-  //     const locationData = response.data.results;
-  //     if (locationData) {
-  //       const uniqueLocations = new Set();
-  //       let locations = [];
-
-  //       locationData.forEach((result) => {
-  //         const matchingComponent = result.address_components.find((component) =>
-  //           component.types.includes("locality") && component.types.includes("political")
-  //         );
-
-  //         if (matchingComponent && !uniqueLocations.has(matchingComponent.short_name)) {
-  //           uniqueLocations.add(matchingComponent.short_name);
-  //           locations.push(matchingComponent);
-  //         }
-  //       });
-
-  //       setLocationsList(locations);
-
-  //       if (locations.length > 0) {
-  //         const suburb = locations[0];
-  //         setAddress({ suburb: suburb.short_name });
-  //       } else {
-  //         setError("Suburb not found.");
-  //       }
-  //     } else {
-  //       setError("Location data not found.");
-  //     }
-  //     setLoading(false);
-  //   } catch (error) {
-  //     setError("Failed to fetch location data.");
-  //     setLoading(false);
-  //   }
-  // };
-
-  // const fetchLocation = () => {
-  //   if ("geolocation" in navigator) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       async (position) => {
-  //         const { latitude, longitude } = position.coords;
-  //         setLocation({ latitude, longitude });
-
-  //         // Store only if access is granted
-  //         Cookies.set("latitude", latitude, { expires: 7, sameSite: "Strict" });
-  //         Cookies.set("longitude", longitude, { expires: 7, sameSite: "Strict", });
-  //         localStorage.setItem("latitude", latitude);
-  //         localStorage.setItem("longitude", longitude);
-
-  //         await getLocationFromCoordinates(latitude, longitude);
-  //       },
-  //       (err) => {
-  //         setError("Unable to retrieve your location.");
-  //         setLoading(false);
-  //       }
-  //     );
-  //   } else {
-  //     setError("Geolocation is not supported by this browser.");
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchLocation();
-
-  //   const interval = setInterval(() => {
-  //     checkLocationPermission();
-  //   }, 10000);
-
-  //   return () => clearInterval(interval);
-  // }, []);
-
 
 
 
@@ -499,34 +405,44 @@ useEffect(() => {
             </div>}
 
 
-          {(name || token) && (isToggleOn ===true) && (
-            <>
-              {/* Visible only on small devices */}
-             <Link href="/subscriptions"><div className="sm:hidden border border-orange-400 rounded-[10px] p-2">
-                <Image
-                  src="/Assets/subscription.svg"
-                  width={20}
-                  height={20}
-                  alt="subscription"
-                  // onClick={() => setIsSubscription(true)}
-                  className="flex w-[170px] sm:w-[100px] h-[20px] "
-                />
-              </div>
-              </Link> 
+{(name || token) && isToggleOn === true && (
+  <>
+    {/* Visible only on small devices */}
+    <Link href="/subscriptions">
+      <div className="relative group sm:hidden border border-orange-400 rounded-[10px] p-2">
+        <Image
+          src="/Assets/subscription.svg"
+          width={20}
+          height={20}
+          alt="subscription"
+          className="flex w-[170px] sm:w-[100px] h-[20px]"
+        />
+        {/* Tooltip for small screens */}
+        <div className="absolute z-10 hidden group-hover:block bottom-full left-1/2 -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1">
+          Delivery Subscription
+        </div>
+      </div>
+    </Link>
 
-              <Link href="/subscriptions"> <div className="hidden sm:flex shadow-sm border border-[rgba(244,128,3,0.45)] rounded-[10px] p-2">
-                <Image
-                  src="/Assets/subscription.svg"
-                  width={20}
-                  height={20}
-                  alt="subscription"
-                  // onClick={() => setIsSubscription(true)}
-                  className="flex"
-                />
-              </div>
-              </Link>
-            </>
-          )}
+    {/* Visible on medium and larger screens */}
+    <Link href="/subscriptions">
+      <div className="relative group hidden sm:flex shadow-sm border border-[rgba(244,128,3,0.45)] rounded-[10px] p-2">
+        <Image
+          src="/Assets/subscription.svg"
+          width={20}
+          height={20}
+          alt="subscription"
+          className="flex"
+        />
+        {/* Tooltip for medium and larger screens */}
+        <div className="absolute z-10 hidden group-hover:block top-10 left-full -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1">
+          Delivery Subscription
+        </div>
+      </div>
+    </Link>
+  </>
+)}
+
 
 
 
@@ -547,7 +463,7 @@ useEffect(() => {
           <CartIcon userId={userId} />
 {isRenterInfo !== true && token &&
           <button
-            className="w-full hidden sm:flex items-center gap-2 px-[16px] py-[10px] rounded-[12px] text-[rgb(255,45,85)] w-auto h-[40px] lg:w-fit border border-[rgb(255,45,85)] font-medium"
+            className="w-full hidden sm:flex items-center gap-2 px-[16px] py-[10px] rounded-[12px] text-[rgb(255,45,85)] w-auto h-[40px] lg:w-1/4 border border-[rgb(255,45,85)] font-medium"
             onClick={() => handleAddOnRent()}
           >
             <span className="text-lg">+</span> Join as Partner

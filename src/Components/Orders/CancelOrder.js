@@ -5,7 +5,8 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
-const CancelOrder = ({ setIsCanceled, OrderId, order }) => {
+const CancelOrder = ({ setIsCanceled, subOrderId, order }) => {
+  console.log(subOrderId,setIsCanceled,"OrderId in CancelOrder");
 
   const [selectedReason, setSelectedReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,7 +37,7 @@ const CancelOrder = ({ setIsCanceled, OrderId, order }) => {
 
     try {
       const response = await axios.patch(
-        `${BASE_URL}/orders/cancel/${OrderId}`,
+        `${BASE_URL}/orders/cancel/${subOrderId}`,
         { cancelReason: selectedReason }, // Pass selected reason
         {
           headers: { Authorization: `Bearer ${token}` },
