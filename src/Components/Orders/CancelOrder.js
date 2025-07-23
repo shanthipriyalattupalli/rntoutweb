@@ -36,8 +36,8 @@ const CancelOrder = ({ setIsCanceled, subOrderId, order }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.patch(
-        `${BASE_URL}/orders/cancel/${subOrderId}`,
+      const response = await axios.put(
+        `${BASE_URL}/orders/suborder/${subOrderId}/cancel`,
         { cancelReason: selectedReason }, // Pass selected reason
         {
           headers: { Authorization: `Bearer ${token}` },
