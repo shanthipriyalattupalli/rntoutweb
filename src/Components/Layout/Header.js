@@ -37,10 +37,8 @@ function Header() {
 	const [userPlans, setUserPlans] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
 	const [subscriptionPlans, setSubscriptionPlans] = useState([])
-	const [address, setAddress] = useState({ suburb: "" });
-	const [error, setError] = useState(null);
-	const [loading, setLoading] = useState(true);
 	const [showVideo, setShowVideo] = useState(false);
+	const [shouldProceedAfterVideo, setShouldProceedAfterVideo] = useState(false);
 	const [showSuggestions, setShowSuggestions] = useState(false);
 	const [isRenterInfo, setRenterInfo] = useState();
 	const [isToggleOn, setIsToggleOn] = useState(false);
@@ -279,9 +277,22 @@ function Header() {
 		fetchSubscriptionPlans()
 	}, [])
 
+const handleJoinAsPartner = () => {
+	setShowVideo(true);
+	setShouldProceedAfterVideo(true);
+};
 
+const handleVideoEnd = () => {
+	setShowVideo(false);
+	if (shouldProceedAfterVideo) {
+		setTimeout(() => {
+			handleAddOnRent();
+		}, 300);
+	}
+};
 
 	const handleAddOnRent = async () => {
+
 		if (!token) {
 			await Swal.fire({
 				title: "Login Required",
@@ -312,6 +323,16 @@ function Header() {
 			}
 		}
 	};
+
+const handleSkipVideo = () => {
+	setShowVideo(false); // Close video first
+	if (shouldProceedAfterVideo) {
+		setTimeout(() => {
+			handleAddOnRent();
+		}, 300); // Delay to ensure smooth close
+	}
+};
+
 
 
 	const fetchSubscriptionToggle = async () => {
@@ -464,7 +485,7 @@ function Header() {
 					{isRenterInfo !== true && token &&
 						<button
 							className="w-full hidden sm:flex items-center gap-2 px-[16px] py-[10px] rounded-[12px] text-[rgb(255,45,85)] w-auto h-[40px] lg:w-1/4 border border-[rgb(255,45,85)] font-medium"
-							onClick={() => handleAddOnRent()}
+							onClick={handleJoinAsPartner}
 						>
 							<span className="text-lg">+</span> Join as Partner
 						</button>}
@@ -479,50 +500,43 @@ function Header() {
 							<span className="text-lg">+</span>
 						</button>}
 
-					{showVideo && (
-						<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-							<div className="rounded-lg shadow-lg p-4 relative max-w-2xl w-full">
-								<button
-									className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-2xl font-bold"
-									onClick={() => setShowVideo(false)}
-								>
-									&times;
-								</button>
-								<div className="relative flex justify-center items-center max-w-8xl bg-black">
-									<video
-										controls
-										autoPlay
-										className="w-[900px] max-w-6xl bg-white h-[900px] md:h-[500px] rounded"
-										onEnded={async () => {
-											setShowVideo(false);
-											await handleAddOnRent();
-										}}
-									>
-										<source
-											src="/Assets/Rntout_final_220725.mp4"
-											type="video/mp4"
-										/>
+{showVideo && (
+	<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+		<div className="rounded-lg shadow-lg p-4 relative max-w-2xl w-full">
+			<button
+				className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-2xl font-bold"
+				onClick={() => setShowVideo(false)}
+			>
+				&times;
+			</button>
+			<div className="relative flex justify-center items-center max-w-8xl bg-black">
+				<video
+					controls
+					autoPlay
+					className="w-[900px] max-w-6xl bg-white h-[900px] md:h-[500px] rounded"
+					onEnded={handleVideoEnd}
+				>
+					<source
+						src="/Assets/Rntout_final_220725.mp4"
+						type="video/mp4"
+					/>
+					Your browser does not support the video tag.
+				</video>
+			</div>
+		</div>
 
-										Your browser does not support the video tag.
+		<button
+			className="max-w-8xl absolute bottom-6 right-2 flex items-center gap-2 px-6 py-2 bg-gray-500 text-white rounded-full font-bold shadow-lg hover:bg-gray-900 transition z-10 mb-10 ml-20"
+			onClick={handleSkipVideo}
+		>
+			Skip
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5 ml-2">
+				<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5v14l11-7z" />
+			</svg>
+		</button>
+	</div>
+)}
 
-									</video>
-								</div>
-							</div>
-							<button
-								className=" max-w-8xl absolute bottom-6 right-2 flex items-center gap-2 px-6 py-2 bg-gray-500 text-white rounded-full font-bold shadow-lg hover:bg-gray-900 transition z-10 mb-10 ml-20"
-								onClick={async () => {
-									setShowVideo(false);
-									await handleAddOnRent();
-								}}
-							>
-								Skip
-								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5 ml-2">
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5v14l11-7z" />
-								</svg>
-							</button>
-
-						</div>
-					)}
 
 					{/* Profile & Sign In/Sign Up */}
 
