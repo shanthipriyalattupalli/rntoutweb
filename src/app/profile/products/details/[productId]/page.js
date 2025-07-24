@@ -202,7 +202,7 @@ const MainContent = () => {
   //     images: files,
   //   }));
   // };
-  const handleFileChange = (event) => {
+const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     if (!files.length) {
       toast.error("No files selected");
@@ -240,7 +240,7 @@ const MainContent = () => {
 
     setFormData((prev) => ({
       ...prev,
-      images: [...(prev.images || []), ...files],
+      images: [...(prev.images || []), ...newFiles],
       replaceImageIndex: [...(prev.replaceImageIndex || []), ...replacementIndexes],
     }));
 
@@ -662,7 +662,15 @@ const MainContent = () => {
 
   useEffect(() => {
     if (formData.images?.length) {
-      setPreviewImages(formData.images);
+      const previews = formData.images.map((file) => {
+        return {
+          src: typeof file === "string" ? file : URL.createObjectURL(file),
+          type: typeof file === "string"
+            ? file.endsWith(".mp4") ? "video" : "image"
+            : file.type.startsWith("video/") ? "video" : "image",
+        };
+      });
+      setPreviewImages(previews);
     }
   }, [formData.images]);
 
@@ -735,60 +743,54 @@ const MainContent = () => {
           </div>
         </div>
 
-        <div className='form-section file-upload'>
-          <h2 className='ba-in'>
-            Product Image{" "}
-            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-
-          </h2>
-          <div className='file-upload-box' tabIndex={0} >
-            <input
-              type='file'
-              ref={fileInputRef}
-              multiple
-              accept='.jpeg, .png, .jpg .mp4'
-              style={{ display: "none" }}
-              onChange={handleFileChange} // Add onChange handler
-            />
-            <div className='upload-icon' onClick={handleIconClick}>
-              <img src={upload} />
-            </div>
-            <p className="text-sm font-normal leading-5 text-center decoration-none">
-              Drag your file(s) or <span onClick={handleIconClick}>browse</span>
-            </p>
-            <p className='file-note'>Image format will be a JPEG, PNG, JPG</p>
-          </div>
-          <p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 1 image. 📸</p>
-          {errors.images && <p className="text-red-500 text-sm">{errors.images}</p>}
-
-          {/* Render Preview Images */}
-          <div className='image-preview-container'>
-            {previewImages.map((src, index) => (
-              <div key={index} className='image-preview-box relative'>
-                {src.type === "video" ? (
-                  <video
-                    src={src}
-                    controls
-                    className="preview-video"
-                  />
-                ) : ( 
-                  <img
-                    src={src}
-                    alt={`Preview ${index + 1}`}
-                    className="preview-image"
-                  />
-                )}
-                <button
-                  onClick={() => handleRemoveImage(index)}
-                  className='absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-700'
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            ))}
-
-          </div>
+ <div className='form-section file-upload'>
+      <h2 className='ba-in'>
+        Product Image{" "}
+        <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+      </h2>
+      <div className='file-upload-box' tabIndex={0}>
+        <input
+          type='file'
+          ref={fileInputRef}
+          multiple
+          accept='.jpeg, .png, .jpg, .mp4'
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
+        <div className='upload-icon' onClick={handleIconClick}>
+          <img src={upload} alt="Upload" />
         </div>
+        <p className="text-sm font-normal leading-5 text-center">
+          Drag your file(s) or <span onClick={handleIconClick}>browse</span>
+        </p>
+        <p className='file-note'>Image format should be JPEG, PNG, JPG. Video format should be MP4.</p>
+      </div>
+      <p className="p-2 text-xs font-normal text-left">
+        Kindly make sure to upload a minimum of 1 image. 📸
+      </p>
+      {errors.images && (
+        <p className="text-red-500 text-sm">{errors.images}</p>
+      )}
+
+      {/* Render Preview Images */}
+      <div className='image-preview-container'>
+        {previewImages.map((item, index) => (
+          <div key={index} className='image-preview-box relative'>
+            {item.type === "video" ? (
+              <video src={item.src} controls className="preview-video" />
+            ) : (
+              <img src={item.src} alt={`Preview ${index + 1}`} className="preview-image" />
+            )}
+            <button
+              onClick={() => handleRemoveImage(index)}
+              className='absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-700'
+            >
+              <X size={14} />
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
         <div className="flex flex-col">
           <label className='ba-in'>
             Product Availability{" "}
