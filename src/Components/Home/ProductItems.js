@@ -32,7 +32,7 @@ const customStyles = `
 
 const ProductItem = ({ product }) => {
 
-    const {
+  const {
     availability,
     dateRange,
     images,
@@ -55,7 +55,9 @@ const ProductItem = ({ product }) => {
   const [isEnd, setIsEnd] = useState(false);
   const [showPackageModal, setShowPackageModal] = useState(false);
   const [modalSelectedPeriod, setModalSelectedPeriod] = useState(rentalPrice[0]?.period); // <-- add this
-
+  const isVideo = (url) => {
+    return /\.(mp4|webm|ogg)$/i.test(url);
+  };
   // const { imgSrc, name, price, dateRange, availability, stock } = product;
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   // const [userId, setUserId] = useState("");
@@ -76,7 +78,7 @@ const ProductItem = ({ product }) => {
 
   // const productId = _id;
   const [productID, setProductId] = useState(_id);
-  console.log(rentalPrice,"rental price")
+  console.log(rentalPrice, "rental price")
 
 
   const formattedDate = new Date(
@@ -275,13 +277,22 @@ const ProductItem = ({ product }) => {
                     return (
                       <SwiperSlide key={index}>
                         <Link href={`/Products/${_id}`}>
-                          <Image
-                            src={img}
-                            alt={`${title} - ${index + 1}`}
-                            className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
-                            width={308}
-                            height={220}
-                          />
+                          {isVideo(img) ? (
+                            <video
+                              src={img}
+                              controls
+                              className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
+                            />
+                          ) : (
+                            <Image
+                              src={img}
+                              alt={`${title} - ${index + 1}`}
+                              className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
+                              width={308}
+                              height={220}
+                            />
+                          )}
+
                         </Link>
                       </SwiperSlide>
                     )
@@ -290,13 +301,24 @@ const ProductItem = ({ product }) => {
               </>
             ) : (
               <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
-                {images[0] && <Image
-                  src={images[0]}
-                  alt={title}
-                  className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
-                  width={308}
-                  height={220}
-                />}
+                {images[0] &&
+                  (isVideo(images[0]) ? (
+                    <video
+                      src={images[0]}
+                      className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
+                      muted
+                      playsInline
+                    />
+                  ) : (
+                    <Image
+                      src={images[0]}
+                      alt={title}
+                      className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
+                      width={308}
+                      height={220}
+                    />
+                  ))}
+
               </Link>
             )}
 
@@ -469,7 +491,7 @@ const ProductItem = ({ product }) => {
               <div className='grid grid-cols-2 text-center'>
                 {rentalPrice?.map((detail, index) => (
                   <div
-                    key={detail._id ||detail.variantId}
+                    key={detail._id || detail.variantId}
                     className={`p-1 cursor-pointer flex flex-col gap-[4px] ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""} 
     border ${index < 2 ? "border-t-0" : "border-t"}`}
                     onClick={() => setSelectedRentalPeriod(detail.period)}
@@ -508,11 +530,10 @@ const ProductItem = ({ product }) => {
               {rentalPrice?.map((detail) => (
                 <button
                   key={detail._id || detail.variantId}
-                  className={`border rounded p-3 transition ${
-                    modalSelectedPeriod === detail.period
+                  className={`border rounded p-3 transition ${modalSelectedPeriod === detail.period
                       ? "bg-blue-500 text-white border-blue-500"
                       : "hover:bg-blue-500 hover:text-white"
-                  }`}
+                    }`}
                   onClick={() => setModalSelectedPeriod(detail.period)}
                   type="button"
                 >

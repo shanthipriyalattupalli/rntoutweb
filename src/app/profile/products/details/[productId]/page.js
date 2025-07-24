@@ -1030,9 +1030,9 @@ const handleFileChange = (event) => {
           </div>
         ))}
 
-        <button onClick={handleAddSection} className='add-section-btn'>
+        {/* <button onClick={handleAddSection} className='add-section-btn'>
           <FiPlus /> Add New Product Description
-        </button>
+        </button> */}
       </div>
 
 
