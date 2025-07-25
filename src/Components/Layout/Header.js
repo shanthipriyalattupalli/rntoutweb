@@ -309,7 +309,7 @@ const handleVideoEnd = () => {
 			// Show confirmation alert before redirecting
 			const result = await Swal.fire({
 				title: "KYC Required",
-				text: "KYC should be verified before adding on rent. Do you want to verify now?",
+				text: "KYC should be verified before joining as partner. Do you want to verify now?",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonColor: "#d33",

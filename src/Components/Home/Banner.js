@@ -31,36 +31,36 @@ const Banner = ({ banners, isLoading }) => {
   // const [activeIndex, setActiveIndex] = useState(0);
   const activeBanners = banners.filter(banner => banner.status === "active");
 
-  const handleAddOnRent = async () => {
-    if (!token) {
-      await Swal.fire({
-        title: "Login Required",
-        text: "You need to be logged in to add a property on rent.",
-        icon: "info",
-      });
-      return;
-    }
+  // const handleAddOnRent = async () => {
+  //   if (!token) {
+  //     await Swal.fire({
+  //       title: "Login Required",
+  //       text: "You need to be logged in to add a property on rent.",
+  //       icon: "info",
+  //     });
+  //     return;
+  //   }
 
-    if (isKyc === "true") {
-      router.push("/add-on-rent");
-    } else {
-      // Show confirmation alert before redirecting
-      const result = await Swal.fire({
-        title: "KYC Required",
-        text: "KYC should be verified before adding on rent. Do you want to verify now?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, Verify Now",
-        cancelButtonText: "Cancel",
-      });
+  //   if (isKyc === "true") {
+  //     router.push("/add-on-rent");
+  //   } else {
+  //     // Show confirmation alert before redirecting
+  //     const result = await Swal.fire({
+  //       title: "KYC Required",
+  //       text: "KYC should be verified before joining as partner. Do you want to verify now?",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#d33",
+  //       cancelButtonColor: "#3085d6",
+  //       confirmButtonText: "Yes, Verify Now",
+  //       cancelButtonText: "Cancel",
+  //     });
 
-      if (result.isConfirmed) {
-        router.push("/profile/kyc");
-      }
-    }
-  };
+  //     if (result.isConfirmed) {
+  //       router.push("/profile/kyc");
+  //     }
+  //   }
+  // };
   return (
     <div className="w-full">
       {isLoading
@@ -103,7 +103,7 @@ const Banner = ({ banners, isLoading }) => {
                     delay: 5000, // No delay between transitions
                     disableOnInteraction: false
                   }}
-                  className="rounded-[10px] sm:rounded-[40px]  md:rounded-[40px] border border-gray-200 h-[200px] sm:h-[400px] md:h-[400px]"
+                  className="rounded-[10px] sm:rounded-[40px]  md:rounded-[40px] border border-gray-200 h-[200px] sm:h-[439px] md:h-[439px]"
                 >
 
                   {banner.images?.map((image, idx) => (
@@ -112,7 +112,7 @@ const Banner = ({ banners, isLoading }) => {
                         <img
                           src={image}
                           alt={`Slide ${idx + 1}`}
-                          className="w-full h-[200px] sm:h-[400px] md:h-[400px] rounded-[0px] sm:rounded-[40px]"
+                          className="w-full h-[200px] sm:h-[439px] md:h-[439px] rounded-[0px] sm:rounded-[40px]"
                         />
                         <div className="absolute inset-0 bg-black opacity-0"></div>
                         <div className="absolute top-16 sm:top-24 md:top-28 left-[80%] sm:left-[80%] text-slate-600 text-sm sm:text-base md:text-lg">

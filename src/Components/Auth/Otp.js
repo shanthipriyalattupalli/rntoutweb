@@ -111,16 +111,28 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
       localStorage.setItem("role", user.role);
 
 
-      Cookies.set("userId", user._id, { expires: 7, secure: true, sameSite: "Strict" });
+      // Cookies.set("userId", user._id, { expires: 7, secure: true, sameSite: "Strict" });
       // Cookies.set("hasSubscription", user?.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" })
       // Cookies.set("SubscriptionId", user?.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" })
-        Cookies.set("hasSubscription", user?.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" });
-        Cookies.set("SubscriptionId", user.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" });
-      Cookies.set("userMobile",user.mobile,{ expires: 7, secure: true, sameSite: "Strict" });
-      Cookies.set("isKyc", response?.data?.kycVerified, { expires: 7, secure: true, sameSite: "Strict" });
-      Cookies.set("userName", user.name, { expires: 7, secure: true, sameSite: "Strict" });
-      Cookies.set("userEmail", user.email, { expires: 7, secure: true, sameSite: "Strict" });
-      Cookies.set("userToken", response?.data?.token, { expires: 7, secure: true, sameSite: "Strict" });
+      //   Cookies.set("hasSubscription", user?.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" });
+      //   Cookies.set("SubscriptionId", user.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" });
+      // Cookies.set("userMobile",user.mobile,{ expires: 7, secure: true, sameSite: "Strict" });
+      // Cookies.set("isKyc", response?.data?.kycVerified, { expires: 7, secure: true, sameSite: "Strict" });
+      // Cookies.set("userName", user.name, { expires: 7, secure: true, sameSite: "Strict" });
+      // Cookies.set("userEmail", user.email, { expires: 7, secure: true, sameSite: "Strict" });
+      // Cookies.set("userToken", response?.data?.token, { expires: 7, secure: true, sameSite: "Strict" });
+
+
+
+      
+      Cookies.set("userId", user._id);
+        Cookies.set("hasSubscription", user?.hasActiveSubscription);
+        Cookies.set("SubscriptionId", user.currentSubscription);
+      Cookies.set("userMobile",user.mobile);
+      Cookies.set("isKyc", response?.data?.kycVerified);
+      Cookies.set("userName", user.name);
+      Cookies.set("userEmail", user.email);
+      Cookies.set("userToken", response?.data?.token);
 
 
       if (!profilepic) {
