@@ -393,7 +393,7 @@ const ProductItem = ({ product }) => {
               <span className='text-[#FF2D55] font-[600] text-[14px]'>
                 ₹{rentalPrice[0]?.price && `${rentalPrice[0].price}`}
                 <span className='text-[#070707A6] font-[400] text-[12px]'>
-                  /day
+                {rentalPrice[0]?.period && `${rentalPrice[0].period}`}
                 </span>
               </span>
             </p>
