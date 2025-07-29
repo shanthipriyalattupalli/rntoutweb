@@ -301,17 +301,17 @@ const ProductItem = ({ product }) => {
               </>
             ) : (
               <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
-                {images[0] &&
-                  (isVideo(images[0]) ? (
+                {images?.[0] &&
+                  (isVideo(images?.[0]) ? (
                     <video
-                      src={images[0]}
+                      src={images?.[0]}
                       className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
                       muted
                       playsInline
                     />
                   ) : (
                     <Image
-                      src={images[0]}
+                      src={images?.[0]}
                       alt={title}
                       className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
                       width={308}

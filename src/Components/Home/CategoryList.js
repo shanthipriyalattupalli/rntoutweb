@@ -149,7 +149,7 @@ const CategoryList = ({ products = [], categories, isLoading }) => {
                 {categories.map((category, index) => (
                   <div key={category._id} className="px-2">
                     <div
-                      title={category.categoryName}
+                      title={category?.categoryName}
                       className="text-sm font-semibold pt-3 w-[40px] sm:w-[150px] rounded-lg flex flex-col items-center transition duration-300 cursor-pointer"
                       onClick={() => handleCategoryClick(category._id)}
                       style={{
@@ -160,8 +160,8 @@ const CategoryList = ({ products = [], categories, isLoading }) => {
                       }}
                     >
                       <Image
-                        src={category.image}
-                        alt={category.categoryName}
+                        src={category?.image}
+                        alt={category?.categoryName}
                         width={48}
                         height={48}
                         className="w-12 h-12"
