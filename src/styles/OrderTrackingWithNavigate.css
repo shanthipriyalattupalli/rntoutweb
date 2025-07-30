@@ -1,3 +1,40 @@
+.review-card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: 1rem;
+}
+.suborder-history {
+  margin-top: 1rem;
+}
+.last\:border-b-0:last-child {
+  border-bottom: 0 !important;
+}
+.last\:mb-0:last-child {
+  margin-bottom: 0 !important;
+}
+
+
+
+
+.order-item-card {
+  transition: box-shadow 0.2s;
+}
+
+.cancel-btn, .tracking-btn {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+.review_cta {
+  cursor: pointer;
+  font-weight: 500;
+}
+.download-invoice {
+  cursor: pointer;
+}
+.badge {
+  letter-spacing: 0.5px;
+}
+
 .order-tracking-container {
     /* margin: 20px 0; */
     /* padding: 20px; */

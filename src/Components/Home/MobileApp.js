@@ -1,9 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+
 const mobileapp = "/Assets/mobileapp.svg";
-const playstore="/Assets/playstore.png"
-const appstore="/Assets/appstore.jpg"
+const playstore = "/Assets/playstore.png";
+const appstore = "/Assets/appstore.jpg";
 
 const MobileApp = () => {
   return (
@@ -35,15 +36,26 @@ const MobileApp = () => {
           <li className="text-black">Explore Rental items near your location with detailed maps and navigation.</li>
         </ul>
 
+        {/* Always visible download buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-          <img
-            src="https://www.freepnglogos.com/uploads/google-play-png-logo/google-play-png-logo-1.png"
-            alt="Get it on Google Play"
-            className="w-20 sm:w-24"
-          />
+          <Link href="https://play.google.com/store/apps/details?id=com.rntOut&pcampaignid=web_share">
+            <img
+              src={playstore}
+              alt="Get it on Google Play"
+              className="w-32 sm:w-40 h-auto cursor-pointer hover:opacity-80 transition-opacity"
+            />
+          </Link>
+          <Link href="https://apps.apple.com/app/rntout/id123456789">
+            <img
+              src={appstore}
+              alt="Download on the App Store"
+              className="w-32 sm:w-40 h-auto cursor-pointer hover:opacity-80 transition-opacity"
+            />
+          </Link>
         </div>
       </div>
 
+      {/* Optional: Keep the popup for additional functionality */}
       <div
         id="downloadPopup"
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50"
@@ -55,14 +67,13 @@ const MobileApp = () => {
           <h2 className="text-xl font-bold mb-4">Download RntOut Mobile App</h2>
           <p className="text-gray-600 mb-4">Choose your platform to download:</p>
           <div className="flex justify-evenly gap-4">
-
-             <Link href="https://play.google.com/store/apps/details?id=com.rntOut&pcampaignid=web_share"><img src={playstore} className="w-[200px] h-[80px]" /></Link> 
-      
-              <img src={appstore} className="w-[200px] h-[80px] "/>
-
-
+            <Link href="https://play.google.com/store/apps/details?id=com.rntOut&pcampaignid=web_share">
+              <img src={playstore} className="w-[200px] h-[80px]" />
+            </Link>
+            <Link href="https://apps.apple.com/app/rntout/id123456789">
+              <img src={appstore} className="w-[200px] h-[80px]" />
+            </Link>
           </div>
-
         </div>
       </div>
     </section>

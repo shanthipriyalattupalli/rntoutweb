@@ -11,6 +11,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'rntout-pro.s3.amazonaws.com', 
+      },
+      {
+        protocol: 'https',
         hostname: 'static.bhphoto.com',
       },
     ],

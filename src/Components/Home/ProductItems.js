@@ -32,7 +32,7 @@ const customStyles = `
 
 const ProductItem = ({ product }) => {
 
-    const {
+  const {
     availability,
     dateRange,
     images,
@@ -53,6 +53,11 @@ const ProductItem = ({ product }) => {
   const [selectedRentalPeriod, setSelectedRentalPeriod] = useState(rentalPrice[0]?.period);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+  const [showPackageModal, setShowPackageModal] = useState(false);
+  const [modalSelectedPeriod, setModalSelectedPeriod] = useState(rentalPrice[0]?.period); // <-- add this
+  const isVideo = (url) => {
+    return /\.(mp4|webm|ogg)$/i.test(url);
+  };
   // const { imgSrc, name, price, dateRange, availability, stock } = product;
   const BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL;
   // const [userId, setUserId] = useState("");
@@ -73,7 +78,7 @@ const ProductItem = ({ product }) => {
 
   // const productId = _id;
   const [productID, setProductId] = useState(_id);
-  console.log(rentalPrice,"rental price")
+  console.log(rentalPrice, "rental price")
 
 
   const formattedDate = new Date(
@@ -145,51 +150,48 @@ const ProductItem = ({ product }) => {
 
 
 
-  const handleAddToCart = async (productId) => {
+  const handleAddCart = () => {
+    if (userId) {
+      setModalSelectedPeriod(rentalPrice[0]?.period); // default to first package
+      setShowPackageModal(true);
+    } else {
+      toast.error("You must be logged in to add items to cart.");
+    }
+  };
 
+  const handleModalOk = async () => {
+    setSelectedRentalPeriod(modalSelectedPeriod);
+    setShowPackageModal(false);
+    await handleAddToCart(_id, modalSelectedPeriod);
+  };
+
+  const handlePackageSelect = async (period) => {
+    setSelectedRentalPeriod(period);
+    setShowPackageModal(false);
+    await handleAddToCart(_id, period);
+  };
+
+  // Update handleAddToCart to accept period
+  const handleAddToCart = async (productId, period = selectedRentalPeriod) => {
     try {
       const payload = {
         user_id: userId,
         variant_id: productId,
         quantity: 1,
-        rentalPeriod: selectedRentalPeriod,
-
+        rentalPeriod: period,
       };
-
-
       const response = await axios.post(`${BASE_URL}/cart/add`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-
-
-      // Retrieve the current cart count from localStorage (default to 0 if null)
-      // let cartCount = parseInt(localStorage.getItem("cart")) || 0;
-      // cartCount += 1; // Increment count by 1
-
-      // // Update localStorage with the new cart count
-      // localStorage.setItem("cart", cartCount);
-
-      // Dispatch event with the updated cart count
       window.dispatchEvent(new CustomEvent("cartUpdated",));
-
       toast.success(response.data.message);
     } catch (error) {
       console.error("Error adding product to cart:", error);
       toast.error(
         error.response?.data?.message || "Something went wrong. Please try again."
       );
-    }
-  };
-
-
-  const handleAddCart = () => {
-    if (userId) {
-      handleAddToCart(_id);
-    } else {
-      toast.error("You must be logged in to add items to cart.");
     }
   };
 
@@ -275,13 +277,22 @@ const ProductItem = ({ product }) => {
                     return (
                       <SwiperSlide key={index}>
                         <Link href={`/Products/${_id}`}>
-                          <Image
-                            src={img}
-                            alt={`${title} - ${index + 1}`}
-                            className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
-                            width={308}
-                            height={220}
-                          />
+                          {isVideo(img) ? (
+                            <video
+                              src={img}
+                              controls
+                              className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
+                            />
+                          ) : (
+                            <Image
+                              src={img}
+                              alt={`${title} - ${index + 1}`}
+                              className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
+                              width={308}
+                              height={220}
+                            />
+                          )}
+
                         </Link>
                       </SwiperSlide>
                     )
@@ -290,13 +301,24 @@ const ProductItem = ({ product }) => {
               </>
             ) : (
               <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
-                {images[0] && <Image
-                  src={images[0]}
-                  alt={title}
-                  className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
-                  width={308}
-                  height={220}
-                />}
+                {images?.[0] &&
+                  (isVideo(images?.[0]) ? (
+                    <video
+                      src={images?.[0]}
+                      className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
+                      muted
+                      playsInline
+                    />
+                  ) : (
+                    <Image
+                      src={images?.[0]}
+                      alt={title}
+                      className="w-full h-[130px] sm:h-[150px] object-cover rounded-t-[12px]"
+                      width={308}
+                      height={220}
+                    />
+                  ))}
+
               </Link>
             )}
 
@@ -371,7 +393,7 @@ const ProductItem = ({ product }) => {
               <span className='text-[#FF2D55] font-[600] text-[14px]'>
                 ₹{rentalPrice[0]?.price && `${rentalPrice[0].price}`}
                 <span className='text-[#070707A6] font-[400] text-[12px]'>
-                  /day
+                {rentalPrice[0]?.period && `${rentalPrice[0].period}`}
                 </span>
               </span>
             </p>
@@ -469,7 +491,7 @@ const ProductItem = ({ product }) => {
               <div className='grid grid-cols-2 text-center'>
                 {rentalPrice?.map((detail, index) => (
                   <div
-                    key={detail._id ||detail.variantId}
+                    key={detail._id || detail.variantId}
                     className={`p-1 cursor-pointer flex flex-col gap-[4px] ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""} 
     border ${index < 2 ? "border-t-0" : "border-t"}`}
                     onClick={() => setSelectedRentalPeriod(detail.period)}
@@ -498,6 +520,51 @@ const ProductItem = ({ product }) => {
           </div>
         )}
       </div>
+
+      {/* Modal for package selection */}
+      {showPackageModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-lg p-6 w-[90vw] max-w-md shadow-lg">
+            <h3 className="text-lg font-semibold mb-4">Select a Package</h3>
+            <div className="grid grid-cols-2 gap-2">
+              {rentalPrice?.map((detail) => (
+                <button
+                  key={detail._id || detail.variantId}
+                  className={`border rounded p-3 transition ${modalSelectedPeriod === detail.period
+                      ? "bg-blue-500 text-white border-blue-500"
+                      : "hover:bg-blue-500 hover:text-white"
+                    }`}
+                  onClick={() => setModalSelectedPeriod(detail.period)}
+                  type="button"
+                >
+                  <div className="font-medium">
+                    {periodMapping[detail.period] ||
+                      detail.period.charAt(0).toUpperCase() + detail.period?.slice(1)}
+                  </div>
+                  <div className="text-sm">₹{detail.price}</div>
+                </button>
+              ))}
+            </div>
+            <div className="flex justify-end gap-2 mt-4">
+              <button
+                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                onClick={() => setShowPackageModal(false)}
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                onClick={handleModalOk}
+                disabled={!modalSelectedPeriod}
+                type="button"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
 
   );

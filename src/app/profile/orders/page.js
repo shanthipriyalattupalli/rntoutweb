@@ -72,6 +72,7 @@ export default function Orders() {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log("Order History Response:", response.data);
 
       setOrders(response.data);
       const filteredOrders = response?.data

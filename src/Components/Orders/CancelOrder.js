@@ -54,54 +54,25 @@ const CancelOrder = ({ setIsCanceled, OrderId, order, subOrderId, item, isSubOrd
     setIsSubmitting(true);
 
     try {
-      let response;
-      
-      if (isSubOrder) {
-        // Cancel sub-order
-        response = await axios.put(
-          `${BASE_URL}/orders/suborder/${subOrderId}/cancel`,
-          { cancelReason: selectedReason },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-      } else {
-        // Cancel main order (existing logic)
-        response = await axios.patch(
-          `${BASE_URL}/orders/cancel/${OrderId}`,
-          { cancelReason: selectedReason },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-      }
+      const response = await axios.put(
+        `${BASE_URL}/orders/suborder/${subOrderId}/cancel`,
+        { cancelReason: selectedReason }, // Pass selected reason
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      // Show success message
+      if(response.data.success === true){
+      Swal.fire({
+        icon: "success",
+        title: "Order Canceled",
+        text: response.data.message || "Your order has been canceled successfully.",
+        confirmButtonColor: "#d33",
+      });
+    }
 
-      if (response.data.success === true) {
-        const refundInfo = response.data.data?.refund;
-        
-        Swal.fire({
-          icon: "success",
-          title: isSubOrder ? "Sub-Order Cancelled" : "Order Cancelled",
-          html: `
-            <div class="text-left">
-              <p><strong>Status:</strong> ${response.data.message || "Cancelled successfully"}</p>
-              ${refundInfo ? `
-                <div class="mt-3 p-3 bg-green-50 rounded">
-                  <p><strong>Refund Details:</strong></p>
-                  <p>• Amount: ₹${refundInfo.amount}</p>
-                  <p>• Source: ${refundInfo.source === 'held_payment' ? 'Payment Hold' : 'Seller Wallet'}</p>
-                  <p>• Status: ${refundInfo.status}</p>
-                  <p>• Refund ID: ${refundInfo.refundId}</p>
-                </div>
-              ` : ''}
-            </div>
-          `,
-          confirmButtonColor: "#22c55e",
-        });
-      }
-
-      setIsCanceled(false);
-      window.location.reload();
+      setIsCanceled(false); // Close modal after success
+      window.location.reload()
     } catch (error) {
       let errorMessage = "Failed to cancel order. Please try again.";
       if (error.response?.data?.message) {

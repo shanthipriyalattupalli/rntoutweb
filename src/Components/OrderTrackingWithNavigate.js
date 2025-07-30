@@ -75,6 +75,7 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log("Order History Response.......:", response.data);
       setOrders(response.data)
       setSubOrders(response.data.subOrders)
 
@@ -239,6 +240,10 @@ const OrderTrackingWithNavigate = ({ orderId }) => {
                   ₹ {subOrders.reduce((total, suborder) => total + suborder.price, 0)}/-
                 </div>
 
+              </div>
+                            <div className="flex justify-between items-center mb-2">
+                <div className="text-gray-600">Security Deposit</div>
+                <div className="text-gray-800 font-medium">+ ₹{orders?.securityDeposit}/-</div>
               </div>
               <div className="flex justify-between items-center mb-2">
                 <div className="text-gray-600">Gst({orders?.gstDetails?.gstPercentage}%)</div>

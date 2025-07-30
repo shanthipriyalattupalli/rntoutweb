@@ -272,6 +272,7 @@ const CartPage = () => {
     try {
       const response = await axios.get(`${BASE_URL}/cart/${userId}`);
     const cartData = response.data.cartItems || [];
+    console.log(response?.data, "cart data in cart page")
       setCartDeetails(response?.data)
       setCartItems(cartData);
       if (cartData.length === 0) {
@@ -319,6 +320,7 @@ const CartPage = () => {
 
       // ✅ Force re-fetch to ensure UI updates correctly
       fetchCartDetails();
+      fetchDeliveryCharges();
 
       toast.success(response.data.message || "Removed successfully");
     } catch (error) {
@@ -369,6 +371,7 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response, "response of order checkout");
       const { orderId, finalAmount } = response.data;
 
       // If orderId is present, proceed to initiate payment
@@ -376,18 +379,19 @@ const CartPage = () => {
 
         setOrderId(orderId);
         await handleContinueClick(orderId, finalAmount);
-        router.push('/profile/orders')
+        // router.push('/profile/orders');
         window.dispatchEvent(new CustomEvent("cartUpdated", { detail: 0 }));
 
       }
 
     } catch (error) {
+      console.log(error, "Error during order checkout");
       // Extract and display error message safely
       const errorMessage = error.response?.data?.error || "Something went wrong. Please try again!";
       Swal.fire({
         icon: "warning",
         title: "Note",
-        text: `${errorMessage}\n\nPlease Click "OK" for KYC Verification.`,
+        text: `${errorMessage}\n\nPlease Click "OK" to proceed....`,
         showCancelButton: true,
         confirmButtonText: "OK",
         cancelButtonText: "Cancel",
@@ -422,6 +426,7 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response, "response of payment initiation");
       // Axios response data is already parsed
       if (response.data.order && response.data.order.id) {
         setDisplayRazorpay(true);
@@ -615,9 +620,11 @@ const CartPage = () => {
                       ))}
                     </select>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col  gap-2">
 
-                    <p className="text-sm font-medium">Total: {item.lineTotal}</p>
+                    <p className="text-sm font-medium">Total: ₹ {item.lineTotal}</p>
+                 {  <p className="text-sm font-medium">Security Deposit: ₹ {item?.securityDeposit}</p>}
+
                   </div>
 
                   {/* <p>Total: {item.lineTotal}</p> */}
@@ -739,6 +746,10 @@ const CartPage = () => {
               {cartdetails?.taxes?.totalTax !=0 && <div className="flex justify-between">
                 <span>Gst({cartdetails?.taxes?.cgst?.rate + cartdetails?.taxes?.sgst?.rate}%)</span>
                 <span className="font-medium">+ ₹{cartdetails?.taxes?.totalTax}</span>
+              </div>}
+                            {cartdetails?.deposits && <div className="flex justify-between">
+                <span>Security Deposit</span>
+                <span className="font-medium">+ ₹{cartdetails?.deposits}</span>
               </div>}
               {<div className="flex justify-between">
                 <span>Delivery charges</span>

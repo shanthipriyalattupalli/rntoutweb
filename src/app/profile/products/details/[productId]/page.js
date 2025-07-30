@@ -38,7 +38,7 @@ const MainContent = () => {
     },
   ]);
   const [securitydeposit, setSecuritydeposit] = useState("false");
-console.log("securitydeposit", securitydeposit);
+  console.log("securitydeposit", securitydeposit);
 
   const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
   const categoryId = (typeof window !== 'undefined') ? localStorage.getItem("selectedcategoryId") : null;
@@ -202,8 +202,7 @@ console.log("securitydeposit", securitydeposit);
   //     images: files,
   //   }));
   // };
-
-  const handleFileChange = (event) => {
+const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     if (!files.length) {
       toast.error("No files selected");
@@ -212,7 +211,6 @@ console.log("securitydeposit", securitydeposit);
 
     const previews = [];
     const newFiles = [...files];
-
     const replacementIndexes = [];
 
     files.forEach((file, i) => {
@@ -221,14 +219,17 @@ console.log("securitydeposit", securitydeposit);
 
       const reader = new FileReader();
       reader.onload = () => {
-        previews.push({ index: targetIndex, src: reader.result });
+        previews.push({
+          index: targetIndex,
+          src: reader.result,
+          type: file.type.startsWith("video/") ? "video" : "image",
+        });
 
         if (previews.length === files.length) {
-
           const sortedPreviews = [...previewImages];
 
-          previews.forEach(({ index, src }) => {
-            sortedPreviews[index] = src;
+          previews.forEach(({ index, src, type }) => {
+            sortedPreviews[index] = { src, type };
           });
 
           setPreviewImages(sortedPreviews);
@@ -237,15 +238,15 @@ console.log("securitydeposit", securitydeposit);
       reader.readAsDataURL(file);
     });
 
-
     setFormData((prev) => ({
       ...prev,
-      images: [...(prev.images || []), ...files],
+      images: [...(prev.images || []), ...newFiles],
       replaceImageIndex: [...(prev.replaceImageIndex || []), ...replacementIndexes],
     }));
 
     toast.success("Files added successfully!");
   };
+
 
 
   const handleRemoveImage = (indexToRemove) => {
@@ -484,7 +485,7 @@ console.log("securitydeposit", securitydeposit);
     fetchAddress(lat, lng);
   };
 
-
+  console.log("formData", formData);
 
   const handlePublishProduct = async () => {
     setErrors({
@@ -661,7 +662,15 @@ console.log("securitydeposit", securitydeposit);
 
   useEffect(() => {
     if (formData.images?.length) {
-      setPreviewImages(formData.images);
+      const previews = formData.images.map((file) => {
+        return {
+          src: typeof file === "string" ? file : URL.createObjectURL(file),
+          type: typeof file === "string"
+            ? file.endsWith(".mp4") ? "video" : "image"
+            : file.type.startsWith("video/") ? "video" : "image",
+        };
+      });
+      setPreviewImages(previews);
     }
   }, [formData.images]);
 
@@ -705,21 +714,21 @@ console.log("securitydeposit", securitydeposit);
               <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
 
             </label>
-                       <input
-                  type='tel'
-                  name='weight'
-                  value={formData.weight}
-                  onChange={handleInputChange}
-                  placeholder='Enter weight'
-                />
-                {errors.weight && <p className="text-red-500 text-sm">{errors.weight}</p>}
+            <input
+              type='tel'
+              name='weight'
+              value={formData.weight}
+              onChange={handleInputChange}
+              placeholder='Enter weight'
+            />
+            {errors.weight && <p className="text-red-500 text-sm">{errors.weight}</p>}
 
           </div>
 
           <div className='form-section3'>
             <label>
               Available Stock{" "}
-                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+              <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
 
             </label>
             <input
@@ -734,56 +743,58 @@ console.log("securitydeposit", securitydeposit);
           </div>
         </div>
 
-        <div className='form-section file-upload'>
-          <h2 className='ba-in'>
-            Product Image{" "}
-                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-
-          </h2>
-          <div className='file-upload-box' tabIndex={0} >
-            <input
-              type='file'
-              ref={fileInputRef}
-              multiple
-              accept='.jpeg, .png, .jpg'
-              style={{ display: "none" }}
-              onChange={handleFileChange} // Add onChange handler
-            />
-            <div className='upload-icon' onClick={handleIconClick}>
-              <img src={upload} />
-            </div>
-            <p className="text-sm font-normal leading-5 text-center decoration-none">
-              Drag your file(s) or <span onClick={handleIconClick}>browse</span>
-            </p>
-            <p className='file-note'>Image format will be a JPEG, PNG, JPG</p>
-          </div>
-          <p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 1 image. 📸</p>
-          {errors.images && <p className="text-red-500 text-sm">{errors.images}</p>}
-
-          {/* Render Preview Images */}
-          <div className='image-preview-container'>
-            {previewImages.map((src, index) => (
-              <div key={index} className='image-preview-box relative'>
-                <img
-                  src={src}
-                  alt={`Preview ${index + 1}`}
-                  className='preview-image'
-                />
-                {/* Remove button with cross icon */}
-                <button
-                  onClick={() => handleRemoveImage(index)}
-                  className='absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-700'
-                >
-                  <X size={14} /> {/* Icon from lucide-react */}
-                </button>
-              </div>
-            ))}
-          </div>
+ <div className='form-section file-upload'>
+      <h2 className='ba-in'>
+        Product Image{" "}
+        <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+      </h2>
+      <div className='file-upload-box' tabIndex={0}>
+        <input
+          type='file'
+          ref={fileInputRef}
+          multiple
+          accept='.jpeg, .png, .jpg, .mp4'
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
+        <div className='upload-icon' onClick={handleIconClick}>
+          <img src={upload} alt="Upload" />
         </div>
+        <p className="text-sm font-normal leading-5 text-center">
+          Drag your file(s) or <span onClick={handleIconClick}>browse</span>
+        </p>
+        <p className='file-note'>Image format should be JPEG, PNG, JPG. Video format should be MP4.</p>
+      </div>
+      <p className="p-2 text-xs font-normal text-left">
+        Kindly make sure to upload a minimum of 1 image. 📸
+      </p>
+      {errors.images && (
+        <p className="text-red-500 text-sm">{errors.images}</p>
+      )}
+
+      {/* Render Preview Images */}
+      <div className='image-preview-container'>
+        {previewImages.map((item, index) => (
+          <div key={index} className='image-preview-box relative'>
+            {item.type === "video" ? (
+              <video src={item.src} controls className="preview-video" />
+            ) : (
+              <img src={item.src} alt={`Preview ${index + 1}`} className="preview-image" />
+            )}
+            <button
+              onClick={() => handleRemoveImage(index)}
+              className='absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-700'
+            >
+              <X size={14} />
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
         <div className="flex flex-col">
           <label className='ba-in'>
             Product Availability{" "}
-                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
 
           </label>
           <div className="date-picker-container flex flex-col md:flex-row justify-between gap-4">
@@ -861,7 +872,7 @@ console.log("securitydeposit", securitydeposit);
 
         <div className="mt-4 mb-4 flex flex-col gap-3">
           <label className="text-[14px] font-semibold">Select Pick up address
-                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
 
           </label>
           <div className="google-content">
@@ -907,8 +918,8 @@ console.log("securitydeposit", securitydeposit);
         <div className='form-section4'>
           <h2 className='ba-in'>
             PRICING INFO{" "}
-                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-                {errors.rentalPrice && <p className="text-red-500 text-sm">{errors.rentalPrice}</p>}
+            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+            {errors.rentalPrice && <p className="text-red-500 text-sm">{errors.rentalPrice}</p>}
 
           </h2>
           <div className='pricing-section'>
@@ -954,20 +965,20 @@ console.log("securitydeposit", securitydeposit);
             })}
           </div>
         </div>
-        {securitydeposit === "true" || securitydeposit ===true &&      <div className='form-section1'>
-                <label>
-                 Security Deposit
-                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-                </label>
-                <input
-                  type='tel'
-                  name='securityDeposit'
-                  value={formData.securityDeposit}
-                  onChange={handleInputChange}
-                  placeholder='Enter Security Amount'
-                />
-                {errors.securityDeposit && <p className="text-red-500 text-sm">{errors.securityDeposit}</p>}
-              </div>}
+        {securitydeposit === "true" || securitydeposit === true && <div className='form-section1'>
+          <label>
+            Security Deposit
+            <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+          </label>
+          <input
+            type='tel'
+            name='securityDeposit'
+            value={formData.securityDeposit}
+            onChange={handleInputChange}
+            placeholder='Enter Security Amount'
+          />
+          {errors.securityDeposit && <p className="text-red-500 text-sm">{errors.securityDeposit}</p>}
+        </div>}
       </div>
       <div className='details-section'>
         <h2 className='ba-in'>
@@ -1019,9 +1030,9 @@ console.log("securitydeposit", securitydeposit);
           </div>
         ))}
 
-        <button onClick={handleAddSection} className='add-section-btn'>
+        {/* <button onClick={handleAddSection} className='add-section-btn'>
           <FiPlus /> Add New Product Description
-        </button>
+        </button> */}
       </div>
 
 

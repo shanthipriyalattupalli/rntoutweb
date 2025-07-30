@@ -31,36 +31,36 @@ const Banner = ({ banners, isLoading }) => {
   // const [activeIndex, setActiveIndex] = useState(0);
   const activeBanners = banners.filter(banner => banner.status === "active");
 
-  const handleAddOnRent = async () => {
-    if (!token) {
-      await Swal.fire({
-        title: "Login Required",
-        text: "You need to be logged in to add a property on rent.",
-        icon: "info",
-      });
-      return;
-    }
+  // const handleAddOnRent = async () => {
+  //   if (!token) {
+  //     await Swal.fire({
+  //       title: "Login Required",
+  //       text: "You need to be logged in to add a property on rent.",
+  //       icon: "info",
+  //     });
+  //     return;
+  //   }
 
-    if (isKyc === "true") {
-      router.push("/add-on-rent");
-    } else {
-      // Show confirmation alert before redirecting
-      const result = await Swal.fire({
-        title: "KYC Required",
-        text: "KYC should be verified before adding on rent. Do you want to verify now?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, Verify Now",
-        cancelButtonText: "Cancel",
-      });
+  //   if (isKyc === "true") {
+  //     router.push("/add-on-rent");
+  //   } else {
+  //     // Show confirmation alert before redirecting
+  //     const result = await Swal.fire({
+  //       title: "KYC Required",
+  //       text: "KYC should be verified before joining as partner. Do you want to verify now?",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#d33",
+  //       cancelButtonColor: "#3085d6",
+  //       confirmButtonText: "Yes, Verify Now",
+  //       cancelButtonText: "Cancel",
+  //     });
 
-      if (result.isConfirmed) {
-        router.push("/profile/kyc");
-      }
-    }
-  };
+  //     if (result.isConfirmed) {
+  //       router.push("/profile/kyc");
+  //     }
+  //   }
+  // };
   return (
     <div className="w-full">
       {isLoading

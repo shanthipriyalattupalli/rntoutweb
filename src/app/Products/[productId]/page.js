@@ -35,6 +35,7 @@ const fetchProductById = async (productId, token, userId) => {
     );
 
     const data = response.data;
+    console.log(data, "data");
     return response.data;
 
   } catch (error) {
@@ -182,7 +183,6 @@ export default async function ProductPage ({ params }) {
 
               </div>
             </div>
-
 
 
             <AddToCart product={product} />

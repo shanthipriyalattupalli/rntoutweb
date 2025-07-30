@@ -200,37 +200,49 @@ console.log(securitydeposit,"securitydepositttt")
 
 
 
-  const handleFileChange = (event) => {
+const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    const previews = [];
     if (!files.length) {
-      // toast.error("No files selected");
-      Swal.fire({
-        icon: "error",
-        title: "No files selected",
-        text: "Please select files to upload.",
-      });
+      toast.error("No files selected");
       return;
     }
-    Array.from(files).forEach((file) => {
+
+    const previews = [];
+    const newFiles = [...files];
+    const replacementIndexes = [];
+
+    files.forEach((file, i) => {
+      const targetIndex = previewImages.length + i;
+      replacementIndexes.push(targetIndex);
+
       const reader = new FileReader();
       reader.onload = () => {
-        previews.push(reader.result);
+        previews.push({
+          index: targetIndex,
+          src: reader.result,
+          type: file.type.startsWith("video/") ? "video" : "image",
+        });
+
         if (previews.length === files.length) {
-          setPreviewImages(previews);
+          const sortedPreviews = [...previewImages];
+
+          previews.forEach(({ index, src, type }) => {
+            sortedPreviews[index] = { src, type };
+          });
+
+          setPreviewImages(sortedPreviews);
         }
       };
       reader.readAsDataURL(file);
     });
-    // Clear previous images in formData
-    setFormData((prev) => ({ ...prev, images: [] }));
-    // Add the selected files to formData
+
     setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, ...files],
+      images: [...(prev.images || []), ...newFiles],
+      replaceImageIndex: [...(prev.replaceImageIndex || []), ...replacementIndexes],
     }));
-    // Show toast notification for successful upload
-    // toast.success("Files added successfully!");
+
+    toast.success("Files added successfully!");
   };
 
   const handleRemoveImage = (indexToRemove) => {
@@ -776,53 +788,54 @@ console.log(formData,"format");
               </div>
             </div>
 
-            <div className='form-section file-upload '>
-              <h2 className='ba-in'>
-                Product Image{" "}
-                <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
-              </h2>
-              <div className='file-upload-box cusror-pointer' tabIndex={0} onClick={handleIconClick}>
-                <input
-                  type='file'
-                  ref={fileInputRef}
-                  multiple
-                  accept='.jpeg, .png, .jpg'
-                  style={{ display: "none" }}
-                  onChange={handleFileChange} // Add onChange handler
-                />
-                <div className='upload-icon' onClick={handleIconClick}>
-                  <img src={upload} />
-                </div>
-                <p className="text-sm font-normal leading-5 text-center decoration-none">
-                  Drag your file(s) or <span onClick={handleIconClick}>browse</span>
-                </p>
-                <p className='file-note'>Image format will be a JPEG, PNG, JPG</p>
-              </div>
-              <p className="p-2 text-xs font-normal leading-5 text-left decoration-none">Kindly make sure to upload a minimum of 1 image. 📸</p>
-              {errors.images && <p className="text-red-500 text-sm">{errors.images}</p>}
-              {/* Render Preview Images */}
-              <div className='image-preview-container'>
-                {previewImages.map((src, index) => (
-                  <div key={index} className='image-preview-box relative'>
-                    <img
-                      src={src}
-                      alt={`Preview ${index + 1}`}
-                      className='preview-image'
-                    />
-                    {/* Remove button with cross icon */}
-                    <button
-                      onClick={() => handleRemoveImage(index)}
-                      className='absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-700'
-                    >
-                      <X size={14} /> {/* Icon from lucide-react */}
-                    </button>
-                  </div>
-                ))}
-              </div>
+ <div className='form-section file-upload'>
+      <h2 className='ba-in'>
+        Product Image{" "}
+        <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+      </h2>
+      <div className='file-upload-box' tabIndex={0}>
+        <input
+          type='file'
+          ref={fileInputRef}
+          multiple
+          accept='.jpeg, .png, .jpg, .mp4'
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
+        <div className='upload-icon' onClick={handleIconClick}>
+          <img src={upload} alt="Upload" />
+        </div>
+        <p className="text-sm font-normal leading-5 text-center">
+          Drag your file(s) or <span onClick={handleIconClick}>browse</span>
+        </p>
+        <p className='file-note'>Image format should be JPEG, PNG, JPG. Video format should be MP4.</p>
+      </div>
+      <p className="p-2 text-xs font-normal text-left">
+        Kindly make sure to upload a minimum of 1 image. 📸
+      </p>
+      {errors.images && (
+        <p className="text-red-500 text-sm">{errors.images}</p>
+      )}
 
-
-
-            </div>
+      {/* Render Preview Images */}
+      <div className='image-preview-container'>
+        {previewImages.map((item, index) => (
+          <div key={index} className='image-preview-box relative'>
+            {item.type === "video" ? (
+              <video src={item.src} controls className="preview-video" />
+            ) : (
+              <img src={item.src} alt={`Preview ${index + 1}`} className="preview-image" />
+            )}
+            <button
+              onClick={() => handleRemoveImage(index)}
+              className='absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-700'
+            >
+              <X size={14} />
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
             <div className="flex flex-col">
               <label className='ba-in'>
                 Product Availability{" "}
