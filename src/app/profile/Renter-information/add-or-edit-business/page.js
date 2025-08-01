@@ -69,6 +69,7 @@ export default function BusinessInformation2() {
     storeDescription: "",
     bankName: "",
     accountNumber: "",
+    accountHolder: "",
     ifsc: "",
     bankBranchAddress: {
       no: "",
@@ -337,6 +338,7 @@ console.log(formData?.removedImageIndices, "Replace Image Indices State");
       errors.contactPhone = "Mobile number must be 10 digits";
     if (!formData?.storeDescription) errors.storeDescription = "This field is required";
     if (!formData?.bankName) errors.bankName = "This field is required";
+    if (!formData?.accountHolder) errors.accountHolder = "This field is required";
     if (!formData?.accountNumber) {
       errors.accountNumber = "This field is required";
     } else if (!/^\d{9,18}$/.test(formData.accountNumber)) {
@@ -369,6 +371,7 @@ console.log(formData?.removedImageIndices, "Replace Image Indices State");
       formDataToSend.append("contactEmail", formData?.contactEmail);
       formDataToSend.append("contactPhone", formData?.contactPhone);
       formDataToSend.append("storeDescription", formData?.storeDescription);
+      formDataToSend.append("accountHolder", formData?.accountHolder);
       formDataToSend.append("bankName", formData?.bankName);
       formDataToSend.append("accountNumber", formData?.accountNumber || "");
       formDataToSend.append("ifsc", formData?.ifsc);
@@ -594,7 +597,22 @@ console.log(formData, "fomr data");
 
                 />
               </div>
-              {errorMessage.bankName && <p className="text-red-500 text-sm">{errorMessage.bankName}</p>}
+                {errorMessage.bankName && <p className="text-red-500 text-sm">{errorMessage.bankName}</p>}
+              <div className="input-item">
+                <label htmlFor="bank-select">Account Holder
+                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+
+                </label>
+                <input id="accountNumber"
+                  type="tel"
+                  placeholder="Enter Account holder Name"
+                  name='accountHolder'
+                  value={formData?.accountHolder}
+                  onChange={handleInputChange}
+
+                />
+              </div>
+              {errorMessage.accountHolder && <p className="text-red-500 text-sm">{errorMessage.accountHolder}</p>}
               <div className="input-item">
                 <label htmlFor="accountNumber">Account Number
                   <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
