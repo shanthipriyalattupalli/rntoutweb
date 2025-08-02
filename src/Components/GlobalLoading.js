@@ -7,6 +7,8 @@ const MinimalLoading = () => {
   const router = useRouter();
   const pathname = usePathname();
 
+  
+
   useEffect(() => {
     if (typeof window === 'undefined') return; 
     const handleStart = () => setLoading(true);
