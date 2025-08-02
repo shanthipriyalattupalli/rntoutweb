@@ -6,16 +6,16 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
-const left = '/Assets/leftarrow.svg';
+const left = "/Assets/leftarrow.svg";
 const DeliveryIcon = "/Assets/delivery.svg";
 const AvailabilityIcon = "/Assets/Icons/availability.png";
 const AvailabilIcon = "/Assets/Icons/ava-stock.png";
 const cartIcon = "/Assets/add-to-cart.svg";
 const cartIconHov = "/Assets/Icons/add-to-cart-white.png";
 const stars = "/Assets/stars.svg";
-const favIcon = "/Assets/bookmarks_line.svg"
-const Badge = '/Assets/Offer Badge.svg';
-const favorited = '/Assets/favoritedicon.svg'
+const favIcon = "/Assets/bookmarks_line.svg";
+const Badge = "/Assets/Offer Badge.svg";
+const favorited = "/Assets/favoritedicon.svg";
 import Link from "next/link";
 // import DeliveryIcon from '/public/Assets/Icons/delivery.png';
 // import AvailabilityIcon from '/public/Assets/Icons/availability.png';
@@ -24,14 +24,12 @@ import Link from "next/link";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const customStyles = `
   .product-title {    font-size: 14px;    font-weight: 400;    line-height: normal;  }
   .cart-btn {    font-size: 13px;    font-weight: 500;  }
   .cart-price {    color: #FF2D55;  }`;
 
 const ProductItem = ({ product }) => {
-
   const {
     availability,
     dateRange,
@@ -45,16 +43,20 @@ const ProductItem = ({ product }) => {
     rentalPrice,
     averageRating,
     _id,
-    variantId
+    variantId,
   } = product;
 
   const swiperRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [selectedRentalPeriod, setSelectedRentalPeriod] = useState(rentalPrice[0]?.period);
+  const [selectedRentalPeriod, setSelectedRentalPeriod] = useState(
+    rentalPrice[0]?.period
+  );
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [showPackageModal, setShowPackageModal] = useState(false);
-  const [modalSelectedPeriod, setModalSelectedPeriod] = useState(rentalPrice[0]?.period); // <-- add this
+  const [modalSelectedPeriod, setModalSelectedPeriod] = useState(
+    rentalPrice[0]?.period
+  ); // <-- add this
   const isVideo = (url) => {
     return /\.(mp4|webm|ogg)$/i.test(url);
   };
@@ -70,16 +72,16 @@ const ProductItem = ({ product }) => {
   //   setToken(token);
   // }, []);
 
-  const userId = (typeof window !== 'undefined') ? localStorage.getItem("userId") : null;
-  const token = (typeof window !== 'undefined') ? localStorage.getItem("userToken") : null;
-
+  const userId =
+    typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
 
   const [isView, setIsview] = useState(true);
 
   // const productId = _id;
   const [productID, setProductId] = useState(_id);
-  console.log(rentalPrice, "rental price")
-
+  console.log(rentalPrice, "rental price");
 
   const formattedDate = new Date(
     rentalAvailability?.startDate
@@ -102,11 +104,9 @@ const ProductItem = ({ product }) => {
 
   const currentDate = new Date();
 
-
   let monthsDifference =
     (endDate.getFullYear() - currentDate.getFullYear()) * 12 +
     (endDate.getMonth() - currentDate.getMonth());
-
 
   let displayAvailability = "Not Available";
 
@@ -119,20 +119,20 @@ const ProductItem = ({ product }) => {
       const daysDifference = Math.ceil(
         (endDate - currentDate) / (1000 * 60 * 60 * 24)
       );
-      displayAvailability = `${daysDifference} ${daysDifference === 1 ? "Day" : "Days"
-        } Available`;
+      displayAvailability = `${daysDifference} ${
+        daysDifference === 1 ? "Day" : "Days"
+      } Available`;
     } else {
       const monthsDifference =
         (endDate.getFullYear() - currentDate.getFullYear()) * 12 +
         (endDate.getMonth() - currentDate.getMonth());
-      displayAvailability = `${monthsDifference} ${monthsDifference === 1 ? "Month" : "Months"
-        } Available`;
+      displayAvailability = `${monthsDifference} ${
+        monthsDifference === 1 ? "Month" : "Months"
+      } Available`;
     }
   }
 
-
   const rentalStartDate = new Date(rentalAvailability?.startDate);
-
 
   const Details = [
     { label: "Day", price: rentalPrice.daily },
@@ -147,8 +147,6 @@ const ProductItem = ({ product }) => {
   const handleBack = () => {
     setIsview(true);
   };
-
-
 
   const handleAddCart = () => {
     if (userId) {
@@ -185,34 +183,38 @@ const ProductItem = ({ product }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      window.dispatchEvent(new CustomEvent("cartUpdated",));
+      window.dispatchEvent(new CustomEvent("cartUpdated"));
       toast.success(response.data.message);
     } catch (error) {
       console.error("Error adding product to cart:", error);
       toast.error(
-        error.response?.data?.message || "Something went wrong. Please try again."
+        error.response?.data?.message ||
+          "Something went wrong. Please try again."
       );
     }
   };
 
-
   const handleAddToFavorites = async () => {
     try {
-      const response = await axios.post(`${BASE_URL}/favorites/add`, { variantId: _id }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        `${BASE_URL}/favorites/add`,
+        { variantId: _id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       toast.success(response.data.message);
     } catch (error) {
       console.error("Error adding product to favorites:", error);
       toast.error(
         error.response?.data?.message ||
-        "Something went wrong. Please try again."
+          "Something went wrong. Please try again."
       );
     }
-  }
+  };
 
   const periodMapping = {
     quarterly: "3 Months",
@@ -226,21 +228,25 @@ const ProductItem = ({ product }) => {
     startDate &&
     currentDate.getTime() - startDate.getTime() === 7 * 24 * 60 * 60 * 1000;
   return (
-
     <>
       {/* <ToastContainer /> */}
       <style>{customStyles}</style>
 
-      <div className={`2xl:w-full xl:w-full h-[340px] sm:h-[370px] rounded-[12px] bg-gray-50  border border-slate-200 ${isHovered ? "shadow-lg" : "shadow-sm"}`}
+      <div
+        className={`2xl:w-full xl:w-full h-[340px] sm:h-[370px] rounded-[12px] bg-gray-50  border border-slate-200 ${
+          isHovered ? "shadow-lg" : "shadow-sm"
+        }`}
         onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}>
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <div className="relative">
           <div className="border-b-2 border-bottom-color: rgb(209 213 219 / var(--tw-border-opacity, 1))">
             {isHovered ? (
               <>
                 <div
-                  className={`absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer ${isBeginning ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
+                  className={`absolute top-1/2 transform -translate-y-1/2 z-10 cursor-pointer ${
+                    isBeginning ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   onClick={() => {
                     if (!isBeginning) swiperRef.current?.slidePrev();
                   }}
@@ -249,8 +255,9 @@ const ProductItem = ({ product }) => {
                 </div>
 
                 <div
-                  className={`absolute right-0 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer ${isEnd ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
+                  className={`absolute right-0 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer ${
+                    isEnd ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   onClick={() => {
                     if (!isEnd) swiperRef.current?.slideNext();
                   }}
@@ -292,15 +299,17 @@ const ProductItem = ({ product }) => {
                               height={220}
                             />
                           )}
-
                         </Link>
                       </SwiperSlide>
-                    )
+                    );
                   })}
                 </Swiper>
               </>
             ) : (
-              <Link href={{ pathname: `/Products/${_id}`, query: { id: _id } }} key={_id}>
+              <Link
+                href={{ pathname: `/Products/${_id}`, query: { id: _id } }}
+                key={_id}
+              >
                 {images?.[0] &&
                   (isVideo(images?.[0]) ? (
                     <video
@@ -318,7 +327,6 @@ const ProductItem = ({ product }) => {
                       height={220}
                     />
                   ))}
-
               </Link>
             )}
 
@@ -332,15 +340,14 @@ const ProductItem = ({ product }) => {
                       averageRating >= 4
                         ? "rgba(8, 135, 93, 1)"
                         : averageRating >= 2
-                          ? "rgba(244, 128, 3, 1)"
-                          : "rgba(224, 45, 60, 1)",
+                        ? "rgba(244, 128, 3, 1)"
+                        : "rgba(224, 45, 60, 1)",
                   }}
                 >
                   <img src={stars} alt="Rating stars" className="w-4 h-3" />
                   <span className="ml-1">{averageRating}</span>
                 </p>
               )}
-
 
               {/* <p
                 className="cursor-pointer"
@@ -354,9 +361,6 @@ const ProductItem = ({ product }) => {
               {isOneWeekBefore && (
                 <img src={Badge} className="badge-icon" alt="Favorite icon" />
               )}
-
-
-
             </div>
 
             {/* View All Details Button */}
@@ -380,56 +384,74 @@ const ProductItem = ({ product }) => {
           </div>
         </div>
 
-
         {isView ? (
           <div className="p-2 sm:p-4 mt-4 sm:mt-0">
             <h2 className="product-title text-[#070707] font-[500] truncate w-full overflow-hidden whitespace-nowrap">
               {title || title.charAt(0).toUpperCase() + title?.slice(1)}
             </h2>
 
-
             {/* Product Price */}
-            <p className='cart-price text-bold text-lg mt-1 sm:mt-2'>
-              <span className='text-[#FF2D55] font-[600] text-[14px]'>
+            <p className="cart-price text-bold text-lg mt-1 sm:mt-2">
+              <span className="text-[#FF2D55] font-[600] text-[14px]">
                 ₹{rentalPrice[0]?.price && `${rentalPrice[0].price}`}
-                <span className='text-[#070707A6] font-[400] text-[12px]'>
-                {rentalPrice[0]?.period && `${rentalPrice[0].period}`}
+                <span className="text-[#070707A6] font-[400] text-[12px]">
+                  {rentalPrice[0]?.period &&
+                    ` ${rentalPrice[0].period
+                      .charAt(0)
+                      .toUpperCase()}${rentalPrice[0].period.slice(1)}`}
                 </span>
               </span>
             </p>
 
+            {/* <p className='cart-price text-bold text-lg mt-1 sm:mt-2'>
+              <span className='text-[#FF2D55] font-[600] text-[14px]'>
+                ₹{rentalPrice[0]?.price && `${rentalPrice[0].price}`}
+                <span className='text-[#070707A6] font-[400] text-[12px]'>
+                {rentalPrice[0]?.period && ` ${rentalPrice[0].period}`}
+                </span>
+              </span>
+            </p> */}
+
             {/* Delivery Information */}
-            <div className='flex items-center mt-2'>
+            <div className="flex items-center mt-2">
               <Image
                 src={DeliveryIcon}
-                alt='Calendar icon'
-                className='w-4 h-4 text-gray-500 mr-1'
+                alt="Calendar icon"
+                className="w-4 h-4 text-gray-500 mr-1"
                 width={16}
                 height={16}
               />
               <span className="text-gray-500 text-xs">
-                <span className="hidden sm:inline">Free Delivery for: </span><span className="font-[500] text-[12px]">5 km</span>
+                <span className="hidden sm:inline">Free Delivery for: </span>
+                <span className="font-[500] text-[12px]">5 km</span>
               </span>
-
             </div>
 
             {/* Availability */}
-            <div className='flex items-center mt-2'>
+            <div className="flex items-center mt-2">
               <Image
                 src={AvailabilityIcon}
-                alt='Availability icon'
-                className='w-4 h-4 text-gray-500 mr-1'
+                alt="Availability icon"
+                className="w-4 h-4 text-gray-500 mr-1"
                 width={16}
                 height={16}
               />
-              {rentalAvailability && formattedDate && !isNaN(new Date(rentalAvailability?.endDate)) ? (
-                <span className='text-gray-500 text-xs truncate w-full'>
-                  <span className="hidden sm:inline">Availability:</span> {formattedDate}-{formattedendDate}
+              {rentalAvailability &&
+              formattedDate &&
+              !isNaN(new Date(rentalAvailability?.endDate)) ? (
+                <span className="text-gray-500 text-xs truncate w-full">
+                  <span className="hidden sm:inline">Availability:</span>{" "}
+                  {formattedDate}-{formattedendDate}
                 </span>
               ) : rentalAvailability && formattedDate ? (
                 <span className="text-gray-500 text-[12px] hidden sm:inline">
-                  Availability:<span className="font-[500px] text-[12px]"> {formattedDate}</span>
-                </span>) : null}
+                  Availability:
+                  <span className="font-[500px] text-[12px]">
+                    {" "}
+                    {formattedDate}
+                  </span>
+                </span>
+              ) : null}
             </div>
             {/* <Image
                 src={AvailabilIcon}
@@ -441,74 +463,95 @@ const ProductItem = ({ product }) => {
             {/* Stock Information */}
             <div className="flex items-center mt-2">
               <span
-                className={`text-xs border px-1 py rounded-full ${stockQuantity > 0
-                  ? "text-blue-500 border-blue-200 bg-blue-100"
-                  : "text-red-500 border-red-200 bg-red-100"
-                  }`}
+                className={`text-xs border px-1 py rounded-full ${
+                  stockQuantity > 0
+                    ? "text-blue-500 border-blue-200 bg-blue-100"
+                    : "text-red-500 border-red-200 bg-red-100"
+                }`}
               >
                 {stockQuantity > 0 ? "In stock" : "Out of stock"}
               </span>
             </div>
 
-
-
-
             <button
-              className={`${stockQuantity > 0 && !isDateExpired
-                ? "cart-btn border border-[rgba(255,45,85,0.6)] hover:bg-[rgba(255,45,85,1)] text-[rgba(255,45,85,1)] hover:text-white font-bold px-4 py-1  rounded-[8px] mt-4 text-center w-full flex items-center justify-center space-x-2 group"
-                : "cart-btn border border-[rgba(255,45,85,0.6)] text-white font-bold px-4 py-1 rounded-[8px] mt-4 text-center w-full  flex items-center justify-center space-x-2 group"
-                } ${isHovered && stockQuantity > 0 && !isDateExpired ? "bg-[rgba(255,45,85,1)] hover:text-white cart-hover-shadow" : ""}`}
-              onClick={() => stockQuantity > 0 && !isDateExpired && handleAddCart()}
+              className={`${
+                stockQuantity > 0 && !isDateExpired
+                  ? "cart-btn border border-[rgba(255,45,85,0.6)] hover:bg-[rgba(255,45,85,1)] text-[rgba(255,45,85,1)] hover:text-white font-bold px-4 py-1  rounded-[8px] mt-4 text-center w-full flex items-center justify-center space-x-2 group"
+                  : "cart-btn border border-[rgba(255,45,85,0.6)] text-white font-bold px-4 py-1 rounded-[8px] mt-4 text-center w-full  flex items-center justify-center space-x-2 group"
+              } ${
+                isHovered && stockQuantity > 0 && !isDateExpired
+                  ? "bg-[rgba(255,45,85,1)] hover:text-white cart-hover-shadow"
+                  : ""
+              }`}
+              onClick={() =>
+                stockQuantity > 0 && !isDateExpired && handleAddCart()
+              }
               disabled={stockQuantity <= 0 || isDateExpired}
             >
               <Image
-                src={isHovered && stockQuantity > 0 && !isDateExpired ? cartIconHov : cartIcon}
+                src={
+                  isHovered && stockQuantity > 0 && !isDateExpired
+                    ? cartIconHov
+                    : cartIcon
+                }
                 alt="Cart icon"
                 className="w-4 h-4"
                 width={500}
                 height={300}
               />
-              <span className={`text-sm ${stockQuantity > 0 && !isDateExpired
-                ? isHovered
-                  ? "text-white"
-                  : ""
-                : "text-gray-400 cursor-not-allowed "
-                }`}>
+              <span
+                className={`text-sm ${
+                  stockQuantity > 0 && !isDateExpired
+                    ? isHovered
+                      ? "text-white"
+                      : ""
+                    : "text-gray-400 cursor-not-allowed "
+                }`}
+              >
                 Add to cart
               </span>
             </button>
 
-
-
-
             {/* ) */}
             {/* } */}
-
           </div>
         ) : (
           <div>
-            <div className='w-full'>
-              <div className='grid grid-cols-2 text-center'>
+            <div className="w-full">
+              <div className="grid grid-cols-2 text-center">
                 {rentalPrice?.map((detail, index) => (
                   <div
                     key={detail._id || detail.variantId}
-                    className={`p-1 cursor-pointer flex flex-col gap-[4px] ${selectedRentalPeriod === detail.period ? "border-blue-500 bg-blue-500" : ""} 
+                    className={`p-1 cursor-pointer flex flex-col gap-[4px] ${
+                      selectedRentalPeriod === detail.period
+                        ? "border-blue-500 bg-blue-500"
+                        : ""
+                    } 
     border ${index < 2 ? "border-t-0" : "border-t"}`}
                     onClick={() => setSelectedRentalPeriod(detail.period)}
                   >
                     <span
-                      className={`block font-[500] text-[12px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-blue-500"
-                        }`}
+                      className={`block font-[500] text-[12px] ${
+                        selectedRentalPeriod === detail.period
+                          ? "text-white"
+                          : "text-blue-500"
+                      }`}
                     >
-                      {periodMapping[detail.period] || detail.period.charAt(0).toUpperCase() + detail.period?.slice(1)}
+                      {periodMapping[detail.period] ||
+                        detail.period.charAt(0).toUpperCase() +
+                          detail.period?.slice(1)}
                     </span>
-                    <span className={`block text-lg font-[500] text-[12px] sm:text-[16px] ${selectedRentalPeriod === detail.period ? "text-white" : "text-black"}`}>
-                      ₹
-                      {detail.price && detail.price.toLocaleString()}
+                    <span
+                      className={`block text-lg font-[500] text-[12px] sm:text-[16px] ${
+                        selectedRentalPeriod === detail.period
+                          ? "text-white"
+                          : "text-black"
+                      }`}
+                    >
+                      ₹{detail.price && detail.price.toLocaleString()}
                     </span>
                   </div>
                 ))}
-
               </div>
               {/* Additional rows like "6 Months" */}
               <div className="mt-2">
@@ -530,16 +573,18 @@ const ProductItem = ({ product }) => {
               {rentalPrice?.map((detail) => (
                 <button
                   key={detail._id || detail.variantId}
-                  className={`border rounded p-3 transition ${modalSelectedPeriod === detail.period
+                  className={`border rounded p-3 transition ${
+                    modalSelectedPeriod === detail.period
                       ? "bg-blue-500 text-white border-blue-500"
                       : "hover:bg-blue-500 hover:text-white"
-                    }`}
+                  }`}
                   onClick={() => setModalSelectedPeriod(detail.period)}
                   type="button"
                 >
                   <div className="font-medium">
                     {periodMapping[detail.period] ||
-                      detail.period.charAt(0).toUpperCase() + detail.period?.slice(1)}
+                      detail.period.charAt(0).toUpperCase() +
+                        detail.period?.slice(1)}
                   </div>
                   <div className="text-sm">₹{detail.price}</div>
                 </button>
@@ -566,7 +611,6 @@ const ProductItem = ({ product }) => {
         </div>
       )}
     </>
-
   );
 };
 

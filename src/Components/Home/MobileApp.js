@@ -37,7 +37,7 @@ const MobileApp = () => {
         </ul>
 
         {/* Always visible download buttons */}
-        <div className="flex  sm:flex-row items-center justify-center lg:justify-start gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
           <Link href="https://play.google.com/store/apps/details?id=com.rntOut&pcampaignid=web_share">
             <img
               src={playstore}

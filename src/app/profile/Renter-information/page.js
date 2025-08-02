@@ -61,6 +61,7 @@ export default function BusinessInformation2() {
     contactPhone: "",
     storeDescription: "",
     bankName: "priya",
+    accountHolder:"",
     accountNumber: "",
     ifsc: "",
     bankBranchAddress: {
@@ -169,6 +170,7 @@ export default function BusinessInformation2() {
       errors.contactPhone = "Mobile number must be 10 digits";
     if (!formData?.storeDescription) errors.storeDescription = "This field is required";
     if (!formData?.bankName) errors.bankName = "This field is required";
+    if (!formData?.accountHolder) errors.accountHolder = "This field is required";
     if (!formData?.accountNumber) {
       errors.accountNumber = "This field is required";
     } else if (!/^\d{9,18}$/.test(formData.accountNumber)) {
@@ -200,6 +202,7 @@ export default function BusinessInformation2() {
       formDataToSend.append("contactPhone", formData?.contactPhone);
       formDataToSend.append("storeDescription", formData?.storeDescription);
       formDataToSend.append("bankName", formData?.bankName);
+      formDataToSend.append("accountHolder", formData?.accountHolder);
       formDataToSend.append("accountNumber", formData?.accountNumber || "");
       formDataToSend.append("ifsc", formData?.ifsc);
       formDataToSend.append("bankBranchAddress[no]", formData?.bankBranchAddress?.no);
@@ -358,6 +361,7 @@ export default function BusinessInformation2() {
                   <div className="p-4 rounded-md">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4">
                       <div className="flex flex-col"><div className="flex gap-2"><FaBuilding className="text-gray-500" /> <strong>Bank Name:</strong></div><div className="text-sm">{formData?.bankName}</div></div>
+                      <div className="flex flex-col"><div className="flex gap-2"><FaUser className="text-gray-500" /> <strong>Account Holder:</strong></div><div className="text-sm">{formData?.accountHolder}</div></div>
                       <div className="flex flex-col"><div className="flex gap-2"><FaCreditCard className="text-gray-500" /> <strong>IFSC Code:</strong></div><div className="text-sm">{formData?.ifsc}</div></div>
                       <div className="flex flex-col"><div className="flex gap-2"><FaPhone className="text-gray-500" /> <strong>Account Number:</strong></div><div className="text-sm">{formData?.accountNumber}</div></div>
                     </div>

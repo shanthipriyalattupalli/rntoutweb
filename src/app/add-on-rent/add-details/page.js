@@ -9,7 +9,7 @@ import { FaUpload, FaRegCalendarAlt } from "react-icons/fa";
 import { FiPlus, FiTrash } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, LoadScript,Autocomplete, Marker } from "@react-google-maps/api";
 import { MAP_API } from '../../../services/GMap';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 const upload = "/Assets/upload.png";
 const emptyproducts = "/Assets/emptyproducts.svg";
 import Cookies from "js-cookie";
+import { auto } from "@popperjs/core";
 
 
 const MainContent = () => {
@@ -36,6 +37,8 @@ console.log(securitydeposit,"securitydepositttt")
       details: [{ key: "", value: "" }],
     },
   ]);
+    const autocompleteRef = useRef(null);
+
   const [errors, setErrors] = useState({
     title: "",
     description: "",
@@ -197,6 +200,7 @@ console.log(securitydeposit,"securitydepositttt")
 
   const [previewImages, setPreviewImages] = useState([]); // To store the preview images
   const fileInputRef = useRef();
+  const inputRef = useRef(null); 
 
 
 
@@ -414,9 +418,10 @@ const handleFileChange = (event) => {
   const DEFAULT_LOCATION = { lat: 17.385044, lng: 78.486671 }; // Hyderabad coordinates
 
   const [formData, setFormData] = useState(initialFormData);
-  const [mapCenter, setMapCenter] = useState(
-    latitude && longitude ? { lat: latitude, lng: longitude } : DEFAULT_LOCATION
-  );
+const [mapCenter, setMapCenter] = useState(() => {
+  const [lng, lat] = formData.location.coordinates || [];
+  return (lat && lng) ? { lat: parseFloat(lat), lng: parseFloat(lng) } : DEFAULT_LOCATION;
+});
 
   // Get User Location or Set Default Location
   useEffect(() => {
@@ -476,6 +481,32 @@ const handleFileChange = (event) => {
     }));
 
     fetchAddress(lat, lng);
+clearAutocompleteInput()
+
+  };
+const clearAutocompleteInput = () => {
+  if (inputRef.current) {
+    inputRef.current.value = '';
+  }
+};
+
+
+    const handlePlaceChanged = () => {
+    const place = autocompleteRef.current.getPlace();
+    if (place && place.geometry) {
+      const location = place.geometry.location;
+      const lat = location.lat();
+      const lng = location.lng();
+
+      setMapCenter({ lat, lng });
+
+              setFormData((prev) => ({
+          ...prev,
+          pickupAddress: place.formatted_address,
+           location: { type: "Point", coordinates: [lng, lat] }
+        }));
+      
+    }
   };
 
   const handlePublishProduct = async () => {
@@ -502,6 +533,7 @@ const handleFileChange = (event) => {
       newErrors.title = "This field is required";
       missingFields.push("Title");
     }
+
     if (!formData.description.trim()) {
       newErrors.description = "This field is required";
       missingFields.push("Description");
@@ -530,6 +562,7 @@ const handleFileChange = (event) => {
       newErrors.pickupAddress = "This field is required";
       missingFields.push("Pickup Address");
     }
+
     const allPricesAreZero = formData.rentalPrice.every(
       (item) => !item.price || Number(item.price) === 0
     );
@@ -628,6 +661,14 @@ const handleFileChange = (event) => {
           if (securitydeposit === "true" || securitydeposit === true) {
       formDataToSend.append("securityDeposit", formData.securityDeposit);
     }
+
+
+
+for (const [key, value] of formDataToSend.entries()) {
+  console.log(`${key}:`, value);
+}
+
+    
 
       const response = await axios.post(`${BASE_URL}/variants`, formDataToSend, {
         headers: {
@@ -907,6 +948,14 @@ console.log(formData,"format");
               <label className="text-[14px] font-semibold">Select Pick up address
                 <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
               </label>
+                      <Autocomplete onLoad={ref => (autocompleteRef.current = ref)} onPlaceChanged={handlePlaceChanged}>
+          <input
+            type="text"
+            ref={inputRef} 
+            placeholder="Search for an address"
+            className="w-full px-4 py-2 mb-3 border border-gray-300 rounded-lg"
+          />
+        </Autocomplete>
               <div className="google-content">
                 {/* <LoadScript googleMapsApiKey={MAP_API}> */}
                 <GoogleMap
@@ -932,9 +981,10 @@ console.log(formData,"format");
               </div>
             </div>
             <p name='pickupAddress'
+            className="mt-3"
               value={formData.pickupAddress}
               onChange={handleInputChange}>
-              <strong>Address:</strong> {formData.pickupAddress}
+              <strong>Pickup Address:</strong> {formData.pickupAddress}
 
               {/* <LocationSearch /> */}
 
@@ -942,6 +992,7 @@ console.log(formData,"format");
               {/* {errors.address && <p style={{ color: "red" }}>{errors.address}</p>} */}
 
             </p>
+
             <div className="mt-3 flex flex-col relative">
               <label className="left-3 text-gray-500 text-sm bg-white">Description
                 <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
