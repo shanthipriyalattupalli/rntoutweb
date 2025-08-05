@@ -151,8 +151,8 @@ const Newsletter = () => {
           <div>
             <h4 className="text-lg font-medium text-white mb-4">Company</h4>
             <ul className="text-gray-400 text-sm space-y-2">
-              <li onClick={() => router.push("/contact-us")} className="cursor-pointer">About us</li>
               <li onClick={() => router.push("/aboutus")} className="cursor-pointer">About us</li>
+              <li onClick={() => router.push("/contact-us")} className="cursor-pointer">Contact Us</li>
               <li onClick={() => router.push("/terms-and-conditions")} className="cursor-pointer">Terms & Conditions</li>
               <li onClick={() => router.push("/privacy-policy")} className="cursor-pointer">Privacy Policy</li>
 
