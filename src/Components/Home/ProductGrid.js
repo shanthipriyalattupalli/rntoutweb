@@ -39,7 +39,7 @@ const CategorySection = ({ categories, isLoading,categoryIds }) => {
   <div className="w-full overflow-x-auto px-[80px]">
     <div
       className={`flex gap-2 xl:gap-6 scrollbar-hide ${
-        categories?.length > 5 ? "overflow-x-auto flex-nowrap" : "flex-wrap justify-between"
+        categories?.length > 5 ? "overflow-x-auto flex-nowrap" : "flex-wrap"
       }`}
     >
       {isLoading
