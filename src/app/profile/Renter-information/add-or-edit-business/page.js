@@ -331,12 +331,12 @@ console.log(formData?.removedImageIndices, "Replace Image Indices State");
     let errors = {};
 
     // Validate required fields
-    if (!formData?.businessName) errors.businessName = "This field is required";
-    if (!formData?.storeName) errors.storeName = "This field is required";
+    // if (!formData?.businessName) errors.businessName = "This field is required";
+    // if (!formData?.storeName) errors.storeName = "This field is required";
     if (!formData?.contactEmail) errors.contactEmail = "This field is required";
     if (!formData?.contactPhone || formData?.contactPhone.length !== 10)
       errors.contactPhone = "Mobile number must be 10 digits";
-    if (!formData?.storeDescription) errors.storeDescription = "This field is required";
+    // if (!formData?.storeDescription) errors.storeDescription = "This field is required";
     if (!formData?.bankName) errors.bankName = "This field is required";
     if (!formData?.accountHolder) errors.accountHolder = "This field is required";
     if (!formData?.accountNumber) {
@@ -817,7 +817,7 @@ console.log(formData, "fomr data");
             <div className='address-bar'>
               <div className="input-item">
                 <label htmlFor="business-name">Business Name
-                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+                  {/* <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span> */}
 
                 </label>
                 <input id="business-name"
@@ -828,14 +828,14 @@ console.log(formData, "fomr data");
                   value={formData?.businessName}
                   onChange={handleInputChange}
                 />
-                {errorMessage.businessName && <p className="text-red-500 text-sm">{errorMessage.businessName}</p>}
+                {/* {errorMessage.businessName && <p className="text-red-500 text-sm">{errorMessage.businessName}</p>} */}
 
               </div>
             </div>
             <div className="input-group">
               <div className="input-item">
                 <label htmlFor="store-name">Store Name
-                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+                  {/* <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span> */}
 
                 </label>
                 <input id="store-name"
@@ -845,7 +845,7 @@ console.log(formData, "fomr data");
                   value={formData?.storeName}
                   onChange={handleInputChange}
                 />
-                {errorMessage.storeName && <p className="text-red-500 text-sm">{errorMessage.storeName}</p>}
+                {/* {errorMessage.storeName && <p className="text-red-500 text-sm">{errorMessage.storeName}</p>} */}
 
               </div>
               <div className="input-item">
@@ -908,7 +908,7 @@ console.log(formData, "fomr data");
             <div className='address-bar'>
               <div className="input-item ">
                 <label htmlFor="store-description">Store Description
-                  <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span>
+                  {/* <span style={{ color: "rgba(255, 45, 85, 1)" }}>*</span> */}
 
                 </label>
                 <textarea id="store-description"
@@ -919,7 +919,7 @@ console.log(formData, "fomr data");
                   value={formData?.storeDescription}
                   onChange={handleInputChange}
                 ></textarea>
-                {errorMessage.storeDescription && <p className="text-red-500 text-sm">{errorMessage.storeDescription}</p>}
+                {/* {errorMessage.storeDescription && <p className="text-red-500 text-sm">{errorMessage.storeDescription}</p>} */}
 
               </div></div>
           </div>

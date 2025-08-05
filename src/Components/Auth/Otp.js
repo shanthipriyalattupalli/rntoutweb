@@ -11,7 +11,6 @@ const profile_avatar = "/Assets/profile_avatar.png";
 import Signup from "./Signup";
 import Cookies from "js-cookie";
 
-
 const Rntout = "/Assets/Rntout_Logo.svg";
 
 const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
@@ -25,16 +24,17 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
   const [otpError, setOtpError] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [timer, setTimer] = useState(60)
+  const [timer, setTimer] = useState(60);
   //   const mobileNumber = searchParams.get("mobileNumber");
-  const userName = (typeof window !== 'undefined') ? localStorage.getItem("userName") : null;
-  const token = typeof window !== 'undefined' ? localStorage.getItem("userToken") : null;
-  const fcmToken = typeof window !== 'undefined' ? localStorage.getItem("FCMToken") : null;
+  const userName =
+    typeof window !== "undefined" ? localStorage.getItem("userName") : null;
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("userToken") : null;
+  const fcmToken =
+    typeof window !== "undefined" ? localStorage.getItem("FCMToken") : null;
 
-
-  const profilepic = typeof window !== 'undefined' ? localStorage.getItem("profilePic") : null;
-
-
+  const profilepic =
+    typeof window !== "undefined" ? localStorage.getItem("profilePic") : null;
 
   useEffect(() => {
     if (timer > 0) {
@@ -44,7 +44,6 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
       setIsOtpOpen(true);
     }
   }, [timer]);
-
 
   const handleChange = (index, value) => {
     if (/^\d*$/.test(value)) {
@@ -59,12 +58,6 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
       }
     }
   };
-
-
-
-
-
-
 
   const handleBackspace = (index, value) => {
     if (!value && index > 0) {
@@ -94,7 +87,6 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
         phoneNumber: mobileNumber,
       });
 
-
       if (response.data.message === "Invalid OTP") {
         toast.error("Invalid OTP. Please try again.");
         setIsLoading(false);
@@ -110,7 +102,6 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
       localStorage.setItem("userId", user._id);
       localStorage.setItem("role", user.role);
 
-
       // Cookies.set("userId", user._id, { expires: 7, secure: true, sameSite: "Strict" });
       // Cookies.set("hasSubscription", user?.hasActiveSubscription, { expires: 7, secure: true, sameSite: "Strict" })
       // Cookies.set("SubscriptionId", user?.currentSubscription, { expires: 7, secure: true, sameSite: "Strict" })
@@ -122,18 +113,14 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
       // Cookies.set("userEmail", user.email, { expires: 7, secure: true, sameSite: "Strict" });
       // Cookies.set("userToken", response?.data?.token, { expires: 7, secure: true, sameSite: "Strict" });
 
-
-
-      
-      Cookies.set("userId", user._id);
-        Cookies.set("hasSubscription", user?.hasActiveSubscription);
-        Cookies.set("SubscriptionId", user.currentSubscription);
-      Cookies.set("userMobile",user.mobile);
-      Cookies.set("isKyc", response?.data?.kycVerified);
-      Cookies.set("userName", user.name);
-      Cookies.set("userEmail", user.email);
-      Cookies.set("userToken", response?.data?.token);
-
+      Cookies.set("userId", user._id, { expires: 180 });
+      Cookies.set("hasSubscription", user?.hasActiveSubscription, { expires: 180 });
+      Cookies.set("SubscriptionId", user.currentSubscription, { expires: 180 });
+      Cookies.set("userMobile", user.mobile, { expires: 180 });
+      Cookies.set("isKyc", response?.data?.kycVerified, { expires: 180 });
+      Cookies.set("userName", user.name, { expires: 180 });
+      Cookies.set("userEmail", user.email, { expires: 180 });
+      Cookies.set("userToken", response?.data?.token, { expires: 180 });
 
       if (!profilepic) {
         localStorage.setItem("profilePic", profile_avatar);
@@ -161,11 +148,8 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
     }
   };
 
-
-
   const saveFcmToken = async () => {
     try {
-
       const response = await axios.post(
         `${BASE_URL}/users/save-fcm-token`,
         { fcmToken },
@@ -175,7 +159,6 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
           },
         }
       );
-
     } catch (error) {
       console.error("Error saving FCM token:", error);
     }
@@ -186,7 +169,7 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
       toast.error("Please enter a valid mobile number.");
       return;
     }
-    setOtpError(false)
+    setOtpError(false);
     setIsLoading(true);
     setOtp(["", "", "", ""]);
     setTimer(60);
@@ -199,7 +182,6 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
 
       if (response.status === 200) {
         toast.success(response.data.message || "OTP sent successfully!");
-
       } else {
         toast.error(response.data.error || "Failed to send OTP. Try again.");
       }
@@ -217,8 +199,8 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
         <h2 className='subtitle'>Sign in to RntOut</h2>
       </div> */}
       <div className="otp-card">
-        <div className='login-first'>
-          <img src={Rntout} alt='RentOut Logo' className='login-logo' />
+        <div className="login-first">
+          <img src={Rntout} alt="RentOut Logo" className="login-logo" />
           {/* <h2 className='subtitle'>Sign in to rntout</h2> */}
         </div>
         <div className="flex flex-col gap-[6px]">
@@ -229,7 +211,11 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
             number above. Please enter it to complete verification.
           </p>
           <p className="otp-number">
-            +91 {mobileNumber}<span className="otp-change" onClick={() => setIsOtpOpen(false)}>  Change</span>
+            +91 {mobileNumber}
+            <span className="otp-change" onClick={() => setIsOtpOpen(false)}>
+              {" "}
+              Change
+            </span>
           </p>
         </div>
         <div className="otp-inputs">
@@ -242,23 +228,39 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
               value={digit}
               onChange={(e) => handleChange(index, e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Backspace") handleBackspace(index, e.target.value);
+                if (e.key === "Backspace")
+                  handleBackspace(index, e.target.value);
               }}
               className={`otp-input ${otpError ? "otp-error" : ""}`} // Apply red border class on error
             />
           ))}
         </div>
 
-        {errorMessage && <p className={`error-message ${errorMessage && "text-red"}`}>{errorMessage}</p>}
+        {errorMessage && (
+          <p className={`error-message ${errorMessage && "text-red"}`}>
+            {errorMessage}
+          </p>
+        )}
 
-        <button className="button" onClick={handleOtpVerify} disabled={isLoading || otp.some((digit) => digit === "" || timer === 0)}>
+        <button
+          className="button"
+          onClick={handleOtpVerify}
+          disabled={
+            isLoading || otp.some((digit) => digit === "" || timer === 0)
+          }
+        >
           {isLoading ? "Verifying..." : "Continue"}
         </button>
 
         {isregisterOpen && (
           <div className="modal-overlay">
             <div className="modal-content">
-              <button className="close-button" onClick={() => setIsRegisterOpen(false)}>✕</button>
+              <button
+                className="close-button"
+                onClick={() => setIsRegisterOpen(false)}
+              >
+                ✕
+              </button>
               <Signup setIsRegisterOpen={setIsRegisterOpen} />
             </div>
           </div>
@@ -266,19 +268,19 @@ const Otp = ({ mobileNumber, setIsOtpOpen, setIsLoginOpen }) => {
         <p
           className={`otp-resend ${timer > 0 ? "disabled" : ""}`}
           onClick={timer === 0 ? handleSendOtp : null}
-          style={{ pointerEvents: timer > 0 ? "none" : "auto", opacity: timer > 0 ? 0.5 : 1 }}
+          style={{
+            pointerEvents: timer > 0 ? "none" : "auto",
+            opacity: timer > 0 ? 0.5 : 1,
+          }}
         >
           <span className="otp-resend-link">
-            Resend OTP {timer > 0 && <span className="otp-timer">{timer}s</span>}
+            Resend OTP{" "}
+            {timer > 0 && <span className="otp-timer">{timer}s</span>}
           </span>
-
         </p>
-
       </div>
     </div>
   );
 };
-
-
 
 export default Otp;
